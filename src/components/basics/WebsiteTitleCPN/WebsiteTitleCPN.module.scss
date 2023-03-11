@@ -1,0 +1,9 @@
+@use '../../../styles/base';
+
+.title {
+    color: base.$heading-color;
+}
+
+.subtitle {
+    color: base.$secondary-heading-color;
+}

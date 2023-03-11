@@ -2,7 +2,7 @@ import React from "react";
 import {  Meta, StoryObj } from "@storybook/react";
 
 import LinksList, { Props } from ".";
-import { LinkItem } from "@/types";
+import { LinkItem } from "@/types/item";
 
 interface ExampleLinkItem extends LinkItem {
   name: string;

@@ -1,6 +1,6 @@
 import { FC } from "react";
 
-import { LinkItem } from "@/types";
+import { LinkItem } from "@/types/item";
 
 import List from "components/generics/List";
 import Link from "next/link";

@@ -1,5 +1,6 @@
 import { nanoid } from 'nanoid';
-import { NavigationItem } from '@/types';
+import { NavigationItem } from '@/types/item';
+import { WebsiteTitle } from '@/types/others';
 
 
 
@@ -25,3 +26,8 @@ export const navigationItems:NavigationItem[] = [
         path: '/about'
     },
 ];
+
+export const websiteTitle:WebsiteTitle = {
+    title: 'NAIL ESSENTIAL',
+    subtitle: 'Elevate your nail game with our products',
+};

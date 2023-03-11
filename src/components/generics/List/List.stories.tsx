@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
 import List, { Props } from ".";
-import { Item } from "@/types";
+import { Item } from "@/types/item";
 
 // Define the item type for this story
 interface ExampleItem extends Item {

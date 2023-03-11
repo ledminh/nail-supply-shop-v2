@@ -1,5 +1,5 @@
 import { FC } from "react";
-import { Item } from "@/types";
+import { Item } from "@/types/item";
 
 import styles from "./List.module.scss";
 

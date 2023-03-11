@@ -4,6 +4,8 @@
 *::after,
 *::before {
     box-sizing: border-box;
+    margin: 0;
+    padding: 0;
 }
 
 body {
@@ -26,4 +28,9 @@ a:hover {
 
 ul {
     list-style: none;
+}
+
+h1 {
+    font-size: 2rem;
+    font-weight: 700;
 }
