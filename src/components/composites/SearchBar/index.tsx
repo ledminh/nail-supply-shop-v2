@@ -1,16 +1,24 @@
+import { FC } from 'react';
 import styles from '@styles/SearchBar.module.scss';
 
 import { useState } from 'react';
 
 
+interface Props {
+    onSearchSubmit: (query: string) => void;
+}
 
-export default function SearchBar() {
+export type SearchBar = FC<Props>;
+
+
+const SearchBarCPN:SearchBar = ({onSearchSubmit}) => {
 
     const [query, setQuery] = useState('');
 
     const handleSearch = (e: React.FormEvent<HTMLButtonElement>) => {
         e.preventDefault();
-        console.log(query);
+        
+        onSearchSubmit(query);
     };
 
 
@@ -29,3 +37,5 @@ export default function SearchBar() {
         </div>
     );
 }
+
+export default SearchBarCPN;
