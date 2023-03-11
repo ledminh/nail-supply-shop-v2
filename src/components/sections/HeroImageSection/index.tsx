@@ -18,7 +18,7 @@ export default function HeroImageSection({image, text, linkText }: Props) {
         <section className={styles.heroImage}>
             <ImageCPN
                 image={image}
-                sizes="(max-width: 600px) 100vw, 1200px"
+                size="large"
                 className={styles.image}
             />
             <div className={styles.overlay}>

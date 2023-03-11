@@ -23,7 +23,7 @@ export default function MainProduct({ product }: Props) {
             <div className={styles.wrapper}>
                 <ImageCPN
                     image={images[0]}
-                    sizes="(max-width: 700px) 70vw, 900px"
+                    size="medium"
                     className={styles.image}
                 />
                 <div className={styles.text}>

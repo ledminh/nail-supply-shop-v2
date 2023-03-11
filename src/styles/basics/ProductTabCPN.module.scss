@@ -1,0 +1,37 @@
+.wrapper.detailed {
+    display: grid;
+    grid-template-columns: 70px auto;
+    grid-template-rows: 70px;
+    gap: .2rem;
+
+    
+}
+
+
+.image.detailed {
+    grid-column: 1/2;
+    
+    width: 70px;
+    height: 70px;
+
+    overflow: hidden;
+
+}
+
+.text.detailed {
+    grid-column: 2/3;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    
+    padding: .2rem;
+
+    font-size: .65rem;
+
+    .price {
+        &::before {
+            content: "Price: $";
+        }
+    }
+}
