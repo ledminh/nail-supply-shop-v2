@@ -5,7 +5,7 @@ import WebsiteTitleCPN from "@components/basics/WebsiteTitleCPN";
 import SearchBar from "@components/composites/SearchBar";
 
 import { websiteTitle } from "@/config";
-import styles from "@styles/Header.module.scss";
+import styles from "@styles/sections/HeaderSection.module.scss";
 
 
 

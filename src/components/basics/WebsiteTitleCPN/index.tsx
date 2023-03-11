@@ -1,5 +1,5 @@
 import { WebsiteTitle } from '@/types/others';
-import styles from '@styles/WebsiteTitleCPN.module.scss';
+import styles from '@styles/basics/WebsiteTitleCPN.module.scss';
 import Image from 'next/image';
 
 export type Props = WebsiteTitle;

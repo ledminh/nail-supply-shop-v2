@@ -4,7 +4,7 @@ import HeaderSection from '.';
 
 
 export default {
-  title: "Composites/HeaderSection",
+  title: "Sections/HeaderSection",
   component: HeaderSection,
 
 } as Meta;

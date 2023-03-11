@@ -1,4 +1,4 @@
-import styles from './NavItemCPN.module.scss';
+import styles from '@styles/basics/NavItemCPN.module.scss';
 
 export interface Props {
     label: string;
