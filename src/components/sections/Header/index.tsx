@@ -36,3 +36,5 @@ const HeaderSection:Header = ({currentPage, onSearchSubmit}) => {
 }
 
 export default HeaderSection;
+
+HeaderSection.displayName = "HeaderSection";
