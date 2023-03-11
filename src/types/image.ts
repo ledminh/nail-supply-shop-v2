@@ -1,7 +1,11 @@
 import { StaticImageData } from "next/image";
 
-export type LocalImage = StaticImageData;
+export type LocalImage = {
+    src: StaticImageData;
+    alt: string;
+};
+
 export type RemoteImage = {
-    url: string;
+    src: string;
     alt: string;
 }

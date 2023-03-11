@@ -6,8 +6,10 @@ import type { Props } from '.';
 import heroImage from "@images/hero_image.png";
 
 const defaultProps: Props = {
-  heroImage: heroImage,
-  alt: "Hero Image",
+  image: {
+    src: heroImage,
+    alt: "Hero Image"
+  },
   text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
   linkText: "Shop Now"
 }

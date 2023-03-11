@@ -13,7 +13,7 @@
 
             "customTemplates": {
                 "component": "templates/component/index.tsx",
-                "story": "templates/component/TemplateName.stories.tsx"            
+                "story": "templates/component/TemplateNameCPN.stories.tsx"            
             }
         
         },

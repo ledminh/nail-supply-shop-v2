@@ -1,6 +1,7 @@
 import { WebsiteTitle } from '@/types/others';
 import styles from '@styles/basics/WebsiteTitleCPN.module.scss';
 import Image from 'next/image';
+import ImageCPN from '@components/basics/ImageCPN';
 
 export type Props = WebsiteTitle;
     
@@ -15,10 +16,11 @@ export default function WebsiteTitleCPN(
         <div className={styles.wrapper}>
             {
                 props.image? (
-                    <Image
-                        src={props.image}
-                        alt={props.alt}
-                    />
+                    <ImageCPN
+                        image={props.image}
+                        sizes="(max-width: 600px) 100vw, 900px"
+                        className={styles.image}
+                        />
                 ) : (
                     <>
                         <h1 className={styles.title}>{props.title}</h1>
