@@ -8,9 +8,9 @@ export default function templatenameSection({ }: Props) {
 
 
     return (
-        <div className={styles.placeholder}>
+        <section className={styles.placeholder}>
             TemplateName Section
-        </div>
+        </section>
     );
 }
 
