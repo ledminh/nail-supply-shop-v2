@@ -1,0 +1,43 @@
+@use '../../../styles/base';
+
+.ul {
+
+    color: base.$navigation-color;
+}
+
+.li {
+    margin-right: .5rem;   
+
+    border-radius: base.$border-radius;
+
+
+    &:last-child {
+        margin-right: 0;
+    }
+
+    &:hover {
+        background-color: adjust-color($color: base.$navigation-color, $lightness: 15%);
+        color: base.$background-color;
+    }
+
+}
+
+.li.current {
+    background-color: base.$navigation-color;
+    color: base.$background-color;
+}
+
+.link {
+    padding: .5rem;
+
+    transition: .2s ease-in-out;
+
+
+   
+
+    &:active {
+        transform: scale(.95);
+        
+    }
+}
+
