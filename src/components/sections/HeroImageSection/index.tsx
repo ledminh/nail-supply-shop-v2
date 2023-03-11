@@ -1,7 +1,7 @@
 import Image from "next/image";
 
 import styles from "@styles/sections/HeroImageSection.module.scss";
-import ButtonCPN from "@/components/basics/ButtonCPN";
+import Link from "next/link";
 import { LocalImage } from "@/types/image";
 
 
@@ -9,10 +9,11 @@ export interface Props {
     heroImage: LocalImage;
     alt: string;
     text: string;
+    linkText: string;
 }
 
 
-export default function HeroImageSection({heroImage, alt, text }: Props) {
+export default function HeroImageSection({heroImage, alt, text, linkText }: Props) {
 
 
     return (
@@ -29,10 +30,14 @@ export default function HeroImageSection({heroImage, alt, text }: Props) {
                 />
             </div>
             <div className={styles.overlay}>
-                <p className={styles.text}>
+                <h2 className={styles.text}>
                     {text}
-                </p>
-                <ButtonCPN/>
+                </h2>
+                <Link
+                    className={styles.link}
+                    href="/shop">
+                    {linkText}
+                </Link>
             </div>
         </section>
     );

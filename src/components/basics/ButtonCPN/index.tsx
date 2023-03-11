@@ -17,9 +17,9 @@ const ButtonCPN:Button = ({}) => {
 
 
     return (
-        <div className={styles.placeholder}>
-            Button component
-        </div>
+        <button>
+            Button
+        </button>
     );
 }
 
