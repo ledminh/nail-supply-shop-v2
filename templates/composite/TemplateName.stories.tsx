@@ -1,7 +1,7 @@
 import {  Meta, StoryObj } from "@storybook/react";
 
 import templatename from '.';
-
+import type { Props } from '.';
 
 export default {
   title: "Composites/templatename",

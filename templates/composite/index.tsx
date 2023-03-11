@@ -1,6 +1,6 @@
-import styles from "@styles/templatename.module.scss";
+import styles from "@styles/composites/templatename.module.scss";
 
-interface Props {
+export interface Props {
 }
 
 

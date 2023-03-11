@@ -1,6 +1,6 @@
-import styles from "@styles/templatename.module.scss";
+import styles from "@styles/sections/templatenameSection.module.scss";
 
-interface Props {
+export interface Props {
 }
 
 

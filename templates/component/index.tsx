@@ -2,7 +2,7 @@ import { FC } from "react";
 
 
 
-import styles from "@styles/templatename.module.scss";
+import styles from "@styles/basics/templatenameCPN.module.scss";
 
 
 

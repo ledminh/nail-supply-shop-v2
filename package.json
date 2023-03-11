@@ -17,7 +17,17 @@
     "create-scss-basic": "node create-scss basics",
     "create-scss-composite": "node create-scss composites",
     "create-scss-section": "node create-scss sections",
-    "create-scss-generic": "node create-scss generic"
+    "create-scss-generic": "node create-scss generic",
+
+    "cbc": "npm run create-basic-component",
+    "ccc": "npm run create-composite-component",
+    "csc": "npm run create-section-component",
+    "cgc": "npm run create-generic-component",
+    "cscb": "npm run create-scss-basic",
+    "cscc": "npm run create-scss-composite",
+    "cscs": "npm run create-scss-section",
+    "cscg": "npm run create-scss-generic"
+
   },
   "dependencies": {
     "@types/node": "18.15.0",
