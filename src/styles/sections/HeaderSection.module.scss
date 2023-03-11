@@ -1,15 +1,31 @@
-// .header {
+.header {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 3fr 1fr;
 
-// }
+    row-gap: 20px;
+}
 
-// .websiteTitle {
+.websiteTitle {
+    grid-column: 1 / 2;
+    grid-row: 1 / 2;
 
-// }
+    justify-self: left;
+    align-self: center;
+}
 
-// .searchBar {
+.searchBar {
+    grid-column: 2 / 3;
+    grid-row: 1 / 2;
 
-// }
+    justify-self: right;
+    align-self: center;
+}
 
-// .navBar {
+.navBar {
+    grid-column: 1 / 3;
+    grid-row: 2 / 3;
 
-// }
+    justify-self: center;
+    align-self: center;
+}
