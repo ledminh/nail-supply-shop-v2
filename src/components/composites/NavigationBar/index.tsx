@@ -3,7 +3,7 @@ import NavItemCPN from "@/components/basics/NavItemCPN";
 
 import { navigationItems } from "@/config";
 
-import styles from "./NavigationBar.module.scss";
+import styles from "@styles/NavigationBar.module.scss";
 
 interface Props {
     currentPage: string;
