@@ -59,6 +59,21 @@
                 "story": "templates/generic/TemplateName.stories.tsx"            
             }
         
+        },
+
+        "layout": {
+            "path": "src/components/layouts/",
+            "withLazy": false,
+            "withStory": true,
+            "withStyle": false,
+            "withTest": false,
+            "withHook": false,
+
+            "customTemplates": {
+                "component": "templates/layout/index.tsx",
+                "story": "templates/layout/TemplateName.stories.tsx"            
+            }
+        
         }
     },
     
