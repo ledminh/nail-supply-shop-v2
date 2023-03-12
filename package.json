@@ -14,19 +14,24 @@
     "create-composite-component": "npx generate-react-cli component --type=composite",
     "create-section-component": "npx generate-react-cli component --type=section",
     "create-generic-component": "npx generate-react-cli component --type=generic",
+    "create-layout-component": "npx generate-react-cli component --type=layout",
+
     "create-scss-basic": "node create-scss basics",
     "create-scss-composite": "node create-scss composites",
     "create-scss-section": "node create-scss sections",
     "create-scss-generic": "node create-scss generics",
+    "create-scss-layout": "node create-scss layouts",
 
     "cbc": "npm run create-basic-component",
     "ccc": "npm run create-composite-component",
     "csc": "npm run create-section-component",
     "cgc": "npm run create-generic-component",
+    "clc": "npm run create-layout-component",
     "cscb": "npm run create-scss-basic",
     "cscc": "npm run create-scss-composite",
     "cscs": "npm run create-scss-section",
-    "cscg": "npm run create-scss-generic"
+    "cscg": "npm run create-scss-generic",
+    "cscly": "npm run create-scss-layout"
 
   },
   "dependencies": {

@@ -1,4 +1,4 @@
-import styles from '@styles/generics/templatenameLayout.module.scss';
+import styles from '@styles/layouts/templatenameLayout.module.scss';
 
 
 export interface Props {

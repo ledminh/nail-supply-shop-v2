@@ -71,7 +71,7 @@
 
             "customTemplates": {
                 "component": "templates/layout/index.tsx",
-                "story": "templates/layout/TemplateName.stories.tsx"            
+                "story": "templates/layout/TemplateNameLayout.stories.tsx"            
             }
         
         }

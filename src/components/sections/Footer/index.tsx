@@ -28,7 +28,7 @@ export default function FooterSection({ contactInfo, aboutText, logoImg}: Props)
                 <ContactBlock
                     email = {email} 
                     phone = {phone}
-                    additionalInfos = {additionalInfos}
+                    additionalInfos = {additionalInfos? additionalInfos : []}
                     />
             </div>
             <div className={styles.block}>
