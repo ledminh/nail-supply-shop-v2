@@ -8,7 +8,7 @@ const defaultArgs:Props = {};
 
 
 export default {
-  title: "Basics/BannerCPN",
+  title: "Basics/CategoryBlockCPN",
   component: templatenameCPN,
   args: defaultArgs
 } as Meta;
