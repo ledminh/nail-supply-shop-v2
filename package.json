@@ -13,11 +13,11 @@
     "create-basic-component": "npx generate-react-cli component --type=default",
     "create-composite-component": "npx generate-react-cli component --type=composite",
     "create-section-component": "npx generate-react-cli component --type=section",
-    "create-generic-component": "npx generate-react-cli component generic",
+    "create-generic-component": "npx generate-react-cli component --type=generic",
     "create-scss-basic": "node create-scss basics",
     "create-scss-composite": "node create-scss composites",
     "create-scss-section": "node create-scss sections",
-    "create-scss-generic": "node create-scss generic",
+    "create-scss-generic": "node create-scss generics",
 
     "cbc": "npm run create-basic-component",
     "ccc": "npm run create-composite-component",
