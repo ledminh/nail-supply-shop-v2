@@ -8,40 +8,39 @@ import  ImageCPN  from '@/components/basics/ImageCPN';
 
 
 
-export interface Props  {
-    product: Product;
+export interface Props extends Product  {
     detailed?: boolean;
 };
 
 type ProductTab = FC<Props>;
 
 
-const ProductTabCPN:ProductTab = ({product, detailed}) => {
+const ProductTabCPN:ProductTab = ({name, intro, images, price, detailed}) => {
 
     if(!detailed) {
         return (
             <div className={styles.wrapper}>
-                <span>{product.name}</span>
+                <span>{name}</span>
             </div>
         );
     }
-    let intro = product.intro;
+    let _intro = intro;
 
-    if(product.intro.length > 80) {
-        intro = product.intro.slice(0, 80) + "...";
+    if(intro.length > 80) {
+        _intro = intro.slice(0, 80) + "...";
     }
 
     return (
         <div className={styles.wrapper + ' ' + styles.detailed}>
              <ImageCPN
-                image={product.images[0]}
+                image={images[0]}
                 size="small"
                 className={styles.image + ' ' + styles.detailed}
                 />
             <div className={styles.text + ' ' + styles.detailed}>
-                <h4 className={styles.name}>{product.name}</h4>
-                <p className={styles.price}>{product.price}</p>
-                <p className={styles.intro}>{intro}</p>
+                <h4 className={styles.name}>{name}</h4>
+                <p className={styles.price}>{price}</p>
+                <p className={styles.intro}>{_intro}</p>
             </div>
         </div>
     )
