@@ -5,7 +5,7 @@ import type { Props } from '.';
 
 const categorySample = {
   image: {
-    src: "https://loremflickr.com/200/200",
+    src: "https://loremflickr.com/400/400",
     alt: "Category Image",
   },
   name: "Category Name",

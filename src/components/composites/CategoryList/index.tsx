@@ -45,7 +45,6 @@ export default function CategoryList({ categories, detailed }: Props) {
             liClass = {styles.li} 
             ulClass = {styles.ul}
             linkClass = {styles.link}
-            horizontal
         />
     );
 }
