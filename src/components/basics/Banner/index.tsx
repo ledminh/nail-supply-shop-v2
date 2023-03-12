@@ -18,9 +18,9 @@ const BannerCPN:Banner = ({text}) => {
 
     return (
         <div className={styles.wrapper}>
-            <span className={styles.text}>
+            <h2 className={styles.text}>
                 {text}
-            </span>
+            </h2>
         </div>
     );
 }
