@@ -1,22 +1,24 @@
 import {  Meta, StoryObj } from "@storybook/react";
 
-import templatenameCPN from '.';
+import BannerCPN from '.';
 
 import type { Props } from '.';
 
-const defaultArgs:Props = {};
+const defaultArgs:Props = {
+  text: "lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quod."
+};
 
 
 export default {
   title: "Basics/BannerCPN",
-  component: templatenameCPN,
+  component: BannerCPN,
   args: defaultArgs
 } as Meta;
 
 
 
 
-type Story = StoryObj<typeof templatenameCPN>;
+type Story = StoryObj<typeof BannerCPN>;
 
 
 export const Default: Story = {};
