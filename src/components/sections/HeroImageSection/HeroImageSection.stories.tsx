@@ -17,7 +17,7 @@ const defaultProps: Props = {
 
 
 export default {
-  title: "Sections/HeroImage",
+  title: "Sections/HeroImageSection",
   component: HeroImageSection,
   args: defaultProps
 } as Meta;

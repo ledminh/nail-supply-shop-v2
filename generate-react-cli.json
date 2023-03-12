@@ -42,7 +42,7 @@
 
             "customTemplates": {
                 "component": "templates/section/index.tsx",
-                "story": "templates/section/TemplateName.stories.tsx"            
+                "story": "templates/section/TemplateNameSection.stories.tsx"            
             }
         
         },
