@@ -12,3 +12,9 @@ export type WebsiteTitle = {
     image: LocalImage;
     alt: string;
 }
+
+export type ContactInfo = {
+    email: string;
+    phone: string;
+    additionalInfos?: string[];
+}
