@@ -1,0 +1,6 @@
+@use '../base' as *;
+
+.separator {
+    height: 1px;
+    background-color: $separator-color;
+}
