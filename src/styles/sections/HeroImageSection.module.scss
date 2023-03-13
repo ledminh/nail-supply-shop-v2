@@ -49,7 +49,8 @@
     margin-top: 1rem;
 
     &:hover {
-        background-color: $button-color;
+        background-color: adjust-color($color: $attention-color, $lightness: -30%);
+        color: white;
     }
 }
 

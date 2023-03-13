@@ -1,13 +1,23 @@
-// .wrapper {
+@use '../base' as *;
 
-// }
+.wrapper {
+    border: 2px solid $separator-color;
+    border-radius: $border-radius;
 
-// .title {
+    padding: 10px;
+    
+}
 
-// }
+.title {
+    transform: translateY(-30px);
+    background-color: $secondary-background-color;
+    display: inline-block;
+}
 
 .mainProduct {
     height: 200px;
+    transform: translateY(-20px);
+
 }
 
 // .otherProducts {
