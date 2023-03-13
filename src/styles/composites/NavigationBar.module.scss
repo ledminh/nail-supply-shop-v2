@@ -1,14 +1,14 @@
-@use '../base';
+@use '../base' as *;
 
 .ul {
 
-    color: base.$navigation-color;
+    color: $navigation-color;
 }
 
 .li {
     margin-right: .5rem;   
 
-    border-radius: base.$border-radius;
+    border-radius: $border-radius;
 
 
     &:last-child {
@@ -16,15 +16,15 @@
     }
 
     &:hover {
-        background-color: adjust-color($color: base.$navigation-color, $lightness: 15%);
-        color: base.$background-color;
+        background-color: adjust-color($color: $navigation-color, $lightness: 15%);
+        color: $background-color;
     }
 
 }
 
 .li.current {
-    background-color: base.$navigation-color;
-    color: base.$background-color;
+    background-color: $navigation-color;
+    color: $background-color;
 }
 
 .link {
@@ -41,3 +41,20 @@
     }
 }
 
+.hamburgerMenu {
+    display: block;
+}
+
+.linksList {
+    display: none;
+}
+
+@media (min-width: $first-breakpoint) {
+    .hamburgerMenu {
+        display: none;
+    }
+
+    .linksList {
+        display: block;
+    }
+}
