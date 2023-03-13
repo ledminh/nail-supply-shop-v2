@@ -1,4 +1,74 @@
+@use '../base' as *;
+
+.button {
+    font-size: 1.2rem;
+    font-weight: 600;
+}
+
 .hamburgerIcon {
     width: 20px;
     height: 20px;
+}
+
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    z-index: 1;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transform: translateX(-100%);
+
+    transition: transform 0.1s ease-in-out;
+
+}
+
+.overlay.open {
+    transform: translateX(0);
+}
+
+.menu {
+    width: 100%;
+
+    padding: 1.5rem;
+    
+    background-color: $background-color;
+    z-index: 2;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+}
+
+.ul {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    gap: 1rem;
+}
+
+.li {
+    border-bottom: 2px solid transparent;
+    
+    &:hover {
+        color: $navigation-color;
+        
+        border-bottom: 2px solid $navigation-color;
+
+    }
+}
+
+.current {
+    color: $navigation-color;
+    border-bottom: 2px solid $navigation-color;
 }
