@@ -16,40 +16,36 @@
     "create-generic-component": "npx generate-react-cli component --type=generic",
     "create-layout-component": "npx generate-react-cli component --type=layout",
     "create-page": "npx generate-react-cli component --type=page --flat",
-    
-    
     "create-scss-basic": "node create-scss basics",
     "create-scss-composite": "node create-scss composites",
     "create-scss-section": "node create-scss sections",
     "create-scss-generic": "node create-scss generics",
     "create-scss-layout": "node create-scss layouts",
     "create-scss-page": "node create-scss pages",
-    
-    
     "cbc": "npm run create-basic-component",
     "ccc": "npm run create-composite-component",
     "csc": "npm run create-section-component",
     "cgc": "npm run create-generic-component",
     "clc": "npm run create-layout-component",
     "cp": "npm run create-page",
-
     "cscb": "npm run create-scss-basic",
     "cscc": "npm run create-scss-composite",
     "cscs": "npm run create-scss-section",
     "cscg": "npm run create-scss-generic",
     "cscly": "npm run create-scss-layout",
     "cscp": "npm run create-scss-page",
-
-
-
     "chromatic": "npx chromatic --project-token=698eefe93dfe"
   },
   "dependencies": {
+    "@chakra-ui/react": "^2.5.1",
+    "@emotion/react": "^11.10.6",
+    "@emotion/styled": "^11.10.6",
     "@types/node": "18.15.0",
     "@types/react": "18.0.28",
     "@types/react-dom": "18.0.11",
     "eslint": "8.36.0",
     "eslint-config-next": "13.2.4",
+    "framer-motion": "^10.2.4",
     "next": "13.2.4",
     "react": "18.2.0",
     "react-dom": "18.2.0",

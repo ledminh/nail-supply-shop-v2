@@ -7,6 +7,8 @@ import type { ContactInfo } from '@/types/others';
 import { useRouter } from 'next/router';
 import {logoImg} from '@/config';
 
+import { ChakraProvider } from '@chakra-ui/react'
+
 export interface Props {
     contactInfo: ContactInfo,
     aboutText: string,
