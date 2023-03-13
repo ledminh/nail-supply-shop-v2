@@ -25,7 +25,7 @@ export default function WebsiteTitleCPN(
                         <h1 className={styles.title}>
                             {props.title}
                         </h1>
-                        <h4 className={styles.subtitle}>{props.subtitle}</h4>
+                        <h3 className={styles.subtitle}>{props.subtitle}</h3>
                     </>
                 )
             }

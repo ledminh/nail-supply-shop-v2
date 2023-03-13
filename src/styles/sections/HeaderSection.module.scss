@@ -1,31 +1,63 @@
-.header {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    grid-template-rows: 3fr 1fr;
+@use '../base' as *;
 
-    row-gap: 20px;
+.header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+
+
 }
 
 .websiteTitle {
-    grid-column: 1 / 2;
-    grid-row: 1 / 2;
-
-    justify-self: left;
-    align-self: center;
+    margin-bottom: 20px;
 }
 
 .searchBar {
-    grid-column: 2 / 3;
-    grid-row: 1 / 2;
+    width: 100%;
+    margin-bottom: 5px;
 
-    justify-self: right;
-    align-self: center;
 }
 
 .navBar {
-    grid-column: 1 / 3;
-    grid-row: 2 / 3;
+    background-color: adjust-color($color: $background-color, $lightness: -15%);
+    padding: 10px;
+    
+    border-radius: $border-radius;
+}
 
-    justify-self: center;
-    align-self: center;
+
+@media (min-width: $first-breakpoint) {
+    .header {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: 3fr 1fr;
+    
+        row-gap: 20px;
+    }
+    
+    .websiteTitle {
+        grid-column: 1 / 2;
+        grid-row: 1 / 2;
+    
+        justify-self: left;
+        align-self: center;
+    }
+    
+    .searchBar {
+        grid-column: 2 / 3;
+        grid-row: 1 / 2;
+    
+        justify-self: right;
+        align-self: center;
+    }
+    
+    .navBar {
+        grid-column: 1 / 3;
+        grid-row: 2 / 3;
+    
+        justify-self: center;
+        align-self: center;
+    }
 }

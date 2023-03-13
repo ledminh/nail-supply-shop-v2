@@ -6,19 +6,27 @@
     width: 100%;
 
     max-width: 1300px;
-    margin: 0 auto;
+    margin: auto;
 
-    padding: 25px;
 
-    border-radius: $border-radius;
-
-    box-shadow: $box-shadow;
 }
 
 .header {
-    margin-bottom: 45px;
+    margin-bottom: 10px;
 }
 
-.footer {
-    margin-top: 45px;
+.main {
+    margin-bottom: 10px;
+}
+
+@media (min-width: $first-breakpoint) {
+    // .page {
+        
+    //     padding: 25px;
+
+    //     border-radius: $border-radius;
+    
+    //     box-shadow: $box-shadow;
+
+    // }
 }
