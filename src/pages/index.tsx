@@ -34,7 +34,7 @@ export default function Home({contactInfo, aboutTextFooter, featuredProductGroup
       />
       <CategoryIntroSection
         categoryIntro = {categoryIntro} 
-        categories = {categories}
+        categories = {categories.slice(0, 4)}
       />
     </PageLayout>
   )

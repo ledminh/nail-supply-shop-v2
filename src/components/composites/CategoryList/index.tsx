@@ -2,7 +2,7 @@ import styles from "@styles/composites/CategoryList.module.scss";
 import  LinksList  from '@/components/generics/LinksList';
 
 import CategoryBlockCPN from '@/components/basics/CategoryBlockCPN';
-import type {Props as CategoryBlockCPNProps} from '@/components/basics/CategoryBlockCPN';
+
 import { Category } from '@/types/category';
 import { LinkItem } from "@/types/item";
 

@@ -2,6 +2,8 @@ import BannerCPN from "@/components/basics/BannerCPN";
 import CategoryList from "@/components/composites/CategoryList";
 import styles from "@styles/sections/CategoryIntroSection.module.scss";
 
+import Link from "next/link";
+
 import type { Category } from "@/types/category";
 
 export interface Props {
@@ -24,6 +26,13 @@ export default function CategoryIntroSection({ categoryIntro, categories }: Prop
                 <CategoryList 
                     categories={categories}
                 />
+            </div>
+            <div className={styles.footer}>
+                <Link
+                    className={styles.link}
+                    href="/shop">
+                    View All
+                </Link>
             </div>
         </section>
     );
