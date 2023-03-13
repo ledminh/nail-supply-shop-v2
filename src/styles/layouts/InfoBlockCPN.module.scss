@@ -1,0 +1,15 @@
+@use '../base' as *;
+
+.wrapper {
+    padding: 10px;
+
+    width: 100%;
+
+    border: 1px solid $separator-color;
+
+    border-radius: $border-radius;
+}
+
+.body {
+    margin-top: .5rem;
+}
