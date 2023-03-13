@@ -1,13 +1,17 @@
-.placeholder {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: rgb(63, 63, 63);
-    border: 2px solid rgb(0, 0, 0);
-    color: #fff;
-    padding: 1rem;
-    font-size: 1.5rem;
-    font-weight: bold;
-    text-align: center;
-    border-radius: 0.5rem;
+@use '../base' as *;
+
+.li {
+    border-bottom: 1px solid $separator-color;
+    padding-bottom: 5px;
+    margin-bottom: 5px;
+
+    &:first-child {
+        margin-top: 5px;
+    }
+
+    &:hover {
+        border-bottom: 1px solid $attention-color;
+        color: $attention-color;
+    }
 }
+

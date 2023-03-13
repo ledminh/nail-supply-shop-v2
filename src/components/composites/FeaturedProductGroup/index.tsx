@@ -24,7 +24,7 @@ export default function FeaturedProductGroup({title, mainProduct, otherProducts 
                 />
             </div>
             <div className={styles.otherProducts}>
-                <h4>Others</h4>
+                <h4 className={styles.title}>Others</h4>
                 <SeparatorCPN/>
                 <ProductList 
                     products={otherProducts}
