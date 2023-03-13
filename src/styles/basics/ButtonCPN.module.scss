@@ -8,6 +8,8 @@
     padding: 0.5rem 1rem;
     border-radius: $border-radius;
     border: none;
+
+    cursor: pointer;
 }
 
 
@@ -18,14 +20,18 @@
 
 }
 
-button.attention {
+.button.attention {
     background-color: $attention-color;
     color: rgb(68, 43, 43);
     font-weight: 600;
 }
 
-button.danger {
+.button.danger {
     background-color: $danger-color;
     color: rgb(68, 43, 43);
     font-weight: 600;
+}
+
+.button:hover {
+    box-shadow: $box-shadow-hover;
 }
