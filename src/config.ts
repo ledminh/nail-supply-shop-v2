@@ -5,6 +5,7 @@ import { LocalImage } from '@/types/image';
 import logoJPG from '@images/logo.jpg';
 import type {Props as HeroImageSectionProps} from '@/components/sections/HeroImageSection';
 import heroImagePNG from '@images/hero_image.png';
+import searchIconPNG from '@images/search_icon.png';
 
 
 /***************************
@@ -16,6 +17,11 @@ export const websiteTitle:WebsiteTitle = {
     subtitle: 'Elevate your nail game with our products',
 };
 
+
+export const searchIcon:LocalImage = {
+    src: searchIconPNG,
+    alt: 'Search Icon',
+}
 
 export const navigationItems:NavigationItem[] = [
     {

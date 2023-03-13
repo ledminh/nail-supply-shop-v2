@@ -1,4 +1,4 @@
-@use 'base';
+@use 'base' as *;
 
 *,
 *::after,
@@ -14,8 +14,12 @@ body {
     font-family: 'Roboto', sans-serif;
     font-size: 1rem;
     line-height: 1.5;
-    color: base.$text-color;
-    background-color: base.$background-color;
+    color: $text-color;
+    background-color: $background-color;
+}
+
+section {
+    margin-bottom: 45px;
 }
 
 a,
