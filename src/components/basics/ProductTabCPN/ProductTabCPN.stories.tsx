@@ -29,7 +29,7 @@ const sampleProduct = {
 }
 
 const defaultArgs:Props = {
-  product: sampleProduct 
+  ...sampleProduct
 };
 
 const Wrapper = (args:Props) => (
@@ -63,7 +63,6 @@ export const ShortProductTab: Story = {};
 
 export const DetailedProductTab: Story = {
   args: {
-    product: sampleProduct,
     detailed: true
   }
 };

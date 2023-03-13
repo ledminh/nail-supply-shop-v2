@@ -73,6 +73,19 @@
                 "component": "templates/layout/index.tsx",
                 "story": "templates/layout/TemplateNameLayout.stories.tsx"            
             }
+        },
+
+        "page": {
+            "path": "src/pages/",
+            "withLazy": false,
+            "withStory": false,
+            "withStyle": false,
+            "withTest": false,
+            "withHook": false,
+
+            "customTemplates": {
+                "component": "templates/page/templatename.tsx"
+            }
         
         }
     },

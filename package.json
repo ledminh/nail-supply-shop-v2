@@ -15,24 +15,34 @@
     "create-section-component": "npx generate-react-cli component --type=section",
     "create-generic-component": "npx generate-react-cli component --type=generic",
     "create-layout-component": "npx generate-react-cli component --type=layout",
-
+    "create-page": "npx generate-react-cli component --type=page --flat",
+    
+    
     "create-scss-basic": "node create-scss basics",
     "create-scss-composite": "node create-scss composites",
     "create-scss-section": "node create-scss sections",
     "create-scss-generic": "node create-scss generics",
     "create-scss-layout": "node create-scss layouts",
-
+    "create-scss-page": "node create-scss pages",
+    
+    
     "cbc": "npm run create-basic-component",
     "ccc": "npm run create-composite-component",
     "csc": "npm run create-section-component",
     "cgc": "npm run create-generic-component",
     "clc": "npm run create-layout-component",
+    "cp": "npm run create-page",
+
     "cscb": "npm run create-scss-basic",
     "cscc": "npm run create-scss-composite",
     "cscs": "npm run create-scss-section",
     "cscg": "npm run create-scss-generic",
-    "cscly": "npm run create-scss-layout"
+    "cscly": "npm run create-scss-layout",
+    "cscp": "npm run create-scss-page",
 
+
+
+    "chromatic": "npx chromatic --project-token=698eefe93dfe"
   },
   "dependencies": {
     "@types/node": "18.15.0",
@@ -59,9 +69,12 @@
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^14.0.0",
     "@types/jest": "^29.4.0",
+    "chromatic": "^6.17.1",
     "eslint-plugin-storybook": "^0.6.11",
     "jest": "^29.5.0",
     "storybook": "^7.0.0-rc.1",
     "ts-jest": "^29.0.5"
-  }
+  },
+  "readme": "ERROR: No README data found!",
+  "_id": "nail-supply-shop-v2@0.1.0"
 }

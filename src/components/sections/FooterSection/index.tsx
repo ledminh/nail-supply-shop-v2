@@ -35,6 +35,7 @@ export default function FooterSection({ contactInfo, aboutText, logoImg}: Props)
                 <ImageCPN 
                     image={logoImg}
                     size="medium"
+                    className={styles.logo}
                 />  
             </div>
         </section>

@@ -1,0 +1,24 @@
+// import {  Meta, StoryObj } from "@storybook/react";
+
+// import Index from "@/pages/index";
+// import type { Props } from "@/pages/index";
+
+
+// const defaultArgs:Props = {
+
+// }
+
+// export default {
+//   title: "Pages/Index",
+//   component: Index,
+//   args: defaultArgs,
+// } as Meta;
+
+
+
+
+// type Story = StoryObj<typeof Index>;
+
+
+// export const Default: Story = {};
+
