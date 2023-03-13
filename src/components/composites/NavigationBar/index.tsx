@@ -4,6 +4,7 @@ import NavItemCPN from "@/components/basics/NavItemCPN";
 import { navigationItems } from "@/config";
 
 import styles from "@styles/composites/NavigationBar.module.scss";
+import HamburgerMenu from "@components/composites/HamburgerMenu";
 
 interface Props {
     currentPage: string;
@@ -17,7 +18,10 @@ export default function NavigationBar({ currentPage }: Props) {
     return (
         <>
             <div className={styles.hamburgerMenu}>
-                HamburgerMenu
+                <HamburgerMenu
+                    navigationItems={navigationItems}
+                    currentPage={currentPage}
+                />
             </div>
             <div className={styles.linksList}>
                 <LinksList 

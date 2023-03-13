@@ -19,8 +19,7 @@
 }
 
 .navBar {
-    background-color: adjust-color($color: $background-color, $lightness: -15%);
-    padding: 10px;
+    
     
     border-radius: $border-radius;
 }
@@ -57,5 +56,8 @@
     
         justify-self: center;
         align-self: center;
+
+        background-color: adjust-color($color: $background-color, $lightness: -15%);
+    padding: 10px;
     }
 }
