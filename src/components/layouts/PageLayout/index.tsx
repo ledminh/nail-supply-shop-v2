@@ -24,7 +24,7 @@ export default function PageLayout({ contactInfo, aboutText, children}: Props) {
     }
 
     return (
-        <>
+        <div className={styles.page}>
             <div className={styles.header}>
                 <HeaderSection
                     currentPage={currentPage}
@@ -41,6 +41,6 @@ export default function PageLayout({ contactInfo, aboutText, children}: Props) {
                     logoImg = {logoImg}
                 />
             </div>
-        </>
+        </div>
     );
 }

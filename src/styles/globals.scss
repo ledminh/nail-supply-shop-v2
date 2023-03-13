@@ -1,5 +1,7 @@
 @use 'base' as *;
 
+@import url('https://fonts.googleapis.com/css2?family=Montserrat+Subrayada:wght@700&display=swap');
+
 *,
 *::after,
 *::before {
@@ -35,6 +37,7 @@ ul {
 }
 
 h1 {
-    font-size: 2rem;
+    font-size: 4rem;
     font-weight: 700;
+    
 }

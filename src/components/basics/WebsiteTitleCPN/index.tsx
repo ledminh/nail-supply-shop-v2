@@ -17,12 +17,14 @@ export default function WebsiteTitleCPN(
                 props.image? (
                     <ImageCPN
                         image={props.image}
-                        sizes="(max-width: 600px) 100vw, 900px"
+                        size="medium"
                         className={styles.image}
                         />
                 ) : (
                     <>
-                        <h1 className={styles.title}>{props.title}</h1>
+                        <h1 className={styles.title}>
+                            {props.title}
+                        </h1>
                         <h4 className={styles.subtitle}>{props.subtitle}</h4>
                     </>
                 )
