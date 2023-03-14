@@ -47,3 +47,10 @@
     
     
 }
+
+@media (min-width: $second-breakpoint) {
+    .wrapper {
+        font-size: .9rem;
+        border-radius: $border-radius;
+    }
+}

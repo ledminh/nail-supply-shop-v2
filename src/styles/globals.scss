@@ -54,6 +54,8 @@ h3 {
 }
 
 @media (min-width: $first-breakpoint) {
+    
+
     h1 {
         font-size: 3.8rem;
     }
@@ -71,7 +73,7 @@ h3 {
 
 @media (min-width: $second-breakpoint) {
     body {
-        background-color: adjust-color($color: $background-color,  $lightness: -10%);
+        background-color: adjust-color($color: $background-color,  $lightness: -15%);
     }
     
     h1 {

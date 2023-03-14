@@ -15,3 +15,9 @@
 
     padding: 10px;
 }
+
+@media (min-width: $second-breakpoint) {
+    .wrapper {
+        border-radius: $border-radius;    
+    }
+}

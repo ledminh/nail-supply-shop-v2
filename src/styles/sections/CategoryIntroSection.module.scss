@@ -34,15 +34,26 @@
 }
 
 @media (min-width: $second-breakpoint) {
+    .wrapper {
+        border: 4px solid $secondary-background-color;
+        border-top: 0;
+
+        border-radius: $border-radius;
+        }
     .banner {
-        margin-bottom: 0px;
+        margin-bottom: 0px; 
+        
+            
     }
 
     .body {
-        border: 4px solid $secondary-background-color;
-        border-top: none;
-
+        
+        
+        border-bottom-left-radius: $border-radius;
+        border-bottom-right-radius: $border-radius;
         padding: 20px;
+        padding-top: 50px;
+
         
         transform: translateY(-10px);
 
