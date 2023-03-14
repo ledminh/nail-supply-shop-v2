@@ -1,6 +1,6 @@
 import {  Meta, StoryObj } from "@storybook/react";
 
-import templatenameCPN from '.';
+import DropMenuCPN from '.';
 
 import type { Props } from '.';
 
@@ -8,15 +8,15 @@ const defaultArgs:Props = {};
 
 
 export default {
-  title: "Basics/templatenameCPN",
-  component: templatenameCPN,
+  title: "Basics/DropMenuCPN",
+  component: DropMenuCPN,
   args: defaultArgs
 } as Meta;
 
 
 
 
-type Story = StoryObj<typeof templatenameCPN>;
+type Story = StoryObj<typeof DropMenuCPN>;
 
 
 export const Default: Story = {};
