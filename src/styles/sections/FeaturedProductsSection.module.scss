@@ -1,7 +1,11 @@
 @use '../base' as *;
 
 .wrapper {
+    width: 90%;
     margin-top: 70px;
+
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .li {

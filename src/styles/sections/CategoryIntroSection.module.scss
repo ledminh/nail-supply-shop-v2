@@ -26,6 +26,13 @@
     }
 }
 
+@media (min-width: $first-breakpoint) {
+    .list {
+        width: 80%;
+        margin: 0 auto;
+    }
+}
+
 @media (min-width: $second-breakpoint) {
     .banner {
         margin-bottom: 0px;
