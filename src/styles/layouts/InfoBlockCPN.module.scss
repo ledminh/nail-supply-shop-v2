@@ -13,3 +13,17 @@
 .body {
     margin-top: .5rem;
 }
+
+@media (min-width: $first-breakpoint) {
+    
+    .wrapper {
+        padding: 20px;
+        border: none;
+
+        height: 100%;
+    }
+
+    .body {
+        margin-top: 1rem;
+    }
+}
