@@ -6,7 +6,7 @@ import logoJPG from '@images/logo.jpg';
 import type {Props as HeroImageSectionProps} from '@/components/sections/HeroImageSection';
 import heroImagePNG from '@images/hero_image.png';
 import searchIconPNG from '@images/search_icon.png';
-
+import shopImagePNG from '@images/shop_image.png';
 
 /***************************
  *  Header
@@ -82,6 +82,14 @@ export const homeConfig = {
 /*****************************
  *  /shop
  */
+const shopImageSectionProps:HeroImageSectionProps = {
+    image: {
+        src: shopImagePNG,
+        alt: 'Nail Essential Shop', 
+    },
+    text: "Explore our wide range of nail care categories."
+}
+
 export const shopConfig = {
-    categoryIntro: "Explore our wide range of nail care categories and find everything you need to create your dream look."
+    heroImageSectionProps: shopImageSectionProps,
 }

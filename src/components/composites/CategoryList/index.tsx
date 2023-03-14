@@ -31,9 +31,9 @@ export default function CategoryList({ categories, detailed }: Props) {
             <LinksList 
                 items = {items}
                 ItemCPN = {CategoryBlockDetailed}
-                liClass = {styles.li} 
-                ulClass = {styles.ul}
-                linkClass = {styles.link}
+                liClass = {styles.li + " " + styles.detailed} 
+                ulClass = {styles.ul + " " + styles.detailed}
+                linkClass = {styles.link + " " + styles.detailed}
             />
         );
     }

@@ -43,7 +43,7 @@ const CategoryBlockCPN:CategoryBlock = ({image, name, description, detailed}) =>
                 className={styles.image}
                 />
             <div className={styles.text}>
-                <h4 className={styles.name}>{name}</h4>
+                <h3 className={styles.name}>{name}</h3>
                 <p className={styles.description}>{description}</p>
             </div>    
         </div>

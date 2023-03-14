@@ -7,7 +7,7 @@ import ImageCPN from "@/components/basics/ImageCPN";
 export interface Props {
     image: LocalImage;
     text: string;
-    linkText: string;
+    linkText?: string;
 }
 
 
@@ -25,11 +25,16 @@ export default function HeroImageSection({image, text, linkText }: Props) {
                 <h2 className={styles.text}>
                     {text}
                 </h2>
-                <Link
-                    className={styles.link}
-                    href="/shop">
-                    {linkText}
-                </Link>
+                {
+                    linkText && (
+                        <Link
+                            className={styles.link}
+                            href="/shop">
+                            {linkText}
+                        </Link>
+                    )
+                }
+
             </div>
         </section>
     );
