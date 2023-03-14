@@ -25,3 +25,24 @@
         color: white;
     }
 }
+
+@media (min-width: $second-breakpoint) {
+    .banner {
+        margin-bottom: 0px;
+    }
+
+    .body {
+        border: 4px solid $secondary-background-color;
+        border-top: none;
+
+        padding: 20px;
+        
+        transform: translateY(-10px);
+
+    }
+
+    .list {
+        width: 80%;
+        margin: 0 auto;
+    }
+}

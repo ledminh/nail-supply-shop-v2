@@ -22,17 +22,19 @@ export default function CategoryIntroSection({ categoryIntro, categories }: Prop
                     text={categoryIntro}
                 />
             </div>
-            <div className={styles.list}>
-                <CategoryList 
-                    categories={categories}
-                />
-            </div>
-            <div className={styles.footer}>
-                <Link
-                    className={styles.link}
-                    href="/shop">
-                    View All
-                </Link>
+            <div className={styles.body}>
+                <div className={styles.list}>
+                    <CategoryList 
+                        categories={categories}
+                    />
+                </div>
+                <div className={styles.footer}>
+                    <Link
+                        className={styles.link}
+                        href="/shop">
+                        View All
+                    </Link>
+                </div>
             </div>
         </section>
     );

@@ -6,6 +6,7 @@ import SearchBar from "@components/composites/SearchBar";
 
 import { websiteTitle } from "@/config";
 import styles from "@styles/sections/HeaderSection.module.scss";
+import SeparatorCPN from "@/components/basics/SeparatorCPN";
 
 
 
@@ -30,6 +31,9 @@ const HeaderSection:Header = ({currentPage, onSearchSubmit}) => {
             </div>
             <div className={styles.navBar}>
                 <NavigationBar currentPage={currentPage} />
+            </div>
+            <div className={styles.separator}>
+                <SeparatorCPN/>
             </div>
         </section>
     );

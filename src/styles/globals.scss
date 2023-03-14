@@ -60,13 +60,26 @@ h3 {
 
     h2 {
         font-size: 1.9rem;
-        font-weight: 700;
     }
     
     h3 {
         font-size: 1.2rem;
-        font-weight: 700;
     
     }
 
+}
+
+@media (min-width: $second-breakpoint) {
+    h1 {
+        font-size: 4.7rem;
+    }
+
+    h2 {
+        font-size: 3rem;
+    }
+
+    h3 {
+        font-size: 1.5rem;
+    
+    }
 }
