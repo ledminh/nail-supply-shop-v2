@@ -71,10 +71,17 @@ const heroImageSectionProps:HeroImageSectionProps = {
 }
 
 
-const categoryIntro = "Find your signature style with our diverse selection of categories.";
 
 
 export const homeConfig = {
     heroImageSectionProps: heroImageSectionProps,
-    categoryIntro: categoryIntro
+    categoryIntro: "Find your signature style with our diverse selection of categories."
 } 
+
+
+/*****************************
+ *  /shop
+ */
+export const shopConfig = {
+    categoryIntro: "Explore our wide range of nail care categories and find everything you need to create your dream look."
+}
