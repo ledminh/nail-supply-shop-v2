@@ -4,6 +4,7 @@ import styles from "@styles/basics/DropMenuCPN.module.scss";
 import List from "@/components/generics/List";
 
 
+
 type ItemCPNProps = {
     id: string;
     label: string;
