@@ -1,0 +1,48 @@
+@use '../base' as *;
+
+.wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    
+    gap: 25px;
+    width: 100%;
+    height: 100%;
+    padding: 0 1rem;
+    
+    text-align: center;
+}
+
+.image {
+    width: 200px;
+    height: 200px;
+    border-radius: $border-radius;
+
+}
+
+.name {
+    margin-bottom: 10px;
+}
+
+.description {
+    margin-bottom: 10px;
+}
+
+.readmore {
+    display: inline-block;
+    font-weight: 700;
+
+    background-color: inherit;
+    border: none;
+    color: $button-color;
+    cursor: pointer;
+
+    border-bottom: 3px solid transparent;
+
+    &:hover {
+        color: adjust-color($color: $button-color, $lightness: -20%);
+
+        border-bottom: 3px solid adjust-color($color: $button-color, $lightness: -20%);
+    }
+}
