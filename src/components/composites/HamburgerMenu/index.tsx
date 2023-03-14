@@ -1,6 +1,6 @@
 import styles from "@styles/composites/HamburgerMenu.module.scss";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 import ButtonCPN from "@components/basics/ButtonCPN";
 import ImageCPN from "@/components/basics/ImageCPN";
@@ -19,6 +19,15 @@ export default function HamburgerMenu({ navigationItems, currentPage}: Props) {
     const activeItemID = navigationItems.find((item) => item.path.toLowerCase() === currentPage.toLowerCase())?.id;
 
     const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+
+    useEffect(() => {
+        if (isMenuOpen) {
+            document.body.style.overflow = "hidden";
+        } else {
+            document.body.style.overflow = "unset";
+        }
+    }, [isMenuOpen]);
 
     return (
         <div className={styles.wrapper}>
