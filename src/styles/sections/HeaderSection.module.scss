@@ -66,7 +66,7 @@
     }
 }
 
-@media (min-width: $first-breakpoint) {
+@media (min-width: $second-breakpoint) {
     .header {
         grid-template-columns: repeat(5, 1fr);
         grid-template-rows: auto;

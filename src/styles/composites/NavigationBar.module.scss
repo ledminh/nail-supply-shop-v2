@@ -59,3 +59,9 @@
         display: block;
     }
 }
+
+@media (min-width: $second-breakpoint) {
+    .ul {
+        gap: 20px;
+    }
+}

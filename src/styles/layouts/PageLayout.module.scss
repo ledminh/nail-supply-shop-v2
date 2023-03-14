@@ -19,14 +19,17 @@
     margin-bottom: 10px;
 }
 
-@media (min-width: $first-breakpoint) {
-    // .page {
+@media (min-width: $second-breakpoint) {
+    .page {
         
-    //     padding: 25px;
+        padding: 20px;
 
-    //     border-radius: $border-radius;
+        border-radius: $border-radius;
     
-    //     box-shadow: $box-shadow;
+        box-shadow: $box-shadow;
 
-    // }
+        width: 97%;
+
+
+    }
 }
