@@ -8,23 +8,23 @@ const defaultArgs:Props = {
   price: 100,
   images: [
     {
-      src: "https://loremflickr.com/200/200",
+      src: "https://loremflickr.com/300/300",
       alt: "Product Image",
     },
     {
-      src: "https://loremflickr.com/200/200",
+      src: "https://loremflickr.com/300/300",
       alt: "Product Image",
     },
     {
-      src: "https://loremflickr.com/200/200",
+      src: "https://loremflickr.com/300/300",
       alt: "Product Image",
     },
     {
-      src: "https://loremflickr.com/200/200",
+      src: "https://loremflickr.com/300/300",
       alt: "Product Image",
     },
     {
-      src: "https://loremflickr.com/200/200",
+      src: "https://loremflickr.com/300/300",
       alt: "Product Image",
     }
   ]
@@ -35,7 +35,7 @@ const Wrapper = () => {
   return (
     <div style={{
       width: "30vw",
-      border: "5px solid gray",
+
 
     }}>
       <ProductBlock {...defaultArgs} />

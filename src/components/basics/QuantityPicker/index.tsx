@@ -1,5 +1,5 @@
 import { FC } from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 
 import styles from "@styles/basics/QuantityPickerCPN.module.scss";
@@ -7,34 +7,41 @@ import styles from "@styles/basics/QuantityPickerCPN.module.scss";
 
 
 export interface Props  {
-    initialValue?: number;
+    value: number;
     onChange?: (value: number) => void;
     buttonClassName?: string;
     valueClassName?: string;
     className?: string;
+    
 };
 
 type QuantityPicker = FC<Props>;
 
 
-const QuantityPickerCPN:QuantityPicker = ({ initialValue = 0, onChange, buttonClassName, valueClassName, className}) => {
+const QuantityPickerCPN:QuantityPicker = ({ value = 0, onChange, buttonClassName, valueClassName, className}) => {
 
-    const [value, setValue] = useState(initialValue);
+    const [_value, _setValue] = useState(value);
+
+    useEffect(() => {
+        _setValue(value);
+    }, [value]);
 
     const increment = () => {
-        setValue(value + 1);
+        _setValue(_value + 1);
+        
         if (onChange) {
-            onChange(value + 1);
+            onChange(_value + 1);
         }
     };
     
     const decrement = () => {
-    if (value > 1) {
-        setValue(value - 1);
-        if (onChange) {
-        onChange(value - 1);
+        if (_value > 0) {
+            _setValue(_value - 1);
+            
+            if (onChange) {
+                onChange(_value - 1);
+            }
         }
-    }
     };
 
     const classNames = [styles.wrapper, className].join(" ");
@@ -49,7 +56,7 @@ const QuantityPickerCPN:QuantityPicker = ({ initialValue = 0, onChange, buttonCl
                     -
             </button>
             <span className={valueClassNames}>
-                {value}
+                {_value}
             </span>
             <button className={buttonClassNames} 
                 onClick={increment}
