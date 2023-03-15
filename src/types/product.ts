@@ -10,3 +10,9 @@ export interface Product {
     intro: string;
     images: ProductImage[];
 }
+
+export interface ProductGroup {
+    id: string;
+    name: string;
+    products: Product[];
+}

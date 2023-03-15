@@ -42,7 +42,7 @@ const CategoryBlockCPN:CategoryBlock = ({image, name, description, detailed, ver
 
         return (
             <div className={styles.wrapper + ' ' + styles.vertical}>
-                <h4 className={styles.name}>{name}</h4>
+                <h3 className={styles.name}>{name}</h3>
                 <p className={styles.description}>{description}</p>
             </div>
         );
@@ -56,7 +56,7 @@ const CategoryBlockCPN:CategoryBlock = ({image, name, description, detailed, ver
                 className={styles.image}
                 />
             <div className={styles.text}>
-                <h4 className={styles.name}>{name}</h4>
+                <h3 className={styles.name}>{name}</h3>
             </div>    
         </div>
     );
