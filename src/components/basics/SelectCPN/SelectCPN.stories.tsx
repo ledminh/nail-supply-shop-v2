@@ -4,20 +4,20 @@ import { useState } from "react";
 
 import SelectCPN from '.';
 
-import type { OptionItem } from "@/types/others";
+import type { SelectOptionItem } from "@/types/list-conditions";
 
-const optionItems:OptionItem[]  = [
+const optionItems:SelectOptionItem[]  = [
   {
-    label: "Option 1",
-    value: "option1"
+    label: "Name",
+    value: "name"
   },
   {
-    label: "Option 2",
-    value: "option2"
+    label: "Price",
+    value: "price"
   },
   {
-    label: "Option 3",
-    value: "option3"
+    label: "Ascending",
+    value: "asc"
   }
 ]
 
@@ -29,7 +29,7 @@ const Wrapper = () => {
 
   const args = {
     optionItems,
-    onChange: (selectedOption: OptionItem) => {
+    onChange: (selectedOption: SelectOptionItem) => {
       setCurrentOption(selectedOption);
     }
   };
