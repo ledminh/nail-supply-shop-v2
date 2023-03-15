@@ -67,3 +67,5 @@ export default function CategoryList({ categories, detailed, vertical }: Props) 
 }
 
 CategoryList.displayName = "CategoryList";
+
+
