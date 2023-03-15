@@ -16,3 +16,12 @@ export interface ProductGroup {
     name: string;
     products: Product[];
 }
+
+export interface OrderedProduct {
+    id: string;
+    name: string;
+    price: number;
+    quantity: number;
+
+    image: RemoteImage;
+}

@@ -6,20 +6,33 @@ import ButtonCPN from "@components/basics/ButtonCPN";
 import { RemoteImage } from "@/types/image";
 
 import { useState, MouseEventHandler } from "react";
+import { OrderedProduct } from "@/types/product";
 
 export interface Props {
+    id: string;
     name: string;
     price: number;
     images: RemoteImage[];
+
+    addToCart: (orderedProduct: OrderedProduct) => void;
 }
 
 
-export default function ProductBlock({ name, price, images}: Props) {
+export default function ProductBlock({ id, name, price, images, addToCart}: Props) {
 
     const [quantity, setQuantity] = useState(0);
 
     const onAdd:MouseEventHandler<HTMLButtonElement>  = (e) => {
         e.preventDefault();
+
+        addToCart({
+            id,
+            name,
+            price,
+            quantity,
+            image: images[0],
+        });
+
         setQuantity(0);
 
     };
