@@ -42,7 +42,8 @@ const Wrapper = (args:Props) => {
   return (
     <div style={{ 
       width: "400px",
-      border: "6px solid gray",
+      backgroundColor: "gray",
+      padding: "20px",
       }}>
       <DropMenuCPN {...argsWithOnChange} />
       <div>{currentLabel}</div>
