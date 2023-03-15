@@ -18,3 +18,8 @@ export type ContactInfo = {
     phone: string;
     additionalInfos?: string[];
 }
+
+export type OptionItem = {
+    label: string;
+    value: string;
+}
