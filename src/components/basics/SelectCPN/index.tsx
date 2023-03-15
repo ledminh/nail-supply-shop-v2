@@ -25,8 +25,6 @@ const SelectCPN:SelectCPN = ({selectClass, optionClass, optionItems, initOptionI
     const [selectedOption, setSelectedOption] = useState(optionItems.find((optionItem) => optionItem.value === initOptionItem?.value) || optionItems[0]);
 
 
-  
-
     useEffect(() => {
         onChange(selectedOption);
     // eslint-disable-next-line react-hooks/exhaustive-deps
