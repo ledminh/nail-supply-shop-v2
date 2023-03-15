@@ -51,19 +51,9 @@
     position: initial;
 
     height: auto;
-    border-radius: $border-radius;
     overflow: initial;
 
-    cursor: pointer;
-
-    box-shadow: $box-shadow;
-
-
-    &:hover {
-        box-shadow: $box-shadow-hover;
-    }
-
-    
+ 
     .image {
         position: relative;
         border-top-right-radius: $border-radius;
@@ -90,6 +80,23 @@
     
     }
 
+    .description {
+        font-size: .9rem;
+    }
+
+}
+
+
+.wrapper.vertical {
+    position: initial;
+
+    height: auto;
+    overflow: initial;
+
+    padding: 10px;
+  
+    
+    
     .description {
         font-size: .8rem;
     }

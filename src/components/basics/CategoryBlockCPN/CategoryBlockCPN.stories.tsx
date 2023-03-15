@@ -14,7 +14,7 @@ const defaultArgs:Props = {
 };
 
 const Wrapper = (args:Props) => (
-  <div style={{width: "150px"}}>
+  <div style={{width: "250px"}}>
     <CategoryBlockCPN {...args} />
   </div>
   );
@@ -36,6 +36,12 @@ export const Default: Story = {};
 export const Detailed: Story = {
     args: {
         detailed: true
+    }
+};
+
+export const Vertical: Story = {
+    args: {
+        vertical: true
     }
 };
 

@@ -59,7 +59,7 @@ const defaultArgs:Props = {
 };
 
 const Wrapper = (args:Props) => (
-  <div style={{width: "80%"}}>
+  <div style={{width: "30vw"}}>
     <CategoryList {...args} />
   </div>
 );
@@ -81,5 +81,11 @@ export const Default: Story = {};
 export const Detailed: Story = {
     args: {
         detailed: true
+    }
+};
+
+export const Vertical: Story = {
+    args: {
+        vertical: true
     }
 };

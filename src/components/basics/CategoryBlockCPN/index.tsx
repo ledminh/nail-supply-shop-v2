@@ -13,38 +13,50 @@ export interface Props  {
     name: string;
     description: string
     detailed?: boolean;
+    vertical?: boolean;
 };
 
 type CategoryBlock = FC<Props>;
 
 
-const CategoryBlockCPN:CategoryBlock = ({image, name, description, detailed}) => {
+const CategoryBlockCPN:CategoryBlock = ({image, name, description, detailed, vertical}) => {
 
-    if(!detailed) {
+    if(detailed) {
         return (
-            <div className={styles.wrapper}>
+            <div className={styles.wrapper + ' ' + styles.detailed}>
                 <ImageCPN
                     image={image}
                     size="medium"
                     className={styles.image}
                     />
                 <div className={styles.text}>
-                    <h4 className={styles.name}>{name}</h4>
+                    <h3 className={styles.name}>{name}</h3>
+                    <p className={styles.description}>{description}</p>
                 </div>    
             </div>
         );
+        
     } 
 
+    if(vertical) {
+
+        return (
+            <div className={styles.wrapper + ' ' + styles.vertical}>
+                <h4 className={styles.name}>{name}</h4>
+                <p className={styles.description}>{description}</p>
+            </div>
+        );
+    }
+
     return (
-        <div className={styles.wrapper + ' ' + styles.detailed}>
+        <div className={styles.wrapper}>
             <ImageCPN
                 image={image}
                 size="medium"
                 className={styles.image}
                 />
             <div className={styles.text}>
-                <h3 className={styles.name}>{name}</h3>
-                <p className={styles.description}>{description}</p>
+                <h4 className={styles.name}>{name}</h4>
             </div>    
         </div>
     );

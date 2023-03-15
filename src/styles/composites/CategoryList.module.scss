@@ -19,6 +19,13 @@
 
 }
 
+.ul.vertical {
+    grid-template-columns: 1fr;
+
+    grid-gap: .7rem;
+
+}
+
 
 .li {
     transform: scale(1);
