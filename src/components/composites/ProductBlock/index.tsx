@@ -59,6 +59,7 @@ export default function ProductBlock({ id, name, price, images, addToCart}: Prop
                         label="ADD TO CART"
                         className={styles.button}
                         onClick={onAdd}
+                        disabled={quantity === 0}
                         />
                     <QuantityPickerCPN
                         value={quantity}
