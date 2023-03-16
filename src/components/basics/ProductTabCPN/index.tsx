@@ -3,27 +3,36 @@ import { FC } from "react";
 
 
 import styles from "@styles/basics/ProductTabCPN.module.scss";
-import type { Product } from '@/types/product';
+import type { Product, ProductGroup } from '@/types/product';
+
 import  ImageCPN  from '@/components/basics/ImageCPN';
 
-
-
-export interface Props extends Product  {
+// No detailed option for ProductGroup
+type Props = (ProductGroup & {
+    detailed?: false;
+}) | (Product & {
     detailed?: boolean;
-};
+})
+
 
 type ProductTab = FC<Props>;
 
 
-const ProductTabCPN:ProductTab = ({name, intro, images, price, detailed}) => {
+const ProductTabCPN:ProductTab = (props) => {
 
-    if(!detailed) {
+
+
+    if(!props.detailed) {
         return (
             <div className={styles.wrapper}>
-                <span>{name}</span>
+                <span>{props.name}</span>
             </div>
         );
     }
+
+
+    const { name, price, intro, images } = props;
+
     let _intro = intro;
 
     if(intro.length > 80) {
@@ -32,7 +41,7 @@ const ProductTabCPN:ProductTab = ({name, intro, images, price, detailed}) => {
 
     return (
         <div className={styles.wrapper + ' ' + styles.detailed}>
-             <ImageCPN
+            <ImageCPN
                 image={images[0]}
                 size="small"
                 className={styles.image + ' ' + styles.detailed}

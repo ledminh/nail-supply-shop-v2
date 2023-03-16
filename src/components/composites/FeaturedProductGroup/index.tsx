@@ -29,6 +29,7 @@ export default function FeaturedProductGroup({title, mainProduct, otherProducts 
                 <div className={styles.productList}>
                     <ProductList 
                         products={otherProducts}
+                        type='list'
                     />
                 </div>
             </div>

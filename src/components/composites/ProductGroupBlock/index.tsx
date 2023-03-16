@@ -16,10 +16,11 @@ export interface Props {
     name: string;
     products: Product[];
     addToCart: (orderedProduct: OrderedProduct) => void;
+
 }
 
 
-export default function ProductBlock({ name, products, addToCart}: Props) {
+export default function ProductGroupBlock({ name, products, addToCart}: Props) {
 
     const [quantity, setQuantity] = useState(0);
     const [selectedProduct, setSelectedProduct] = useState(products[0]);
@@ -43,8 +44,9 @@ export default function ProductBlock({ name, products, addToCart}: Props) {
     const onSelect = (selectedOption: OptionItem<Product>) => {
         const curProduct = products.find(p => p.id === selectedOption.id);
 
-        if(curProduct)
+        if(curProduct){
             setSelectedProduct(curProduct);
+        }
     };
 
     
@@ -88,7 +90,7 @@ export default function ProductBlock({ name, products, addToCart}: Props) {
     );
 }
 
-ProductBlock.displayName = "ProductBlock";
+ProductGroupBlock.displayName = "ProductBlock";
 
 /*******************
  * Helpers

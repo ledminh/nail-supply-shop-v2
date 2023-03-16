@@ -17,6 +17,7 @@ export interface Props<T extends JSX.IntrinsicAttributes & LinkItem> {
         id: string;
         className: string;
     },
+    
 };
 
 export default function LinksList<T extends JSX.IntrinsicAttributes & LinkItem>({
@@ -26,16 +27,26 @@ export default function LinksList<T extends JSX.IntrinsicAttributes & LinkItem>(
     ulClass,
     linkClass,
     horizontal,
-    activeItem
+    activeItem,
+    
 }: Props<T>) {
 
-    const LinkCPN  = (props: T) => (
-        <Link className={linkClass} href={props.path}>
-            <ItemCPN {...props} />
-        </Link>
-    );
+    function LinkCPN(props: T ) {
+        
+        return (
+            <Link className={linkClass} href={props.path}>
+                <ItemCPN {...props} />
+            </Link>
+        );
+    }    
 
+
+
+    
     return (
         <List items={items} activeItem={activeItem} ItemCPN={LinkCPN} liClass={liClass} ulClass={ulClass} horizontal={horizontal}/>
     );
 }
+
+
+
