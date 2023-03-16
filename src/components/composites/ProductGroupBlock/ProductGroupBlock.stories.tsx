@@ -1,40 +1,82 @@
 import {  Meta, StoryObj } from "@storybook/react";
 
 import ProductBlock from '.';
-import type { Props } from '.';
-
+import { ProductGroup, Product } from "@/types/product";
+import { RemoteImage } from "@/types/image";
 import { useState } from "react";
 
 import type { OrderedProduct } from "@/types/product";
 
-const defaultArgs = {
-  id: 'product-1',
-  name: "Product Name",
-  price: 100,
-  images: [
-    {
-      src: "https://loremflickr.com/300/300",
-      alt: "Product Image",
-    },
-    {
-      src: "https://loremflickr.com/300/300",
-      alt: "Product Image",
-    },
-    {
-      src: "https://loremflickr.com/300/300",
-      alt: "Product Image",
-    },
-    {
-      src: "https://loremflickr.com/300/300",
-      alt: "Product Image",
-    },
-    {
-      src: "https://loremflickr.com/300/300",
-      alt: "Product Image",
-    }
-  ],
-  
-} as Props;
+
+const images:RemoteImage[] = [
+  {
+    src: "https://loremflickr.com/300/300",
+    alt: "Product Image",
+  },
+  {
+    src: "https://loremflickr.com/300/300",
+    alt: "Product Image",
+  },
+  {
+    src: "https://loremflickr.com/300/300",
+    alt: "Product Image",
+  },
+  {
+    src: "https://loremflickr.com/300/300",
+    alt: "Product Image",
+  },
+  {
+    src: "https://loremflickr.com/300/300",
+    alt: "Product Image",
+  }
+]
+
+
+const products = [
+  {
+    id: "1",
+    name: "Product 1",
+    price: 10,
+    images: images.map((img,index) => ({...img, id: index.toString()}))
+  },
+  {
+    id: "2",
+    name: "Product 2",
+    price: 20,
+    images: images.map((img,index) => ({...img, id: index.toString()}))
+  },
+  {
+    id: "3",
+    name: "Product 3",
+    price: 30,
+    images: images.map((img,index) => ({...img, id: index.toString()}))
+  },
+  {
+    id: "4",
+    name: "Product 4",
+    price: 40,
+    images: images.map((img,index) => ({...img, id: index.toString()}))
+  },
+  {
+    id: "5",
+    name: "Product 5",
+    price: 50,
+    images: images.map((img,index) => ({...img, id: index.toString()}))
+  },
+  {
+    id: "6",
+    name: "Product 6",
+    price: 60,
+    images: images.map((img,index) => ({...img, id: index.toString()}))
+  }
+] as Product[];
+      
+const defaultArgs:ProductGroup = {
+  id: "group-1",
+  name: "Product Group",
+  products,
+}
+
 
 const Wrapper = () => {
   const [cart, setCart] = useState<OrderedProduct[]>([]);
@@ -60,12 +102,12 @@ const Wrapper = () => {
     }}
     >
       <div style={{
-        width: "30vw",
+        width: "35vw",
       }}>
         <ProductBlock {...args} />
       </div>
       <div style={{
-        width: "60vw",
+        width: "50vw",
       }}>
         {
           cart.map((item, index) => (
@@ -96,6 +138,4 @@ export default {
 
 type Story = StoryObj<typeof ProductBlock>;
 
-
 export const Default: Story = {};
-

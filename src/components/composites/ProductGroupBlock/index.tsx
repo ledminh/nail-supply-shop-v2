@@ -9,53 +9,63 @@ import type { Product } from "@/types/product";
 
 import { useState, MouseEventHandler } from "react";
 import { OrderedProduct } from "@/types/product";
-import SelectCPN from "@/components/generics/Select";
+import Select, {convertToOptionItem, OptionItem} from "@/components/generics/Select";
+
+
 
 export interface Props {
-    id: string;
     name: string;
-    price: number;
-    images: RemoteImage[];
     products: Product[];
     addToCart: (orderedProduct: OrderedProduct) => void;
 }
 
 
-export default function ProductBlock({ id, name, price, images, products, addToCart}: Props) {
+export default function ProductBlock({ name, products, addToCart}: Props) {
 
     const [quantity, setQuantity] = useState(0);
+    const [selectedProduct, setSelectedProduct] = useState(products[0]);
 
     const onAdd:MouseEventHandler<HTMLButtonElement>  = (e) => {
         e.preventDefault();
-
+        if(quantity <= 0) return;
+        
         addToCart({
-            id,
-            name,
-            price,
+            id: selectedProduct.id,
+            name: selectedProduct.name,
+            price: selectedProduct.price,
             quantity,
-            image: images[0],
+            image: selectedProduct.images[0],
         });
 
         setQuantity(0);
 
     };
 
+    const onSelect = (selectedOption: OptionItem<Product>) => {
+        const curProduct = products.find(p => p.id === selectedOption.id);
+
+        if(curProduct)
+            setSelectedProduct(curProduct);
+    };
+
+    
+    const productOptions = getProductOptions(products);
 
     return (
         <div className={styles.wrapper + (quantity> 0? ' ' + styles.highLighted: '' )}>
             <ImageCPN
-                image = {images[0]}
+                image = {selectedProduct.images[0]}
                 size = "medium"
                 className={styles.image}
             /> 
             <div className={styles.text}>
                 <h3 className={styles.name}>{name}</h3>
                 <p className={styles.price}>
-                    {price}
+                    {selectedProduct.price}
                 </p>
-                <SelectCPN
-                    optionItems = {products}
-                    onChange = {(selectedOption) => {console.log(selectedOption)}}
+                <Select
+                    optionItems = {productOptions}
+                    onChange = {onSelect}
                     />
                 <div className={styles.controls}>
                     <ButtonCPN
@@ -78,3 +88,19 @@ export default function ProductBlock({ id, name, price, images, products, addToC
 }
 
 ProductBlock.displayName = "ProductBlock";
+
+/*******************
+ * Helpers
+ */
+
+function getProductOptions(products: Product[]): OptionItem<Product>[] {
+    const getValue = (product: Product) => {
+        return product.id;
+    }
+
+    const getLabel = (product: Product) => {
+        return product.name;
+    }
+
+    return products.map(product => convertToOptionItem({item:product, getValue, getLabel}));
+}   

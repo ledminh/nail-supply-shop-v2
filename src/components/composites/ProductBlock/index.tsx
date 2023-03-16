@@ -25,6 +25,8 @@ export default function ProductBlock({ id, name, price, images, addToCart}: Prop
     const onAdd:MouseEventHandler<HTMLButtonElement>  = (e) => {
         e.preventDefault();
 
+        if(quantity <= 0) return;
+        
         addToCart({
             id,
             name,

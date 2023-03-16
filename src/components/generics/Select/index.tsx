@@ -2,8 +2,8 @@ import React, { FC, useState, useEffect } from "react";
 import styles from "@styles/generics/Select.module.scss";
 
 export type OptionItem<T> = T & {
-  value: string;
-  label: string;
+    value: string;
+    label: string;
 };
 
 interface Props<T> {
@@ -58,3 +58,18 @@ function Select<T>  ({
 Select.displayName = "SelectCPN";
 
 export default Select;
+
+
+type convertProps<T> = {
+    item: T;
+    getValue: (item: T) => string;
+    getLabel: (item: T) => string;
+};
+
+export function convertToOptionItem<T> ({item, getValue, getLabel}:convertProps<T>): OptionItem<T>  {
+    return {
+        value: getValue(item),
+        label: getLabel(item),
+        ...item,
+    };
+}
