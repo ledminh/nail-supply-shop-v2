@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FC, useState } from "react";
 
 import { LinkItem } from "@/types/item";
 
@@ -6,9 +6,11 @@ import List from "components/generics/List";
 import Link from "next/link";
 
 
+
+
 export interface Props<T extends JSX.IntrinsicAttributes & LinkItem> {
     items: T[];
-    ItemCPN: FC<T>;
+    ItemCPN: FC<T & {onPathChange?: (newPath:string)=> void}>;
     liClass?: string;
     ulClass?: string;
     linkClass?: string;
@@ -33,9 +35,15 @@ export default function LinksList<T extends JSX.IntrinsicAttributes & LinkItem>(
 
     function LinkCPN(props: T ) {
         
+        const [path, setPath] = useState(props.path);
+
+        const onPathChange = (newPath: string) => {
+            setPath(newPath);
+        }
+        
         return (
-            <Link className={linkClass} href={props.path}>
-                <ItemCPN {...props} />
+            <Link className={linkClass} href={path}>
+                <ItemCPN {...{...props, onPathChange}} />
             </Link>
         );
     }    

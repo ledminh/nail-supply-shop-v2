@@ -6,7 +6,7 @@ import ButtonCPN from "@components/basics/ButtonCPN";
 
 import type { Product } from "@/types/product";
 
-import { useState, MouseEventHandler } from "react";
+import { useState, MouseEventHandler, useEffect } from "react";
 import { OrderedProduct } from "@/types/product";
 import Select, {convertToOptionItem, OptionItem} from "@/components/generics/Select";
 
@@ -16,14 +16,22 @@ export interface Props {
     name: string;
     products: Product[];
     addToCart: (orderedProduct: OrderedProduct) => void;
+    onPathChange?: (newPath:string)=> void;
 
 }
 
 
-export default function ProductGroupBlock({ name, products, addToCart}: Props) {
+export default function ProductGroupBlock({ name, products, addToCart, onPathChange}: Props) {
 
     const [quantity, setQuantity] = useState(0);
     const [selectedProduct, setSelectedProduct] = useState(products[0]);
+
+    useEffect(() => {
+        if(onPathChange) {
+            onPathChange(`/products/${selectedProduct.id}`);
+        }
+    }, [selectedProduct]);
+
 
     const onAdd:MouseEventHandler<HTMLButtonElement>  = (e) => {
         e.preventDefault();
