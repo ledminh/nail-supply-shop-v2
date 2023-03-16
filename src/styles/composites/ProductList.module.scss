@@ -1,6 +1,6 @@
 @use '../base' as *;
 
-.li {
+.li.list {
     border-bottom: 1px solid $separator-color;
     padding-bottom: 5px;
     margin-bottom: 5px;

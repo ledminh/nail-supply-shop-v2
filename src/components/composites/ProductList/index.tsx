@@ -42,9 +42,9 @@ export default function ProductList({ products, type, addToCart }: Props) {
         return (
             <LinksList items = {_products}
                 ItemCPN = {ProductTabCPN}
-                liClass = {styles.li} 
-                ulClass = {styles.ul}
-                linkClass = {styles.link}
+                liClass = {styles.li + ' ' + styles.list} 
+                ulClass = {styles.ul + ' ' + styles.list}
+                linkClass = {styles.link + ' ' + styles.list}
             />
 
         );
@@ -80,9 +80,9 @@ export default function ProductList({ products, type, addToCart }: Props) {
     return (
         <LinksList items = {_products}
             ItemCPN = {ProductItemCPN }
-            liClass = {styles.li} 
-            ulClass = {styles.ul}
-            linkClass = {styles.link}
+            liClass = {styles.li + ' ' + styles.grid} 
+            ulClass = {styles.ul + ' ' + styles.grid}
+            linkClass = {styles.link + ' ' + styles.grid}
         />
 
     );           
