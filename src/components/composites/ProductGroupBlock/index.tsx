@@ -1,9 +1,8 @@
 import QuantityPickerCPN from "@/components/basics/QuantityPicker";
-import styles from "@styles/composites/ProductBlock.module.scss";
+import styles from "@styles/composites/ProductGroupBlock.module.scss";
 
 import ImageCPN from "@components/basics/ImageCPN";
 import ButtonCPN from "@components/basics/ButtonCPN";
-import { RemoteImage } from "@/types/image";
 
 import type { Product } from "@/types/product";
 
@@ -66,6 +65,7 @@ export default function ProductBlock({ name, products, addToCart}: Props) {
                 <Select
                     optionItems = {productOptions}
                     onChange = {onSelect}
+                    selectClass={styles.select}
                     />
                 <div className={styles.controls}>
                     <ButtonCPN

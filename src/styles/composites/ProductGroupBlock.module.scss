@@ -38,20 +38,34 @@
 
 }
 
+.name {
+    margin-bottom: 10px;
+}
+
 .price {
     font-weight: bold;
     font-size: 1.2rem;
 
     color: $secondary-heading-color;
 
+    margin-bottom: 10px;
+
     &::before {
         content: '$';
     }
 }
 
-.name {
+.select {
+    width: 100%;
+
+    font-size: 1rem;
+    padding: 5px 10px;
+
     margin-bottom: 10px;
+
 }
+
+
 
 .controls {
     display: flex;
