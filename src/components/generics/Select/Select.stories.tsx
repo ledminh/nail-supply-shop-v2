@@ -2,11 +2,10 @@ import {  Meta, StoryObj } from "@storybook/react";
 
 import { useState } from "react";
 
-import SelectCPN from '.';
+import Select from '.';
+import { OptionItem } from ".";
 
-import type { SelectOptionItem } from "@/types/list-conditions";
-
-const optionItems:SelectOptionItem[]  = [
+const optionItems:OptionItem<{}>[]  = [
   {
     label: "Name",
     value: "name"
@@ -29,7 +28,7 @@ const Wrapper = () => {
 
   const args = {
     optionItems,
-    onChange: (selectedOption: SelectOptionItem) => {
+    onChange: (selectedOption:any) => {
       setCurrentOption(selectedOption);
     }
   };
@@ -44,7 +43,7 @@ const Wrapper = () => {
       justifyContent: "center", 
       alignItems: "center"}}
       >
-      <SelectCPN {...args} />
+      <Select {...args} />
       <div>
         <p>Current Option:</p>
         <p>Label: {currentOption.label}</p>
@@ -57,14 +56,14 @@ const Wrapper = () => {
 
 
 export default {
-  title: "Basics/SelectCPN",
+  title: "Generics/Select",
   component: Wrapper,
 } as Meta;
 
 
 
 
-type Story = StoryObj<typeof SelectCPN>;
+type Story = StoryObj<typeof Select>;
 
 
 export const Default: Story = {};

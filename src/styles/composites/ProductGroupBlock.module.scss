@@ -1,0 +1,124 @@
+@use '../base' as *;
+
+.wrapper {
+    display: flex;
+    flex-direction: column;
+
+    gap: 15px;
+
+    padding: 12px;
+
+    box-shadow: $box-shadow;
+    border-radius: $border-radius;
+
+    cursor: pointer;
+    transition: .2s ease-in-out;
+
+    &:hover {
+        box-shadow: $box-shadow-hover;
+    }
+}
+
+.wrapper.highLighted {
+    box-shadow: $box-shadow-attention;
+
+}
+
+.image {
+    width: 100%;
+    min-height: 200px;
+    border-radius: $border-radius;
+
+    align-self: center;
+
+}
+
+.text {
+    padding: 0 10px;
+
+}
+
+.price {
+    font-weight: bold;
+    font-size: 1.2rem;
+
+    color: $secondary-heading-color;
+
+    &::before {
+        content: '$';
+    }
+}
+
+.name {
+    margin-bottom: 10px;
+}
+
+.controls {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+
+    gap: 10px;
+}
+
+.button {
+    font-size: .7rem;
+    padding: .5rem .3rem;
+
+    flex-basis: 100%;
+    order: 2;
+}
+
+.quantityPicker {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+
+    gap: 10px;
+
+    flex-basis: 80%;
+    
+    border: 2px solid $button-color;
+
+    border-radius: $border-radius;
+    overflow: hidden;
+
+    order: 1;
+}
+
+.quantityButton {
+    width: 30px;
+    height: 30px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    background-color: $button-color;
+    color: $background-color;
+    font-weight: 700;
+    border: none;
+
+    cursor: pointer;
+
+    transition: .2s ease-in-out;
+
+    &:hover {
+        background-color: darken($button-color, 20%);
+    }
+}
+
+.quantityValue {
+   
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    color: $text-color;
+    font-weight: 700;
+    
+    
+}

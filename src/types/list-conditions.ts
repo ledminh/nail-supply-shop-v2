@@ -14,7 +14,6 @@ export type SortedOrderItem = {
     value: SortedOrderType;
 }
 
-export type SelectOptionItem = SortItem | SortedOrderItem;
 
 export type ListCondition = {
     sort?: SortItem;

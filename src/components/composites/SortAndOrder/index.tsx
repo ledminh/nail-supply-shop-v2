@@ -1,6 +1,6 @@
 import styles from "@styles/composites/SortAndOrder.module.scss";
 
-import SelectCPN from "@/components/basics/SelectCPN";
+import SelectCPN from "@/components/generics/Select";
 import { ListCondition, SortItem, SortedOrderItem } from "@/types/list-conditions";
 
 import { useState, useEffect } from "react";
