@@ -18,7 +18,7 @@ export default function CategoryList({ categories, detailed, vertical }: Props) 
     const items:Item[] = categories.map((category) => {
         return {
             ...category,
-            path: `/categories/${category.slug}`
+            path: `/category/${category.slug}`
         }
     })
 
