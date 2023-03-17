@@ -14,6 +14,7 @@ import { categoryConfig } from '@/config';
 import { ProductGroup, Product } from '@/types/product';
 import ButtonCPN from '@/components/basics/ButtonCPN';
 import useSortAndOrder from '@/hooks/useSortAndOrder';
+import useProducts from '@/hooks/useProducts';
 
 export interface Props {
   contactInfo: ContactInfo,
@@ -28,16 +29,12 @@ export default function Category({contactInfo, aboutTextFooter, currentCategory,
   const { id:categoryID, name, image, description } = currentCategory;
   const {sortItems, sortedOrderItems, initCondition} = categoryConfig;
 
-  const [_products, setProducts] = useState<(Product|ProductGroup)[]>(products);
+  const {_products, setProducts, loadMore} = useProducts({products})
 
   const {sortAndOrderOnChange} = useSortAndOrder({setProducts, categoryID});
 
   const addToCart = () => {
     console.log("Add to cart");
-  }
-
-  const loadMore = () => {
-    console.log("Load more");
   }
 
 
