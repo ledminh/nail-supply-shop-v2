@@ -1,3 +1,4 @@
+import { useState } from 'react';
 
 import PageLayout from '@/components/layouts/PageLayout'
 import { ContactInfo } from '@/types/others';
@@ -11,6 +12,8 @@ import ProductList from '@/components/composites/ProductList';
 
 import { categoryConfig } from '@/config';
 import { ProductGroup, Product } from '@/types/product';
+import ButtonCPN from '@/components/basics/ButtonCPN';
+import useSortAndOrder from '@/hooks/useSortAndOrder';
 
 export interface Props {
   contactInfo: ContactInfo,
@@ -22,16 +25,21 @@ export interface Props {
 
 export default function Category({contactInfo, aboutTextFooter, currentCategory, categories, products }:Props) {
 
-  const { name, image, description } = currentCategory;
+  const { id:categoryID, name, image, description } = currentCategory;
   const {sortItems, sortedOrderItems, initCondition} = categoryConfig;
 
-  const sortedAndOrderOnChange = () => {
-    console.log("Sorted and order on change");
-  }
+  const [_products, setProducts] = useState<(Product|ProductGroup)[]>(products);
+
+  const {sortAndOrderOnChange} = useSortAndOrder({setProducts, categoryID});
 
   const addToCart = () => {
     console.log("Add to cart");
   }
+
+  const loadMore = () => {
+    console.log("Load more");
+  }
+
 
   return (
     <PageLayout
@@ -48,7 +56,7 @@ export default function Category({contactInfo, aboutTextFooter, currentCategory,
           sortItems = {sortItems}
           sortedOrderItems = {sortedOrderItems} 
           initCondition = {initCondition}
-          onChange = {sortedAndOrderOnChange}
+          onChange = {sortAndOrderOnChange}
         />
         <CategoryList
           categories = {categories}
@@ -57,9 +65,14 @@ export default function Category({contactInfo, aboutTextFooter, currentCategory,
       </aside>
       <div className={styles.main}>
         <ProductList
-          products = {products}
+          products = {_products}
           type = "grid"
           addToCart = {addToCart}
+        />
+        <ButtonCPN
+          label = "Load More"
+          type="normal"
+          onClick = {loadMore}
         />
       </div>
     </PageLayout>
