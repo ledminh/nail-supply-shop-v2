@@ -7,6 +7,7 @@ import type {Props as HeroImageSectionProps} from '@/components/sections/HeroIma
 import heroImagePNG from '@images/hero_image.png';
 import searchIconPNG from '@images/search_icon.png';
 import shopImagePNG from '@images/shop_image.png';
+import { ListCondition, SortedOrderItem, SortItem } from './types/list-conditions';
 
 /***************************
  *  Header
@@ -93,3 +94,50 @@ const shopImageSectionProps:HeroImageSectionProps = {
 export const shopConfig = {
     heroImageSectionProps: shopImageSectionProps,
 }
+
+/*****************************
+ * /category/[slug].tsx
+ */
+
+type CategoryConfig = {
+    sortItems: SortItem[],
+    sortedOrderItems: SortedOrderItem[],
+    initCondition: ListCondition
+}
+
+export const categoryConfig:CategoryConfig = {
+    sortItems: [
+        {
+            label: 'Name',
+            value: 'name'
+        },
+        {
+            label: 'Price',
+            value: 'price'
+        }
+    ],
+
+    sortedOrderItems: [
+        {
+            label: 'Ascending',
+            value: 'asc'
+        },
+        {
+            label: 'Descending',
+            value: 'desc'
+        }
+    ],
+
+    initCondition: {
+        sort: {
+            label: 'Name',
+            value: 'name'
+        },
+        sortedOrder: {
+            label: 'Ascending',
+            value: 'asc'
+        }
+    }
+}
+
+

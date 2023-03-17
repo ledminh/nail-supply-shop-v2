@@ -1,42 +1,72 @@
+
+import PageLayout from '@/components/layouts/PageLayout'
 import { ContactInfo } from '@/types/others';
 import { Category } from '@/types/category';
 
-import PageLayout from '@/components/layouts/PageLayout'
-import CategoryList from '@components/composites/CategoryList';
+import styles from '@/styles/pages/Category.module.scss'
+import CategoryInfo from '@/components/composites/CategoryInfo';
+import SortAndOrder from '@/components/composites/SortAndOrder';
+import CategoryList from '@/components/composites/CategoryList';
+import ProductList from '@/components/composites/ProductList';
 
-import styles from '@/styles/pages/Shop.module.scss'
-
-import { shopConfig } from '@/config';
-import HeroImageSection from '@/components/sections/HeroImageSection';
+import { categoryConfig } from '@/config';
+import { ProductGroup, Product } from '@/types/product';
 
 export interface Props {
   contactInfo: ContactInfo,
   aboutTextFooter: string,
-  categories: Category[]
+  currentCategory: Category,
+  categories: Category[],
+  products: (Product|ProductGroup)[],
 };
 
-export default function Shop({contactInfo, aboutTextFooter, categories }:Props) {
+export default function Category({contactInfo, aboutTextFooter, currentCategory, categories, products }:Props) {
 
-  const { heroImageSectionProps } = shopConfig;
+  const { name, image, description } = currentCategory;
+  const {sortItems, sortedOrderItems, initCondition} = categoryConfig;
+
+  const sortedAndOrderOnChange = () => {
+    console.log("Sorted and order on change");
+  }
+
+  const addToCart = () => {
+    console.log("Add to cart");
+  }
 
   return (
     <PageLayout
       contactInfo = {contactInfo}
       aboutText = {aboutTextFooter}
     >
-      <HeroImageSection {...heroImageSectionProps} />
-      
-      <section className={styles.categoryList}>
-        <CategoryList 
-          categories={categories}
-          detailed={true}
-          />
-      </section>
+      <aside className={styles.aside}>
+        <CategoryInfo
+          name = {name}
+          image = {image}
+          description = {description}
+        />
+        <SortAndOrder
+          sortItems = {sortItems}
+          sortedOrderItems = {sortedOrderItems} 
+          initCondition = {initCondition}
+          onChange = {sortedAndOrderOnChange}
+        />
+        <CategoryList
+          categories = {categories}
+          vertical = {true}
+        />
+      </aside>
+      <div className={styles.main}>
+        <ProductList
+          products = {products}
+          type = "grid"
+          addToCart = {addToCart}
+        />
+      </div>
     </PageLayout>
   )
 }
 
-Shop.displayName = "Shop";
+Category.displayName = "Category";
 
 export const getServerSideProps = async () => {
   
@@ -53,65 +83,65 @@ const contactInfo:ContactInfo = {
 }
 
 
-const categorySample = {
-    image: {
-      src: "https://loremflickr.com/400/400",
-      alt: "Category Image",
-    },
-    name: "Category Name",
-    description: "lore ipsum dolor sit amet ronco aenean donec dolor lorem etiam kwon",
-  };
+// const categorySample = {
+//     image: {
+//       src: "https://loremflickr.com/400/400",
+//       alt: "Category Image",
+//     },
+//     name: "Category Name",
+//     description: "lore ipsum dolor sit amet ronco aenean donec dolor lorem etiam kwon",
+//   };
   
   
-const categories:Category[] = [
-    {
-        ...categorySample,
-        id: "1",
-        slug: "category-1"
-    },
-    {
-        ...categorySample,
-        id: "2",
-        slug: "category-2"
-    },
-    {
-        ...categorySample,
-        id: "3",
-        slug: "category-3"
-    },
-    {
-        ...categorySample,
-        id: "4",
-        slug: "category-4"
-    },
-    {
-        ...categorySample,
-        id: "5",
-        slug: "category-5"
-    },
-    {
-        ...categorySample,
-        id: "6",
-        slug: "category-6"
-    },
-    {
-        ...categorySample,
-        id: "7",
-        slug: "category-7"
-    },
-    {
-        ...categorySample,
-        id: "8",
-        slug: "category-8"
-    },
-];
+// const categories:Category[] = [
+//     {
+//         ...categorySample,
+//         id: "1",
+//         slug: "category-1"
+//     },
+//     {
+//         ...categorySample,
+//         id: "2",
+//         slug: "category-2"
+//     },
+//     {
+//         ...categorySample,
+//         id: "3",
+//         slug: "category-3"
+//     },
+//     {
+//         ...categorySample,
+//         id: "4",
+//         slug: "category-4"
+//     },
+//     {
+//         ...categorySample,
+//         id: "5",
+//         slug: "category-5"
+//     },
+//     {
+//         ...categorySample,
+//         id: "6",
+//         slug: "category-6"
+//     },
+//     {
+//         ...categorySample,
+//         id: "7",
+//         slug: "category-7"
+//     },
+//     {
+//         ...categorySample,
+//         id: "8",
+//         slug: "category-8"
+//     },
+// ];
 
 
   return {
     props: {
       contactInfo,
       aboutTextFooter,
-      categories
+      // categories
     }
   }
 }
