@@ -8,20 +8,20 @@ import { useState, useEffect } from "react";
 export interface Props {
     sortItems: SortItem[];
     sortedOrderItems: SortedOrderItem[];
-    initCondition?: ListCondition;
+    initCondition: ListCondition;
     onChange: (condition: ListCondition) => void;
 }
 
 
 export default function SortAndOrder({ sortItems, sortedOrderItems, initCondition, onChange }: Props) {
 
-    const [condition, setCondition] = useState<ListCondition|null>(initCondition ? initCondition: null);
+    const [condition, setCondition] = useState<ListCondition>(initCondition);
 
     useEffect(() => {
-        if (condition) {
+        if(condition !== initCondition)
             onChange(condition);
-        }
-    }, [condition, onChange]);
+
+    }, [condition]);
 
     return (
         <div className={styles.wrapper}>
@@ -30,7 +30,7 @@ export default function SortAndOrder({ sortItems, sortedOrderItems, initConditio
                 <SelectCPN
                     optionItems={sortItems}
                     selectClass={styles.select}
-                    initOptionItem={initCondition ? initCondition.sort : undefined}
+                    initOptionItem={initCondition.sort}
                     onChange={(sortItem) => { 
                         setCondition({
                             ...condition,
@@ -46,7 +46,7 @@ export default function SortAndOrder({ sortItems, sortedOrderItems, initConditio
                 <SelectCPN
                     optionItems={sortedOrderItems}
                     selectClass={styles.select}
-                    initOptionItem={initCondition ? initCondition.sortedOrder : undefined}
+                    initOptionItem={initCondition.sortedOrder}
                     onChange={(sortedOrderItem) => { 
                         setCondition({
                             ...condition,

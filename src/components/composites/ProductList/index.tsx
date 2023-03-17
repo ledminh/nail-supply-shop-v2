@@ -1,3 +1,5 @@
+import { memo } from "react";
+
 import ProductTabCPN from "@/components/basics/ProductTabCPN";
 import LinksList from "@/components/generics/LinksList";
 import { Product, ProductGroup } from "@/types/product";
@@ -14,7 +16,7 @@ export interface Props {
 }
 
 
-export default function ProductList({ products, type, addToCart }: Props) {
+function ProductList({ products, type, addToCart }: Props) {
 
     // Preprocess products to add path
     const _products = products.map((product) => {
@@ -90,6 +92,7 @@ export default function ProductList({ products, type, addToCart }: Props) {
 
 ProductList.displayName = "ProductList";
 
+export default memo(ProductList);
 
 
 

@@ -11,11 +11,13 @@ type Props = {
 const useProducts = ({products, categoryID, numProducts, productsPerPage}:Props) => {
 
     const [_products, setProducts] = useState<(Product|ProductGroup)[]>(products);
+
     const [isLoadMoreNeeded, setIsLoadMoreNeeded] = useState<boolean>(products.length < numProducts);
 
     useEffect(() => {
         setIsLoadMoreNeeded(products.length < numProducts);
     }, [products, numProducts]);
+
 
     const loadMore = () => {
         fetch('/api/products', 
@@ -32,7 +34,9 @@ const useProducts = ({products, categoryID, numProducts, productsPerPage}:Props)
             }
         ).then((res) => res.json())
         .then(({newProducts}) => {
-            setProducts([...products, ...newProducts]);
+            setProducts((prevProducts) => [...prevProducts, ...newProducts]);
+            console.log('_products state value:', _products);
+
         });
     }
 

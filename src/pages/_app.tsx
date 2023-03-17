@@ -1,6 +1,18 @@
 import '@/styles/globals.scss'
 import type { AppProps } from 'next/app'
 
+import  CartContext  from './contexts/CartContext';
+import { useCartProviderValue } from './contexts/CartContext';
+
+
+
 export default function App({ Component, pageProps }: AppProps) {
-  return <Component {...pageProps} />
+  const cartProviderValue = useCartProviderValue();
+
+  return (
+    
+    <CartContext.Provider value={cartProviderValue}>
+      <Component {...pageProps} />
+    </CartContext.Provider>
+  )
 }

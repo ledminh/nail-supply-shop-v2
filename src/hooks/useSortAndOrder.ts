@@ -3,19 +3,29 @@ import { ListCondition } from '@/types/list-conditions';
 import { SortItem, SortedOrderItem } from '@/types/list-conditions';
 import { Product, ProductGroup } from '@/types/product';
 
-
 type Props = {
     setProducts: (products: (Product|ProductGroup)[]) => void;
     categoryID: string;
     productsPerPage: number;
+    firstLoad: boolean;
+    setFirstLoad: (firstLoad: boolean) => void;
 }
-const useSortAndOrder = ({setProducts, categoryID, productsPerPage}:Props) => {
+const useSortAndOrder = ({setProducts, categoryID, productsPerPage, firstLoad, setFirstLoad}:Props) => {
+
+
     const router = useRouter();
 
     const sortAndOrderOnChange = (condition: ListCondition) => {
+        if(firstLoad) {
+            setFirstLoad(false);
+            return;
+        }
+
         const { sort, sortedOrder } = condition;
 
         if (sort && sortedOrder) {
+
+
             fetch('/api/products', 
                 {
                     method: 'POST',
@@ -32,6 +42,7 @@ const useSortAndOrder = ({setProducts, categoryID, productsPerPage}:Props) => {
             ).then((res) => res.json())
             .then(({products}) => {
                 setProducts(products);
+
                 // Change the URL without reloading the page
                 changeURL(sort, sortedOrder, router);
             });
