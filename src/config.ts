@@ -102,7 +102,8 @@ export const shopConfig = {
 type CategoryConfig = {
     sortItems: SortItem[],
     sortedOrderItems: SortedOrderItem[],
-    initCondition: ListCondition
+    initCondition: ListCondition,
+    productsPerPage: number,
 }
 
 export const categoryConfig:CategoryConfig = {
@@ -137,7 +138,9 @@ export const categoryConfig:CategoryConfig = {
             label: 'Ascending',
             value: 'asc'
         }
-    }
+    },
+
+    productsPerPage: 20,
 }
 
 

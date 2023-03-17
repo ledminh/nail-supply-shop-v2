@@ -7,8 +7,9 @@ import { Product, ProductGroup } from '@/types/product';
 type Props = {
     setProducts: (products: (Product|ProductGroup)[]) => void;
     categoryID: string;
+    productsPerPage: number;
 }
-const useSortAndOrder = ({setProducts, categoryID}:Props) => {
+const useSortAndOrder = ({setProducts, categoryID, productsPerPage}:Props) => {
     const router = useRouter();
 
     const sortAndOrderOnChange = (condition: ListCondition) => {
@@ -25,6 +26,7 @@ const useSortAndOrder = ({setProducts, categoryID}:Props) => {
                         categoryID,
                         sort: sort.value,
                         sortedOrder: sortedOrder.value,
+                        productsPerPage
                     }),
                 }
             ).then((res) => res.json())

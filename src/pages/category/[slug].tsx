@@ -22,16 +22,17 @@ export interface Props {
   currentCategory: Category,
   categories: Category[],
   products: (Product|ProductGroup)[],
+  numProducts: number,
 };
 
-export default function Category({contactInfo, aboutTextFooter, currentCategory, categories, products }:Props) {
+export default function Category({contactInfo, aboutTextFooter, currentCategory, categories, products, numProducts }:Props) {
 
   const { id:categoryID, name, image, description } = currentCategory;
-  const {sortItems, sortedOrderItems, initCondition} = categoryConfig;
+  const {sortItems, sortedOrderItems, initCondition, productsPerPage} = categoryConfig;
 
-  const {_products, setProducts, loadMore} = useProducts({products})
+  const {_products, setProducts, loadMore, isLoadMoreNeeded} = useProducts({products, categoryID, numProducts, productsPerPage})
 
-  const {sortAndOrderOnChange} = useSortAndOrder({setProducts, categoryID});
+  const {sortAndOrderOnChange} = useSortAndOrder({setProducts, categoryID, productsPerPage});
 
   const addToCart = () => {
     console.log("Add to cart");
@@ -66,11 +67,16 @@ export default function Category({contactInfo, aboutTextFooter, currentCategory,
           type = "grid"
           addToCart = {addToCart}
         />
-        <ButtonCPN
-          label = "Load More"
-          type="normal"
-          onClick = {loadMore}
-        />
+        {
+          isLoadMoreNeeded && (
+            <ButtonCPN
+              label = "Load More"
+              type="normal"
+              onClick = {loadMore}
+            />
+          )
+        }
+
       </div>
     </PageLayout>
   )
