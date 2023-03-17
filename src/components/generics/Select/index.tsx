@@ -45,10 +45,18 @@ function Select<T>  ({
     };
 
     return (
-        <select className={selectClasses} value={selectedOption.value} onChange={_onChange}>
+        <select className={selectClasses} 
+                value={selectedOption.value} 
+                onChange={_onChange}
+                onClick={(e) => e.preventDefault()}
+                >
         {optionItems.map((optionItem) => (
-            <option key={optionItem.value} className={optionClasses} value={optionItem.value}>
-            {optionItem.label}
+            <option 
+                key={optionItem.value} 
+                className={optionClasses} 
+                value={optionItem.value}
+                onClick={(e) => e.preventDefault()}>
+                {optionItem.label}
             </option>
         ))}
         </select>

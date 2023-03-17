@@ -52,15 +52,20 @@ const QuantityPickerCPN:QuantityPicker = ({ value = 0, onChange, buttonClassName
     return (
         <div className={classNames}>
             <button className={buttonClassNames}
-                onClick={decrement}>
+                onClick={(e) => {
+                    e.preventDefault();
+                    decrement();
+                    }}>
                     -
             </button>
             <span className={valueClassNames}>
                 {_value}
             </span>
             <button className={buttonClassNames} 
-                onClick={increment}
-                >
+                onClick={(e) => {
+                    e.preventDefault();
+                    increment();
+                    }}>
                     +
             </button>
         </div>
