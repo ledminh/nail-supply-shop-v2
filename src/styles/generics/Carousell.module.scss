@@ -1,0 +1,33 @@
+.wrapper {
+    display: grid;
+
+    grid-template-rows: 4fr 1fr;
+
+    gap: 10px;
+}
+
+.mainItem {
+    grid-row: 1;
+
+    height: 100%;
+}
+
+.otherItems {
+    grid-row: 2;
+
+    display: flex;
+    flex-wrap: nowrap;
+
+    gap: 10px;
+    justify-content: space-between;
+
+    overflow-x: auto;
+
+    min-height: 100px;
+
+}
+
+.otherItem  {
+    flex-basis: 20%;
+}
+
