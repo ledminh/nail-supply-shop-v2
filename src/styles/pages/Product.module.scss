@@ -69,4 +69,36 @@
     }
 }
 
-   
+.category {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.categoryLink {
+    background-color: $button-color;
+    
+    text-decoration: none;
+
+    padding: 5px;
+
+    border-radius: $border-radius;
+
+    cursor: pointer;
+
+    span {
+        color: white;
+    }
+
+    &:hover {
+        background-color: darken($button-color, 20%);
+    }
+}
+
+.details {
+    .title {
+        border-bottom: 2px solid $button-color;
+
+        margin-bottom: 1rem;
+    }
+}

@@ -101,7 +101,7 @@ export default function ProductPage({productID, contactInfo, aboutTextFooter, im
                           href={`/category/${catProps.slug}`}
                           className={styles.categoryLink}
                         >
-                          {catProps.name}
+                          <span>{catProps.name}</span>
                       </Link>
                   </div>
                 )
