@@ -3,7 +3,7 @@ import { Category } from '@/types/category';
 import { useEffect } from 'react';
   
 interface CategoryContextValue {
-    getCategoryProps: ({ categoryId, props }: { categoryId: string, props: Array<keyof Category> }) => Partial<Category>;
+    getCategoryProps: ({ categoryID, props }: { categoryID: string, props: Array<keyof Category> }) => Partial<Category>;
 }
   
 const CategoryContext = createContext<CategoryContextValue | undefined>(undefined);
@@ -40,8 +40,8 @@ export const useCategoryProviderValue = () => {
 
 
 
-    const getCategoryProps = ({ categoryId, props }: { categoryId: string, props: Array<keyof Category> }) => {
-        const category = categories.find((category) => category.id === categoryId);
+    const getCategoryProps = ({ categoryID, props }: { categoryID: string, props: Array<keyof Category> }) => {
+        const category = categories.find((category) => category.id === categoryID);
     
         if (!category) {
             throw new Error('Category not found');

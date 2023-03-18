@@ -10,10 +10,7 @@ export interface Product {
     images: ProductImage[];
     intro: string;
     details: string,
-    categoryInfo: {
-        name: string,
-        slug: string
-    },
+    categoryID: string
     
     groupName?: string,
     otherProducts?: Product[],
@@ -22,6 +19,7 @@ export interface Product {
 export interface ProductGroup {
     id: string;
     name: string;
+    categoryID: string;
     products: Product[];
 }
 

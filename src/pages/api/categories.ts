@@ -3,30 +3,59 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { Category } from '@/types/category';
 
-const sampleCategories: Category[] = [
-  {
-    id: '1',
-    slug: 'electronics',
-    name: 'Electronics',
-    description: 'Electronic devices and gadgets',
-    image: {
-      src: 'https://example.com/electronics.jpg',
-      alt: 'Electronics',
-    },
+
+const categorySample = {
+  image: {
+    src: "https://loremflickr.com/400/400",
+    alt: "Category Image",
   },
-  {
-    id: '2',
-    slug: 'fashion',
-    name: 'Fashion',
-    description: 'Clothing, shoes, and accessories',
-    image: {
-      src: 'https://example.com/fashion.jpg',
-      alt: 'Fashion',
+  name: "Category Name",
+  description: "Lore ipsum dolor sit amet ronco aenean donec dolor lorem etiam kwon. Lore ipsum dolor sit amet ronco aenean donec dolor lorem etiam kwon. Lore ipsum dolor sit amet ronco aenean donec dolor lorem etiam kwon. Lore ipsum dolor sit amet ronco aenean donec dolor lorem etiam kwon",
+};
+
+const categories: Category[] = [
+    {
+      ...categorySample,
+      id: "1",
+      slug: "category-1"
     },
-  },
-  // Add more sample categories if needed
-];
+    {
+      ...categorySample,
+      id: "2",
+      slug: "category-2"
+    },
+    {
+      ...categorySample,
+      id: "3",
+      slug: "category-3"
+    },
+    {
+      ...categorySample,
+      id: "4",
+      slug: "category-4"
+    },
+    {
+      ...categorySample,
+      id: "5",
+      slug: "category-5"
+    },
+    {
+      ...categorySample,
+      id: "6",
+      slug: "category-6"
+    },
+    {
+      ...categorySample,
+      id: "7",
+      slug: "category-7"
+    },
+    {
+      ...categorySample,
+      id: "8",
+      slug: "category-8"
+    },
+  ];
 
 export default function handler(req: NextApiRequest, res: NextApiResponse<Category[]>) {
-  res.status(200).json(sampleCategories);
+  res.status(200).json(categories);
 }
