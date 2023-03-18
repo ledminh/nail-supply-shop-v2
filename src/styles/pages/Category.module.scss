@@ -1,3 +1,5 @@
+@use '../base' as *;
+
 .aside {
     display: flex;
     flex-direction: column;
@@ -7,4 +9,22 @@
     gap: 20px;
 
 
+}
+
+.smallScreen {
+    display: block;
+}
+
+.largeScreen {
+    display: none;
+}
+
+@media (min-width: $first-breakpoint) {
+    .smallScreen {
+        display: none;
+    }
+
+    .largeScreen {
+        display: block;
+    }
 }

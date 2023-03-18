@@ -4,16 +4,16 @@ import { SortItem, SortedOrderItem } from '@/types/list-conditions';
 import { Product, ProductGroup } from '@/types/product';
 
 type Props = {
+    router: NextRouter,
     setProducts: (products: (Product|ProductGroup)[]) => void;
     categoryID: string;
     productsPerPage: number;
     firstLoad: boolean;
     setFirstLoad: (firstLoad: boolean) => void;
 }
-const useSortAndOrder = ({setProducts, categoryID, productsPerPage, firstLoad, setFirstLoad}:Props) => {
+const useSortAndOrder = ({router, setProducts, categoryID, productsPerPage, firstLoad, setFirstLoad}:Props) => {
 
 
-    const router = useRouter();
 
     const sortAndOrderOnChange = (condition: ListCondition) => {
         if(firstLoad) {

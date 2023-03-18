@@ -1,6 +1,7 @@
 import { GetServerSideProps } from 'next';
 
 import { useState } from 'react';
+import { useRouter } from 'next/router';
 
 import PageLayout from '@/components/layouts/PageLayout'
 import { ContactInfo } from '@/types/others';
@@ -19,6 +20,7 @@ import ButtonCPN from '@/components/basics/ButtonCPN';
 import useSortAndOrder from '@/hooks/useSortAndOrder';
 import useProducts from '@/hooks/useProducts';
 import { useCart } from '../contexts/CartContext';
+import Select, { convertToOptionItem } from '@/components/generics/Select';
 
 export interface Props {
   contactInfo: ContactInfo,
@@ -35,6 +37,8 @@ export default function CategoryPage({contactInfo, aboutTextFooter, currentCateg
 
   const [firstLoad, setFirstLoad] = useState(true);
 
+  const router = useRouter();
+
 
   const { id:categoryID, name, image, description } = currentCategory;
   const {sortItems, sortedOrderItems, productsPerPage} = categoryConfig;
@@ -42,9 +46,19 @@ export default function CategoryPage({contactInfo, aboutTextFooter, currentCateg
 
   const {_products, setProducts, loadMore, isLoadMoreNeeded} = useProducts({products, categoryID, numProducts, productsPerPage})
 
-  const {sortAndOrderOnChange} = useSortAndOrder({setProducts, categoryID, productsPerPage, firstLoad, setFirstLoad});
+  const {sortAndOrderOnChange} = useSortAndOrder({router, setProducts, categoryID, productsPerPage, firstLoad, setFirstLoad});
 
   const {addToCart} = useCart();
+
+
+  const convertCategoryToOptionItem = (category: Category) => {
+
+    const getValue = (category: Category) => category.slug;
+    const getLabel = (category: Category) => category.name;
+
+    return convertToOptionItem({item:category, getValue, getLabel});
+
+  }
 
 
   return (
@@ -64,10 +78,21 @@ export default function CategoryPage({contactInfo, aboutTextFooter, currentCateg
           initCondition = {initCondition}
           onChange = {sortAndOrderOnChange}
         />
-        <CategoryList
-          categories = {categories}
-          vertical = {true}
-        />
+        <div className={styles.smallScreen}>
+          <Select
+              selectClass = {styles.categorySelect}
+              optionClass = {styles.categoryOption}
+              optionItems = {categories.map(convertCategoryToOptionItem)}
+              initOptionItem = {convertCategoryToOptionItem(currentCategory)}
+              onChange = {(cat) => {router.push(`/category/${cat.value}`)}}
+            />
+        </div>
+        <div className={styles.largeScreen}>
+          <CategoryList
+            categories = {categories}
+            vertical = {true}
+          />
+        </div>
       </aside>
       <div className={styles.main}>
           <ProductList
