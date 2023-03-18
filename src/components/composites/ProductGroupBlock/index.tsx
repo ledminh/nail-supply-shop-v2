@@ -28,7 +28,7 @@ export default function ProductGroupBlock({ name, products, addToCart, onPathCha
 
     useEffect(() => {
         if(onPathChange) {
-            onPathChange(`/products/${selectedProduct.id}`);
+            onPathChange(`/product/${selectedProduct.id}`);
         }
     }, [selectedProduct]);
 

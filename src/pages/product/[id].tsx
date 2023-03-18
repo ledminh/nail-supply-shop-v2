@@ -10,6 +10,7 @@ import { Category } from '@/types/category';
 import styles from '@/styles/pages/Category.module.scss'
 import CategoryInfo from '@/components/composites/CategoryInfo';
 import SortAndOrder from '@/components/composites/SortAndOrder';
+import CategoryList from '@/components/composites/CategoryList';
 import ProductList from '@/components/composites/ProductList';
 
 import { categoryConfig } from '@/config';
@@ -18,7 +19,7 @@ import { ListCondition } from '@/types/list-conditions';
 import ButtonCPN from '@/components/basics/ButtonCPN';
 import useSortAndOrder from '@/hooks/useSortAndOrder';
 import useProducts from '@/hooks/useProducts';
-import { useCart } from '@contexts/CartContext';
+import { useCart } from '../../contexts/CartContext';
 import Select, { convertToOptionItem } from '@/components/generics/Select';
 
 export interface Props {

@@ -7,8 +7,8 @@ import {Category} from "@/types/category";
 import { ContactInfo } from "@/types/others";
 import { categoryConfig } from "@/config";
 
-import CartContext from "@/pages/contexts/CartContext";
-import { useCartProviderValue } from "@/pages/contexts/CartContext";
+import CartContext from "@/contexts/CartContext";
+import { useCartProviderValue } from "@/contexts/CartContext";
 
 const aboutTextFooter = "Nail Essential is a family-owned business that has been providing high-quality nail care products to professionals and enthusiasts for over 20 years. Our mission is to make it easy for our customers to find the products they need to create beautiful and healthy nails. We take pride in offering a wide selection of top-quality products, competitive pricing, and exceptional customer service. Thank you for choosing Nail Essential for all of your nail care needs."
 

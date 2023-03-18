@@ -1,8 +1,8 @@
 import '@/styles/globals.scss'
 import type { AppProps } from 'next/app'
 
-import  CartContext  from './contexts/CartContext';
-import { useCartProviderValue } from './contexts/CartContext';
+import  CartContext  from '@contexts/CartContext';
+import { useCartProviderValue } from '@contexts/CartContext';
 
 
 
