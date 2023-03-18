@@ -7,7 +7,7 @@ import type {Props as HeroImageSectionProps} from '@/components/sections/HeroIma
 import heroImagePNG from '@images/hero_image.png';
 import searchIconPNG from '@images/search_icon.png';
 import shopImagePNG from '@images/shop_image.png';
-import { ListCondition, SortedOrderItem, SortItem } from './types/list-conditions';
+import { SortedOrderItem, SortItem } from './types/list-conditions';
 
 /***************************
  *  Header

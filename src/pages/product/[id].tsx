@@ -7,7 +7,9 @@ import PageLayout from '@/components/layouts/PageLayout'
 import { ContactInfo } from '@/types/others';
 import Link from 'next/link';
 
-import { useCategory } from '@/contexts/CategoryContext';
+import {Category} from '@/types/category';
+import getCategoryProps  from '@/utils/getCategoryProps';
+
 
 import styles from '@/styles/pages/Category.module.scss'
 import ImagesCarousellSection from '@/components/sections/ImagesCarousell';
@@ -31,17 +33,19 @@ export interface Props {
 
   groupName?: string,
   otherProducts?: Product[],
+  categories: Category[]
 };
 
-export default function ProductPage({productID, contactInfo, aboutTextFooter, images, name, intro, groupName, otherProducts, price, categoryID, details }:Props) {
+export default function ProductPage({productID, contactInfo, aboutTextFooter, images, name, intro, groupName, otherProducts, price, categoryID, details, categories }:Props) {
 
   const router = useRouter();
   const [quantity, setQuantity] = useState(0);
 
   const {addToCart} = useCart();
-  const {getCategoryProps} = useCategory();
 
-  const {name: categoryName, slug:categorySlug} = getCategoryProps({
+
+  const catProps = getCategoryProps({
+    categories,
     categoryID,
     props: ['name', 'slug'] 
   });
@@ -89,15 +93,19 @@ export default function ProductPage({productID, contactInfo, aboutTextFooter, im
                       />
                   </div>
               </div>
-              <div className={styles.category}>
-                  <h4 className={styles.label}>Category:</h4>
-                  <Link
-                      href={`/category/${categorySlug}`}
-                      className={styles.categoryLink}
-                    >
-                      {categoryName}
-                  </Link>
-              </div>
+              {
+                catProps && (              
+                  <div className={styles.category}>
+                      <h4 className={styles.label}>Category:</h4>
+                      <Link
+                          href={`/category/${catProps.slug}`}
+                          className={styles.categoryLink}
+                        >
+                          {catProps.name}
+                      </Link>
+                  </div>
+                )
+              }
           </section>
           <section className={styles.details}>
               <h3 className={styles.title}>Details</h3>
@@ -152,16 +160,59 @@ export const getServerSideProps:GetServerSideProps<Props> = async (context) => {
       src: "https://picsum.photos/seed/picsum/200/200",
       alt: "Product Image 4"
     },
+    
+  ]
+
+  const categorySample = {
+    image: {
+      src: "https://loremflickr.com/400/400",
+      alt: "Category Image",
+    },
+    name: "Category Name",
+    description: "lore ipsum dolor sit amet ronco aenean donec dolor lorem etiam kwon",
+  };
+
+  const categories:Category[] = [
     {
-      id: "img-5",
-      src: "https://picsum.photos/seed/picsum/200/200",
-      alt: "Product Image 5"
+      ...categorySample,
+      id: "1",
+      slug: "category-1"
     },
     {
-      id: "img-6",
-      src: "https://picsum.photos/seed/picsum/200/200",
-      alt: "Product Image 6"
-    }
+      ...categorySample,
+      id: "2",
+      slug: "category-2"
+    },
+    {
+      ...categorySample,
+      id: "3",
+      slug: "category-3"
+    },
+    {
+      ...categorySample,
+      id: "4",
+      slug: "category-4"
+    },
+    {
+      ...categorySample,
+      id: "5",
+      slug: "category-5"
+    },
+    {
+      ...categorySample,
+      id: "6",
+      slug: "category-6"
+    },
+    {
+      ...categorySample,
+      id: "7",
+      slug: "category-7"
+    },
+    {
+      ...categorySample,
+      id: "8",
+      slug: "category-8"
+    },
   ]
 
 
@@ -177,8 +228,8 @@ export const getServerSideProps:GetServerSideProps<Props> = async (context) => {
       details: "This is some details text. I'm trying to make it longer to see if it fit on the frame. Something more to say here to make it longer, and even longer, longer, longer.",
       price: 100,
       
-      categoryID: "1"
-
+      categoryID: "1",
+      categories
       // groupName?: string,
       // otherProducts?: Product[],
     }
