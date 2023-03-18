@@ -57,3 +57,23 @@
         border-bottom: 3px solid adjust-color($color: $button-color, $lightness: -20%);
     }
 }
+
+@media (min-width: $first-breakpoint) {
+    .wrapper {
+        padding: 10px;
+    }
+
+    .image {
+        min-height: 250px;
+        border-radius: $border-radius;
+    }
+
+    .info {
+        background-color: transparent;
+
+        margin: 0;
+        border: 3px solid $separator-color;
+    }
+
+
+}

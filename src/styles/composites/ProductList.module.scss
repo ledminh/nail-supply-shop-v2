@@ -32,3 +32,9 @@
         grid-template-columns: repeat(3, 1fr);
     }
 }
+
+@media (min-width: $second-breakpoint) {
+    .ul.grid {
+        margin-top: 0;
+    }
+}

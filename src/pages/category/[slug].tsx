@@ -66,53 +66,56 @@ export default function CategoryPage({contactInfo, aboutTextFooter, currentCateg
       contactInfo = {contactInfo}
       aboutText = {aboutTextFooter}
     >
-      <aside className={styles.aside}>
-        <CategoryInfo
-          name = {name}
-          image = {image}
-          description = {description}
-        />
-        <SortAndOrder
-          sortItems = {sortItems}
-          sortedOrderItems = {sortedOrderItems} 
-          initCondition = {initCondition}
-          onChange = {sortAndOrderOnChange}
-        />
-        <Select
-            selectClass = {styles.categorySelect}
-            optionClass = {styles.categoryOption}
-            optionItems = {categories.map(convertCategoryToOptionItem)}
-            initOptionItem = {convertCategoryToOptionItem(currentCategory)}
-            onChange = {(cat) => {router.push(`/category/${cat.value}`)}}
+      <div className={styles.wrapper}>
+        <aside className={styles.aside}>
+          <CategoryInfo
+            name = {name}
+            image = {image}
+            description = {description}
           />
-        <div className={styles.categoryList}>
-          <CategoryList
-              categories = {categories}
-              vertical = {true}
+          <SortAndOrder
+            sortItems = {sortItems}
+            sortedOrderItems = {sortedOrderItems} 
+            initCondition = {initCondition}
+            onChange = {sortAndOrderOnChange}
+          />
+          <Select
+              selectClass = {styles.categorySelect}
+              optionClass = {styles.categoryOption}
+              optionItems = {categories.map(convertCategoryToOptionItem)}
+              initOptionItem = {convertCategoryToOptionItem(currentCategory)}
+              onChange = {(cat) => {router.push(`/category/${cat.value}`)}}
             />
-        </div>
-       </aside>
-      <div className={styles.main}>
-        <div className={styles.productList}>
-          <ProductList
-            products = {_products}
-            type = "grid"
-            addToCart = {addToCart}
-          />
-        </div>
-        <div className={styles.button}>
-          {
-            isLoadMoreNeeded && (
-              <ButtonCPN
-                label = "Load More"
-                type="normal"
-                onClick = {loadMore}
-                className={styles.loadMoreButton}
+          {/* <div className={styles.categoryList}>
+            <CategoryList
+                categories = {categories}
+                vertical = {true}
               />
-            )
-          }
-        </div>        
+          </div> */}
+        </aside>
+        <div className={styles.main}>
+          <div className={styles.productList}>
+            <ProductList
+              products = {_products}
+              type = "grid"
+              addToCart = {addToCart}
+            />
+          </div>
+          <div className={styles.button}>
+            {
+              isLoadMoreNeeded && (
+                <ButtonCPN
+                  label = "Load More"
+                  type="normal"
+                  onClick = {loadMore}
+                  className={styles.loadMoreButton}
+                />
+              )
+            }
+          </div>        
+        </div>
       </div>
+      
     </PageLayout>
   )
 }
