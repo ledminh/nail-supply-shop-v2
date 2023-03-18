@@ -16,25 +16,24 @@
 
 }
 
-.smallScreen {
-    display: block;
-    width: 100%;
-}
-
-.largeScreen {
-    display: none;
-}
 
 .categorySelect {
-    padding: 10px;
-    font-size: 1.1rem;
+    display: block;
+    padding: 5px;
+    font-size: 1rem;
 
-    width: 100%;
+    width: 90%;
 
     text-align: center;
 }
 
+.categoryList {
+    display: none;
+}
+
 .productList {
+    width: 90%;
+    margin: 0 auto;
     margin-bottom: 20px;
 }
 
@@ -46,12 +45,6 @@
 
 }
 
-@media (min-width: $first-breakpoint) {
-    .smallScreen {
-        display: none;
-    }
-
-    .largeScreen {
-        display: block;
-    }
+@media (min-width: $second-breakpoint) {
+    
 }

@@ -78,22 +78,20 @@ export default function CategoryPage({contactInfo, aboutTextFooter, currentCateg
           initCondition = {initCondition}
           onChange = {sortAndOrderOnChange}
         />
-        <div className={styles.smallScreen}>
-          <Select
-              selectClass = {styles.categorySelect}
-              optionClass = {styles.categoryOption}
-              optionItems = {categories.map(convertCategoryToOptionItem)}
-              initOptionItem = {convertCategoryToOptionItem(currentCategory)}
-              onChange = {(cat) => {router.push(`/category/${cat.value}`)}}
+        <Select
+            selectClass = {styles.categorySelect}
+            optionClass = {styles.categoryOption}
+            optionItems = {categories.map(convertCategoryToOptionItem)}
+            initOptionItem = {convertCategoryToOptionItem(currentCategory)}
+            onChange = {(cat) => {router.push(`/category/${cat.value}`)}}
+          />
+        <div className={styles.categoryList}>
+          <CategoryList
+              categories = {categories}
+              vertical = {true}
             />
         </div>
-        <div className={styles.largeScreen}>
-          <CategoryList
-            categories = {categories}
-            vertical = {true}
-          />
-        </div>
-      </aside>
+       </aside>
       <div className={styles.main}>
         <div className={styles.productList}>
           <ProductList
