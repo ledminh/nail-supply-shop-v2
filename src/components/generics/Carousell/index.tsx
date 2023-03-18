@@ -4,8 +4,8 @@ import styles from '@styles/generics/Carousell.module.scss';
 import { Item } from "@/types/item";
 
 
-export interface Props<T extends Item> {
-    items: T[];
+export interface Props<T> {
+    items: (T & Item)[];
     initialItemID: string;
     ItemCPN: FC<T>;
     className?: string;
@@ -14,7 +14,7 @@ export interface Props<T extends Item> {
     liClassName?: string;
 };
 
-export default function Carousell<T extends Item>({
+export default function Carousell<T>({
     items, initialItemID, ItemCPN, className, mainItemClassName, ulClassName, liClassName
 }: Props<T>) {
 
