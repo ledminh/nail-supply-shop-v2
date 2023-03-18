@@ -65,8 +65,6 @@ function ProductList({ products, type, addToCart }: Props) {
 
     function ProductItemCPN(props: ProductItemCPNProps) {
         
-
-        
         if(isProductGroup(props)) {
             
 
@@ -76,8 +74,6 @@ function ProductList({ products, type, addToCart }: Props) {
 
         return <ProductBlock {...{...props, addToCart: _addToCart}} />
     }
-
-
 
     return (
         <LinksList items = {_products}
