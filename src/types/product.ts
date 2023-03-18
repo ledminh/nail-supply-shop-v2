@@ -7,8 +7,16 @@ export interface Product {
     id: string;
     name: string;
     price: number;
-    intro: string;
     images: ProductImage[];
+    intro: string;
+    details: string,
+    categoryInfo: {
+        name: string,
+        slug: string
+    },
+    
+    groupName?: string,
+    otherProducts?: Product[],
 }
 
 export interface ProductGroup {

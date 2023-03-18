@@ -13,28 +13,34 @@ import ProductInfo from '@/components/composites/ProductInfo';
 import ButtonCPN from '@/components/basics/ButtonCPN';
 import QuantityPickerCPN from '@/components/basics/QuantityPicker';
 import { ProductImage } from '@/types/product';
+import { useCart } from '@/contexts/CartContext';
 
 export interface Props {
   contactInfo: ContactInfo,
   aboutTextFooter: string,
+  productID: string,
   images: ProductImage[],
   name: string,
   intro: string,
-  groupName?: string,
-  otherProducts?: Product[],
-  price: string,
-  category: {
+  details: string,
+  price: number,
+  
+  categoryInfo: {
     name: string,
     slug: string
   },
-  details: string,
+
+
+  groupName?: string,
+  otherProducts?: Product[],
 };
 
-export default function ProductPage({contactInfo, aboutTextFooter, images, name, intro, groupName, otherProducts, price, category, details }:Props) {
+export default function ProductPage({productID, contactInfo, aboutTextFooter, images, name, intro, groupName, otherProducts, price, categoryInfo, details }:Props) {
 
   const router = useRouter();
   const [quantity, setQuantity] = useState(0);
 
+  const {addToCart} = useCart();
 
   return (
     <PageLayout
@@ -58,11 +64,20 @@ export default function ProductPage({contactInfo, aboutTextFooter, images, name,
                         type="normal"
                         label="Add to Cart"
                         className={styles.addToCartButton}
-                        onClick={() => console.log("Add to cart")}
+                        onClick={() => {
+                          addToCart({
+                              id: productID,
+                              name: name,
+                              price: price,
+                              quantity: quantity,
+                              image: images[0]
+                            })
+                          }
+                        }
                       />
                       <QuantityPickerCPN
                         value={quantity}
-                        onChange = {(q) => {}}
+                        onChange = {(q) => { setQuantity(q) }}
                         buttonClassName = {styles.quantityButton}
                         valueClassName =  {styles.quantityValue}
                         className = {styles.quantityPicker}
@@ -72,10 +87,10 @@ export default function ProductPage({contactInfo, aboutTextFooter, images, name,
               <div className={styles.category}>
                   <h4 className={styles.label}>Category:</h4>
                   <Link
-                      href={`/category/${category.slug}`}
+                      href={`/category/${categoryInfo.slug}`}
                       className={styles.categoryLink}
                     >
-                      {category.name}
+                      {categoryInfo.name}
                   </Link>
               </div>
           </section>
