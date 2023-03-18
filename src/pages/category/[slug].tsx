@@ -95,21 +95,25 @@ export default function CategoryPage({contactInfo, aboutTextFooter, currentCateg
         </div>
       </aside>
       <div className={styles.main}>
+        <div className={styles.productList}>
           <ProductList
             products = {_products}
             type = "grid"
             addToCart = {addToCart}
           />
-        {
-          isLoadMoreNeeded && (
-            <ButtonCPN
-              label = "Load More"
-              type="normal"
-              onClick = {loadMore}
-            />
-          )
-        }
-
+        </div>
+        <div className={styles.button}>
+          {
+            isLoadMoreNeeded && (
+              <ButtonCPN
+                label = "Load More"
+                type="normal"
+                onClick = {loadMore}
+                className={styles.loadMoreButton}
+              />
+            )
+          }
+        </div>        
       </div>
     </PageLayout>
   )

@@ -34,6 +34,17 @@
     text-align: center;
 }
 
+.productList {
+    margin-bottom: 20px;
+}
+
+.button {
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+}
 
 @media (min-width: $first-breakpoint) {
     .smallScreen {
