@@ -24,13 +24,13 @@ function ProductList({ products, type, addToCart }: Props) {
         if(isProductGroup(product)) {
             return {
                 ...product,
-                path: `/products/${product.products[0].id}`
+                path: `/product/${product.products[0].id}`
             }
         }
 
         return {
             ...product,
-            path: `/products/${product.id}`
+            path: `/product/${product.id}`
         }
         
     });
