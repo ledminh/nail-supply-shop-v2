@@ -328,7 +328,7 @@ export const getServerSideProps:GetServerSideProps<Props> = async (context) => {
         sortedOrder: sortedOrderItem,
       },
 
-      numProducts: 20,
+      numProducts: 10,
       
     }
   }
