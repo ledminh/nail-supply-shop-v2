@@ -13,22 +13,25 @@ export interface Props {
 
 export default function CategoryInfo({name, image, description }: Props) {
 
-    const [isReadMore, setIsReadMore] = useState(false);
+    const [showReadMore, setShowReadMore] = useState(false);
     const [_description, setDescription] = useState(description);
     
+
     useEffect(() => {
         if (description.length > 100) {
-            setDescription(description.substring(0, 100) + "...");
-        }
-    }, [description]);
-
-    const handleReadMore = () => {
-        if (isReadMore) {
             setDescription(description.substring(0, 100) + "...");
         } else {
             setDescription(description);
         }
-        setIsReadMore(!isReadMore);
+    }, [description])
+
+    const handleReadMore = () => {
+        if (showReadMore) {
+            setDescription(description.substring(0, 100) + "...");
+        } else {
+            setDescription(description);
+        }
+        setShowReadMore(!showReadMore);
     }
 
 
@@ -46,7 +49,11 @@ export default function CategoryInfo({name, image, description }: Props) {
                     className={styles.readmore}
                     onClick={handleReadMore}
                     >
-                    {isReadMore ? "Read less" : "Read more"}
+                    {
+                        description.length > 100 ? (
+                            showReadMore ? "Read less" : "Read more"
+                        ): null
+                    }
                 </button>
             </div>
         </div>
