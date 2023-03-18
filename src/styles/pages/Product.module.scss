@@ -1,0 +1,72 @@
+@import '../base';
+
+.wrapper {
+    width: 90%;
+    margin: 0 auto;
+
+    display: flex;
+    flex-direction: column;
+
+    gap: 20px;
+}
+
+.productInfo {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    background-color: $secondary-background-color;
+
+    padding: 10px;
+}
+
+.price {
+    &::before {
+        content: '$';
+    }
+
+}
+
+.addToCart {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.quantityPicker {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+
+    border: 1px solid $button-color;
+    border-radius: $border-radius;
+    
+
+}
+
+
+.quantityButton,
+.quantityValue {
+    padding: 5px;
+}
+
+.quantityButton {
+    border: 1px solid $secondary-background-color;
+    border-radius: $border-radius;
+
+    background-color: $button-color;
+
+    color: white;
+    cursor: pointer;
+
+    &:hover {
+        background-color: darken(gray, 20%);
+    }
+}
+
+   

@@ -11,7 +11,7 @@ import {Category} from '@/types/category';
 import getCategoryProps  from '@/utils/getCategoryProps';
 
 
-import styles from '@/styles/pages/Category.module.scss'
+import styles from '@/styles/pages/Product.module.scss'
 import ImagesCarousellSection from '@/components/sections/ImagesCarousell';
 import ProductInfo from '@/components/composites/ProductInfo';
 import ButtonCPN from '@/components/basics/ButtonCPN';
