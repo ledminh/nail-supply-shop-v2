@@ -19,7 +19,7 @@ const ItemCPN = ({id, name}:ItemProps) => (
       color: "white",
       fontSize: "1rem",
     }}>
-    Item
+    {name}
   </div>);
  
 const items = [
