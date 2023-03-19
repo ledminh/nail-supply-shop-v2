@@ -1,16 +1,43 @@
+@import '../base';
+
 .wrapper {
     border: none;
     width: 100%;
+    height: 60px;
 
     display: flex;
     align-items: center;
+    justify-content: space-between;
+
+    padding: 4px;
+
+
+    cursor: pointer;
 
 }
 
-.name {
-    font-weight: normal;
+.image {
+    display: none;
+}
+
+.text {
+    padding: 20px;
+
+}
+
+h3.name {
+    display: none;
+}
+
+h4.name {
+    display: block;
 }
 
 .description {
     display: none;
 }
+
+.deleteButton {
+    height: 100%;
+}
+

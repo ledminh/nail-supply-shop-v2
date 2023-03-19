@@ -44,7 +44,7 @@
 
 .button.danger {
     background-color: $danger-color;
-    color: rgb(68, 43, 43);
+    color: $text-color-on-danger-color;
     font-weight: 600;
 
     &:disabled {

@@ -40,6 +40,7 @@ const AdminCategoryBlockCPN:AdminCategoryBlock = ({id, image, name, description,
             />
             <div className={styles.text}>
                 <h3 className={styles.name}>{name}</h3>
+                <h4 className={styles.name}>{name}</h4>
                 <p className={styles.description}>{description}</p>
             </div>
             <ButtonCPN

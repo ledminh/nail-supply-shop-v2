@@ -1,21 +1,36 @@
 @import '../base';
 
-.wrapper {
+
+.ul {
     display: flex;
     flex-direction: column;
-    align-items: stretch;
+    align-items: center;
     justify-content: center;
+    
+    width: 100%;
+    
 
-    gap: 20px;
-
-    border: 2px solid red;
-
+    gap: 10px;
 }
+
+.li {
+    width: 100%;
+
+    border-radius: $border-radius;
+    
+    border: 2px solid $separator-color;
+
+    overflow: hidden;
+}
+
+
+
 
 .addButton {
     width: 100%;
-    height: 50px;
-
+    height: 40px;
     border: none;
+
+    cursor: pointer;
 }
 

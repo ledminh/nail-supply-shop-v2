@@ -23,6 +23,7 @@ type Button = FC<Props>;
 
 const ButtonCPN:Button = ({type, onClick, icon, label, className, disabled}) => {
 
+    
 
     return (
         <button 
