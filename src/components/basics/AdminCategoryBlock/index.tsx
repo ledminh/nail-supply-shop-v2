@@ -27,6 +27,7 @@ const AdminCategoryBlockCPN:AdminCategoryBlock = ({id, image, name, description,
         <button className={styles.wrapper}
             onClick = {(e) => {
                 e.preventDefault();
+                e.stopPropagation();
                 onClick(id);
             }}
         >
@@ -43,6 +44,7 @@ const AdminCategoryBlockCPN:AdminCategoryBlock = ({id, image, name, description,
                 type = "danger"
                 onClick = {(e) => {
                     e.preventDefault();
+                    e.stopPropagation();
 
                     onDelete(id);
                 }}

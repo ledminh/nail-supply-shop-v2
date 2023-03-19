@@ -9,8 +9,8 @@ import styles from "./List.module.scss";
  *  Types and Interfaces
  */
 
-export interface Props<T extends JSX.IntrinsicAttributes & Item> {
-    items: T[];
+export interface Props<T> {
+    items: (T & Item)[];
     ItemCPN: FC<T>;
     liClass?: string;
     ulClass?: string;
@@ -22,7 +22,7 @@ export interface Props<T extends JSX.IntrinsicAttributes & Item> {
 };
 
 
-export default function List<T extends JSX.IntrinsicAttributes & Item>({
+export default function List<T>({
     items,
     ItemCPN,
     liClass,
