@@ -38,6 +38,7 @@ const CategoryBlockCPN:CategoryBlock = ({image, name, description, detailed, ver
         
     } 
 
+
     if(vertical) {
 
         return (
