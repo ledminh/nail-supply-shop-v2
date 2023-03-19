@@ -14,17 +14,19 @@ export interface Props  {
     name: string,
     description: string,
     onDelete: (catID: string) => void,
-    onClick: (catID: string) => void
+    onClick: (catID: string) => void,
+    className?: string,
 };
 
 type AdminCategoryBlock = FC<Props>;
 
 
-const AdminCategoryBlockCPN:AdminCategoryBlock = ({id, image, name, description, onDelete, onClick}) => {
+const AdminCategoryBlockCPN:AdminCategoryBlock = ({id, image, name, description, onDelete, onClick, className}) => {
 
+    const classNames = [styles.wrapper, className].join(" ");
 
     return (
-        <button className={styles.wrapper}
+        <button className={classNames}
             onClick = {(e) => {
                 e.preventDefault();
                 e.stopPropagation();

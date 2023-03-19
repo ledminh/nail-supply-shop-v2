@@ -83,11 +83,12 @@ const ItemCPN = ({id, image, name, description, onDelete, onClick, onAdd}:ItemCP
                             description = {description}
                             onDelete = {onDelete}
                             onClick = {onClick}
+                            className={styles.categoryBlock}
                         />)
             }
             {
                 onAdd && (
-                    <button className={styles.addButon}
+                    <button className={styles.addButton}
                         onClick = {(e) => {
                             e.preventDefault();
                             onAdd(id);
