@@ -32,7 +32,7 @@
     "cscc": "npm run create-scss-composite",
     "cscs": "npm run create-scss-section",
     "cscg": "npm run create-scss-generic",
-    "cscly": "npm run create-scss-layout",
+    "cscl": "npm run create-scss-layout",
     "cscp": "npm run create-scss-page",
     "chromatic": "npx chromatic --project-token=698eefe93dfe"
   },

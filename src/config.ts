@@ -9,6 +9,14 @@ import searchIconPNG from '@images/search_icon.png';
 import shopImagePNG from '@images/shop_image.png';
 import { SortedOrderItem, SortItem } from './types/list-conditions';
 
+import type { AdminSection } from './types/others';
+import CategoryManagementSection from './components/sections/CategoryManagementSection';
+import ProductManagementSection from './components/sections/ProductManagementSection';
+import AboutUsManagementSection from './components/sections/AboutUsManagementSection';
+import OrderManagementSection from './components/sections/OrderManagementSection';
+import OthersManagementSection from './components/sections/OthersManagementSection';
+
+
 /***************************
  *  Header
  */
@@ -133,3 +141,44 @@ export const categoryConfig:CategoryConfig = {
 }
 
 
+/*****************************
+ *  Admin pages
+ */
+
+const adminSections: AdminSection[] = [
+    {
+        id: "admin/category",
+        name: "Category",
+        slug: "category",
+        component: CategoryManagementSection
+    },
+    {
+        id: "admin/product",
+        name: "Product",
+        slug: "product",
+        component: ProductManagementSection
+    },
+    {
+        id: "admin/aboutus",
+        name: "About Us",
+        slug: "aboutus",
+        component: AboutUsManagementSection
+    },
+    {
+        id: "admin/orders",
+        name: "Orders",
+        slug: "orders",
+        component: OrderManagementSection
+    },
+    {
+        id: "admin/others",
+        name: "Others",
+        slug: "others",
+        component: OthersManagementSection
+    },
+]
+    
+
+export const adminConfig = {
+    sections: adminSections  
+}

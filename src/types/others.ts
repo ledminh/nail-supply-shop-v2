@@ -20,4 +20,10 @@ export type ContactInfo = {
 }
 
 
+export type AdminSection = {
+    id: string;
+    name: string;
+    slug: string;
+    component: React.FC;
+}
 
