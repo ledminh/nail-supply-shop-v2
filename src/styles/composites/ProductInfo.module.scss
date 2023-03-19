@@ -54,3 +54,9 @@
     }
 }
 
+
+@media (min-width: $second-breakpoint) {
+    .otherProducts {
+        margin-bottom: 20px;
+    }
+}

@@ -37,3 +37,24 @@
 
 
 }
+
+
+@media (min-width: $first-breakpoint) {
+    .carousell {
+        grid-template-rows: 370px 80px;
+    }
+
+    .mainItem {
+        height: 370px;
+    }
+}
+
+@media (min-width: $second-breakpoint) {
+    .carousell {
+        grid-template-rows: 420px 80px;
+    }
+
+    .mainItem {
+        height: 420px;
+    }
+}
