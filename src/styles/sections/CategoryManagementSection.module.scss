@@ -1,5 +1,8 @@
 @import '../base';
 
+section.wrapper {
+    margin: 0;
+}
 
 .ul {
     display: flex;
@@ -43,3 +46,18 @@
     cursor: pointer;
 }
 
+
+@media (min-width: $first-breakpoint) {
+    .ul {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+
+    .addButton {
+        height: 70px;
+
+        font-size: 1.4rem;
+        font-weight: 700;
+    }
+}
