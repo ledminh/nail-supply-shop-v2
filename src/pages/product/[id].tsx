@@ -65,6 +65,7 @@ export default function ProductPage({productID, contactInfo, aboutTextFooter, im
                   groupName = {groupName}
                   otherProducts = {otherProducts}
                   router = {router}
+                  className = {styles.text}
               />
               <div className={styles.footer}>
                   <h3 className={styles.price}>{price}</h3>

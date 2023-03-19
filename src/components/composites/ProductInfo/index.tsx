@@ -9,16 +9,19 @@ export interface Props {
     intro: string;
     groupName?: string;
     otherProducts?: Product[];
-    router: NextRouter
+    router: NextRouter;
+    className?: string;
 }
 
 
-export default function ProductInfo({ name, intro, groupName, otherProducts, router }: Props) {
+export default function ProductInfo({ name, intro, groupName, otherProducts, router, className }: Props) {
 
     const optionItems = otherProducts?.map(convertProductToOptionItem);
+    const classNames = className ? `${styles.wrapper} ${className}` : styles.wrapper;
 
+    
     return (
-        <div className={styles.wrapper}>
+        <div className={classNames}>
             <h2 className={styles.name}>{name}</h2>
             {groupName && <h3 className={styles.groupName}>{groupName}</h3>}
             {
