@@ -18,7 +18,6 @@ export default function ProductInfo({ name, intro, groupName, otherProducts, rou
 
     const optionItems = otherProducts?.map(convertProductToOptionItem);
     const classNames = className ? `${styles.wrapper} ${className}` : styles.wrapper;
-
     
     return (
         <div className={classNames}>

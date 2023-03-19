@@ -7,3 +7,55 @@
     border-radius: $border-radius;
 }
 
+.groupName {
+    font-style: italic;
+    font-weight: 500;
+
+    margin-bottom: 10px;
+
+    &::before{
+        content: "Group: ";
+        font-weight: 700;
+        font-style: normal;
+    }
+}
+
+.otherProducts {
+    display: flex;
+
+    flex-flow: row wrap;
+    justify-content: flex-start;
+    align-items: center;
+
+    gap: 10px;
+
+
+    margin-bottom: 30px;
+    
+    
+    span {
+        display: inline-block;
+        font-size: .9rem;
+        font-style: italic;
+
+        flex-basis: 100%;
+
+    }
+
+    .select {
+        padding: 5px;
+        flex-basis: 100%;
+    }
+}
+
+@media (min-width: $first-breakpoint) {
+    .otherProducts {
+        span {
+            flex-basis: 40%;
+        }
+
+        .select {
+            flex-basis: 40%;
+        }
+    }
+}

@@ -9,6 +9,8 @@ const productSample = {
   name: "Product Name",
   price: 100,
   intro: "This is some intro text. I'm trying to make it longer to see if it fit on the frame",
+  details: "This is some details text. I'm trying to make it longer to see if it fit on the frame. Something more to say here to make it longer, and even longer, longer, longer",
+  categoryID: "1",
   images: [
     {
       id: "img-1",
@@ -58,6 +60,7 @@ const productWithGroupSamples = [
   },
   {
     name: "Product Group Name",
+    categoryID: "1",
     products: [
       {
         ...productSample,

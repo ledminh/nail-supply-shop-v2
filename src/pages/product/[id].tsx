@@ -216,6 +216,59 @@ export const getServerSideProps:GetServerSideProps<Props> = async (context) => {
     },
   ]
 
+  const productSample = {
+    id: "1",
+    name: "Product Name",
+    price: 100,
+    intro: "This is some intro text. I'm trying to make it longer to see if it fit on the frame",
+    details: "This is some details text. I'm trying to make it longer to see if it fit on the frame. Something more to say here to make it longer, and even longer, longer, longer",
+    categoryID: "1",
+    images: [
+      {
+        id: "img-1",
+        src: "https://picsum.photos/seed/picsum/200/200",
+        alt: "Product Image 1"
+      },
+      {
+        id: "img-2",
+        src: "https://picsum.photos/seed/picsum/200/200",
+        alt: "Product Image 2"
+      },
+      {
+        id: "img-3",
+        src: "https://picsum.photos/seed/picsum/200/200",
+        alt: "Product Image 3"
+      }
+    ]
+  }
+  
+  const productSamples = [
+    {
+      ...productSample,
+      name: 'Product Name 1',
+      id: "1"
+    },
+    {
+      ...productSample,
+      name: 'Product Name 2',
+      id: "2"
+    },
+    {
+      ...productSample,
+      name: 'Product Name 3',
+      id: "3"
+    },
+    {
+      ...productSample,
+      name: 'Product Name 4',
+      id: "4"
+    },
+    {
+      ...productSample,
+      name: 'Product Name 5',
+      id: "5"
+    }
+  ]
 
   return {
     props: {
@@ -230,9 +283,9 @@ export const getServerSideProps:GetServerSideProps<Props> = async (context) => {
       price: 100,
       
       categoryID: "1",
-      categories
-      // groupName?: string,
-      // otherProducts?: Product[],
+      categories,
+      groupName: "Group Name",
+      otherProducts: productSamples,
     }
   }
 }
