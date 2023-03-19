@@ -75,13 +75,18 @@ export default function ProductPage({productID, contactInfo, aboutTextFooter, im
                         label="Add to Cart"
                         className={styles.addToCartButton}
                         onClick={() => {
+                          
                           addToCart({
                               id: productID,
                               name: name,
                               price: price,
                               quantity: quantity,
                               image: images[0]
-                            })
+                            });
+
+                          setQuantity(0);
+                          router.push('/cart');
+                          
                           }
                         }
                       />
