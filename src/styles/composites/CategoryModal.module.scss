@@ -1,13 +1,103 @@
-.placeholder {
+@use '../base' as *;
+
+
+.form {
+    padding: 7px 4px; 
+}
+
+.fieldset {
+    border: 1px solid $button-color;
+    border-radius: $border-radius;
+    padding: 4px 7px;
+
+    margin-bottom: 20px;
+
+   legend {
+       padding: 0 5px;
+       font-size: 1rem;
+       font-weight: bold;
+       color: $button-color;
+   }
+}
+
+.formGroup {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 3px;
+
+    label {
+        font-weight: bold;
+        color: $heading-color;
+    }
+
+    input {
+        padding: 5px;
+        border: 1px solid $button-color;
+        border-radius: $border-radius;
+        
+    }
+}
+
+.imageHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+
+    border-bottom: 2px solid $separator-color;
+    padding-bottom: 5px;
+    label {
+        padding: 5px 10px;
+        border: 1px solid $button-color;
+        border-radius: $border-radius;
+        color: white;
+        background-color: $button-color;
+        cursor: pointer;
+        transition: background-color 0.2s ease;
+        
+        
+        &:hover {
+            background-color: darken($button-color, 10%);
+        }
+    }
+    
+    input[type="file"] {
+        display: none;
+    }
+}
+
+.imageWrapper {
+    background-color: $secondary-background-color;
+    height: 200px;
+
+    border-radius: $border-radius;
+    overflow: hidden;
+
+    &::before {
+        content: 'No image selected';
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100%;
+        width: 100%;
+        font-size: 1.5rem;
+        color: lighten($heading-color, 20%);
+    }
+}
+
+.image {
+    height: 300px;
+    width: 300px;
+}
+
+fieldset.footer {
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: rgb(63, 63, 63);
-    border: 2px solid rgb(0, 0, 0);
-    color: #fff;
-    padding: 1rem;
-    font-size: 1.5rem;
-    font-weight: bold;
-    text-align: center;
-    border-radius: 0.5rem;
+    
+    padding-top: 10px;
+    gap: 20px;
+
+    border: none;
+
 }

@@ -13,6 +13,10 @@
     justify-content: center;
     align-items: center;
 
+    
+    // scroll the modal content if it's too long while the body is fixed
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
 }
 
 .modal {

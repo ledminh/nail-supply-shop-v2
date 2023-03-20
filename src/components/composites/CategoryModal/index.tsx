@@ -50,7 +50,7 @@ export default function CategoryModal({ type, onSave, onCancel, initName, initDe
 
     const FooterComponent = () => {
         return (
-            <fieldset className="footer">
+            <fieldset className={styles.footer}>
                 <ButtonCPN type="normal" label={type === 'edit'? 'Save' : 'Add'} disabled = {!name || !description || !image} onClick={_onSave}/>
                 <ButtonCPN type="attention" label="Cancel" onClick={onCancel}/>
             </fieldset>
@@ -60,7 +60,7 @@ export default function CategoryModal({ type, onSave, onCancel, initName, initDe
     return (
         <ModalLayout title="Category" FooterComponent={FooterComponent}>
             <form className={styles.form}>
-                <fieldset>
+                <fieldset className={styles.fieldset}>
                     <legend>Info</legend>
                     <div className={styles.formGroup}>
                         <label htmlFor="name">Name</label>
@@ -76,13 +76,13 @@ export default function CategoryModal({ type, onSave, onCancel, initName, initDe
                     <label htmlFor="image">{image? "Replace": "Add Image"}</label>
                     <input type="file" id="image" onChange={(e) => setImage(e.target.files?.[0] ?? null)}/>
                 </div>
-                <SeparatorCPN/>
                 {
                     <div className={styles.imageWrapper}>
                         {
                             image && <ImageCPN 
                                             image = {createImageObj(image)} 
                                             size = "medium"
+                                            className={styles.image}
                                         />
                         }
                     </div>
