@@ -7,6 +7,8 @@ import { Category } from "@/types/category";
 
 import { useState, useEffect } from "react";
 
+import CategoryModal from "@/components/composites/CategoryModal";
+
 export interface Props {
 }
 
@@ -42,18 +44,21 @@ export default function CategoryManagementSection({  }: Props) {
 
 
     return (
-        <section className={styles.wrapper}>
-            <List 
-                items = {[{id: 'add-button', onAdd},...categories.map((cat) => ({
-                    ...cat,
-                    onDelete,
-                    onClick
-                }))]}
-                ItemCPN = {ItemCPN}
-                liClass = {styles.li}
-                ulClass = {styles.ul}
-            />
-        </section>
+        <>
+            <section className={styles.wrapper}>
+                <List 
+                    items = {[{id: 'add-button', onAdd},...categories.map((cat) => ({
+                        ...cat,
+                        onDelete,
+                        onClick
+                    }))]}
+                    ItemCPN = {ItemCPN}
+                    liClass = {styles.li}
+                    ulClass = {styles.ul}
+                />
+            </section>
+            <CategoryModal />
+        </>
     );
 }
 
@@ -70,6 +75,7 @@ interface ItemCPNProps  {
     onClick?: (catID: string) => void
     onAdd?: (catID: string) => void
 };
+
 const ItemCPN = ({id, image, name, description, onDelete, onClick, onAdd}:ItemCPNProps) => {
 
     return (
