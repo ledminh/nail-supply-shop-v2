@@ -161,7 +161,7 @@ const adminSections: AdminSection[] = [
     {
         id: "admin/aboutus",
         name: "About Us",
-        slug: "aboutus",
+        slug: "about-us",
         component: AboutUsManagementSection
     },
     {

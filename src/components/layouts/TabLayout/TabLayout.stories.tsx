@@ -1,26 +1,33 @@
 import {  Meta, StoryObj } from "@storybook/react";
 
 import TabLayout from '.';
-import type { Props } from '.';
+import type { TabLayoutProps } from '.';
 
+import { adminConfig } from "@/config";
 
+const Children = () => (
+  <div style={{
+    height: "100%",
+    width: "100%",
+    backgroundColor: "gray"
+  }}>Children</div>
+);
 
-const defaultArgs:Props = {
+const { sections } = adminConfig;
+
+const defaultArgs = {
+    tabs: sections,
+    currentTabSlug: sections[0].slug,
+    children: <Children />
 };
 
-// const Wrapper = (args:Props) => (
-//   <div style={{
-    
-//   }}>
-//     <TabLayout {...args} />
-//   </div>
-// );
+
 
 
 export default {
   title: "Layouts/TabLayout",
   component: TabLayout,
-  args: defaultArgs
+  args: defaultArgs,
 } as Meta;
 
 

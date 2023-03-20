@@ -6,14 +6,10 @@ import TabLayout from '@/components/layouts/TabLayout';
 
 import { adminConfig } from '@/config';
 
-interface Props {
+export interface Props {
   contactInfo: ContactInfo;
   aboutTextFooter: string;
 }
-
-
-
-
 
 export default function AdminPage(props: Props) {
   const { contactInfo, aboutTextFooter } = props;

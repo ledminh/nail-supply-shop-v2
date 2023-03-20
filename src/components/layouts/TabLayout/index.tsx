@@ -11,7 +11,7 @@ interface Tab {
     slug: string;
 }
 
-interface TabLayoutProps {
+export interface TabLayoutProps {
     tabs: Tab[];
     currentTabSlug: string;
     children: ReactNode;
