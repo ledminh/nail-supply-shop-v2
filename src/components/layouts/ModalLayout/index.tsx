@@ -1,5 +1,5 @@
 import styles from '@styles/layouts/ModalLayout.module.scss';
-
+import { useEffect } from 'react';
 
 export interface Props {
     title: string;
@@ -9,7 +9,13 @@ export interface Props {
 
 export default function ModalLayout({title, children, FooterComponent}: Props) {
 
-    
+    useEffect(() => {
+        document.body.style.overflow = "hidden";
+        return () => {
+            document.body.style.overflow = "unset";
+        }
+    }, []);
+
 
     return (
         <div className={styles.overlay}>
@@ -18,9 +24,7 @@ export default function ModalLayout({title, children, FooterComponent}: Props) {
                     <div className={styles.title}>
                         <h2>{title}</h2>
                     </div>
-                    <div className={styles.close}>
-                        <button className={styles.closeButton}>X</button>
-                    </div>
+
                 </div>
                 <div className={styles.body}>
                     {children}

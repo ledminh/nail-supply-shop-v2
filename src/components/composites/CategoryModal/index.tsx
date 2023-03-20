@@ -1,4 +1,5 @@
 import styles from "@styles/composites/CategoryModal.module.scss";
+import ModalLayout from "@/components/layouts/ModalLayout";
 
 export interface Props {
 }
@@ -8,9 +9,9 @@ export default function CategoryModal({ }: Props) {
 
 
     return (
-        <div className={styles.placeholder}>
+        <ModalLayout title="Category" FooterComponent={() => <div>Footer</div>}>
             CategoryModal composite
-        </div>
+        </ModalLayout>
     );
 }
 
