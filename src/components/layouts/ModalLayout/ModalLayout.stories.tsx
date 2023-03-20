@@ -6,6 +6,9 @@ import type { Props } from '.';
 
 
 const defaultArgs:Props = {
+  title: "Modal Title",
+  children: <div>Modal Content</div>,
+  FooterComponent: () => <div>Modal Footer</div>
 };
 
 // const Wrapper = (args:Props) => (

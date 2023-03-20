@@ -57,7 +57,7 @@ export default function CategoryManagementSection({  }: Props) {
                     ulClass = {styles.ul}
                 />
             </section>
-            <CategoryModal />
+            {/* <CategoryModal /> */}
         </>
     );
 }

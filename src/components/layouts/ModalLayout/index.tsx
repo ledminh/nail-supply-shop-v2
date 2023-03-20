@@ -22,9 +22,8 @@ export default function ModalLayout({title, children, FooterComponent}: Props) {
             <div className={styles.modal}>
                 <div className={styles.header}>
                     <div className={styles.title}>
-                        <h2>{title}</h2>
+                        <h3>{title}</h3>
                     </div>
-
                 </div>
                 <div className={styles.body}>
                     {children}
