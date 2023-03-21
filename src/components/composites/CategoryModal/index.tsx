@@ -57,7 +57,7 @@ export default function CategoryModal({ type, onSave, onCancel, initName, initDe
     };
 
     return (
-        <ModalLayout title="Category" FooterComponent={FooterComponent}>
+        <ModalLayout title="Category" FooterComponent={FooterComponent} type="normal">
             <form className={styles.form}>
                 <fieldset className={styles.fieldset}>
                     <legend>Info</legend>

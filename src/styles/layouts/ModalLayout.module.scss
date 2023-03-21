@@ -20,6 +20,9 @@
 .modal {
     background-color: $background-color;
 
+    border-width: 2px;
+    border-style: solid;
+
     width: 100%;
 
     display: flex;
@@ -30,18 +33,32 @@
     
 }
 
+.modal.normal {
+    border-color: $button-color;
+}
 
+.modal.warning {
+    border-color: $attention-color;
+}
 
 
 .header {
     width: 100%;
-    background-color: $button-color;
-    color: $background-color;
+    
     
     display: flex;
     justify-content: center;
     align-items: center;
 
+    &.normal{
+        background-color: $button-color;
+        color: $background-color;
+    }
+
+    &.warning {
+        background-color: $attention-color;
+        color: lighten(black, 25%);
+    }
 }
 
 .body {

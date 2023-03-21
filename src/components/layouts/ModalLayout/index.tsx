@@ -5,9 +5,10 @@ export interface Props {
     title: string;
     children: React.ReactNode;
     FooterComponent: React.FC;
+    type: 'normal' | 'warning';
 };
 
-export default function ModalLayout({title, children, FooterComponent}: Props) {
+export default function ModalLayout({title, children, FooterComponent, type}: Props) {
 
     useEffect(() => {
         document.body.style.overflow = "hidden";
@@ -16,11 +17,13 @@ export default function ModalLayout({title, children, FooterComponent}: Props) {
         }
     }, []);
 
+    const modalClassNames = [styles.modal, styles[type]].join(' ');
+    const headerClassNames = [styles.header, styles[type]].join(' ');
 
     return (
         <div className={styles.overlay}>
-            <div className={styles.modal}>
-                <div className={styles.header}>
+            <div className={modalClassNames}>
+                <div className={headerClassNames}>
                     <div className={styles.title}>
                         <h3>{title}</h3>
                     </div>
