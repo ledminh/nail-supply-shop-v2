@@ -39,6 +39,7 @@ export default function CategoryModal({ type, onSave, onCancel, initName, initDe
     const _onSave = () => {
         if(!name || !description || !image) return;
 
+        
         onSave({
             name,
             description,

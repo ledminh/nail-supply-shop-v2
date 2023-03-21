@@ -3,6 +3,9 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { Category } from '@/types/category';
 
+import formidable from 'formidable';
+
+
 export default function handler(req: NextApiRequest, res: NextApiResponse<Category[] | { message: string }>) {
 
   switch (req.method) {
@@ -28,7 +31,67 @@ export default function handler(req: NextApiRequest, res: NextApiResponse<Catego
         categories.splice(categoryIndex, 1);
         res.status(200).json(categories);
         break;
-      } else {
+      } 
+      else if (type === 'create') {
+        const form = new formidable.IncomingForm();
+                
+        form.parse(req, (err, fields) => {
+          if (err) {
+            res.status(500).json({ message: err.message });
+            return;
+          }
+
+          const { name, description, imageFileName } = fields;
+          
+          const newCategory: Category = {
+            id: (Math.max(...categories.map((c) => parseInt(c.id, 10))) + 1).toString(),
+            slug: `category-${(name as string).toLowerCase().replace(/[^a-z0-9]+/g, '-')}`,
+            name: name as string,
+            description: description as string,
+            image: {
+              src: `/images/category/${imageFileName}`,
+              alt: name as string,
+            },
+          };
+
+          categories.push(newCategory);
+          res.status(200).json(categories);
+        });
+
+      }
+      else if (type === 'update') {
+        const form = new formidable.IncomingForm();
+
+        form.parse(req, (err, fields) => {
+          if (err) {
+            res.status(500).json({ message: err.message });
+            return;
+          }
+
+          const { id, name, description, imageFileName } = fields;
+
+          const categoryIndex = categories.findIndex((category) => category.id === id);
+
+          if (categoryIndex === -1) {
+            res.status(404).json({ message: 'Category not found' });
+            return;
+          }
+
+          categories[categoryIndex] = {
+            ...categories[categoryIndex],
+            name: name as string,
+            description: description as string,
+            image: imageFileName === 'undefined' ? categories[categoryIndex].image :{
+              src: `/images/category/${imageFileName}`,
+              alt: name as string,
+            },
+          };
+
+
+          res.status(200).json(categories);
+        });
+      }
+      else {
         res.status(400).json({ message: 'Invalid type parameter' });
       }
       break;
@@ -38,6 +101,11 @@ export default function handler(req: NextApiRequest, res: NextApiResponse<Catego
   }
 }
 
+export const config = {
+  api: {
+    bodyParser: false,
+  },
+};
 
 const categorySample = {
   image: {

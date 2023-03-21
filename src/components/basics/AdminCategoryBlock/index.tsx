@@ -26,7 +26,7 @@ const AdminCategoryBlockCPN:AdminCategoryBlock = ({id, image, name, description,
     const classNames = [styles.wrapper, className].join(" ");
 
     return (
-        <button className={classNames}
+        <div className={classNames}
             onClick = {(e) => {
                 e.preventDefault();
                 e.stopPropagation();
@@ -54,7 +54,7 @@ const AdminCategoryBlockCPN:AdminCategoryBlock = ({id, image, name, description,
                 label = "Delete"
                 className = {styles.deleteButton}
             />
-        </button>
+        </div>
     );
 }
 

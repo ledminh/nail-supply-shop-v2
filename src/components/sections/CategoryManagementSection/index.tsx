@@ -11,6 +11,9 @@ import CategoryModal from "@/components/composites/CategoryModal";
 import WarningModal from "@/components/composites/WarningModal";
 import { categoryManagementConfig } from "@/config";
 
+import axios from "axios";
+import getCategoryProps from "@/utils/getCategoryProps";
+
 export interface Props {
 }
 
@@ -23,15 +26,17 @@ export default function CategoryManagementSection({  }: Props) {
     const [isWarningModalOpen, setIsWarningModalOpen] = useState(false);
 
     const [toBeDeletedCategoryID, setToBeDeletedCategoryID] = useState<string | null>(null);
+    const [categoryModalType, setCategoryModalType] = useState<'create' | 'edit'|null>(null);
+
+    const [beingEditedCategory, setBeingEditedCategory] = useState<Category | null>(null);
 
     const getCategoryName = (catID: string) => {
-        const cat = categories.find((cat) => cat.id === catID);
-        return cat ? cat.name : '';
+        return getCategoryProps({categories, categoryID: catID, props: ['name']}).name || '';
     }
 
     useEffect(() => {
-        fetch('/api/categories')
-            .then((res) => res.json())
+        axios.get('/api/categories')
+            .then((res) => res.data)
             .then((data) => {
                 setCategories(data);
             })
@@ -49,40 +54,117 @@ export default function CategoryManagementSection({  }: Props) {
         setIsWarningModalOpen(true);
     }
 
-    const onClick = (catID: string) => {
-        console.log('click', catID);
+    const onEdit = (catID: string) => {
+        setCategoryModalType('edit');
+        setBeingEditedCategory(categories.find((cat) => cat.id === catID)!);
+        setIsCategoryModalOpen(true);
     }
 
-    const onAdd = (catID: string) => {
-        console.log('add', catID);
+    const onCreate = () => {
+        setCategoryModalType('create');
+        setIsCategoryModalOpen(true);
+
     }
 
     const deleteCategory = (catID: string) => {
-        console.log('delete', catID);
-        fetch(`/api/categories/?type=delete&id=${catID}`, {
-            method: 'POST'
+        axios.post(`/api/delete?type=cat-image&filename=${getCategoryProps({categories, categoryID: catID, props: ['image']}).image?.src}`)
+            .then(() => {
+                
+            axios.post(`/api/categories/?type=delete&id=${catID}`)
+                .then(({data}) => {
+                    setCategories(data);
+                })
+                .catch((err) => {
+                    console.error(err);
+                });
         })
-            .then((res) => res.json())
+    }
+
+    const createNewCategory = (name: string, description: string, image: File) => {
+        // Upload the image first
+        const imageFormData = new FormData();
+        imageFormData.append('cat-image', image);
+
+        axios.post('/api/upload?type=cat-image', imageFormData, {
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
+        }).then((res) => res.data)
+        .then((imageData) => {
+            
+            const formData = new FormData();
+
+            formData.append('name', name);
+            formData.append('description', description);
+            formData.append('imageFileName', imageData.filename);
+
+            return axios.post('/api/categories?type=create', formData);
+        }).then((res) => res.data)
+        .then((data) => {
+
+            setCategories(data);
+        })
+        .catch((err) => {
+            console.error(err);
+        });
+      };
+      
+
+    const updateCategory = (catID: string, name: string, description: string, image: File | RemoteImage) => {
+        const formData = new FormData();
+
+        formData.append('id', catID);
+        formData.append('name', name);
+        formData.append('description', description);
+
+
+        if (image instanceof File) {
+            // Delete the old image first
+            axios.post(`/api/delete?type=cat-image&filename=${getCategoryProps({categories, categoryID: catID, props: ['image']}).image?.src}`)
+                .then(() => {
+                    // Upload the new image            
+                    const imageFormData = new FormData();
+                    imageFormData.append('imageFileName', image);
+
+                    return axios.post('/api/upload?type=cat-image', imageFormData, {
+                        headers: {
+                            'Content-Type': 'multipart/form-data'
+                    }});
+                })
+            .then((res) => res.data)
+            .then((imageData) => {
+                
+                formData.append('imageFileName', imageData.filename);
+                return axios.post('/api/categories?type=update', formData);
+            }).then((res) => res.data)
             .then((data) => {
                 setCategories(data);
             })
             .catch((err) => {
                 console.error(err);
             });
+        }
+        else {
+            
+            axios.post('/api/categories?type=update', formData)
+                .then((res) => res.data)
+                .then((data) => {
+                    setCategories(data);
+                })
+                .catch((err) => {
+                    console.error(err);
+                });
+        } 
     }
-
-
-    
-
 
     return (
         <>
             <section className={styles.wrapper}>
                 <List 
-                    items = {[{id: 'add-button', onAdd},...categories.map((cat) => ({
+                    items = {[{id: 'add-button', onCreate},...categories.map((cat) => ({
                         ...cat,
                         onDelete,
-                        onClick
+                        onClick: onEdit
                     }))]}
                     ItemCPN = {ItemCPN}
                     liClass = {styles.li}
@@ -90,11 +172,36 @@ export default function CategoryManagementSection({  }: Props) {
                 />
             </section>
             {
-                isCategoryModalOpen && (
-                    <CategoryModal type="create" 
-                        onSave={(e) => console.log(e)} 
-                        onCancel={() => console.log('cancel')}
-                        />)
+                isCategoryModalOpen &&  (
+                    categoryModalType === 'create'?
+                    <CategoryModal type='create' 
+                        onSave={({name, description, image}) => {
+                            
+                            createNewCategory(name, description, image as File);
+                            setIsCategoryModalOpen(false);
+                            setCategoryModalType(null);
+                        }} 
+                        onCancel={() => {
+                            setIsCategoryModalOpen(false);
+                            setCategoryModalType(null);
+                        }}
+                        /> : 
+                        <CategoryModal type='edit' 
+                            onSave={({name, description, image}) => {
+                                updateCategory(beingEditedCategory!.id, name, description, image);
+                                setIsCategoryModalOpen(false);
+                                setCategoryModalType(null);
+                                setBeingEditedCategory(null);
+                            }} 
+                            onCancel={() => {
+                                setIsCategoryModalOpen(false);
+                                setCategoryModalType(null);
+                                setBeingEditedCategory(null);
+                            }}
+                            initName = {beingEditedCategory?.name || ''} 
+                            initDescription = {beingEditedCategory?.description || ''} 
+                            initImage = {beingEditedCategory?.image as RemoteImage} 
+                            />)
             }
             {
                 isWarningModalOpen && (
@@ -124,10 +231,10 @@ interface ItemCPNProps  {
     description?: string,
     onDelete?: (catID: string) => void,
     onClick?: (catID: string) => void
-    onAdd?: (catID: string) => void
+    onCreate?: () => void
 };
 
-const ItemCPN = ({id, image, name, description, onDelete, onClick, onAdd}:ItemCPNProps) => {
+const ItemCPN = ({id, image, name, description, onDelete, onClick, onCreate}:ItemCPNProps) => {
 
     return (
         <>
@@ -144,11 +251,11 @@ const ItemCPN = ({id, image, name, description, onDelete, onClick, onAdd}:ItemCP
                         />)
             }
             {
-                onAdd && (
+                onCreate && (
                     <button className={styles.addButton}
                         onClick = {(e) => {
                             e.preventDefault();
-                            onAdd(id);
+                            onCreate();
                         }}
                         >
                         ADD
