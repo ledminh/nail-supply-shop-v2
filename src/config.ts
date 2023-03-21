@@ -182,3 +182,14 @@ const adminSections: AdminSection[] = [
 export const adminConfig = {
     sections: adminSections  
 }
+
+/*****************************
+ * /admin/category
+ */
+
+export const categoryManagementConfig = {
+    warningMessage: (categoryName: string): string =>
+      `Delete ${categoryName} category? This will also delete all of its associated products.`
+};
+  
+  

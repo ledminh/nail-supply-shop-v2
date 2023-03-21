@@ -3,6 +3,41 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { Category } from '@/types/category';
 
+export default function handler(req: NextApiRequest, res: NextApiResponse<Category[] | { message: string }>) {
+
+  switch (req.method) {
+    case 'GET':
+      res.status(200).json(categories);
+      break;
+    case 'POST':
+      const { query: { type, id: catID } } = req;
+
+      if (type === 'delete') {
+        if (typeof catID !== 'string') {
+          res.status(400).json({ message: 'Invalid category ID' });
+          break;
+        }
+
+        const categoryIndex = categories.findIndex((category) => category.id === catID);
+
+        if (categoryIndex === -1) {
+          res.status(404).json({ message: 'Category not found' });
+          break;
+        }
+
+        categories.splice(categoryIndex, 1);
+        res.status(200).json(categories);
+        break;
+      } else {
+        res.status(400).json({ message: 'Invalid type parameter' });
+      }
+      break;
+    default:
+      res.setHeader('Allow', ['GET', 'POST']);
+      res.status(405).json({ message: `Method ${req.method} not allowed` });
+  }
+}
+
 
 const categorySample = {
   image: {
@@ -56,6 +91,4 @@ const categories: Category[] = [
     },
   ];
 
-export default function handler(req: NextApiRequest, res: NextApiResponse<Category[]>) {
-  res.status(200).json(categories);
-}
+

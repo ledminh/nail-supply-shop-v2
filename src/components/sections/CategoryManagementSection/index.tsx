@@ -8,6 +8,8 @@ import { Category } from "@/types/category";
 import { useState, useEffect } from "react";
 
 import CategoryModal from "@/components/composites/CategoryModal";
+import WarningModal from "@/components/composites/WarningModal";
+import { categoryManagementConfig } from "@/config";
 
 export interface Props {
 }
@@ -16,6 +18,16 @@ export interface Props {
 export default function CategoryManagementSection({  }: Props) {
 
     const [categories, setCategories] = useState<Category[]>([]);
+
+    const [isCategoryModalOpen, setIsCategoryModalOpen] = useState(false);
+    const [isWarningModalOpen, setIsWarningModalOpen] = useState(false);
+
+    const [toBeDeletedCategoryID, setToBeDeletedCategoryID] = useState<string | null>(null);
+
+    const getCategoryName = (catID: string) => {
+        const cat = categories.find((cat) => cat.id === catID);
+        return cat ? cat.name : '';
+    }
 
     useEffect(() => {
         fetch('/api/categories')
@@ -29,8 +41,12 @@ export default function CategoryManagementSection({  }: Props) {
 
     }, []);
 
+    /********************************
+     * Functions for CategoryModal
+     */
     const onDelete = (catID: string) => {
-        console.log('delete', catID);
+        setToBeDeletedCategoryID(catID);
+        setIsWarningModalOpen(true);
     }
 
     const onClick = (catID: string) => {
@@ -40,6 +56,22 @@ export default function CategoryManagementSection({  }: Props) {
     const onAdd = (catID: string) => {
         console.log('add', catID);
     }
+
+    const deleteCategory = (catID: string) => {
+        console.log('delete', catID);
+        fetch(`/api/categories/?type=delete&id=${catID}`, {
+            method: 'POST'
+        })
+            .then((res) => res.json())
+            .then((data) => {
+                setCategories(data);
+            })
+            .catch((err) => {
+                console.error(err);
+            });
+    }
+
+
     
 
 
@@ -57,7 +89,26 @@ export default function CategoryManagementSection({  }: Props) {
                     ulClass = {styles.ul}
                 />
             </section>
-            <CategoryModal type="create" onSave={(e) => console.log(e)} onCancel={() => console.log('cancel')}/>
+            {
+                isCategoryModalOpen && (
+                    <CategoryModal type="create" 
+                        onSave={(e) => console.log(e)} 
+                        onCancel={() => console.log('cancel')}
+                        />)
+            }
+            {
+                isWarningModalOpen && (
+                    <WarningModal message={categoryManagementConfig.warningMessage(getCategoryName(toBeDeletedCategoryID!))}
+                        onOK={() => {
+                            deleteCategory(toBeDeletedCategoryID!);
+                            setIsWarningModalOpen(false);
+                        }} 
+                        onCancel={() => {
+                            setToBeDeletedCategoryID(null);
+                            setIsWarningModalOpen(false);
+                        }}
+                        />)
+            }
         </>
     );
 }
