@@ -56,8 +56,10 @@ export default function CategoryModal({ type, onSave, onCancel, initName, initDe
         );
     };
 
+    const title = type === 'edit'? 'Edit Category' : 'Add Category';
+    
     return (
-        <ModalLayout title="Category" FooterComponent={FooterComponent} type="normal">
+        <ModalLayout title={title} FooterComponent={FooterComponent} type="normal">
             <form className={styles.form}>
                 <fieldset className={styles.fieldset}>
                     <legend>Info</legend>
