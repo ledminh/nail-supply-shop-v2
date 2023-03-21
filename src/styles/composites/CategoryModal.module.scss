@@ -46,6 +46,7 @@
 
     border-bottom: 2px solid $separator-color;
     padding-bottom: 5px;
+
     label {
         padding: 5px 10px;
         border: 1px solid $button-color;
@@ -67,28 +68,38 @@
 }
 
 .imageWrapper {
+    position: relative;
     background-color: $secondary-background-color;
-    height: 200px;
+    height: 250px;
+
+    max-width: 250px;
+    margin: auto;
 
     border-radius: $border-radius;
     overflow: hidden;
 
-    &::before {
-        content: 'No image selected';
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 100%;
-        width: 100%;
-        font-size: 1.5rem;
-        color: lighten($heading-color, 20%);
-    }
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    text-align: center;
+
+    font-size: 1.5rem;
+    color: lighten($background-color, 50%);
+
+    
 }
 
 .image {
-    height: 300px;
-    width: 300px;
+    position: absolute;
+    top: 0;
+    left: 0;
+
+    width: 100%;
+    height: 100%;
+
 }
+
 
 fieldset.footer {
     display: flex;

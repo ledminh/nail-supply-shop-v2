@@ -1,7 +1,6 @@
 import styles from "@styles/composites/CategoryModal.module.scss";
 import ModalLayout from "@/components/layouts/ModalLayout";
 import ButtonCPN from "@/components/basics/ButtonCPN";
-import SeparatorCPN from "@/components/basics/SeparatorCPN";
 import ImageCPN from "@/components/basics/ImageCPN";
 
 import { RemoteImage } from "@/types/image";
@@ -85,6 +84,7 @@ export default function CategoryModal({ type, onSave, onCancel, initName, initDe
                                             className={styles.image}
                                         />
                         }
+                        <span>No image selected</span>
                     </div>
                 }
             </form>

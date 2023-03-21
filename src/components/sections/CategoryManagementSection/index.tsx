@@ -57,7 +57,7 @@ export default function CategoryManagementSection({  }: Props) {
                     ulClass = {styles.ul}
                 />
             </section>
-            {/* <CategoryModal type="create" onSave={(e) => console.log(e)} onCancel={() => console.log('cancel')}/> */}
+            <CategoryModal type="create" onSave={(e) => console.log(e)} onCancel={() => console.log('cancel')}/>
         </>
     );
 }
