@@ -3,7 +3,7 @@
 .wrapper {
     border: none;
     width: 100%;
-    height: 60px;
+    height: 100%;
 
     display: flex;
     align-items: center;
@@ -40,8 +40,7 @@ h4.name {
 }
 
 .deleteButton {
-    height: 100%;
-
+    
     &:hover {
         box-shadow: 0 0 5px 0 $danger-color;
         color: white;
@@ -50,7 +49,7 @@ h4.name {
 
 @media (min-width: $first-breakpoint) {
     .wrapper {
-        height: auto;
+        height: 100%;
 
         display: flex;
         flex-direction: column;
@@ -98,6 +97,4 @@ h4.name {
 
         border-radius: $border-radius;
     }
-
-    
 }
