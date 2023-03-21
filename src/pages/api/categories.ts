@@ -5,8 +5,11 @@ import { Category } from '@/types/category';
 
 import formidable from 'formidable';
 
+export type CategoryApiResponse = Category[] | Category | { message: string };
+type NextApiCategoryResponse = NextApiResponse<CategoryApiResponse>;
 
-export default function handler(req: NextApiRequest, res: NextApiResponse<Category[] | { message: string }>) {
+
+export default function handler(req: NextApiRequest, res: NextApiCategoryResponse) {
 
   switch (req.method) {
     case 'GET':
@@ -55,7 +58,7 @@ export default function handler(req: NextApiRequest, res: NextApiResponse<Catego
           };
 
           categories.push(newCategory);
-          res.status(200).json(categories);
+          res.status(200).json(newCategory);
         });
 
       }
@@ -74,6 +77,17 @@ export default function handler(req: NextApiRequest, res: NextApiResponse<Catego
 
           if (categoryIndex === -1) {
             res.status(404).json({ message: 'Category not found' });
+            return;
+          }
+
+          // user did not change the image
+          if(!imageFileName) {
+            categories[categoryIndex] = {
+              ...categories[categoryIndex],
+              name: name as string,
+              description: description as string,
+            };
+            res.status(200).json(categories[categoryIndex]);
             return;
           }
 

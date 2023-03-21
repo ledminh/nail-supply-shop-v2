@@ -13,6 +13,8 @@ import { categoryManagementConfig } from "@/config";
 
 import axios from "axios";
 import getCategoryProps from "@/utils/getCategoryProps";
+import { CategoryApiResponse } from "@/pages/api/categories";
+import { AxiosResponse } from "axios";
 
 export interface Props {
 }
@@ -36,9 +38,9 @@ export default function CategoryManagementSection({  }: Props) {
 
     useEffect(() => {
         axios.get('/api/categories')
-            .then((res) => res.data)
-            .then((data) => {
-                setCategories(data);
+            .then((res:AxiosResponse<CategoryApiResponse>) => {
+                setCategories(res.data as Category[]);
+
             })
             .catch((err) => {
                 console.error(err);
@@ -102,13 +104,12 @@ export default function CategoryManagementSection({  }: Props) {
         }).then((res) => res.data)
         .then((data) => {
 
-            setCategories(data);
+            setCategories([data, ...categories]);
         })
         .catch((err) => {
             console.error(err);
         });
-      };
-      
+    };
 
     const updateCategory = (catID: string, name: string, description: string, image: File | RemoteImage) => {
         const formData = new FormData();
@@ -117,14 +118,24 @@ export default function CategoryManagementSection({  }: Props) {
         formData.append('name', name);
         formData.append('description', description);
 
-
-        if (image instanceof File) {
+        // image is not instanceof File --> it is a RemoteImage --> user did not change the image
+        if(!(image instanceof File)) {
+            axios.post('/api/categories?type=update', formData)
+                .then((res) => res.data)
+                .then((data) => {
+                    setCategories([data, ...categories.filter((cat) => cat.id !== catID)]);
+                })
+                .catch((err) => {
+                    console.error(err);
+                });
+        }
+        else {
             // Delete the old image first
             axios.post(`/api/delete?type=cat-image&filename=${getCategoryProps({categories, categoryID: catID, props: ['image']}).image?.src}`)
                 .then(() => {
                     // Upload the new image            
                     const imageFormData = new FormData();
-                    imageFormData.append('imageFileName', image);
+                    imageFormData.append('cat-image', image);
 
                     return axios.post('/api/upload?type=cat-image', imageFormData, {
                         headers: {
@@ -133,7 +144,7 @@ export default function CategoryManagementSection({  }: Props) {
                 })
             .then((res) => res.data)
             .then((imageData) => {
-                
+                console.log(imageData);
                 formData.append('imageFileName', imageData.filename);
                 return axios.post('/api/categories?type=update', formData);
             }).then((res) => res.data)
@@ -144,17 +155,6 @@ export default function CategoryManagementSection({  }: Props) {
                 console.error(err);
             });
         }
-        else {
-            
-            axios.post('/api/categories?type=update', formData)
-                .then((res) => res.data)
-                .then((data) => {
-                    setCategories(data);
-                })
-                .catch((err) => {
-                    console.error(err);
-                });
-        } 
     }
 
     return (

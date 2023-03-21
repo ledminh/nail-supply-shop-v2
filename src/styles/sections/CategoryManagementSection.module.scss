@@ -38,7 +38,6 @@ section.wrapper {
 
 .addButton {
     width: 100%;
-    height: 40px;
     border: none;
 
     background-color: transparent;
@@ -53,6 +52,10 @@ section.wrapper {
         grid-template-columns: repeat(3, 1fr);
     }
 
+    .li {
+        width: 100%;
+        height: 100%;
+    }
 
     .addButton {
         height: 70px;
