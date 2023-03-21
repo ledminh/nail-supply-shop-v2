@@ -23,13 +23,19 @@
     border-width: 2px;
     border-style: solid;
 
-    width: 100%;
+    width: 97vw;
+    max-height: 98vh;
+    border-radius: $border-radius;
+
+    overflow: hidden;
+    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.8);
+
 
     display: flex;
     flex-direction: column;
     align-items: center;
 
-    max-height: 100vh;
+
     
 }
 
@@ -45,6 +51,8 @@
 .header {
     width: 100%;
     
+    box-shadow: inset 0 0 10px 0 rgba(0, 0, 0, 0.5);
+
     
     display: flex;
     justify-content: center;
@@ -83,18 +91,10 @@
         width: 80%;
         max-width: 600px;
 
-        border-radius: $border-radius;
 
-        overflow: hidden;
-        box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.8);
-
-        max-height: 90vh;
 
     }
 
-    .header {
-        box-shadow: inset 0 0 10px 0 rgba(0, 0, 0, 0.5);
-    }
     .body,
     .footer {
         padding: 10px;
