@@ -1,20 +1,17 @@
-import AdminCategoryBlockCPN from "@/components/basics/AdminCategoryBlock";
 import List from "@/components/generics/List";
 import styles from "@styles/sections/ProductManagementSection.module.scss";
 
+import { Product, ProductGroup } from "@/types/product";
+import {useState, useEffect} from "react";
+
+import { ProductApiResponse } from "@/pages/api/products";
+
+import axios, { AxiosResponse } from "axios";
+
 import { RemoteImage } from "@/types/image";
-import { Category } from "@/types/category";
 
-import { useState, useEffect } from "react";
-
-import CategoryModal from "@/components/composites/CategoryModal";
-import WarningModal from "@/components/composites/WarningModal";
-import { categoryManagementConfig } from "@/config";
-
-import axios from "axios";
-import getCategoryProps from "@/utils/getCategoryProps";
-import { CategoryApiResponse } from "@/pages/api/categories";
-import { AxiosResponse } from "axios";
+import AdminProductBlockCPN, {Props as AdminProductBlockProps} from "@/components/basics/AdminProductBlock";
+import AdminProductGroupBlockCPN, {Props as AdminProductGroupBlockProps} from "@/components/basics/AdminProductGroupBlock";
 
 export interface Props {
 }
@@ -22,7 +19,7 @@ export interface Props {
 
 export default function ProductManagementSection({  }: Props) {
 
-    // const [categories, setCategories] = useState<Category[]>([]);
+    const [products, setProducts] = useState<(Product|ProductGroup)[]>([]);
 
     // const [isCategoryModalOpen, setIsCategoryModalOpen] = useState(false);
     // const [isWarningModalOpen, setIsWarningModalOpen] = useState(false);
@@ -36,17 +33,17 @@ export default function ProductManagementSection({  }: Props) {
     //     return getCategoryProps({categories, categoryID: catID, props: ['name']}).name || '';
     // }
 
-    // useEffect(() => {
-    //     axios.get('/api/categories')
-    //         .then((res:AxiosResponse<CategoryApiResponse>) => {
-    //             setCategories(res.data as Category[]);
+    useEffect(() => {
+        axios.get('/api/products')
+            .then((res:AxiosResponse<ProductApiResponse>) => {
+                setProducts(res.data as (Product|ProductGroup)[]);
 
-    //         })
-    //         .catch((err) => {
-    //             console.error(err);
-    //         });
+            })
+            .catch((err) => {
+                console.error(err);
+            });
 
-    // }, []);
+    }, []);
 
     /********************************
      * Functions for CategoryModal
@@ -56,7 +53,13 @@ export default function ProductManagementSection({  }: Props) {
         // setIsWarningModalOpen(true);
     }
 
-    const onEdit = (catID: string) => {
+    const onEditProduct = (catID: string) => {
+        // setCategoryModalType('edit');
+        // setBeingEditedCategory(categories.find((cat) => cat.id === catID)!);
+        // setIsCategoryModalOpen(true);
+    }
+
+    const onEditProductGroup = (catID: string) => {
         // setCategoryModalType('edit');
         // setBeingEditedCategory(categories.find((cat) => cat.id === catID)!);
         // setIsCategoryModalOpen(true);
@@ -157,15 +160,32 @@ export default function ProductManagementSection({  }: Props) {
         // }
     }
 
+    const convertToProductItem = (product: Product | ProductGroup) => {
+        if(isProduct(product)){
+            return {
+                id: product.id,
+                onDelete,
+                onClick: onEditProduct,
+                product
+            }
+        }
+        else {
+            return {
+                id: products[0].id,
+                onDelete,
+                onClick: onEditProductGroup,
+                onEditProduct: onEditProduct,
+                productGroup: product
+            }
+        }
+    
+    }
+
     return (
         <>
             <section className={styles.wrapper}>
                 <List 
-                    items = {[{id: 'add-button', onCreate},...categories.map((cat) => ({
-                        ...cat,
-                        onDelete,
-                        onClick: onEdit
-                    }))]}
+                    items = {products.map(convertToProductItem)}
                     ItemCPN = {ItemCPN}
                     liClass = {styles.li}
                     ulClass = {styles.ul}
@@ -224,44 +244,59 @@ ProductManagementSection.displayName = "ProductManagementSection";
 
 
 
-interface ItemCPNProps  {
-    id: string,
-    image?: RemoteImage,
-    name?: string,
-    description?: string,
-    onDelete?: (catID: string) => void,
-    onClick?: (catID: string) => void
-    onCreate?: () => void
+
+interface ItemCPNProps {
+    onDelete: (id: string) => void;
+    onClick: (id: string) => void;
+    product?: Product;
+    productGroup?: ProductGroup;
+    onEditProduct?: (productID: string) => void;
+}
+
+const ItemCPN = ({
+    onDelete,
+    onClick,
+    onEditProduct,
+    product,
+    productGroup,
+}: ItemCPNProps) => {
+    if (product) {
+        const adminProductProps: AdminProductBlockProps = {
+            ...product,
+            onDelete,
+            onClick,
+        };
+        return (
+            <AdminProductBlockCPN
+                {...adminProductProps}
+                className={styles.productBlock}
+            />
+        );
+    } else if (productGroup && onEditProduct) {
+        const adminProductGroupProps: AdminProductGroupBlockProps = {
+            ...productGroup,
+            onDelete,
+            onClick,
+            onEditProduct
+        };
+        return (
+            <AdminProductGroupBlockCPN
+                {...adminProductGroupProps}
+                className={styles.productBlock}
+            />
+        );
+    } else {
+        return null;
+    }
 };
 
-const ItemCPN = ({id, image, name, description, onDelete, onClick, onCreate}:ItemCPNProps) => {
 
-    return (
-        <>
-            {
-                (image && name && description && onDelete && onClick) && (
-                    <AdminCategoryBlockCPN
-                            id = {id}
-                            image = {image}
-                            name = {name}
-                            description = {description}
-                            onDelete = {onDelete}
-                            onClick = {onClick}
-                            className={styles.categoryBlock}
-                        />)
-            }
-            {
-                onCreate && (
-                    <button className={styles.addButton}
-                        onClick = {(e) => {
-                            e.preventDefault();
-                            onCreate();
-                        }}
-                        >
-                        ADD
-                    </button>
-                )
-            }
-        </>
-    );
+
+/*************************
+ * Helpers
+ */
+
+// check if product is Product or ProductGroup
+const isProduct = (product: Product | ProductGroup): product is Product => {
+    return (product as Product).price !== undefined;
 }

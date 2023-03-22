@@ -10,11 +10,11 @@ import shopImagePNG from '@images/shop_image.png';
 import { SortedOrderItem, SortItem } from './types/list-conditions';
 
 import type { AdminSection } from './types/others';
-import CategoryManagementSection from './components/sections/CategoryManagementSection';
-import ProductManagementSection from './components/sections/ProductManagementSection';
-import AboutUsManagementSection from './components/sections/AboutUsManagementSection';
-import OrderManagementSection from './components/sections/OrderManagementSection';
-import OthersManagementSection from './components/sections/OthersManagementSection';
+import CategoryManagementSection from '@components/sections/CategoryManagementSection';
+import ProductManagementSection from '@components/sections/ProductManagementSection';
+import AboutUsManagementSection from '@components/sections/AboutUsManagementSection';
+import OrderManagementSection from '@components/sections/OrderManagementSection';
+import OthersManagementSection from '@components/sections/OthersManagementSection';
 
 
 /***************************
