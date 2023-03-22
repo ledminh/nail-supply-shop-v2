@@ -1,7 +1,7 @@
 import {  Meta, StoryObj } from "@storybook/react";
 import { useState } from "react";
 
-import AdminCategoryBlockCPN from '.';
+import AdminProductBlockCPN from '.';
 
 import type { Props } from '.';
 
@@ -9,12 +9,27 @@ import type { Props } from '.';
 
 const defaultArgs = {
   id: "1",
-  name: "Category Sample",
-  image: {
-    src: "https://loremflickr.com/300/300",
-    alt: "Category Image",
-  },
-  description: "This is a sample category for testing purposes. Don't take it seriously. It's just a sample. Another sample. Only another sample",
+  name: "Product Sample",
+  price: 100,
+  images: [ 
+    {
+      src: "https://loremflickr.com/300/300",
+      alt: "Product Image",
+    },
+    {
+      src: "https://loremflickr.com/300/300",
+      alt: "Product Image",
+    },
+    {
+      src: "https://loremflickr.com/300/300",
+      alt: "Product Image",
+    },
+    {
+      src: "https://loremflickr.com/300/300",
+      alt: "Product Image",
+    },
+  ],
+  intro: "This is a sample productfor testing purposes. Don't take it seriously. It's just a sample. Another sample. Only another sample",
 } as Props;
 
 
@@ -38,7 +53,7 @@ const Wrapper = () => {
 
   return (
     <>
-      <AdminCategoryBlockCPN {...args} />
+      <AdminProductBlockCPN {...args} />
       <p>{onClickText}</p>
       <p>{onDeleteText}</p>
     </>
@@ -58,7 +73,7 @@ export default {
 
 
 
-type Story = StoryObj<typeof AdminCategoryBlockCPN>;
+type Story = StoryObj<typeof AdminProductBlockCPN>;
 
 
 export const Default: Story = {};

@@ -10,18 +10,19 @@ import styles from "@styles/basics/AdminProductBlockCPN.module.scss";
 
 export interface Props  {
     id: string,
-    image: RemoteImage,
+    images: RemoteImage[],
     name: string,
-    description: string,
-    onDelete: (catID: string) => void,
-    onClick: (catID: string) => void,
+    price: number,
+    intro: string,
+    onDelete: (productID: string) => void,
+    onClick: (productID: string) => void,
     className?: string,
 };
 
 type AdminCategoryBlock = FC<Props>;
 
 
-const AdminCategoryBlockCPN:AdminCategoryBlock = ({id, image, name, description, onDelete, onClick, className}) => {
+const AdminCategoryBlockCPN:AdminCategoryBlock = ({id, images, name, price, intro, onDelete, onClick, className}) => {
 
     const classNames = [styles.wrapper, className].join(" ");
 
@@ -34,14 +35,16 @@ const AdminCategoryBlockCPN:AdminCategoryBlock = ({id, image, name, description,
             }}
         >
             <ImageCPN
-                image = {image}
+                image = {images[0]}
                 size = "medium"
                 className = {styles.image}
             />
             <div className={styles.text}>
+                <h3 className={styles.price}>{price}</h3>
+                <h4 className={styles.price}>{price}</h4>
                 <h3 className={styles.name}>{name}</h3>
                 <h4 className={styles.name}>{name}</h4>
-                <p className={styles.description}>{description}</p>
+                <p className={styles.description}>{intro}</p>
             </div>
             <ButtonCPN
                 type = "danger"

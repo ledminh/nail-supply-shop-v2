@@ -27,12 +27,20 @@
 
 }
 
-h3.name {
+h3.name,
+h3.price {
     display: none;
 }
 
-h4.name {
+h4.name,
+h4.price {
     display: block;
+}
+h3.price,
+h4.price {
+    &:before {
+        content: "$";
+    }
 }
 
 .description {
@@ -69,14 +77,18 @@ h4.name {
     }   
     
     
-    h3.name {
+    h3.name,
+    h3.price {
         display: block;
         
     }
     
-    h4.name {
+    h4.name,
+    h4.price {
         display: none;
     }
+
+    
     
     .description {
         display: block;
