@@ -46,7 +46,7 @@ export default function ProductManagementSection({  }: Props) {
     }, []);
 
     /********************************
-     * Functions for CategoryModal
+     * Functions for ProductModal
      */
     const onDelete = (catID: string) => {
         // setToBeDeletedCategoryID(catID);
