@@ -4,7 +4,7 @@ import ButtonCPN from "@components/basics/ButtonCPN";
 
 import { RemoteImage } from "@/types/image";
 
-import styles from "@styles/basics/AdminProductBlockCPN.module.scss";
+import styles from "@styles/basics/AdminProductGroupBlockCPN.module.scss";
 
 
 
@@ -19,10 +19,10 @@ export interface Props  {
     className?: string,
 };
 
-type AdminCategoryBlock = FC<Props>;
+type AdminProductGroupBlock = FC<Props>;
 
 
-const AdminProductBlockCPN:AdminCategoryBlock = ({id, images, name, price, intro, onDelete, onClick, className}) => {
+const AdminProductGroupBlockCPN:AdminProductGroupBlock = ({id, images, name, price, intro, onDelete, onClick, className}) => {
 
     const classNames = [styles.wrapper, className].join(" ");
 
@@ -61,6 +61,6 @@ const AdminProductBlockCPN:AdminCategoryBlock = ({id, images, name, price, intro
     );
 }
 
-export default AdminProductBlockCPN;
+export default AdminProductGroupBlockCPN;
 
-AdminProductBlockCPN.displayName = "AdminProductBlockCPN";
+AdminProductGroupBlockCPN.displayName = "AdminProductGroupBlockCPN";
