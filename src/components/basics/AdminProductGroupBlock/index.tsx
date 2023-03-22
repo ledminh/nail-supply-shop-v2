@@ -2,29 +2,41 @@ import { FC } from "react";
 import ImageCPN from "@components/basics/ImageCPN";
 import ButtonCPN from "@components/basics/ButtonCPN";
 
-import { RemoteImage } from "@/types/image";
-
+import type { Product, ProductGroup } from "@/types/product";
 import styles from "@styles/basics/AdminProductGroupBlockCPN.module.scss";
 
+import {useState} from "react";
 
+import Select from "@/components/generics/Select";
 
-export interface Props  {
-    id: string,
-    images: RemoteImage[],
-    name: string,
-    price: number,
-    intro: string,
+import {convertToOptionItem, OptionItem} from "@/components/generics/Select";
+
+export interface Props extends ProductGroup {
     onDelete: (productID: string) => void,
     onClick: (productID: string) => void,
     className?: string,
+
+    onEditProduct: (productID: string) => void,
 };
 
 type AdminProductGroupBlock = FC<Props>;
 
 
-const AdminProductGroupBlockCPN:AdminProductGroupBlock = ({id, images, name, price, intro, onDelete, onClick, className}) => {
+const AdminProductGroupBlockCPN:AdminProductGroupBlock = ({id, name, products, onDelete, onClick, className, onEditProduct}) => {
 
+    const [selectedProduct, setSelectedProduct] = useState(products[0]);
+    
     const classNames = [styles.wrapper, className].join(" ");
+
+    const onSelect = (selectedOption: OptionItem<Product>) => {
+        const curProduct = products.find(p => p.id === selectedOption.id);
+
+        if(curProduct){
+            setSelectedProduct(curProduct);
+        }
+    };
+
+    const productOptions = getProductOptions(products);
 
     return (
         <div className={classNames}
@@ -35,16 +47,33 @@ const AdminProductGroupBlockCPN:AdminProductGroupBlock = ({id, images, name, pri
             }}
         >
             <ImageCPN
-                image = {images[0]}
+                image = {selectedProduct.images[0]}
                 size = "medium"
                 className = {styles.image}
             />
             <div className={styles.text}>
-                <h3 className={styles.price}>{price}</h3>
-                <h4 className={styles.price}>{price}</h4>
                 <h3 className={styles.name}>{name}</h3>
                 <h4 className={styles.name}>{name}</h4>
-                <p className={styles.description}>{intro}</p>
+                <div className={styles.productSelector}>
+                    <Select
+                        optionItems = {productOptions}
+                        onChange = {onSelect}
+                        selectClass={styles.select}
+                        />
+                    <ButtonCPN
+                        type="normal"
+                        label="Edit Product"
+                        className={styles.editProductbutton}
+                        onClick={(e) => {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            onEditProduct(selectedProduct.id);
+                        }}
+                        />
+                </div>
+                <h3 className={styles.price}>{selectedProduct.price}</h3>
+                <h4 className={styles.price}>{selectedProduct.price}</h4>
+                <p className={styles.description}>{selectedProduct.intro}</p>
             </div>
             <ButtonCPN
                 type = "danger"
@@ -64,3 +93,19 @@ const AdminProductGroupBlockCPN:AdminProductGroupBlock = ({id, images, name, pri
 export default AdminProductGroupBlockCPN;
 
 AdminProductGroupBlockCPN.displayName = "AdminProductGroupBlockCPN";
+
+/*******************
+ * Helpers
+ */
+
+function getProductOptions(products: Product[]): OptionItem<Product>[] {
+    const getValue = (product: Product) => {
+        return product.id;
+    }
+
+    const getLabel = (product: Product) => {
+        return product.name;
+    }
+
+    return products.map(product => convertToOptionItem({item:product, getValue, getLabel}));
+}

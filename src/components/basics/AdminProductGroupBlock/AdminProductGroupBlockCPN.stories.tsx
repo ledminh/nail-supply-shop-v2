@@ -1,11 +1,10 @@
 import {  Meta, StoryObj } from "@storybook/react";
-
-import ProductBlock from '.';
-import { ProductGroup, Product } from "@/types/product";
-import { RemoteImage } from "@/types/image";
 import { useState } from "react";
 
-import type { OrderedProduct } from "@/types/product";
+import { RemoteImage } from "@/types/image";
+import { Product, ProductGroup } from "@/types/product";
+
+import AdminProductGroupBlockCPN from '.';
 
 
 const images:RemoteImage[] = [
@@ -80,63 +79,44 @@ const defaultArgs:ProductGroup = {
 
 
 const Wrapper = () => {
-  const [cart, setCart] = useState<OrderedProduct[]>([]);
 
+  const [onClickText, setOnClickText] = useState("");
+  const [onDeleteText, setOnDeleteText] = useState("");
+  const [onEditProductText, setOnEditProductText] = useState("");
   const args = {
-      ...defaultArgs,
-      addToCart: (orderedProduct: OrderedProduct) => {
-      setCart([...cart, orderedProduct]);
+    ...defaultArgs,
+    onClick: (groupID: string) => {
+      setOnClickText(`Clicked on group ${groupID}`);
     },
-  };
-
+    onDelete: (groupID: string) => {
+      setOnDeleteText(`Deleted ${groupID}`);
+    },
+    onEditProduct: (productID: string) => {
+      setOnEditProductText(`Edited on product: ${productID}`);
+    }
+  }
 
 
   return (
-    <div style={{
-      width: "100%",
-      height: "100vh",
-      display: "flex",
-      flexDirection: "row",
-      gap: "1rem",
-      justifyContent: "center",
-      alignItems: "center"
-    }}
-    >
-      <div style={{
-        width: "35vw",
-      }}>
-        <ProductBlock {...args} />
-      </div>
-      <div style={{
-        width: "50vw",
-      }}>
-        {
-          cart.map((item, index) => (
-            <div key={index}>
-              <p>{item.name}</p>
-              <p>{item.price}</p>
-              <p>{item.quantity}</p>
-            </div>
-          ))
-
-        }
-        </div>
-    </div>
-  );
-}
-
-
-
+    <>
+      <AdminProductGroupBlockCPN {...args} />
+      <p>{onClickText}</p>
+      <p>{onDeleteText}</p>
+      <p>{onEditProductText}</p>
+    </>
+  )
+    
+};
+  
 
 export default {
-  title: "Composites/ProductGroupBlock",
+  title: "Basics/AdminProductGroupBlockCPN",
   component: Wrapper,
-  args: defaultArgs,
+  args: {}
 } as Meta;
 
 
+type Story = StoryObj<typeof AdminProductGroupBlockCPN>;
 
-
-type Story = StoryObj<typeof ProductBlock>;
 
 export const Default: Story = {};

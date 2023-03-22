@@ -2,18 +2,14 @@ import { FC } from "react";
 import ImageCPN from "@components/basics/ImageCPN";
 import ButtonCPN from "@components/basics/ButtonCPN";
 
-import { RemoteImage } from "@/types/image";
 
 import styles from "@styles/basics/AdminProductBlockCPN.module.scss";
+import { Product } from "@/types/product";
 
 
 
-export interface Props  {
-    id: string,
-    images: RemoteImage[],
-    name: string,
-    price: number,
-    intro: string,
+export interface Props extends Product {
+    
     onDelete: (productID: string) => void,
     onClick: (productID: string) => void,
     className?: string,

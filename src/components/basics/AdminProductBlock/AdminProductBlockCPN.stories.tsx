@@ -13,18 +13,22 @@ const defaultArgs = {
   price: 100,
   images: [ 
     {
+      id: 'img-1',
       src: "https://loremflickr.com/300/300",
       alt: "Product Image",
     },
     {
+      id: 'img-2',
       src: "https://loremflickr.com/300/300",
       alt: "Product Image",
     },
     {
+      id: 'img-3',
       src: "https://loremflickr.com/300/300",
       alt: "Product Image",
     },
     {
+      id: 'img-4',
       src: "https://loremflickr.com/300/300",
       alt: "Product Image",
     },
