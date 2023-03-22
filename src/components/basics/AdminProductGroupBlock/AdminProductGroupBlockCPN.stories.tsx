@@ -79,20 +79,21 @@ const defaultArgs:ProductGroup = {
 
 
 const Wrapper = () => {
+  const [logs, setLogs] = useState<string[]>([]);
 
-  const [onClickText, setOnClickText] = useState("");
-  const [onDeleteText, setOnDeleteText] = useState("");
-  const [onEditProductText, setOnEditProductText] = useState("");
+
+
   const args = {
     ...defaultArgs,
     onClick: (groupID: string) => {
-      setOnClickText(`Clicked on group ${groupID}`);
+      setLogs([`onClick: ${groupID}`, ...logs ]);
     },
     onDelete: (groupID: string) => {
-      setOnDeleteText(`Deleted ${groupID}`);
+      setLogs([`onDelete: ${groupID}`, ...logs]);
+      
     },
     onEditProduct: (productID: string) => {
-      setOnEditProductText(`Edited on product: ${productID}`);
+      setLogs([`onEditProduct: ${productID}`, ...logs]);
     }
   }
 
@@ -100,9 +101,11 @@ const Wrapper = () => {
   return (
     <>
       <AdminProductGroupBlockCPN {...args} />
-      <p>{onClickText}</p>
-      <p>{onDeleteText}</p>
-      <p>{onEditProductText}</p>
+      <div>
+        {logs.map((log, index) => (
+          <div key={index}>{log}</div>
+        ))}
+      </div>
     </>
   )
     

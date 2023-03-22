@@ -43,6 +43,18 @@ h4.price {
     }
 }
 
+.productSelector {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 10px;
+}
+
+.editProductButton {
+    padding: 5px 8px;
+}
+
 .description {
     display: none;
 }
@@ -88,7 +100,12 @@ h4.price {
         display: none;
     }
 
-    
+    .select {
+        padding: 5px 10px;
+    }
+    .editProductButton {
+        padding: auto;
+    }
     
     .description {
         display: block;

@@ -54,7 +54,12 @@ const AdminProductGroupBlockCPN:AdminProductGroupBlock = ({id, name, products, o
             <div className={styles.text}>
                 <h3 className={styles.name}>{name}</h3>
                 <h4 className={styles.name}>{name}</h4>
-                <div className={styles.productSelector}>
+                <div className={styles.productSelector}
+                    onClick = {(e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                    }}
+                >
                     <Select
                         optionItems = {productOptions}
                         onChange = {onSelect}
@@ -63,7 +68,7 @@ const AdminProductGroupBlockCPN:AdminProductGroupBlock = ({id, name, products, o
                     <ButtonCPN
                         type="normal"
                         label="Edit Product"
-                        className={styles.editProductbutton}
+                        className={styles.editProductButton}
                         onClick={(e) => {
                             e.preventDefault();
                             e.stopPropagation();
