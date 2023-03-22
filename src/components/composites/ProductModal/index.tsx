@@ -8,57 +8,78 @@ import { RemoteImage } from "@/types/image";
 import { useState } from "react";
 
 type onSaveProps = {
-    name: string,
-    description: string,
-    image: RemoteImage | File
+    // name: string,
+    // description: string,
+    // image: RemoteImage | File
 }
 
-// export type Props = {
-//     onSave: ({ name, description, image }:onSaveProps) => void;
-//     onCancel: () => void;
-// } & ({
-//     type: "create";
-//     initName?: undefined;
-//     initDescription?: undefined;
-//     initImage?: undefined 
+export type Props = {
+    onSave: (
+        { 
+            // name, 
+            // description, 
+            // image 
+        }:onSaveProps) => void;
+    onCancel: () => void;
+    groupName: string;
+} & ({
+    type: "create";
+    initSerialNumber?: undefined;
+    initName?: undefined;
+    initIntro?: undefined;
+    initDetails?: undefined;
+    initPrice?: undefined;
+    initImages?: undefined;
+    // initImage?: undefined 
 
-// } | {
-//     type: "edit";
-//     initName: string;
-//     initDescription: string;
-//     initImage: RemoteImage;
-// })
+} | {
+    type: "edit";
+    initSerialNumber: string;
+    initName: string;
+    initIntro: string;
+    initDetails: string;
+    initPrice: number;
+    initImages: RemoteImage[];
+})
     
-export type Props = {};
 
-export default function CategoryModal({ type, onSave, onCancel, initName, initDescription, initImage }: Props) {
+export default function ProductModal({ type, onSave, onCancel, groupName, initSerialNumber, initName, initIntro, initDetails, initPrice, initImages
+}: Props) {
 
-    // const [name, setName] = useState(initName ?? "");
-    // const [description, setDescription] = useState(initDescription ?? "");
-    // const [image, setImage] = useState<RemoteImage|File|null>(initImage ?? null);
+    const [serialNumber, setSerialNumber] = useState(initSerialNumber ?? "");
+    const [name, setName] = useState(initName ?? "");
+    const [intro, setIntro] = useState(initIntro ?? "");
+    const [details, setDetails] = useState(initDetails ?? "");
+    const [price, setPrice] = useState(initPrice ?? 0);
+    const [images, setImages] = useState<(RemoteImage|File)[]|null>(initImages ?? null);
 
     const _onSave = () => {
         // if(!name || !description || !image) return;
 
         
-        // onSave({
-        //     name,
-        //     description,
-        //     image
-        // });
+        onSave({
+            // name,
+            // description,
+            // image
+        });
     };
 
 
-    // const FooterComponent = () => {
-    //     return (
-    //         <fieldset className={styles.footer}>
-    //             <ButtonCPN type="normal" label={type === 'edit'? 'Save' : 'Add'} disabled = {!name || !description || !image} onClick={_onSave}/>
-    //             <ButtonCPN type="attention" label="Cancel" onClick={onCancel}/>
-    //         </fieldset>
-    //     );
-    // };
+    const FooterComponent = () => {
+        return (
+            <fieldset className={styles.footer}>
+                <ButtonCPN type="normal" 
+                    label={type === 'edit'? 'Save' : 'Add'} 
+                    // disabled = {!name || !description || !image} 
+                    onClick={_onSave}/>
+                <ButtonCPN type="attention" 
+                    label="Cancel" 
+                    onClick={onCancel}/>
+            </fieldset>
+        );
+    };
 
-    // const title = type === 'edit'? 'Edit Category' : 'Add Category';
+    const title = type === 'edit'? 'Edit Product' : 'Add Product';
     
     return (
         <ModalLayout title={title} FooterComponent={FooterComponent} type="normal">
@@ -87,7 +108,7 @@ export default function CategoryModal({ type, onSave, onCancel, initName, initDe
                     </div>
                     <div className={styles.formGroup}>
                         <label htmlFor="price">Price</label>
-                        <input type="number" id="price" value={price} onChange={(e) => setPrice(e.target.value)}/>
+                        <input type="number" id="price" value={price} onChange={(e) => setPrice(Number(e.target.value))}/>
                     </div>
                 </fieldset>
                 <div className={styles.imageHeader}>
@@ -98,16 +119,24 @@ export default function CategoryModal({ type, onSave, onCancel, initName, initDe
                 <div className={styles.images}>
                     <div key="add-image" className={styles.imageBlock}>
                         <label htmlFor="image">Add Image</label>
-                        <input type="file" id="image" onChange={(e) => setImage(e.target.files?.[0] ?? null)}/>
+                        <input type="file" id="image" onChange={(e) => {
+                            if(!e.target.files?.[0]) return;
+
+                            const newImage = e.target.files[0];
+                            setImages((prev) => prev? [newImage, ...prev ] : [newImage]);
+                        }}/>
                     </div>
                     {
-                        images.map((image) => (
-                            <ImageCPN
-                                key={createImageObj(image).alt} 
-                                image = {createImageObj(image)} 
-                                size = "small"
-                                className={styles.imageBlock}
-                            />))
+                        images && images.map((image) => (
+                            <button className={styles.imageBlock}>
+                                <ImageCPN
+                                    key={createImageObj(image).alt} 
+                                    image = {createImageObj(image)} 
+                                    size = "small"
+                                    className={styles.image}
+                                />
+                            </button>
+                            ))
                     }
                 </div>
             </form>
@@ -115,7 +144,7 @@ export default function CategoryModal({ type, onSave, onCancel, initName, initDe
     );
 }
 
-CategoryModal.displayName = "CategoryModal";
+ProductModal.displayName = "ProductModal";
 
 const createImageObj = (image: RemoteImage | File) => {
     if(image instanceof File) return {
