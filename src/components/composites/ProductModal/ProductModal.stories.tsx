@@ -8,7 +8,8 @@ import type { Props } from '.';
 const defaultArgs: Props = {
   type: "create",
   onSave: () => {},
-  onCancel: () => {}
+  onCancel: () => {},
+  groupName: "This is a group"
 };
 
 

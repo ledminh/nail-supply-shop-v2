@@ -83,14 +83,22 @@ export default function ProductModal({ type, onSave, onCancel, groupName, initSe
                     <legend>Info</legend>
                     {
                         groupName && 
-                        (<div className={styles.formGroup}>
-                            <div className={styles.label}>GROUP</div>
+                        (<div className={styles.groupName}>
+                            <div className={styles.label}>GROUP:</div>
                             <div className={styles.value}>{groupName}</div>
                         </div>)
                     }                    
                     <div className={styles.formGroup}>
                         <label htmlFor="serialNumber">Serial #</label>
-                        <input type="text" id="serialNumber" value={serialNumber} onChange={(e) => setSerialNumber(e.target.value)}/>
+                        <input type="text" id="serialNumber" value={serialNumber} onChange={(e) => {
+                            const value = e.target.value;
+                            if(value.length > 10) return;
+                            const intVal = parseInt(value);
+
+                            if(isNaN(intVal) || intVal < 0) return;
+
+                            setSerialNumber(value);
+                        }}/>
                     </div>
                     <div className={styles.formGroup}>
                         <label htmlFor="name">Name</label>
@@ -106,7 +114,12 @@ export default function ProductModal({ type, onSave, onCancel, groupName, initSe
                     </div>
                     <div className={styles.formGroup}>
                         <label htmlFor="price">Price</label>
-                        <input type="number" id="price" value={price} onChange={(e) => setPrice(Number(e.target.value))}/>
+                        <input type="number" id="price" value={price} onChange={(e) => {
+                            const value = parseInt(e.target.value);
+                            if(isNaN(value) || value < 0) return;
+
+                            setPrice(value);
+                        }}/>
                     </div>
                 </fieldset>
                 <div className={styles.imageHeader}>
