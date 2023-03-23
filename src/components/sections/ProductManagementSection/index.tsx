@@ -14,9 +14,11 @@ import { RemoteImage } from "@/types/image";
 
 import getProductProps from "@/utils/getProductProps";
 
+import ProductModal from "@/components/composites/ProductModal";
+
 import AdminProductBlockCPN, {Props as AdminProductBlockProps} from "@/components/basics/AdminProductBlock";
 import AdminProductGroupBlockCPN, {Props as AdminProductGroupBlockProps} from "@/components/basics/AdminProductGroupBlock";
-import { productManagementConfig } from "@/config";
+import useDelete from "@/hooks/ProductManagementSection/useDelete";
 
 export interface Props {
 }
@@ -26,17 +28,19 @@ export default function ProductManagementSection({  }: Props) {
 
     const [products, setProducts] = useState<(Product|ProductGroup)[]>([]);
 
-    // const [isCategoryModalOpen, setIsCategoryModalOpen] = useState(false);
+    const [isProductModalOpen, setIsProductModalOpen] = useState(false);
     const [isWarningModalOpen, setIsWarningModalOpen] = useState(false);
     const [warningMessage, setWarningMessage] = useState<string>('');
 
     const [toBeDeletedProductID, setToBeDeletedProductID] = useState<string | null>(null);
-    // const [categoryModalType, setCategoryModalType] = useState<'create' | 'edit'|null>(null);
+    const [toBeDeletedProductGroupID, setToBeDeletedProductGroupID] = useState<string | null>(null);
 
-    // const [beingEditedCategory, setBeingEditedCategory] = useState<Category | null>(null);
+    const [productModalType, setProductModalType] = useState<'create' | 'edit'|null>(null);
 
+    const [beingEditedProduct, setBeingEditedProduct] = useState<Product | null>(null);
 
-    const {warningMessages} = productManagementConfig;
+    const { onDeleteProduct, onDeleteProductGroup, deleteProduct, deleteProductGroup } =  useDelete({ products, setProducts,         setIsWarningModalOpen, setWarningMessage, setToBeDeletedProductID,setToBeDeletedProductGroupID});
+
 
     useEffect(() => {
         axios.get('/api/products')
@@ -53,24 +57,12 @@ export default function ProductManagementSection({  }: Props) {
     /********************************
      * Functions for ProductModal
      */
-    const onDeleteProduct = (productID: string) => {
-        setToBeDeletedProductID(productID);
+    
 
-        const productName = getProductProps({products, productID, props: ['name']}).name?? '';
-
-        setWarningMessage(warningMessages.deleteProduct(productName));
-        setIsWarningModalOpen(true);
-    }
-
-    const onDeleteProductGroup = (productGroupID: string) => {
-        // setToBeDeletedProductID(productGroupID);
-        // setIsWarningModalOpen(true);
-    }
-
-    const onEditProduct = (catID: string) => {
-        // setCategoryModalType('edit');
-        // setBeingEditedCategory(categories.find((cat) => cat.id === catID)!);
-        // setIsCategoryModalOpen(true);
+    const onEditProduct = (prodID: string) => {
+        setProductModalType('edit');
+        setBeingEditedProduct(products.find((prod) => prod.id === prodID) as Product);
+        setIsProductModalOpen(true);
     }
 
     const onEditProductGroup = (catID: string) => {
@@ -85,16 +77,8 @@ export default function ProductManagementSection({  }: Props) {
 
     }
 
-    const deleteProduct = (productID: string) => {
-        axios
-            .post(`/api/products/?type=delete&productID=${productID}`)
-            .then(({data} ) => {
-                setProducts(data);
-            })
-            .catch((err) => {
-                console.error(err);
-            });
-    };
+    
+
 
     const createNewCategory = (name: string, description: string, image: File) => {
         // // Upload the image first
@@ -125,7 +109,7 @@ export default function ProductManagementSection({  }: Props) {
         // });
     };
 
-    const updateCategory = (catID: string, name: string, description: string, image: File | RemoteImage) => {
+    const updateProduct = (id: string, serialNumber:string,name :string, intro:string, details:string, price:number, images: (RemoteImage|File)[]) => {
         // const formData = new FormData();
 
         // formData.append('id', catID);
@@ -202,44 +186,51 @@ export default function ProductManagementSection({  }: Props) {
                     ulClass = {styles.ul}
                 />
             </section>
-            {/* {
-                isCategoryModalOpen &&  (
-                    categoryModalType === 'create'?
-                    <CategoryModal type='create' 
-                        onSave={({name, description, image}) => {
-                            
-                            createNewCategory(name, description, image as File);
-                            setIsCategoryModalOpen(false);
-                            setCategoryModalType(null);
+            {
+                isProductModalOpen &&  (
+                    productModalType === 'edit'?
+                        <ProductModal type='edit' 
+                        onSave={({serialNumber, name, intro, details, price, images}) => {
+                            updateProduct(beingEditedProduct!.id, serialNumber,name, intro, details, price, images);
+                            setIsProductModalOpen(false);
+                            setProductModalType(null);
+                            setBeingEditedProduct(null);
                         }} 
                         onCancel={() => {
-                            setIsCategoryModalOpen(false);
-                            setCategoryModalType(null);
+                            setIsProductModalOpen(false);
+                            setProductModalType(null);
+                            setBeingEditedProduct(null);
                         }}
-                        /> : 
-                        <CategoryModal type='edit' 
-                            onSave={({name, description, image}) => {
-                                updateCategory(beingEditedCategory!.id, name, description, image);
-                                setIsCategoryModalOpen(false);
-                                setCategoryModalType(null);
-                                setBeingEditedCategory(null);
-                            }} 
-                            onCancel={() => {
-                                setIsCategoryModalOpen(false);
-                                setCategoryModalType(null);
-                                setBeingEditedCategory(null);
-                            }}
-                            initName = {beingEditedCategory?.name || ''} 
-                            initDescription = {beingEditedCategory?.description || ''} 
-                            initImage = {beingEditedCategory?.image as RemoteImage} 
-                            />)
+                        initName = {beingEditedProduct?.name || ''} 
+                        initIntro = {beingEditedProduct?.intro || ''}
+                        initDetails = {beingEditedProduct?.details || ''}
+                        initPrice = {beingEditedProduct?.price || 0}
+                        initSerialNumber = {beingEditedProduct?.id || ''} 
+                        initImages = {beingEditedProduct?.images || []} 
+                        /> : null
+                    // <ProductModal type='create' 
+                    //     onSave={({name, description, image}) => {
+                            
+                    //         createNewCategory(name, description, image as File);
+                    //         setIsCategoryModalOpen(false);
+                    //         setCategoryModalType(null);
+                    //     }} 
+                    //     onCancel={() => {
+                    //         setIsCategoryModalOpen(false);
+                    //         setCategoryModalType(null);
+                    //     }}
+                    //     /> : 
+)
             }
-             */}
             {
                 isWarningModalOpen && (
                     <WarningModal message={warningMessage}
                         onOK={() => {
-                            deleteProduct(toBeDeletedProductID!);
+                            if(toBeDeletedProductID)
+                                deleteProduct(toBeDeletedProductID);
+                            else if(toBeDeletedProductGroupID)
+                                deleteProductGroup(toBeDeletedProductGroupID);
+
                             setIsWarningModalOpen(false);
                         }} 
                         onCancel={() => {

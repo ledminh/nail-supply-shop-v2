@@ -16,7 +16,7 @@ export interface Props extends ProductGroup {
     onClick: (productID: string) => void,
     className?: string,
 
-    onEditProduct: (productID: string) => void,
+    onEditProduct: (id: string) => void,
 };
 
 type AdminProductGroupBlock = FC<Props>;

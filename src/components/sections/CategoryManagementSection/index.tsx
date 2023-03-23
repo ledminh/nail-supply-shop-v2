@@ -73,6 +73,7 @@ export default function CategoryManagementSection({  }: Props) {
             .post(`/api/categories/?type=delete&id=${catID}`)
             .then(({ data }) => {
                 setCategories(data);
+                setToBeDeletedCategoryID(null);
             })
             .catch((err) => {
                 console.error(err);
@@ -202,7 +203,9 @@ export default function CategoryManagementSection({  }: Props) {
                 isWarningModalOpen && (
                     <WarningModal message={categoryManagementConfig.warningMessage(getCategoryName(toBeDeletedCategoryID!))}
                         onOK={() => {
-                            deleteCategory(toBeDeletedCategoryID!);
+                            if(toBeDeletedCategoryID)
+                                deleteCategory(toBeDeletedCategoryID);
+                            
                             setIsWarningModalOpen(false);
                         }} 
                         onCancel={() => {

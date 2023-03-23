@@ -33,32 +33,52 @@ export default function handler(req: NextApiRequest, res: NextApiCategoryRespons
       res.status(200).json(products);
       break;
     case 'POST':
-      const { query: { type, productID } } = req;
+      const { query: { type, productID, productGroupID } } = req;
 
       if (type === 'delete') {
-        if (typeof productID !== "string") {
+        if (typeof productID === "string") {
+          const productIndex = products.findIndex((product) => product.id === productID);
+      
+          if (productIndex === -1) {
+            res.status(404).json({ message: "Product not found" });
+            break;
+          }
+        
+          // Delete the product images
+          if (isProduct(products[productIndex])) {
+            const images = (products[productIndex] as Product).images;
+            deleteImages(images.map((image) => image.src));
+          }
+        
+          
+          products.splice(productIndex, 1);
+  
+          res.status(200).json(products);
+          return;
+        }
+        else if (typeof productGroupID === "string") {
+          const productGroupIndex = products.findIndex((product) => product.id === productGroupID);
+      
+          if (productGroupIndex === -1) {
+            res.status(404).json({ message: "Product group not found" });
+            break;
+          }
+        
+          // Delete the product group images
+          const images = (products[productGroupIndex] as ProductGroup).products.flatMap((product) => product.images);
+          deleteImages(images.map((image) => image.src));
+        
+          products.splice(productGroupIndex, 1);
+  
+          res.status(200).json(products);
+          return;
+        }
+        else {
           res.status(400).json({ message: "Invalid product ID" });
           break;
         }
       
-        const productIndex = products.findIndex((product) => product.id === productID);
-      
-        if (productIndex === -1) {
-          res.status(404).json({ message: "Product not found" });
-          break;
-        }
-      
-        // Delete the product images
-        if (isProduct(products[productIndex])) {
-          const images = (products[productIndex] as Product).images;
-          deleteImages(images.map((image) => image.src));
-        }
-      
-        
-        products.splice(productIndex, 1);
 
-        res.status(200).json(products);
-        return;
       } 
       else if (type === 'create') {
         // const form = new formidable.IncomingForm();

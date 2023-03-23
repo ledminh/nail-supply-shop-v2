@@ -6,14 +6,14 @@ type CombinedProduct = {
 
 const getProductProps = ({
   products,
-  productID,
+  id,
   props,
 }: {
   products: (Product | ProductGroup)[];
-  productID: string;
+  id: string;
   props: Array<keyof (Product & ProductGroup)>;
 }) => {
-  const product = products.find((product) => product.id === productID);
+  const product = products.find((product) => product.id === id);
 
   if (!product) {
     throw new Error('Product not found');
