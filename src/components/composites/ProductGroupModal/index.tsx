@@ -83,6 +83,13 @@ export default function ProductGroupModal({ type, onSave, onCancel, initName, in
                     />
                 </div>
                 <div className={styles.products}>
+                    {
+                        products.length === 0 && (
+                            <div className={styles.noProduct}>
+                                <p>No Product</p>
+                            </div>
+                        )
+                    }
                     <List 
                         items = {products.map((product) => ({id: product.id, product:product, onEditProduct, onDeleteProduct }))}
                         ItemCPN = {ProductItemCPN}

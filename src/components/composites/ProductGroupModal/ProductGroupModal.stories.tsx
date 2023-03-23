@@ -54,15 +54,13 @@ const productSamples = [
 ]
 
 const defaultArgs: Props = {
-  type: "edit",
+  type: "create",
   onSave: () => {},
   onCancel: () => {},
   onEditProduct: () => {},
   onDeleteProduct: () => {},
   onAddNewProduct: () => {},
 
-  initProducts: productSamples,
-  initName: "Product Group Name",
 };
 
 
@@ -78,4 +76,11 @@ export default {
 type Story = StoryObj<typeof ProductGroupModal>;
 
 
-export const Default: Story = {};
+export const Create: Story = {};
+export const Edit: Story = {
+  args: {
+    type: "edit",
+    initProducts: productSamples,
+    initName: "Group Name",
+  }
+};

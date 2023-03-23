@@ -80,6 +80,21 @@
 
 }
 
+.noProduct {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    height: 100px;
+    font-weight: bold;
+    color: $heading-color;
+
+    border: 1px solid $separator-color;
+    border-radius: $border-radius;
+
+    
+}
+
 .productItem {
     display: grid;
     grid-template-columns: auto 70px;
