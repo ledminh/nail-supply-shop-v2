@@ -3,12 +3,28 @@
 import {Product, ProductGroup} from '@/types/product';
 import type { NextApiRequest, NextApiResponse } from 'next';
 
+import fs from 'fs';
+
 import formidable from 'formidable';
 
 export type ProductApiResponse = (Product|ProductGroup)[] | Product | ProductGroup | { message: string };
 
 type NextApiCategoryResponse = NextApiResponse<ProductApiResponse>;
 
+function deleteImages(imagePaths: string[]) {
+  for (const imagePath of imagePaths) {
+    try {
+      if(imagePath.startsWith('/images/product/') && fs.existsSync(`public/images/${imagePath}`))
+        fs.unlinkSync(`public/images/${imagePath}`);
+    } catch (err) {
+      console.error(`Failed to delete image: ${imagePath}`, err);
+    }
+  }
+}
+
+const isProduct = (product: Product|ProductGroup): product is Product => {
+  return "images" in product;
+}
 
 export default function handler(req: NextApiRequest, res: NextApiCategoryResponse) {
 
@@ -16,100 +32,108 @@ export default function handler(req: NextApiRequest, res: NextApiCategoryRespons
     case 'GET':
       res.status(200).json(products);
       break;
-    // case 'POST':
-    //   const { query: { type, id: catID } } = req;
+    case 'POST':
+      const { query: { type, productID } } = req;
 
-    //   if (type === 'delete') {
-    //     if (typeof catID !== 'string') {
-    //       res.status(400).json({ message: 'Invalid category ID' });
-    //       break;
-    //     }
+      if (type === 'delete') {
+        if (typeof productID !== "string") {
+          res.status(400).json({ message: "Invalid product ID" });
+          break;
+        }
+      
+        const productIndex = products.findIndex((product) => product.id === productID);
+      
+        if (productIndex === -1) {
+          res.status(404).json({ message: "Product not found" });
+          break;
+        }
+      
+        // Delete the product images
+        if (isProduct(products[productIndex])) {
+          const images = (products[productIndex] as Product).images;
+          deleteImages(images.map((image) => image.src));
+        }
+      
+        
+        products.splice(productIndex, 1);
 
-    //     const categoryIndex = categories.findIndex((category) => category.id === catID);
-
-    //     if (categoryIndex === -1) {
-    //       res.status(404).json({ message: 'Category not found' });
-    //       break;
-    //     }
-
-    //     categories.splice(categoryIndex, 1);
-    //     res.status(200).json(categories);
-    //     break;
-    //   } 
-    //   else if (type === 'create') {
-    //     const form = new formidable.IncomingForm();
+        res.status(200).json(products);
+        return;
+      } 
+      else if (type === 'create') {
+        // const form = new formidable.IncomingForm();
                 
-    //     form.parse(req, (err, fields) => {
-    //       if (err) {
-    //         res.status(500).json({ message: err.message });
-    //         return;
-    //       }
+        // form.parse(req, (err, fields) => {
+        //   if (err) {
+        //     res.status(500).json({ message: err.message });
+        //     return;
+        //   }
 
-    //       const { name, description, imageFileName } = fields;
+        //   const { name, description, imageFileName } = fields;
           
-    //       const newCategory: Category = {
-    //         id: (Math.max(...categories.map((c) => parseInt(c.id, 10))) + 1).toString(),
-    //         slug: `category-${(name as string).toLowerCase().replace(/[^a-z0-9]+/g, '-')}`,
-    //         name: name as string,
-    //         description: description as string,
-    //         image: {
-    //           src: `/images/category/${imageFileName}`,
-    //           alt: name as string,
-    //         },
-    //       };
+        //   const newCategory: Category = {
+        //     id: (Math.max(...categories.map((c) => parseInt(c.id, 10))) + 1).toString(),
+        //     slug: `category-${(name as string).toLowerCase().replace(/[^a-z0-9]+/g, '-')}`,
+        //     name: name as string,
+        //     description: description as string,
+        //     image: {
+        //       src: `/images/category/${imageFileName}`,
+        //       alt: name as string,
+        //     },
+        //   };
 
-    //       categories.push(newCategory);
-    //       res.status(200).json(newCategory);
-    //     });
+        //   categories.push(newCategory);
+        //   res.status(200).json(newCategory);
+        // });
 
-    //   }
-    //   else if (type === 'update') {
-    //     const form = new formidable.IncomingForm();
+      }
+      else if (type === 'update') {
+        // const form = new formidable.IncomingForm();
 
-    //     form.parse(req, (err, fields) => {
-    //       if (err) {
-    //         res.status(500).json({ message: err.message });
-    //         return;
-    //       }
+        // form.parse(req, (err, fields) => {
+        //   if (err) {
+        //     res.status(500).json({ message: err.message });
+        //     return;
+        //   }
 
-    //       const { id, name, description, imageFileName } = fields;
+        //   const { id, name, description, imageFileName } = fields;
 
-    //       const categoryIndex = categories.findIndex((category) => category.id === id);
+        //   const categoryIndex = categories.findIndex((category) => category.id === id);
 
-    //       if (categoryIndex === -1) {
-    //         res.status(404).json({ message: 'Category not found' });
-    //         return;
-    //       }
+        //   if (categoryIndex === -1) {
+        //     res.status(404).json({ message: 'Category not found' });
+        //     return;
+        //   }
 
-    //       // user did not change the image
-    //       if(!imageFileName) {
-    //         categories[categoryIndex] = {
-    //           ...categories[categoryIndex],
-    //           name: name as string,
-    //           description: description as string,
-    //         };
-    //         res.status(200).json(categories[categoryIndex]);
-    //         return;
-    //       }
+        //   // user did not change the image
+        //   if(!imageFileName) {
+        //     categories[categoryIndex] = {
+        //       ...categories[categoryIndex],
+        //       name: name as string,
+        //       description: description as string,
+        //     };
+        //     res.status(200).json(categories[categoryIndex]);
+        //     return;
+        //   }
 
-    //       categories[categoryIndex] = {
-    //         ...categories[categoryIndex],
-    //         name: name as string,
-    //         description: description as string,
-    //         image: imageFileName === 'undefined' ? categories[categoryIndex].image :{
-    //           src: `/images/category/${imageFileName}`,
-    //           alt: name as string,
-    //         },
-    //       };
+        //   categories[categoryIndex] = {
+        //     ...categories[categoryIndex],
+        //     name: name as string,
+        //     description: description as string,
+        //     image: imageFileName === 'undefined' ? categories[categoryIndex].image :{
+        //       src: `/images/category/${imageFileName}`,
+        //       alt: name as string,
+        //     },
+        //   };
 
 
-    //       res.status(200).json(categories);
-    //     });
-    //   }
-    //   else {
-    //     res.status(400).json({ message: 'Invalid type parameter' });
-    //   }
-    //   break;
+        //   res.status(200).json(categories);
+        // });
+      }
+      else {
+        res.status(400).json({ message: 'Invalid type parameter' });
+      }
+      break;
     default:
       res.setHeader('Allow', ['GET', 'POST']);
       res.status(405).json({ message: `Method ${req.method} not allowed` });
@@ -183,19 +207,19 @@ const products:(Product|ProductGroup)[] = [
     products: [
       {
         ...productSample,
-        id: "1",
+        id: "mem-1",
         name: "Product Name 1",
         price: 100,
       },
       {
         ...productSample,
-        id: "2",
+        id: "mem-2",
         name: "Product Name 2",
         price: 200,
       },
       {
         ...productSample,
-        id: "3",
+        id: "mem-3",
         name: "Product Name 3",
         price: 300,
       },

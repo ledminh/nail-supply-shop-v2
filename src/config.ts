@@ -191,5 +191,12 @@ export const categoryManagementConfig = {
     warningMessage: (categoryName: string): string =>
       `Delete ${categoryName} category? This will also delete all of its associated products.`
 };
-  
-  
+
+/*****************************
+ * /admin/product
+ */
+export const productManagementConfig = {
+    warningMessages: {
+        deleteProduct: (productName: string): string => `Are you sure you want to delete ${productName} product?`,
+    }
+};

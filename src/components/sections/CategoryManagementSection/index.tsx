@@ -69,18 +69,15 @@ export default function CategoryManagementSection({  }: Props) {
     }
 
     const deleteCategory = (catID: string) => {
-        axios.post(`/api/delete?type=cat-image&filename=${getCategoryProps({categories, categoryID: catID, props: ['image']}).image?.src}`)
-            .then(() => {
-                
-            axios.post(`/api/categories/?type=delete&id=${catID}`)
-                .then(({data}) => {
-                    setCategories(data);
-                })
-                .catch((err) => {
-                    console.error(err);
-                });
-        })
-    }
+        axios
+            .post(`/api/categories/?type=delete&id=${catID}`)
+            .then(({ data }) => {
+                setCategories(data);
+            })
+            .catch((err) => {
+                console.error(err);
+            });
+    };
 
     const createNewCategory = (name: string, description: string, image: File) => {
         // Upload the image first
@@ -114,48 +111,46 @@ export default function CategoryManagementSection({  }: Props) {
     const updateCategory = (catID: string, name: string, description: string, image: File | RemoteImage) => {
         const formData = new FormData();
 
-        formData.append('id', catID);
-        formData.append('name', name);
-        formData.append('description', description);
+        formData.append("id", catID);
+        formData.append("name", name);
+        formData.append("description", description);
 
-        // image is not instanceof File --> it is a RemoteImage --> user did not change the image
-        if(!(image instanceof File)) {
-            axios.post('/api/categories?type=update', formData)
-                .then((res) => res.data)
-                .then((data) => {
-                    setCategories([data, ...categories.filter((cat) => cat.id !== catID)]);
-                })
-                .catch((err) => {
-                    console.error(err);
-                });
-        }
-        else {
-            // Delete the old image first
-            axios.post(`/api/delete?type=cat-image&filename=${getCategoryProps({categories, categoryID: catID, props: ['image']}).image?.src}`)
-                .then(() => {
-                    // Upload the new image            
-                    const imageFormData = new FormData();
-                    imageFormData.append('cat-image', image);
+        if (image instanceof File) {
+            // Upload the new image
+            const imageFormData = new FormData();
+            imageFormData.append("cat-image", image);
 
-                    return axios.post('/api/upload?type=cat-image', imageFormData, {
-                        headers: {
-                            'Content-Type': 'multipart/form-data'
-                    }});
-                })
+            axios.post("/api/upload?type=cat-image", imageFormData, {
+                headers: {
+                    "Content-Type": "multipart/form-data",
+                },
+            })
             .then((res) => res.data)
             .then((imageData) => {
-                console.log(imageData);
-                formData.append('imageFileName', imageData.filename);
-                return axios.post('/api/categories?type=update', formData);
-            }).then((res) => res.data)
-            .then((data) => {
-                setCategories(data);
+                formData.append("imageFileName", imageData.filename);
+                return axios.post("/api/categories?type=update", formData);
+            })
+            .then((res) => res.data)
+            .then((categories) => {
+                setCategories(categories);
+            })
+            .catch((err) => {
+                console.error(err);
+            });
+        } else {
+          // User did not change the image
+            axios
+            .post("/api/categories?type=update", formData)
+            .then((res) => res.data)
+            .then((newCateogry) => {
+                setCategories([newCateogry, ...categories.filter((cat) => cat.id !== catID)]);
             })
             .catch((err) => {
                 console.error(err);
             });
         }
-    }
+    };
+
 
     return (
         <>

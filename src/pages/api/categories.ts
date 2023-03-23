@@ -1,5 +1,7 @@
 // /api/categories.ts
 
+import fs from 'fs';
+import path from 'path';
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { Category } from '@/types/category';
 
@@ -7,6 +9,24 @@ import formidable from 'formidable';
 
 export type CategoryApiResponse = Category[] | Category | { message: string };
 type NextApiCategoryResponse = NextApiResponse<CategoryApiResponse>;
+
+const deleteImage = (filename: string) => {
+  const baseFilename = path.basename(filename);
+  const filePath = path.join(process.cwd(), "public", "images", "category", baseFilename);
+
+  fs.access(filePath, fs.constants.F_OK, (err) => {
+    if (err) {
+      console.error(`File not found: ${filePath}`);
+      return;
+    }
+
+    fs.unlink(filePath, (err) => {
+      if (err) {
+        console.error(`Error deleting file: ${filePath}`);
+      }
+    });
+  });
+};
 
 
 export default function handler(req: NextApiRequest, res: NextApiCategoryResponse) {
@@ -18,23 +38,26 @@ export default function handler(req: NextApiRequest, res: NextApiCategoryRespons
     case 'POST':
       const { query: { type, id: catID } } = req;
 
-      if (type === 'delete') {
-        if (typeof catID !== 'string') {
-          res.status(400).json({ message: 'Invalid category ID' });
+      // Inside the POST request handler for deleting a category
+      if (type === "delete") {
+        if (typeof catID !== "string") {
+          res.status(400).json({ message: "Invalid category ID" });
           break;
         }
 
         const categoryIndex = categories.findIndex((category) => category.id === catID);
 
         if (categoryIndex === -1) {
-          res.status(404).json({ message: 'Category not found' });
+          res.status(404).json({ message: "Category not found" });
           break;
         }
 
+        const category = categories[categoryIndex];
+        deleteImage(category.image.src); // Call the deleteImage function here
         categories.splice(categoryIndex, 1);
         res.status(200).json(categories);
         break;
-      } 
+      }
       else if (type === 'create') {
         const form = new formidable.IncomingForm();
                 
@@ -90,6 +113,8 @@ export default function handler(req: NextApiRequest, res: NextApiCategoryRespons
             res.status(200).json(categories[categoryIndex]);
             return;
           }
+
+          deleteImage(categories[categoryIndex].image.src);
 
           categories[categoryIndex] = {
             ...categories[categoryIndex],

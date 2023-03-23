@@ -4,14 +4,19 @@ import styles from "@styles/sections/ProductManagementSection.module.scss";
 import { Product, ProductGroup } from "@/types/product";
 import {useState, useEffect} from "react";
 
+import WarningModal from "@/components/composites/WarningModal";
+
 import { ProductApiResponse } from "@/pages/api/products";
 
 import axios, { AxiosResponse } from "axios";
 
 import { RemoteImage } from "@/types/image";
 
+import getProductProps from "@/utils/getProductProps";
+
 import AdminProductBlockCPN, {Props as AdminProductBlockProps} from "@/components/basics/AdminProductBlock";
 import AdminProductGroupBlockCPN, {Props as AdminProductGroupBlockProps} from "@/components/basics/AdminProductGroupBlock";
+import { productManagementConfig } from "@/config";
 
 export interface Props {
 }
@@ -22,16 +27,16 @@ export default function ProductManagementSection({  }: Props) {
     const [products, setProducts] = useState<(Product|ProductGroup)[]>([]);
 
     // const [isCategoryModalOpen, setIsCategoryModalOpen] = useState(false);
-    // const [isWarningModalOpen, setIsWarningModalOpen] = useState(false);
+    const [isWarningModalOpen, setIsWarningModalOpen] = useState(false);
+    const [warningMessage, setWarningMessage] = useState<string>('');
 
-    // const [toBeDeletedCategoryID, setToBeDeletedCategoryID] = useState<string | null>(null);
+    const [toBeDeletedProductID, setToBeDeletedProductID] = useState<string | null>(null);
     // const [categoryModalType, setCategoryModalType] = useState<'create' | 'edit'|null>(null);
 
     // const [beingEditedCategory, setBeingEditedCategory] = useState<Category | null>(null);
 
-    // const getCategoryName = (catID: string) => {
-    //     return getCategoryProps({categories, categoryID: catID, props: ['name']}).name || '';
-    // }
+
+    const {warningMessages} = productManagementConfig;
 
     useEffect(() => {
         axios.get('/api/products')
@@ -48,8 +53,17 @@ export default function ProductManagementSection({  }: Props) {
     /********************************
      * Functions for ProductModal
      */
-    const onDelete = (catID: string) => {
-        // setToBeDeletedCategoryID(catID);
+    const onDeleteProduct = (productID: string) => {
+        setToBeDeletedProductID(productID);
+
+        const productName = getProductProps({products, productID, props: ['name']}).name?? '';
+
+        setWarningMessage(warningMessages.deleteProduct(productName));
+        setIsWarningModalOpen(true);
+    }
+
+    const onDeleteProductGroup = (productGroupID: string) => {
+        // setToBeDeletedProductID(productGroupID);
         // setIsWarningModalOpen(true);
     }
 
@@ -71,19 +85,16 @@ export default function ProductManagementSection({  }: Props) {
 
     }
 
-    const deleteCategory = (catID: string) => {
-        // axios.post(`/api/delete?type=cat-image&filename=${getCategoryProps({categories, categoryID: catID, props: ['image']}).image?.src}`)
-        //     .then(() => {
-                
-        //     axios.post(`/api/categories/?type=delete&id=${catID}`)
-        //         .then(({data}) => {
-        //             setCategories(data);
-        //         })
-        //         .catch((err) => {
-        //             console.error(err);
-        //         });
-        // })
-    }
+    const deleteProduct = (productID: string) => {
+        axios
+            .post(`/api/products/?type=delete&productID=${productID}`)
+            .then(({data} ) => {
+                setProducts(data);
+            })
+            .catch((err) => {
+                console.error(err);
+            });
+    };
 
     const createNewCategory = (name: string, description: string, image: File) => {
         // // Upload the image first
@@ -161,18 +172,18 @@ export default function ProductManagementSection({  }: Props) {
     }
 
     const convertToProductItem = (product: Product | ProductGroup) => {
-        if(isProduct(product)){
+        if(isProduct(product)){ // product is a Product
             return {
                 id: product.id,
-                onDelete,
+                onDelete: onDeleteProduct,
                 onClick: onEditProduct,
                 product
             }
         }
-        else {
+        else { // product is a ProductGroup
             return {
-                id: products[0].id,
-                onDelete,
+                id: product.id,
+                onDelete: onDeleteProductGroup,
                 onClick: onEditProductGroup,
                 onEditProduct: onEditProduct,
                 productGroup: product
@@ -223,19 +234,20 @@ export default function ProductManagementSection({  }: Props) {
                             initImage = {beingEditedCategory?.image as RemoteImage} 
                             />)
             }
+             */}
             {
                 isWarningModalOpen && (
-                    <WarningModal message={categoryManagementConfig.warningMessage(getCategoryName(toBeDeletedCategoryID!))}
+                    <WarningModal message={warningMessage}
                         onOK={() => {
-                            deleteCategory(toBeDeletedCategoryID!);
+                            deleteProduct(toBeDeletedProductID!);
                             setIsWarningModalOpen(false);
                         }} 
                         onCancel={() => {
-                            setToBeDeletedCategoryID(null);
+                            setToBeDeletedProductID(null);
                             setIsWarningModalOpen(false);
                         }}
                         />)
-            } */}
+            }
         </>
     );
 }
@@ -251,6 +263,7 @@ interface ItemCPNProps {
     product?: Product;
     productGroup?: ProductGroup;
     onEditProduct?: (productID: string) => void;
+
 }
 
 const ItemCPN = ({
@@ -259,6 +272,7 @@ const ItemCPN = ({
     onEditProduct,
     product,
     productGroup,
+    
 }: ItemCPNProps) => {
     if (product) {
         const adminProductProps: AdminProductBlockProps = {
