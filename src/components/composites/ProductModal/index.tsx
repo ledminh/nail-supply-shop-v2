@@ -8,20 +8,18 @@ import { RemoteImage } from "@/types/image";
 import { useState } from "react";
 
 type onSaveProps = {
-    // name: string,
-    // description: string,
-    // image: RemoteImage | File
+    serialNumber: string, 
+    name: string, 
+    intro: string, 
+    details: string, 
+    price: number, 
+    images: (RemoteImage|File)[]
 }
 
 export type Props = {
-    onSave: (
-        { 
-            // name, 
-            // description, 
-            // image 
-        }:onSaveProps) => void;
+    onSave: (props:onSaveProps) => void;
     onCancel: () => void;
-    groupName: string;
+    groupName?: string;
 } & ({
     type: "create";
     initSerialNumber?: undefined;
@@ -30,7 +28,6 @@ export type Props = {
     initDetails?: undefined;
     initPrice?: undefined;
     initImages?: undefined;
-    // initImage?: undefined 
 
 } | {
     type: "edit";
@@ -54,13 +51,11 @@ export default function ProductModal({ type, onSave, onCancel, groupName, initSe
     const [images, setImages] = useState<(RemoteImage|File)[]|null>(initImages ?? null);
 
     const _onSave = () => {
-        // if(!name || !description || !image) return;
+        if(!serialNumber || !name || !intro || !details || price === 0 || !images) return;
 
         
         onSave({
-            // name,
-            // description,
-            // image
+            serialNumber, name, intro, details, price, images
         });
     };
 
@@ -70,7 +65,7 @@ export default function ProductModal({ type, onSave, onCancel, groupName, initSe
             <fieldset className={styles.footer}>
                 <ButtonCPN type="normal" 
                     label={type === 'edit'? 'Save' : 'Add'} 
-                    // disabled = {!name || !description || !image} 
+                    disabled = {!serialNumber || !name || !intro || !details || price === 0 || !images} 
                     onClick={_onSave}/>
                 <ButtonCPN type="attention" 
                     label="Cancel" 
@@ -113,8 +108,6 @@ export default function ProductModal({ type, onSave, onCancel, groupName, initSe
                 </fieldset>
                 <div className={styles.imageHeader}>
                     <h4>Image</h4>
-                    {/* <label htmlFor="image">{image? "Replace": "Add Image"}</label>
-                    <input type="file" id="image" onChange={(e) => setImage(e.target.files?.[0] ?? null)}/> */}
                 </div>
                 <div className={styles.images}>
                     <div key="add-image" className={styles.imageBlock}>
