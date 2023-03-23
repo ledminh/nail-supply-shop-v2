@@ -81,10 +81,13 @@ export default function ProductModal({ type, onSave, onCancel, groupName, initSe
             <form className={styles.form}>
                 <fieldset className={styles.fieldset}>
                     <legend>Info</legend>
-                    <div className={styles.formGroup}>
-                        <div className={styles.label}>GROUP</div>
-                        <div className={styles.value}>{groupName}</div>
-                    </div>                    
+                    {
+                        groupName && 
+                        (<div className={styles.formGroup}>
+                            <div className={styles.label}>GROUP</div>
+                            <div className={styles.value}>{groupName}</div>
+                        </div>)
+                    }                    
                     <div className={styles.formGroup}>
                         <label htmlFor="serialNumber">Serial #</label>
                         <input type="text" id="serialNumber" value={serialNumber} onChange={(e) => setSerialNumber(e.target.value)}/>
@@ -121,7 +124,12 @@ export default function ProductModal({ type, onSave, onCancel, groupName, initSe
                     </div>
                     {
                         images && images.map((image) => (
-                            <button className={styles.imageBlock}>
+                            <button className={styles.imageBlock}
+                                onClick={(e) => {
+                                    e.preventDefault();
+                                    setImages((prev) => prev? prev.filter((img) => img !== image): null);
+                                }}
+                            >
                                 <ImageCPN
                                     key={createImageObj(image).alt} 
                                     image = {createImageObj(image)} 
