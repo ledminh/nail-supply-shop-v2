@@ -1,9 +1,6 @@
-import styles from "@styles/composites/ProductModal.module.scss";
+import styles from "@styles/composites/ProductGroupModal.module.scss";
 import ModalLayout from "@/components/layouts/ModalLayout";
 import ButtonCPN from "@/components/basics/ButtonCPN";
-import ImageCPN from "@/components/basics/ImageCPN";
-
-import { RemoteImage } from "@/types/image";
 
 import { useState } from "react";
 import { Product } from "@/types/product";
@@ -20,6 +17,7 @@ export type Props = {
     onCancel: () => void;
     onEditProduct: (productID:string) => void;
     onDeleteProduct: (productID:string) => void;
+    onAddNewProduct: () => void;
 } & ({
     type: "create";
     initName?: undefined;
@@ -32,7 +30,7 @@ export type Props = {
 })
     
 
-export default function ProductModal({ type, onSave, onCancel, initName, initProducts, onEditProduct, onDeleteProduct 
+export default function ProductGroupModal({ type, onSave, onCancel, initName, initProducts, onEditProduct, onDeleteProduct, onAddNewProduct 
 }: Props) {
 
     const [name, setName] = useState(initName ?? "");
@@ -77,6 +75,12 @@ export default function ProductModal({ type, onSave, onCancel, initName, initPro
                 </fieldset>
                 <div className={styles.productsHeader}>
                     <h4>Products</h4>
+                    <ButtonCPN
+                        type="normal"
+                        label="Add New Product"
+                        className={styles.addProductButton}
+                        onClick={() => onAddNewProduct()}
+                    />
                 </div>
                 <div className={styles.products}>
                     <List 
@@ -91,16 +95,8 @@ export default function ProductModal({ type, onSave, onCancel, initName, initPro
     );
 }
 
-ProductModal.displayName = "ProductModal";
+ProductGroupModal.displayName = "ProductGroupModal";
 
-const createImageObj = (image: RemoteImage | File) => {
-    if(image instanceof File) return {
-        src: URL.createObjectURL(image),
-        alt: image.name
-    };
-
-    return image;
-}
 
 type ProductItemCPNProps = {
     onEditProduct: (id:string) => void;
@@ -112,8 +108,8 @@ const ProductItemCPN = ({product, onEditProduct, onDeleteProduct}:ProductItemCPN
 
     return (
         <div className={styles.productItem} onClick={() => onEditProduct(product.id)}>
-            <ProductTabCPN {...product}/>
-            <ButtonCPN type="attention" label="Remove" onClick={() => onDeleteProduct(product.id)}/>
+            <ProductTabCPN {...product} detailed/>
+            <ButtonCPN type="danger" label="Remove" onClick={() => onDeleteProduct(product.id)}/>
         </div>
     )
 }

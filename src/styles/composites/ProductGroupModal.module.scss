@@ -68,7 +68,7 @@
 
 }
 
-.imageHeader {
+.productsHeader {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -77,72 +77,26 @@
     border-bottom: 2px solid $separator-color;
     padding-bottom: 5px;
 
-    label {
-        padding: 5px 10px;
-        border: 1px solid $button-color;
-        border-radius: $border-radius;
-        color: white;
-        background-color: $button-color;
-        cursor: pointer;
-        transition: background-color 0.2s ease;
-        
-        
-        &:hover {
-            background-color: darken($button-color, 10%);
-        }
-    }
-    
-    input[type="file"] {
-        display: none;
-    }
+
 }
 
-.images {
-    display: flex;
-    flex-wrap: wrap;
+.productItem {
+    display: grid;
+    grid-template-columns: auto 70px;
+    grid-template-rows: 70px;
     gap: 10px;
+
     margin-bottom: 10px;
 
-    .imageBlock {
-        width: 100px;
-        height: 100px;
-        border: 1px solid $separator-color;
-        border-radius: $border-radius;
+    border: 1px solid $separator-color;
+    border-radius: $border-radius;
+    padding: 5px;
 
-        label {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            width: 100%;
-            height: 100%;
-            cursor: pointer;
-            transition: background-color 0.2s ease;
+    cursor: pointer;
 
-            &:hover {
-                background-color: $button-color;
-            }
-        }
-
-        input[type="file"] {
-            display: none;
-        }
-
-        .image {
-            width: 100%;
-            height: 100%;
-            overflow: hidden;
-            border-radius: $border-radius;
-
-            cursor: pointer;
-            transition:  0.2s ease;
-
-            &:hover {
-                opacity: 0.7;
-            }
-
-        }
+    &:hover {
+        background-color: darken($background-color,15%);
     }
-
 
 }
 
