@@ -122,8 +122,8 @@ export default function ProductModal({ type, onSave, onCancel, groupName, initSe
                         }}/>
                     </div>
                 </fieldset>
-                <div className={styles.imageHeader}>
-                    <h4>Image</h4>
+                <div className={styles.imagesHeader}>
+                    <h4>Images</h4>
                 </div>
                 <div className={styles.images}>
                     <div key="add-image" className={styles.imageBlock}>

@@ -1,4 +1,4 @@
-import {  Meta, StoryObj } from "@storybook/react";
+import { Meta, StoryObj } from "@storybook/react";
 
 import ProductModal from '.';
 import type { Props } from '.';
@@ -7,8 +7,8 @@ import type { Props } from '.';
 
 const defaultArgs: Props = {
   type: "create",
-  onSave: () => {},
-  onCancel: () => {},
+  onSave: () => { },
+  onCancel: () => { },
   groupName: "This is a group"
 };
 
