@@ -7,7 +7,6 @@ import { ProductImage } from '@/types/product';
 
 import fs from 'fs';
 
-import { RemoteImage } from '@/types/image';
 import formidable from 'formidable';
 
 export type ProductApiResponse = (Product|ProductGroup)[] | Product | ProductGroup | { message: string };
@@ -17,8 +16,8 @@ type NextApiCategoryResponse = NextApiResponse<ProductApiResponse>;
 function deleteImages(imagePaths: string[]) {
   for (const imagePath of imagePaths) {
     try {
-      if(imagePath.startsWith('/images/product/') && fs.existsSync(`public/images/${imagePath}`))
-        fs.unlinkSync(`public/images/${imagePath}`);
+      if(imagePath.startsWith('/images/product/') && fs.existsSync(`public/images/product/${imagePath}`))
+        fs.unlinkSync(`public/images/product/${imagePath}`);
     } catch (err) {
       console.error(`Failed to delete image: ${imagePath}`, err);
     }
@@ -142,6 +141,7 @@ export default function handler(req: NextApiRequest, res: NextApiCategoryRespons
           const imagePaths = oldImages
             .filter((image) => !newImages.some((newImage) => newImage.src === image.src))
             .map((image) => image.src);
+
 
           deleteImages(imagePaths);
 
