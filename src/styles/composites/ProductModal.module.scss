@@ -91,6 +91,8 @@
         border: 1px solid $separator-color;
         border-radius: $border-radius;
 
+        overflow: hidden;
+
         label {
             display: flex;
             justify-content: center;

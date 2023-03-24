@@ -3,6 +3,8 @@
 import {Product, ProductGroup} from '@/types/product';
 import type { NextApiRequest, NextApiResponse } from 'next';
 
+import { ProductImage } from '@/types/product';
+
 import fs from 'fs';
 
 import { RemoteImage } from '@/types/image';
@@ -133,56 +135,30 @@ export default function handler(req: NextApiRequest, res: NextApiCategoryRespons
           }
 
 
-          // user did not change the image
-          if(!images) {
-            products[productIndex] = {
-              ...products[productIndex],
-              id: serialNumber as string,
-              name: name as string,
-              intro: intro as string,
-              details: details as string,
-              price: parseInt(price as string, 10),
-            };
+          const oldImages = (products[productIndex] as Product).images;
+          const newImages = JSON.parse(images as string) as ProductImage[];
 
-            res.status(200).json(products[productIndex]);
-            return;
-          }
-          else {
-            // user changed the image
-            const newImages = JSON.parse(images as string)
-              .map((image: RemoteImage|string) => {
-                if(typeof image === 'string'){
-                  return {
-                    src: `/images/product/${image}`,
-                    alt: name as string,
-                  }
-                }
-                else {
-                  return image;
-                }
-              });
+          // filter out the images that are not in the new image list
+          const imagePaths = oldImages
+            .filter((image) => !newImages.some((newImage) => newImage.src === image.src))
+            .map((image) => image.src);
+
+          deleteImages(imagePaths);
 
 
-            // filter out the images that are not in the new image list
-            const imagePaths = (products[productIndex] as Product).images
-              .filter((image) => !newImages.includes(image))
-              .map((image) => image.src);
+          products[productIndex] = {
+            ...products[productIndex],
+            id: serialNumber as string,
+            name: name as string,
+            intro: intro as string,
+            details: details as string,
+            price: parseInt(price as string, 10),
+            images: newImages,
+          };
 
-            deleteImages(imagePaths);
-
-            products[productIndex] = {
-              ...products[productIndex],
-              id: serialNumber as string,
-              name: name as string,
-              intro: intro as string,
-              details: details as string,
-              price: parseInt(price as string, 10),
-              images: newImages,
-            };
-            res.status(200).json(products[productIndex]);
-            return;
-          }
-
+          res.status(200).json(products[productIndex]);
+          return;
+          
         });
       }
       else {
@@ -200,6 +176,11 @@ export const config = {
     bodyParser: false,
   },
 };
+
+
+
+
+
 
 
 const productSample = {

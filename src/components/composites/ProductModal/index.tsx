@@ -5,6 +5,8 @@ import ImageCPN from "@/components/basics/ImageCPN";
 
 import { RemoteImage } from "@/types/image";
 
+import { ProductImage } from "@/types/product";
+
 import { useState } from "react";
 
 type onSaveProps = {
@@ -13,7 +15,7 @@ type onSaveProps = {
     intro: string, 
     details: string, 
     price: number, 
-    images: (RemoteImage|File)[]
+    images: (ProductImage|File)[]
 }
 
 export type Props = {
@@ -36,7 +38,7 @@ export type Props = {
     initIntro: string;
     initDetails: string;
     initPrice: number;
-    initImages: RemoteImage[];
+    initImages: ProductImage[];
 })
     
 
@@ -48,10 +50,10 @@ export default function ProductModal({ type, onSave, onCancel, groupName, initSe
     const [intro, setIntro] = useState(initIntro ?? "");
     const [details, setDetails] = useState(initDetails ?? "");
     const [price, setPrice] = useState(initPrice ?? 0);
-    const [images, setImages] = useState<(RemoteImage|File)[]|null>(initImages ?? null);
+    const [images, setImages] = useState<(ProductImage|File)[]|null>(initImages ?? null);
 
     const _onSave = () => {
-        if(!serialNumber || !name || !intro || !details || price === 0 || !images) return;
+        if(!serialNumber || !name || !intro || !details || price === 0 || !images || images.length === 0) return;
 
         
         onSave({
@@ -65,7 +67,7 @@ export default function ProductModal({ type, onSave, onCancel, groupName, initSe
             <fieldset className={styles.footer}>
                 <ButtonCPN type="normal" 
                     label={type === 'edit'? 'Save' : 'Add'} 
-                    disabled = {!serialNumber || !name || !intro || !details || price === 0 || !images} 
+                    disabled = {!serialNumber || !name || !intro || !details || price === 0 || !images || images.length === 0} 
                     onClick={_onSave}/>
                 <ButtonCPN type="attention" 
                     label="Cancel" 

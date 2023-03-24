@@ -12,13 +12,14 @@ import axios, { AxiosResponse } from "axios";
 
 import { RemoteImage } from "@/types/image";
 
-import getProductProps from "@/utils/getProductProps";
-
+import { ProductImage } from "@/types/product";
 import ProductModal from "@/components/composites/ProductModal";
 
 import AdminProductBlockCPN, {Props as AdminProductBlockProps} from "@/components/basics/AdminProductBlock";
 import AdminProductGroupBlockCPN, {Props as AdminProductGroupBlockProps} from "@/components/basics/AdminProductGroupBlock";
 import useDelete from "@/hooks/ProductManagementSection/useDelete";
+
+import uuid from "uuid";
 
 export interface Props {
 }
@@ -109,7 +110,7 @@ export default function ProductManagementSection({  }: Props) {
         // });
     };
 
-    const updateProduct = (id: string, serialNumber:string,name :string, intro:string, details:string, price:number, images: (RemoteImage|File)[]) => {
+    const updateProduct = (id: string, serialNumber:string,name :string, intro:string, details:string, price:number, images: (ProductImage|File)[]) => {
 
         const formData = createFormData({
             id,
@@ -120,49 +121,17 @@ export default function ProductManagementSection({  }: Props) {
             price,
         });
 
-        // if images contains a File --> user changed the image
-        if(images.some((image) => image instanceof File)) {
-            // Upload new images
-            uploadProductImages(images)
-            .then((res) => res.data)
-            .then((imageData) => {
-                const { filenames } = imageData;
-                let iFileName = 0;
-                
-                const updatedImages: (RemoteImage|string)[] = [];
-                
-                for(let i = 0; i < images.length; i++) {
-                    const curImage = images[i];
-                    if(curImage instanceof File) {
-                        updatedImages.push(filenames[iFileName++]);
-                    }
-                    else {
-                        updatedImages.push(curImage);
-                    }
-                }
-                
-                formData.append('images', JSON.stringify(updatedImages));
-
+        processImages(images)
+            .then((images) => {
+                formData.append('images', JSON.stringify(images));
                 return axios.post('/api/products?type=update', formData);
             })
             .then((res) => res.data)
-            .then((updatedProduct) => {
-                // Update the product list (assuming you have a setProducts function and products state)
-                setProducts(products.map((product) => product.id === id ? updatedProduct : product));
-            })
-            .catch((err) => {
-                console.error(err);
+            .then((data) => {
+                setProducts(products.map((prod) => prod.id === data.id ? data : prod));
             });
-        } else {
-            axios.post('/api/products?type=update', formData)
-                .then((res) => res.data)
-                .then((updatedProduct) => {
-                    setProducts(products.map((product) => product.id === id ? updatedProduct : product));
-                })
-                .catch((err) => {
-                    console.error(err);
-                });
-        }
+
+
     };
 
     const convertToProductItem = (product: Product | ProductGroup) => {
@@ -330,14 +299,12 @@ function createFormData(obj: any) {
 }
 
 
-const uploadProductImages = (images: (File | RemoteImage)[]) => {
+const uploadProductImages = (images: File[]) => {
     const imageFormData = new FormData();
 
     
     images.forEach((image) => {
-        if (image instanceof File) {
-            imageFormData.append('product-images', image);
-        }
+        imageFormData.append('product-images', image);
     });
 
     return axios.post('/api/upload?type=product-images', imageFormData, {
@@ -345,6 +312,36 @@ const uploadProductImages = (images: (File | RemoteImage)[]) => {
             'Content-Type': 'multipart/form-data',
         },
     });
+}
+
+
+const processImages = (images: (File | ProductImage)[]) => {
+    // images can be File[], ProductImage[] or a mixture of both
+    // if images are File[], upload them to server, get the filenames, and create ProductImage[]
+    // if images are RemoteImage[], just return them
+
+    const files = images.filter((image) => image instanceof File) as File[];
+    const productImages = images.filter(
+        (image) => !(image instanceof File)
+    ) as ProductImage[];
+
+    if (files.length === 0) {
+        return Promise.resolve(productImages);
+    } else {
+        return uploadProductImages(files).then((res) => {
+            const filenames = res.data.filenames as string[];
+            const newProductImages = filenames.map(
+                (filename) => ({
+                    // generate a unique id string for each image with Date.now() and Math.random()
+                    id: `${Date.now()}-${Math.random()}`,
+                    src: `/images/product/${filename}`,
+                    alt: filename,
+                })
+            );
+            return [...productImages, ...newProductImages];
+        });
+    }
+
 }
 
 
