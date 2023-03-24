@@ -19,7 +19,7 @@ import AdminProductBlockCPN, {Props as AdminProductBlockProps} from "@/component
 import AdminProductGroupBlockCPN, {Props as AdminProductGroupBlockProps} from "@/components/basics/AdminProductGroupBlock";
 import useDelete from "@/hooks/ProductManagementSection/useDelete";
 
-import uuid from "uuid";
+import useEditProduct from "@hooks/ProductManagementSection/useEditProduct";
 
 export interface Props {
 }
@@ -42,6 +42,8 @@ export default function ProductManagementSection({  }: Props) {
 
     const { onDeleteProduct, onDeleteProductGroup, deleteProduct, deleteProductGroup } =  useDelete({ products, setProducts,         setIsWarningModalOpen, setWarningMessage, setToBeDeletedProductID,setToBeDeletedProductGroupID});
 
+    const {updateProduct, onEditProduct} = useEditProduct({products, setProducts, setIsProductModalOpen, setProductModalType, setBeingEditedProduct});
+
 
     useEffect(() => {
         axios.get('/api/products')
@@ -60,11 +62,7 @@ export default function ProductManagementSection({  }: Props) {
      */
     
 
-    const onEditProduct = (prodID: string) => {
-        setProductModalType('edit');
-        setBeingEditedProduct(products.find((prod) => prod.id === prodID) as Product);
-        setIsProductModalOpen(true);
-    }
+
 
     const onEditProductGroup = (catID: string) => {
         // setCategoryModalType('edit');
@@ -110,29 +108,7 @@ export default function ProductManagementSection({  }: Props) {
         // });
     };
 
-    const updateProduct = (id: string, serialNumber:string,name :string, intro:string, details:string, price:number, images: (ProductImage|File)[]) => {
 
-        const formData = createFormData({
-            id,
-            serialNumber,
-            name,
-            intro,
-            details,
-            price,
-        });
-
-        processImages(images)
-            .then((images) => {
-                formData.append('images', JSON.stringify(images));
-                return axios.post('/api/products?type=update', formData);
-            })
-            .then((res) => res.data)
-            .then((data) => {
-                setProducts(products.map((prod) => prod.id === data.id ? data : prod));
-            });
-
-
-    };
 
     const convertToProductItem = (product: Product | ProductGroup) => {
         if(isProduct(product)){ // product is a Product
@@ -284,64 +260,4 @@ const ItemCPN = ({
 const isProduct = (product: Product | ProductGroup): product is Product => {
     return (product as Product).price !== undefined;
 }
-
-
-function createFormData(obj: any) {
-    const formData = new FormData();
-
-    for (const key in obj) {
-        if (obj.hasOwnProperty(key)) {
-            formData.append(key, obj[key].toString());
-        }
-    }
-
-    return formData;
-}
-
-
-const uploadProductImages = (images: File[]) => {
-    const imageFormData = new FormData();
-
-    
-    images.forEach((image) => {
-        imageFormData.append('product-images', image);
-    });
-
-    return axios.post('/api/upload?type=product-images', imageFormData, {
-        headers: {
-            'Content-Type': 'multipart/form-data',
-        },
-    });
-}
-
-
-const processImages = (images: (File | ProductImage)[]) => {
-    // images can be File[], ProductImage[] or a mixture of both
-    // if images are File[], upload them to server, get the filenames, and create ProductImage[]
-    // if images are RemoteImage[], just return them
-
-    const files = images.filter((image) => image instanceof File) as File[];
-    const productImages = images.filter(
-        (image) => !(image instanceof File)
-    ) as ProductImage[];
-
-    if (files.length === 0) {
-        return Promise.resolve(productImages);
-    } else {
-        return uploadProductImages(files).then((res) => {
-            const filenames = res.data.filenames as string[];
-            const newProductImages = filenames.map(
-                (filename) => ({
-                    // generate a unique id string for each image with Date.now() and Math.random()
-                    id: `${Date.now()}-${Math.random()}`,
-                    src: `/images/product/${filename}`,
-                    alt: filename,
-                })
-            );
-            return [...productImages, ...newProductImages];
-        });
-    }
-
-}
-
 
