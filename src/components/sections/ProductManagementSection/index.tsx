@@ -29,16 +29,20 @@ export default function ProductManagementSection({  }: Props) {
 
     const [products, setProducts] = useState<(Product|ProductGroup)[]>([]);
 
-    const [isProductModalOpen, setIsProductModalOpen] = useState(false);
     const [isWarningModalOpen, setIsWarningModalOpen] = useState(false);
     const [warningMessage, setWarningMessage] = useState<string>('');
 
     const [toBeDeletedProductID, setToBeDeletedProductID] = useState<string | null>(null);
     const [toBeDeletedProductGroupID, setToBeDeletedProductGroupID] = useState<string | null>(null);
 
+    const [isProductModalOpen, setIsProductModalOpen] = useState(false);
     const [productModalType, setProductModalType] = useState<'create' | 'edit'|null>(null);
-
     const [beingEditedProduct, setBeingEditedProduct] = useState<Product | null>(null);
+    
+    const [isProductGroupModalOpen, setIsProductGroupModalOpen] = useState(false);
+    const [productGroupModalType, setProductGroupModalType] = useState<'create' | 'edit'|null>(null);
+    const [beingEditedProductGroup, setBeingEditedProductGroup] = useState<ProductGroup | null>(null);
+
 
     const { onDeleteProduct, onDeleteProductGroup, deleteProduct, deleteProductGroup } =  useDelete({ products, setProducts,         setIsWarningModalOpen, setWarningMessage, setToBeDeletedProductID,setToBeDeletedProductGroupID});
 
@@ -64,10 +68,10 @@ export default function ProductManagementSection({  }: Props) {
 
 
 
-    const onEditProductGroup = (catID: string) => {
-        // setCategoryModalType('edit');
-        // setBeingEditedCategory(categories.find((cat) => cat.id === catID)!);
-        // setIsCategoryModalOpen(true);
+    const onEditProductGroup = (prodID: string) => {
+        setProductGroupModalType('edit');
+        setBeingEditedProductGroup(products.find((prod) => prod.id === prodID) as ProductGroup);
+        setIsProductGroupModalOpen(true);
     }
 
     const onCreate = () => {
@@ -145,24 +149,24 @@ export default function ProductManagementSection({  }: Props) {
                 isProductModalOpen &&  (
                     productModalType === 'edit'?
                         <ProductModal type='edit' 
-                        onSave={({serialNumber, name, intro, details, price, images}) => {
-                            updateProduct(beingEditedProduct!.id, serialNumber,name, intro, details, price, images);
-                            setIsProductModalOpen(false);
-                            setProductModalType(null);
-                            setBeingEditedProduct(null);
-                        }} 
-                        onCancel={() => {
-                            setIsProductModalOpen(false);
-                            setProductModalType(null);
-                            setBeingEditedProduct(null);
-                        }}
-                        initName = {beingEditedProduct?.name || ''} 
-                        initIntro = {beingEditedProduct?.intro || ''}
-                        initDetails = {beingEditedProduct?.details || ''}
-                        initPrice = {beingEditedProduct?.price || 0}
-                        initSerialNumber = {beingEditedProduct?.id || ''} 
-                        initImages = {beingEditedProduct?.images || []} 
-                        /> : null
+                            onSave={({serialNumber, name, intro, details, price, images}) => {
+                                updateProduct(beingEditedProduct!.id, serialNumber,name, intro, details, price, images);
+                                setIsProductModalOpen(false);
+                                setProductModalType(null);
+                                setBeingEditedProduct(null);
+                            }} 
+                            onCancel={() => {
+                                setIsProductModalOpen(false);
+                                setProductModalType(null);
+                                setBeingEditedProduct(null);
+                            }}
+                            initName = {beingEditedProduct?.name || ''} 
+                            initIntro = {beingEditedProduct?.intro || ''}
+                            initDetails = {beingEditedProduct?.details || ''}
+                            initPrice = {beingEditedProduct?.price || 0}
+                            initSerialNumber = {beingEditedProduct?.id || ''} 
+                            initImages = {beingEditedProduct?.images || []} 
+                            /> : null
                     // <ProductModal type='create' 
                     //     onSave={({name, description, image}) => {
                             
