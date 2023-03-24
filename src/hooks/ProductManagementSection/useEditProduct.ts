@@ -8,9 +8,12 @@ type Props = {
     setProductModalType: React.Dispatch<React.SetStateAction<'create' | 'edit'|null>>;
     setBeingEditedProduct: React.Dispatch<React.SetStateAction<Product | null>>;
     setIsProductModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
+    setIsProductGroupModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
+    beingEditedProductGroup: ProductGroup | null;
+
 };
 
-function useEditProduct({setProducts, products, setProductModalType, setBeingEditedProduct, setIsProductModalOpen}:Props) {
+function useEditProduct({setProducts, products, setProductModalType, setBeingEditedProduct, setIsProductModalOpen, setIsProductGroupModalOpen,  beingEditedProductGroup}:Props) {
     const updateProduct = (id: string, serialNumber:string,name :string, intro:string, details:string, price:number, images: (ProductImage|File)[]) => {
 
         const formData = createFormData({
@@ -38,7 +41,15 @@ function useEditProduct({setProducts, products, setProductModalType, setBeingEdi
 
     const onEditProduct = (prodID: string) => {
         setProductModalType('edit');
-        setBeingEditedProduct(products.find((prod) => prod.id === prodID) as Product);
+
+        if(beingEditedProductGroup) {
+            setIsProductGroupModalOpen(false);
+            setBeingEditedProduct(beingEditedProductGroup.products.find((prod) => prod.id === prodID) as Product);            
+        }
+        else {
+            setBeingEditedProduct(products.find((prod) => prod.id === prodID) as Product);
+        }
+
         setIsProductModalOpen(true);
     }
 

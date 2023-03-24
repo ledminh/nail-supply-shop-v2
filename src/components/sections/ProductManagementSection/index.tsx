@@ -21,6 +21,8 @@ import useDelete from "@/hooks/ProductManagementSection/useDelete";
 
 import useEditProduct from "@hooks/ProductManagementSection/useEditProduct";
 
+import ProductGroupModal from "@/components/composites/ProductGroupModal";
+
 export interface Props {
 }
 
@@ -46,7 +48,7 @@ export default function ProductManagementSection({  }: Props) {
 
     const { onDeleteProduct, onDeleteProductGroup, deleteProduct, deleteProductGroup } =  useDelete({ products, setProducts,         setIsWarningModalOpen, setWarningMessage, setToBeDeletedProductID,setToBeDeletedProductGroupID});
 
-    const {updateProduct, onEditProduct} = useEditProduct({products, setProducts, setIsProductModalOpen, setProductModalType, setBeingEditedProduct});
+    const {updateProduct, onEditProduct} = useEditProduct({products, setProducts, setIsProductModalOpen, setProductModalType, setBeingEditedProduct, setIsProductGroupModalOpen, beingEditedProductGroup});
 
 
     useEffect(() => {
@@ -74,7 +76,7 @@ export default function ProductManagementSection({  }: Props) {
         setIsProductGroupModalOpen(true);
     }
 
-    const onCreate = () => {
+    const onCreateProduct = () => {
         // setCategoryModalType('create');
         // setIsCategoryModalOpen(true);
 
@@ -154,11 +156,19 @@ export default function ProductManagementSection({  }: Props) {
                                 setIsProductModalOpen(false);
                                 setProductModalType(null);
                                 setBeingEditedProduct(null);
+
+                                if(beingEditedProductGroup){
+                                    setIsProductGroupModalOpen(true);
+                                }
                             }} 
                             onCancel={() => {
                                 setIsProductModalOpen(false);
                                 setProductModalType(null);
                                 setBeingEditedProduct(null);
+
+                                if(beingEditedProductGroup){
+                                    setIsProductGroupModalOpen(true);
+                                }
                             }}
                             initName = {beingEditedProduct?.name || ''} 
                             initIntro = {beingEditedProduct?.intro || ''}
@@ -179,7 +189,20 @@ export default function ProductManagementSection({  }: Props) {
                     //         setCategoryModalType(null);
                     //     }}
                     //     /> : 
-)
+                )
+            }
+            {
+                isProductGroupModalOpen &&  (
+                    productGroupModalType === 'edit'?
+                        <ProductGroupModal type = "edit" 
+                            onSave = {()=>{}} 
+                            onCancel = {()=>{}} 
+                            initName = {beingEditedProductGroup?.name || ''} 
+                            initProducts = {beingEditedProductGroup?.products || []}
+                            onEditProduct = {onEditProduct} 
+                            onDeleteProduct = {onDeleteProduct}
+                            onAddNewProduct = {onCreateProduct}  
+                            /> : null)
             }
             {
                 isWarningModalOpen && (
