@@ -110,50 +110,60 @@ export default function ProductManagementSection({  }: Props) {
     };
 
     const updateProduct = (id: string, serialNumber:string,name :string, intro:string, details:string, price:number, images: (RemoteImage|File)[]) => {
-        // const formData = new FormData();
 
-        // formData.append('id', catID);
-        // formData.append('name', name);
-        // formData.append('description', description);
+        const formData = createFormData({
+            id,
+            serialNumber,
+            name,
+            intro,
+            details,
+            price,
+        });
 
-        // // image is not instanceof File --> it is a RemoteImage --> user did not change the image
-        // if(!(image instanceof File)) {
-        //     axios.post('/api/categories?type=update', formData)
-        //         .then((res) => res.data)
-        //         .then((data) => {
-        //             setCategories([data, ...categories.filter((cat) => cat.id !== catID)]);
-        //         })
-        //         .catch((err) => {
-        //             console.error(err);
-        //         });
-        // }
-        // else {
-        //     // Delete the old image first
-        //     axios.post(`/api/delete?type=cat-image&filename=${getCategoryProps({categories, categoryID: catID, props: ['image']}).image?.src}`)
-        //         .then(() => {
-        //             // Upload the new image            
-        //             const imageFormData = new FormData();
-        //             imageFormData.append('cat-image', image);
+        // if images contains a File --> user changed the image
+        if(images.some((image) => image instanceof File)) {
+            // Upload new images
+            uploadProductImages(images)
+            .then((res) => res.data)
+            .then((imageData) => {
+                const { filenames } = imageData;
+                let iFileName = 0;
+                
+                const updatedImages: (RemoteImage|string)[] = [];
+                
+                for(let i = 0; i < images.length; i++) {
+                    const curImage = images[i];
+                    if(curImage instanceof File) {
+                        updatedImages.push(filenames[iFileName++]);
+                    }
+                    else {
+                        updatedImages.push(curImage);
+                    }
+                }
+                
+                formData.append('images', JSON.stringify(updatedImages));
 
-        //             return axios.post('/api/upload?type=cat-image', imageFormData, {
-        //                 headers: {
-        //                     'Content-Type': 'multipart/form-data'
-        //             }});
-        //         })
-        //     .then((res) => res.data)
-        //     .then((imageData) => {
-        //         console.log(imageData);
-        //         formData.append('imageFileName', imageData.filename);
-        //         return axios.post('/api/categories?type=update', formData);
-        //     }).then((res) => res.data)
-        //     .then((data) => {
-        //         setCategories(data);
-        //     })
-        //     .catch((err) => {
-        //         console.error(err);
-        //     });
-        // }
-    }
+                return axios.post('/api/products?type=update', formData);
+            })
+            .then((res) => res.data)
+            .then((updatedProduct) => {
+                // Update the product list (assuming you have a setProducts function and products state)
+                setProducts(products.map((product) => product.id === id ? updatedProduct : product));
+            })
+            .catch((err) => {
+                console.error(err);
+            });
+        } else {
+            axios.post('/api/products?type=update', formData)
+                .then((res) => res.data)
+                .then((updatedProduct) => {
+                    setProducts(products.map((product) => product.id === id ? updatedProduct : product));
+                })
+                .catch((err) => {
+                    console.error(err);
+                });
+        }
+    };
 
     const convertToProductItem = (product: Product | ProductGroup) => {
         if(isProduct(product)){ // product is a Product
@@ -305,3 +315,36 @@ const ItemCPN = ({
 const isProduct = (product: Product | ProductGroup): product is Product => {
     return (product as Product).price !== undefined;
 }
+
+
+function createFormData(obj: any) {
+    const formData = new FormData();
+
+    for (const key in obj) {
+        if (obj.hasOwnProperty(key)) {
+            formData.append(key, obj[key].toString());
+        }
+    }
+
+    return formData;
+}
+
+
+const uploadProductImages = (images: (File | RemoteImage)[]) => {
+    const imageFormData = new FormData();
+
+    
+    images.forEach((image) => {
+        if (image instanceof File) {
+            imageFormData.append('product-images', image);
+        }
+    });
+
+    return axios.post('/api/upload?type=product-images', imageFormData, {
+        headers: {
+            'Content-Type': 'multipart/form-data',
+        },
+    });
+}
+
+

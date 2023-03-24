@@ -5,6 +5,7 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 
 import fs from 'fs';
 
+import { RemoteImage } from '@/types/image';
 import formidable from 'formidable';
 
 export type ProductApiResponse = (Product|ProductGroup)[] | Product | ProductGroup | { message: string };
@@ -108,47 +109,81 @@ export default function handler(req: NextApiRequest, res: NextApiCategoryRespons
 
       }
       else if (type === 'update') {
-        // const form = new formidable.IncomingForm();
+        const form = new formidable.IncomingForm();
 
-        // form.parse(req, (err, fields) => {
-        //   if (err) {
-        //     res.status(500).json({ message: err.message });
-        //     return;
-        //   }
+        form.parse(req, (err, fields) => {
+          if (err) {
+            res.status(500).json({ message: err.message });
+            return;
+          }
 
-        //   const { id, name, description, imageFileName } = fields;
+          const { id,
+            serialNumber,
+            name,
+            intro,
+            details,
+            price,
+            images } = fields;
 
-        //   const categoryIndex = categories.findIndex((category) => category.id === id);
+          const productIndex = products.findIndex((product) => product.id === id);
 
-        //   if (categoryIndex === -1) {
-        //     res.status(404).json({ message: 'Category not found' });
-        //     return;
-        //   }
-
-        //   // user did not change the image
-        //   if(!imageFileName) {
-        //     categories[categoryIndex] = {
-        //       ...categories[categoryIndex],
-        //       name: name as string,
-        //       description: description as string,
-        //     };
-        //     res.status(200).json(categories[categoryIndex]);
-        //     return;
-        //   }
-
-        //   categories[categoryIndex] = {
-        //     ...categories[categoryIndex],
-        //     name: name as string,
-        //     description: description as string,
-        //     image: imageFileName === 'undefined' ? categories[categoryIndex].image :{
-        //       src: `/images/category/${imageFileName}`,
-        //       alt: name as string,
-        //     },
-        //   };
+          if (productIndex === -1) {
+            res.status(404).json({ message: 'Product not found' });
+            return;
+          }
 
 
-        //   res.status(200).json(categories);
-        // });
+          // user did not change the image
+          if(!images) {
+            products[productIndex] = {
+              ...products[productIndex],
+              id: serialNumber as string,
+              name: name as string,
+              intro: intro as string,
+              details: details as string,
+              price: parseInt(price as string, 10),
+            };
+
+            res.status(200).json(products[productIndex]);
+            return;
+          }
+          else {
+            // user changed the image
+            const newImages = JSON.parse(images as string)
+              .map((image: RemoteImage|string) => {
+                if(typeof image === 'string'){
+                  return {
+                    src: `/images/product/${image}`,
+                    alt: name as string,
+                  }
+                }
+                else {
+                  return image;
+                }
+              });
+
+
+            // filter out the images that are not in the new image list
+            const imagePaths = (products[productIndex] as Product).images
+              .filter((image) => !newImages.includes(image))
+              .map((image) => image.src);
+
+            deleteImages(imagePaths);
+
+            products[productIndex] = {
+              ...products[productIndex],
+              id: serialNumber as string,
+              name: name as string,
+              intro: intro as string,
+              details: details as string,
+              price: parseInt(price as string, 10),
+              images: newImages,
+            };
+            res.status(200).json(products[productIndex]);
+            return;
+          }
+
+        });
       }
       else {
         res.status(400).json({ message: 'Invalid type parameter' });
