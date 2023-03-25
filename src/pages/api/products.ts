@@ -81,33 +81,6 @@ export default function handler(req: NextApiRequest, res: NextApiCategoryRespons
         }
       
 
-      } 
-      else if (type === 'create') {
-        // const form = new formidable.IncomingForm();
-                
-        // form.parse(req, (err, fields) => {
-        //   if (err) {
-        //     res.status(500).json({ message: err.message });
-        //     return;
-        //   }
-
-        //   const { name, description, imageFileName } = fields;
-          
-        //   const newCategory: Category = {
-        //     id: (Math.max(...categories.map((c) => parseInt(c.id, 10))) + 1).toString(),
-        //     slug: `category-${(name as string).toLowerCase().replace(/[^a-z0-9]+/g, '-')}`,
-        //     name: name as string,
-        //     description: description as string,
-        //     image: {
-        //       src: `/images/category/${imageFileName}`,
-        //       alt: name as string,
-        //     },
-        //   };
-
-        //   categories.push(newCategory);
-        //   res.status(200).json(newCategory);
-        // });
-
       }
       else if (type === 'update') {
         const form = new formidable.IncomingForm();
@@ -125,6 +98,50 @@ export default function handler(req: NextApiRequest, res: NextApiCategoryRespons
             details,
             price,
             images } = fields;
+
+          // if(productGroupID) {
+          //   const productGroupIndex = products.findIndex((product) => product.id === productGroupID);
+
+          //   if (productGroupIndex === -1) {
+          //     res.status(404).json({ message: 'Product group not found' });
+          //     return;
+          //   }
+
+          //   const productIndex = (products[productGroupIndex] as ProductGroup).products.findIndex((product) => product.id === id);
+
+          //   if (productIndex === -1) {
+          //     res.status(404).json({ message: 'Product not found' });
+          //     return;
+          //   }
+
+          //   const oldImages = (products[productGroupIndex] as ProductGroup).products[productIndex].images;
+          //   const newImages = JSON.parse(images as string) as ProductImage[];
+
+          //   // filter out the images that are not in the new image list
+          //   const imagePaths = oldImages
+          //     .filter((image) => !newImages.some((newImage) => newImage.src === image.src))
+          //     .map((image) => image.src);
+
+
+          //   deleteImages(imagePaths);
+
+
+          //   (products[productGroupIndex] as ProductGroup).products[productIndex] = {
+          //     ...(products[productGroupIndex] as ProductGroup).products[productIndex],
+          //     id: serialNumber as string,
+          //     name: name as string,
+          //     intro: intro as string,
+          //     details: details as string,
+          //     price: parseInt(price as string, 10),
+          //     images: newImages,
+          //   };
+
+          //   res.status(200).json(products[productGroupIndex]);
+
+          //   return;
+          // }
+
+
 
           const productIndex = products.findIndex((product) => product.id === id);
 
@@ -160,7 +177,35 @@ export default function handler(req: NextApiRequest, res: NextApiCategoryRespons
           return;
           
         });
+      } 
+      else if (type === 'create') {
+        // const form = new formidable.IncomingForm();
+                
+        // form.parse(req, (err, fields) => {
+        //   if (err) {
+        //     res.status(500).json({ message: err.message });
+        //     return;
+        //   }
+
+        //   const { name, description, imageFileName } = fields;
+          
+        //   const newCategory: Category = {
+        //     id: (Math.max(...categories.map((c) => parseInt(c.id, 10))) + 1).toString(),
+        //     slug: `category-${(name as string).toLowerCase().replace(/[^a-z0-9]+/g, '-')}`,
+        //     name: name as string,
+        //     description: description as string,
+        //     image: {
+        //       src: `/images/category/${imageFileName}`,
+        //       alt: name as string,
+        //     },
+        //   };
+
+        //   categories.push(newCategory);
+        //   res.status(200).json(newCategory);
+        // });
+
       }
+      
       else {
         res.status(400).json({ message: 'Invalid type parameter' });
       }

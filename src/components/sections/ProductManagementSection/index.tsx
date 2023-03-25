@@ -67,9 +67,6 @@ export default function ProductManagementSection({  }: Props) {
      * Functions for ProductModal
      */
     
-
-
-
     const onEditProductGroup = (prodID: string) => {
         setProductGroupModalType('edit');
         setBeingEditedProductGroup(products.find((prod) => prod.id === prodID) as ProductGroup);
@@ -198,10 +195,7 @@ export default function ProductManagementSection({  }: Props) {
                             onSave = {()=>{}} 
                             onCancel = {()=>{}} 
                             initName = {beingEditedProductGroup?.name || ''} 
-                            initProducts = {beingEditedProductGroup?.products || []}
-                            onEditProduct = {onEditProduct} 
-                            onDeleteProduct = {onDeleteProduct}
-                            onAddNewProduct = {onCreateProduct}  
+                            initProducts = {beingEditedProductGroup?.products || []}   
                             /> : null)
             }
             {

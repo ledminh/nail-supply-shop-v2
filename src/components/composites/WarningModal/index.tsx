@@ -2,6 +2,7 @@ import styles from "@styles/composites/WarningModal.module.scss";
 import ModalLayout from "@/components/layouts/ModalLayout";
 import ButtonCPN from "@/components/basics/ButtonCPN";
 
+import { useState } from "react";
 
 
 
@@ -35,3 +36,6 @@ export default function WarningModal({ onOK, onCancel, message }: Props) {
 }
 
 WarningModal.displayName = "WarningModal";
+
+
+
