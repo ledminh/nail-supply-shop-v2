@@ -14,7 +14,7 @@ export type Props = {
 }; 
     
 
-export default function WarningModal({ onOK, onCancel, message }: Props) {
+function WarningModal({ onOK, onCancel, message }: Props) {
 
 
 
@@ -37,5 +37,60 @@ export default function WarningModal({ onOK, onCancel, message }: Props) {
 
 WarningModal.displayName = "WarningModal";
 
+export type ShowWarningProps = {
+    message: string;
+    beforeWarning?: () => void;
+    onOK?: () => void;
+    onCancel?: () => void;
+};
+
+
+export function useWarningModal() {
+    const [showWarningModal, setShowWarningModal] = useState(false);
+    const [warningMessage, setWarningMessage] = useState("");
+
+    const [onOK, setOnOK] = useState(() => () => {});
+    const [onCancel, setOnCancel] = useState(() => () => {});
+
+
+
+    const showWarning = ({ beforeWarning, message,  onOK, onCancel}:ShowWarningProps)=> {
+        beforeWarning && beforeWarning();
+        setOnOK(() => onOK || (() => {}));
+        setOnCancel(() => onCancel || (() => {}));
+        setWarningMessage(message);
+        setShowWarningModal(true);
+    }
+
+    const hideWarning = () => {
+        setShowWarningModal(false);
+    }
+
+    const WarningModalComponent = () => {
+        return (
+            <>
+                {
+                    showWarningModal &&             
+                    <WarningModal 
+                            message={warningMessage}
+                            onOK={() => {
+                                onOK();
+                                hideWarning();
+                            }}
+                            onCancel={() => {
+                                onCancel();
+                                hideWarning();
+                            }}
+                        />
+                }
+            </>
+        );
+    }
+
+    return {
+        showWarning,
+        WarningModalComponent
+    }
+}
 
 

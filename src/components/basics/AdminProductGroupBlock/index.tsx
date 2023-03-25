@@ -114,3 +114,4 @@ function getProductOptions(products: Product[]): OptionItem<Product>[] {
 
     return products.map(product => convertToOptionItem({item:product, getValue, getLabel}));
 }
+

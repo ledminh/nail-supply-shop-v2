@@ -198,6 +198,6 @@ export const categoryManagementConfig = {
 export const productManagementConfig = {
     warningMessages: {
         deleteProduct: (productName: string): string => `Are you sure you want to delete ${productName} product?`,
-        deleteProductGroup: (productGroupName: string): string => `Are you sure you want to delete ${productGroupName} product group? All of its associated products will also be deleted.`,
+        deleteGroup: (groupName: string): string => `Are you sure you want to delete ${groupName} product group? All of its associated products will also be deleted.`,
     }
 };
