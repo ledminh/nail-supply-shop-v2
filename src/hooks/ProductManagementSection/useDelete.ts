@@ -1,77 +1,70 @@
 import axios from 'axios';
 
-import getProductProps from '@utils/getProductProps';
 import { Product, ProductGroup } from '@/types/product';
 
 import { productManagementConfig } from '@/config';
 
-type Props = {
-    products: (Product | ProductGroup)[];
-    setProducts: React.Dispatch<React.SetStateAction<(Product | ProductGroup)[]>>;
-    setIsWarningModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
-    setWarningMessage: React.Dispatch<React.SetStateAction<string>>;
-    setToBeDeletedProductID: React.Dispatch<React.SetStateAction<string | null>>;
-    setToBeDeletedProductGroupID: React.Dispatch<React.SetStateAction<string | null>>;
+import { ShowWarningProps } from '@/components/composites/WarningModal';
+
+type useDeleteProps = {
+    products: (Product|ProductGroup)[];
+    setProducts: React.Dispatch<React.SetStateAction<(Product|ProductGroup)[]>>;
+    showWarning: (warningProps: ShowWarningProps) => void;
 }
 
-function useDelete ({
-    products,
-    setProducts,
-    setIsWarningModalOpen,
-    setWarningMessage,
-    setToBeDeletedProductID,
-    setToBeDeletedProductGroupID,
-}:Props) {
-    
-    const { warningMessages } = productManagementConfig;
+function useDelete ({products, setProducts, showWarning}:useDeleteProps) {
+    const {warningMessages} = productManagementConfig;
 
-    const onDeleteProduct = (id: string) => {
-        setToBeDeletedProductID(id);
 
-        const productName = getProductProps({products, id, props: ['name']}).name?? '';
+    const onDeleteProduct = (productID: string) => {
+        const productName = products.find((product) => product.id === productID)?.name;
 
-        setWarningMessage(warningMessages.deleteProduct(productName));
-        setIsWarningModalOpen(true);
+        if(!productName) {
+            throw new Error("Product not found");
+        }
+
+        showWarning({
+            message: warningMessages.deleteProduct(productName),
+            onOK: () => {
+                axios.post(`/api/products/?type=delete-single-product&id=${productID}`)
+                .then(({data}) => {
+                    setProducts(data);
+                })
+                .catch((err) => {
+                    console.error(err);
+                });
+            },
+            
+        })
+        
     }
 
-    const onDeleteProductGroup = (id: string) => {
-        setToBeDeletedProductGroupID(id);
+    const onDeleteGroup = (groupID: string) => {
+        const groupName = products.find((product) => product.id === groupID)?.name;
 
-        const productGroupName = getProductProps({products, id, props: ['name']}).name?? '';
+        if(!groupName) {
+            throw new Error("Group not found");
+        }
 
-        setWarningMessage(warningMessages.deleteProductGroup(productGroupName));
-        setIsWarningModalOpen(true);
+        showWarning({
+            message: warningMessages.deleteGroup(groupName),
+            onOK: () => {
+                axios.post(`/api/products/?type=delete-group&id=${groupID}`)
+                .then(({data}) => {
+                    setProducts(data);
+                })
+                .catch((err) => {
+                    console.error(err);
+                });
+            },
+            
+        })
+
     }
-
-    const deleteProduct = (productID: string) => {
-        axios
-            .post(`/api/products/?type=delete&productID=${productID}`)
-            .then(({data} ) => {
-                setProducts(data);
-                setToBeDeletedProductID(null);
-            })
-            .catch((err) => {
-                console.error(err);
-            });
-    };
-
-    const deleteProductGroup = (productGroupID: string) => {
-        axios
-            .post(`/api/products/?type=delete&productGroupID=${productGroupID}`)
-            .then(({data} ) => {
-                setProducts(data);
-                setToBeDeletedProductGroupID(null);
-            })
-            .catch((err) => {
-                console.error(err);
-            });
-    };
 
     return {
         onDeleteProduct,
-        onDeleteProductGroup,
-        deleteProduct,
-        deleteProductGroup,
+        onDeleteGroup
     }
 }
 

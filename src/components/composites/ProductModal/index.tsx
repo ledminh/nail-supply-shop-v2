@@ -189,7 +189,7 @@ export function useProductModal() {
     const [initPrice, setInitPrice] = useState<number | null>(null);
     const [initImages, setInitImages] = useState<ProductImage[] | null>(null);
 
-    const [onSave, setOnSave] = useState<(props: onSaveProps) => void>(() => () => {});
+    const [onSave, setOnSave] = useState<(props: onSaveProps) => void|(()=> void)>(() => () => {});
     const [onCancel, setOnCancel] = useState<() => void>(() => () => {});
 
     // const openCreateSingleProduct = ({
@@ -208,7 +208,6 @@ export function useProductModal() {
 
 
     const openEditProduct = ({product, onSave, onCancel}: OpenEditProductProps) => {
-        setIsOpen(true);
         setType("edit");
         product.groupName && setGroupName(product.groupName);
         setInitSerialNumber(product.id);
@@ -218,8 +217,10 @@ export function useProductModal() {
         setInitPrice(product.price);
         setInitImages(product.images);
 
-        setOnSave(onSave);
-        onCancel && setOnCancel(onCancel);
+        setOnSave(() => onSave);
+        onCancel && setOnCancel(() => onCancel);
+        setIsOpen(true);
+
     };
 
     const close = () => {

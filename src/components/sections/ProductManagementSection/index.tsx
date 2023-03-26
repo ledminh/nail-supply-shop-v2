@@ -9,12 +9,11 @@ import { useWarningModal, ShowWarningProps } from "@/components/composites/Warni
 import { useState, useEffect } from "react";
 import AdminProductBlockCPN from "@/components/basics/AdminProductBlock";
 import AdminProductGroupBlockCPN from "@/components/basics/AdminProductGroupBlock";
-import { productManagementConfig } from "@/config";
 import { useProductModal } from "@/components/composites/ProductModal";
 
 import { ProductImage } from "@/types/product";
 
-const {warningMessages} = productManagementConfig;
+import useDelete from "@/hooks/ProductManagementSection/useDelete";
 
 export interface Props {
 }
@@ -22,6 +21,7 @@ export interface Props {
 
 
 export default function ProductManagementSection({  }: Props) {
+    
 
     const [products, setProducts] = useState<(Product|ProductGroup)[]>([]);
 
@@ -47,7 +47,8 @@ export default function ProductManagementSection({  }: Props) {
         openEditProduct({
             product,
             onSave: ({serialNumber, name, intro, details, price, images}) => {
-                const formData = createFormData({serialNumber, name, intro, details, price});
+                
+                const formData = createFormData({serialNumber, name, intro, details, price: price.toString()});
                 
                 processImages(images)
                     .then((images) => {
@@ -150,66 +151,8 @@ function getItemWrapper ({onDeleteProduct, onDeleteGroup, onClick, onEditProduct
     return ItemWrapper;
 }
 
-type useDeleteProps = {
-    products: (Product|ProductGroup)[];
-    setProducts: React.Dispatch<React.SetStateAction<(Product|ProductGroup)[]>>;
-    showWarning: (warningProps: ShowWarningProps) => void;
-}
-
-function useDelete ({products, setProducts, showWarning}:useDeleteProps) {
 
 
-    const onDeleteProduct = (productID: string) => {
-        const productName = products.find((product) => product.id === productID)?.name;
-
-        if(!productName) {
-            throw new Error("Product not found");
-        }
-
-        showWarning({
-            message: warningMessages.deleteProduct(productName),
-            onOK: () => {
-                axios.post(`/api/products/?type=delete-single-product&id=${productID}`)
-                .then(({data}) => {
-                    setProducts(data);
-                })
-                .catch((err) => {
-                    console.error(err);
-                });
-            },
-            
-        })
-        
-    }
-
-    const onDeleteGroup = (groupID: string) => {
-        const groupName = products.find((product) => product.id === groupID)?.name;
-
-        if(!groupName) {
-            throw new Error("Group not found");
-        }
-
-        showWarning({
-            message: warningMessages.deleteGroup(groupName),
-            onOK: () => {
-                axios.post(`/api/products/?type=delete-group&id=${groupID}`)
-                .then(({data}) => {
-                    setProducts(data);
-                })
-                .catch((err) => {
-                    console.error(err);
-                });
-            },
-            
-        })
-
-    }
-
-    return {
-        onDeleteProduct,
-        onDeleteGroup
-    }
-}
 
 const processImages = async (images: (File | ProductImage)[]):Promise<ProductImage[]> => {
     // images can be File[], ProductImage[] or a mixture of both

@@ -37,6 +37,8 @@ function WarningModal({ onOK, onCancel, message }: Props) {
 
 WarningModal.displayName = "WarningModal";
 
+export default WarningModal;
+
 export type ShowWarningProps = {
     message: string;
     beforeWarning?: () => void;
