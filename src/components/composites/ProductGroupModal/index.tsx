@@ -7,10 +7,13 @@ import { Product, ProductImage } from "@/types/product";
 import List from "@/components/generics/List";
 import ProductTabCPN from "@/components/basics/ProductTabCPN";
 
-import ProductModal, {Props as ProductModalProps} from "@components/composites/ProductModal";
+import ProductModal, {Props as ProductModalProps, useProductModal} from "@components/composites/ProductModal";
 
-import WarningModal from "@components/composites/WarningModal";
+import WarningModal, { useWarningModal } from "@components/composites/WarningModal";
 
+import type {ProductGroup} from '@/types/product';
+
+import { productManagementConfig } from "@/config";
 
 type PreparedProduct = Omit<Product, 'images'> & {
     images: (ProductImage | File)[];
@@ -51,6 +54,9 @@ export default function ProductGroupModal({ type, onSave, onCancel, initName, in
     const [isWarningModalOpen, setIsWarningModalOpen] = useState(false);
 
 
+    const {showWarning, WarningModalComponent} = useWarningModal();
+    const {openEditProduct, openCreateProduct, ProductModalComponent } = useProductModal();
+
     const _onSave = () => {
         if(!name) return;
 
@@ -60,30 +66,116 @@ export default function ProductGroupModal({ type, onSave, onCancel, initName, in
         });
     };
 
-    const onEditProduct = (id:string) => {
-        const product = products.find((product) => product.id === id);
-        if(!product) return;
 
-        setBeingEditedProduct(product);
-        setProductModalType('edit');
-        setIsProductModalOpen(true);
+    const onAddProduct = () => {
         setShow(false);
+
+        openCreateProduct({
+            onSave: ({serialNumber, name, intro, details, price, images}) => {
+                const newProduct:PreparedProduct = {
+                    id: serialNumber,
+                    categoryID: products[0].categoryID,
+                    name,
+                    intro,
+                    details,
+                    price,
+                    images
+                };
+
+                setProducts([newProduct, ...products]);
+
+                setShow(true);
+            },
+
+            onCancel: () => {
+                setShow(true);
+            }
+        });
+
+
     };
 
-    const onAddNewProduct = () => {
-        setProductModalType('create');
-        setIsProductModalOpen(true);
+
+    const onEditProduct = (id:string) => {
+        const product = products.find((product) => product.id === id);
+
+        if(!product) return;
+
+
         setShow(false);
+
+        openEditProduct({
+            product: convertToProduct(product),
+            onSave: ({serialNumber, name, intro, details, price, images}) => {
+                const oldImages = product.images;
+
+                const newImages = images.map((image) => {
+                    if(image instanceof File) return image;
+                    
+                    const oldImage = oldImages.find((oldImage) => (oldImage as File).name === image.id);
+
+                    if(oldImage) return oldImage;
+
+                    return image;
+
+                });
+
+                const newProduct = {
+                    ...product,
+                    id: serialNumber,
+                    name,
+                    intro,
+                    details,
+                    price,
+                    images: newImages
+                };
+
+                const newProducts = products.map((product) => {
+                    if(product.id === id) return newProduct;
+                    return product;
+                });
+
+                setProducts(newProducts);
+
+                setShow(true);
+
+
+            },
+            onCancel: () => {
+                setShow(true);
+            }
+        });
+        
     };
 
     const onDeleteProduct = (id:string) => {
-        const index = products.findIndex((product) => product.id === id);
-        if(index === -1) return;
+        const product = products.find((product) => product.id === id);
 
-        setToBeDeletedProductID(index);
-        setIsWarningModalOpen(true);
+        if(!product) return;
+
+        const {warningMessages} = productManagementConfig;
+
         setShow(false);
+
+        showWarning({
+            message: warningMessages.deleteProduct(product.name),
+            onOK: () => {
+                const newProducts = products.filter((product) => product.id !== id);
+                setProducts(newProducts);
+                setShow(true);
+            },
+            onCancel: () => {
+                setShow(true);
+            }
+        });
+    
     };
+
+    const  ProductItemWrapper = getProductItemWrapper({
+        onEditProduct, 
+        onDeleteProduct
+    });
+
 
 
 
@@ -100,6 +192,9 @@ export default function ProductGroupModal({ type, onSave, onCancel, initName, in
             </fieldset>
         );
     };
+
+
+
 
     const title = type === 'edit'? 'Edit Product Group' : 'Add Product Group';
     
@@ -122,7 +217,7 @@ export default function ProductGroupModal({ type, onSave, onCancel, initName, in
                                 type="normal"
                                 label="Add New Product"
                                 className={styles.addProductButton}
-                                onClick={() => onAddNewProduct()}
+                                onClick={() => onAddProduct()}
                             />
                         </div>
                         <div className={styles.products}>
@@ -134,8 +229,8 @@ export default function ProductGroupModal({ type, onSave, onCancel, initName, in
                                 )
                             }
                             <List 
-                                items = {products.map((product) => ({id: product.id, product:product, onEditProduct, onDeleteProduct }))}
-                                ItemCPN = {ProductItemCPN}
+                                items = {products}
+                                ItemCPN = {ProductItemWrapper}
                                 liClass = {styles.liProduct}
                                 ulClass = {styles.ulProduct}
                             />
@@ -144,103 +239,8 @@ export default function ProductGroupModal({ type, onSave, onCancel, initName, in
                 </ModalLayout>
                 )
             }
-            {
-                isProductModalOpen && (
-                    productModalType === 'edit' ? (
-                    <ProductModal
-                        type='edit'
-                        initSerialNumber = {beingEditedProduct?.id || ""} 
-                        initName = {beingEditedProduct?.name || ""}
-                        initIntro = {beingEditedProduct?.intro || ""}
-                        initDetails = {beingEditedProduct?.details || ""}
-                        initPrice = {beingEditedProduct?.price || 0}
-                        initImages = {convertImages(beingEditedProduct!.images)}
-
-                        onSave={({serialNumber, name, intro, details, price, images})  => {
-                            const index = products.findIndex((product) => product.id === beingEditedProduct?.id);
-                            if(index === -1) return;
-
-                            const newProducts = [...products];
-                            
-                            const newImages:(ProductImage |File)[] = images.map((image) => {
-                                if(image instanceof File) return image;
-                                
-                                const file = beingEditedProduct?.images.find((productImg) => (productImg as File).name === image.id);
-
-                                if(file) return file;
-
-                                return image;
-                            });
-
-                            newProducts[index] = {
-                                id: serialNumber,
-                                categoryID: beingEditedProduct?.categoryID || "",
-                                name,
-                                intro,
-                                details,
-                                price,
-                                images: newImages
-                            };
-
-                            setProducts(newProducts);
-                            setIsProductModalOpen(false);
-                            setBeingEditedProduct(null);
-                            setShow(true);
-                        }}
-                        onCancel={() => {
-                            setIsProductModalOpen(false);
-                            setShow(true);
-                        }}
-                        />
-                ): (
-                    <ProductModal
-                        type='create'
-                        onSave={({serialNumber, name, intro, details, price, images})  => {
-                            const newProducts = [...products];
-                            newProducts.push({
-                                id: serialNumber,
-                                categoryID: "",
-                                name,
-                                intro,
-                                details,
-                                price,
-                                images
-                            });
-
-                            setProducts(newProducts);
-                            setIsProductModalOpen(false);
-
-                            setShow(true);
-                        }}
-                        onCancel={() => {
-                            setIsProductModalOpen(false);
-                            setShow(true);
-                        }}
-                    />
-                ))
-            }
-            {
-                isWarningModalOpen && (
-                    <WarningModal
-                        message="Are you sure you want to remove this product?"
-                        onOK={() => {
-                            const newProducts = [...products];
-
-                            newProducts.splice(toBeDeletedProductID, 1);
-
-                            setProducts(newProducts);
-                            
-                            setIsWarningModalOpen(false);
-                            setToBeDeletedProductID(-1);
-                            setShow(true);
-                        }}
-                        onCancel={() => {
-                            setIsWarningModalOpen(false);
-                            setShow(true);
-                        }}
-                    />
-                )
-            }
+            <ProductModalComponent />
+            <WarningModalComponent />
         </>
         
 
@@ -251,46 +251,131 @@ ProductGroupModal.displayName = "ProductGroupModal";
 
 
 
-
-/*********************************
- * ProductItemCPN
+/*************************
+ * getProductItemWrapper *
  */
-type ProductItemCPNProps = {
+
+type getProductItemWrapperProps = {
     onEditProduct: (id:string) => void;
     onDeleteProduct: (id:string) => void;
-    product: PreparedProduct;
 }
 
-const ProductItemCPN = ({product, onEditProduct, onDeleteProduct}:ProductItemCPNProps) => {
+function getProductItemWrapper ({onEditProduct, onDeleteProduct}:getProductItemWrapperProps) {
 
-    return (
-        <div className={styles.productItem} onClick={() => onEditProduct(product.id)}>
-            <ProductTabCPN {...convertPreparedProductToProduct(product)} detailed/>
-            <ButtonCPN type="danger" label="Remove" onClick={(e) => {
-                e.stopPropagation();
-                onDeleteProduct(product.id);
-            }}/>
-        </div>
-    )
-};
+    const ProductItemWrapper = (product:PreparedProduct) => {
+        return (
+            <div className={styles.productItem} onClick={() => onEditProduct(product.id)}>
+                <ProductTabCPN {...convertToProduct(product)} detailed/>
+                <ButtonCPN type="danger" label="Remove" onClick={(e) => {
+                    e.stopPropagation();
+                    onDeleteProduct(product.id);
+                }}/>
+            </div>
+        );
+    }
+
+    return ProductItemWrapper;
+}
 
 
-const convertPreparedProductToProduct = (preparedProduct:PreparedProduct):Product => {
-    const {images} = preparedProduct;
-
-    const newImages = convertImages(images);
-
+function convertToProduct(product:PreparedProduct):Product {
     return {
-        ...preparedProduct,
-        images: newImages
+        ...product,
+        images: convertToProductImages(product.images)
     };
 }
 
-const convertImages = (images: (ProductImage | File)[]):ProductImage[] => {
-    const newImages = images.map((image) => {
-        if(image instanceof File) return {src: URL.createObjectURL(image), alt: image.name, id: image.name};
+function convertToProductImages (images:(ProductImage | File)[]):ProductImage[]  {
+    return images.map((image) => {
+        if(image instanceof File) {
+            return {
+                id: image.name,
+                src: URL.createObjectURL(image),
+                alt: image.name
+            };
+        }
         return image;
     });
 
-    return newImages;
 }
+
+
+
+/*************************
+ * useProductGroupModal *
+ */
+
+export type OpenEditGroupProps = {
+    productGroup:ProductGroup;
+    onSave?:(props:onSaveProps) => void;
+    onCancel?:() => void;
+};
+
+export function useGroupModal () {
+    const [show, setShow] = useState(false);
+    const [type, setType] = useState<'edit' | 'create'>('create');
+    const [productGroup, setProductGroup] = useState<ProductGroup|null>(null);
+
+    const [onSave, setOnSave] = useState<(props:onSaveProps) => void>(() => () => {});
+    const [onCancel, setOnCancel] = useState<() => void>(() => () => {});
+
+    const openEditGroup = (
+        {
+            productGroup,
+            onSave,
+            onCancel
+        }:OpenEditGroupProps) => {
+        setProductGroup(productGroup);
+        setOnSave(onSave || (() => () => {}));
+        setOnCancel(onCancel || (() => () => {}));
+        setType('edit');
+        setShow(true);
+    };
+
+    const openCreateGroup = () => {
+        setProductGroup(null);
+        setType('create');
+        setShow(true);
+    };
+
+
+    const GroupModalComponent = () => {
+
+        return (
+            <>
+                {
+                    show && (
+                        type === 'edit'?
+                        <ProductGroupModal
+                            type="edit"
+                            onSave={() => {}}
+                            onCancel={() => setShow(false)}
+                            initName={productGroup!.name}
+                            initProducts={productGroup!.products}
+                            />:
+                        <ProductGroupModal
+                            type="create"
+                            onSave={(props) => {
+                                onSave(props);
+                                setShow(false);
+
+                            }}
+                            onCancel={() => {
+                                onCancel();
+                                setShow(false);
+                            }}
+                            />
+                    )
+                }
+            </>
+        );
+    };
+
+
+    return {
+        GroupModalComponent,
+        openEditGroup,
+        openCreateGroup
+    };
+}
+

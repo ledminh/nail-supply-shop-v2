@@ -192,19 +192,23 @@ export function useProductModal() {
     const [onSave, setOnSave] = useState<(props: onSaveProps) => void|(()=> void)>(() => () => {});
     const [onCancel, setOnCancel] = useState<() => void>(() => () => {});
 
-    // const openCreateSingleProduct = ({
-    //     beforeOpen = () => {},
-    //     onOK = () => {},
-    //     onCancel = () => {}
-    // }) => {
-    //     beforeOpen();
-    //     setOnOK(onOK);
-    //     setOnCancel(onCancel);
-    //     setType("create");
-    //     setIsOpen(true);
-    // };
 
 
+    const openCreateProduct = ({
+        groupName,
+        onSave,
+        onCancel
+    }: {
+        groupName?: string;
+        onSave: (props: onSaveProps) => void;
+        onCancel?: () => void;
+    }) => {
+        setType("create");
+        groupName && setGroupName(groupName);
+        setOnSave(() => onSave);
+        onCancel && setOnCancel(() => onCancel);
+        setIsOpen(true);
+    };
 
 
     const openEditProduct = ({product, onSave, onCancel}: OpenEditProductProps) => {
@@ -261,7 +265,19 @@ export function useProductModal() {
                                 onSave(props);
                                 close();
                             }}
-                        /> : null
+                        /> : 
+                        <ProductModal
+                            type="create"
+                            groupName={groupName?? undefined}
+                            onCancel={() => {
+                                onCancel();
+                                close();
+                            }}
+                            onSave={(props) => {
+                                onSave(props);
+                                close();
+                            }}
+                        />
 
                     )
 
@@ -274,7 +290,7 @@ export function useProductModal() {
 
 
     return {
-        // openCreate,
+        openCreateProduct,
         openEditProduct,        
         ProductModalComponent
     };
