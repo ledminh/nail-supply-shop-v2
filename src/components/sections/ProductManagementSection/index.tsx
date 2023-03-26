@@ -31,7 +31,7 @@ export default function ProductManagementSection({  }: Props) {
     const {onDeleteProduct, onDeleteGroup} = useDelete({products, setProducts, showWarning});    
     
 
-    const {openEditProduct, close, ProductModalComponent} = useProductModal();
+    const {openEditProduct, ProductModalComponent} = useProductModal();
 
     const onEditProduct = (productID: string) => {
         const product = products.find((product) => product.id === productID);
@@ -49,17 +49,15 @@ export default function ProductManagementSection({  }: Props) {
             onSave: ({serialNumber, name, intro, details, price, images}) => {
                 const formData = createFormData({serialNumber, name, intro, details, price});
                 
-                processImages(images).then((images) => {
-                    images.forEach((image) => {
-                        formData.append("images", image);
-                    });
-                    console.log(formData);
-                });
-                
-
-            },
-            onCancel: () => {
-                console.log("cancel");
+                processImages(images)
+                    .then((images) => {
+                        formData.append('images', JSON.stringify(images));
+                        return axios.post('/api/products?type=update-product-single', formData);
+                    })
+                    .then((res) => res.data)
+                    .then((data) => {
+                        setProducts(products.map((prod) => prod.id === data.id ? data : prod));
+                    });               
             }
 
         });
@@ -99,6 +97,7 @@ export default function ProductManagementSection({  }: Props) {
                 />
             </section>
             <WarningModalComponent />
+            <ProductModalComponent />
         </>
     )
 
@@ -158,8 +157,7 @@ type useDeleteProps = {
 }
 
 function useDelete ({products, setProducts, showWarning}:useDeleteProps) {
-    const [toBeDeletedProductID, setToBeDeletedProductID] = useState<string|null>(null);
-    const [toBeDeletedGroupID, setToBeDeletedGroupID] = useState<string|null>(null);
+
 
     const onDeleteProduct = (productID: string) => {
         const productName = products.find((product) => product.id === productID)?.name;
@@ -169,21 +167,17 @@ function useDelete ({products, setProducts, showWarning}:useDeleteProps) {
         }
 
         showWarning({
-            beforeWarning: () => setToBeDeletedProductID(productID),
             message: warningMessages.deleteProduct(productName),
             onOK: () => {
                 axios.post(`/api/products/?type=delete-single-product&id=${productID}`)
                 .then(({data}) => {
                     setProducts(data);
-                    setToBeDeletedProductID(null);
                 })
                 .catch((err) => {
                     console.error(err);
                 });
             },
-            onCancel: () => {
-                setToBeDeletedProductID(null);
-            }
+            
         })
         
     }
@@ -196,21 +190,17 @@ function useDelete ({products, setProducts, showWarning}:useDeleteProps) {
         }
 
         showWarning({
-            beforeWarning: () => setToBeDeletedGroupID(groupID),
             message: warningMessages.deleteGroup(groupName),
             onOK: () => {
                 axios.post(`/api/products/?type=delete-group&id=${groupID}`)
                 .then(({data}) => {
                     setProducts(data);
-                    setToBeDeletedGroupID(null);
                 })
                 .catch((err) => {
                     console.error(err);
                 });
             },
-            onCancel: () => {
-                setToBeDeletedGroupID(null);
-            }
+            
         })
 
     }

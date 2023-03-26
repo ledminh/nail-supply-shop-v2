@@ -175,7 +175,7 @@ const createImageObj = (image: RemoteImage | File) => {
 export type OpenEditProductProps = {
     product: Product;
     onSave: (props:onSaveProps) => void;
-    onCancel: () => void;
+    onCancel?: () => void;
 }
 
 export function useProductModal() {
@@ -219,7 +219,7 @@ export function useProductModal() {
         setInitImages(product.images);
 
         setOnSave(onSave);
-        setOnCancel(onCancel);
+        onCancel && setOnCancel(onCancel);
     };
 
     const close = () => {
@@ -274,8 +274,7 @@ export function useProductModal() {
 
     return {
         // openCreate,
-        openEditProduct,
-        close,
+        openEditProduct,        
         ProductModalComponent
     };
 
