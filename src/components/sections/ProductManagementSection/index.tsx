@@ -10,6 +10,7 @@ import { useState, useEffect } from "react";
 import AdminProductBlockCPN from "@/components/basics/AdminProductBlock";
 import AdminProductGroupBlockCPN from "@/components/basics/AdminProductGroupBlock";
 import { productManagementConfig } from "@/config";
+import { useProductModal } from "@/components/composites/ProductModal";
 
 const {warningMessages} = productManagementConfig;
 
@@ -28,15 +29,53 @@ export default function ProductManagementSection({  }: Props) {
     const {onDeleteProduct, onDeleteGroup} = useDelete({products, setProducts, showWarning});    
     
 
+    const {openEditProduct, close, ProductModalComponent} = useProductModal();
+
+    const onEditProduct = (productID: string) => {
+        const product = products.find((product) => product.id === productID);
+
+        if (!product) {
+            throw new Error("Product not found");
+        }
+
+        if(!isProduct(product)) {
+            throw new Error("Product is a group");
+        }
+
+        openEditProduct({
+            product,
+            onSave: ({serialNumber, name, intro, details, price, images}) => {
+                const formData = new FormData();
+
+                
+
+                formData.append("serialNumber", serialNumber);
+                formData.append("name", name);
+                formData.append("intro", intro);
+                formData.append("details", details);
+                formData.append("price", price.toString());
+                
+                
+
+            },
+            onCancel: () => {
+                console.log("cancel");
+            }
+
+        });
+
+
+    }
+
+
     const ItemWrapper = getItemWrapper({
         onDeleteProduct,
         onDeleteGroup,
+        onEditProduct,
         onClick: (productID: string) => {
             console.log("click");
         },
-        onEditProduct: (id: string) => {
-            console.log("edit");
-        }
+        
     });
 
     
@@ -101,7 +140,7 @@ function getItemWrapper ({onDeleteProduct, onDeleteGroup, onClick, onEditProduct
             <>
                 {
                     isProduct(product) ? (
-                        <AdminProductBlockCPN {...product} onDelete={onDeleteProduct} onClick={()=>{}} />)
+                        <AdminProductBlockCPN {...product} onDelete={onDeleteProduct} onClick={onEditProduct} />)
                         : (<AdminProductGroupBlockCPN {...product} onDelete={onDeleteGroup} onClick={onClick} onEditProduct={onEditProduct}/>)
                 }
             </>

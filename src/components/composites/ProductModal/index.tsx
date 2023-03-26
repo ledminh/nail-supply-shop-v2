@@ -5,7 +5,7 @@ import ImageCPN from "@/components/basics/ImageCPN";
 
 import { RemoteImage } from "@/types/image";
 
-import { ProductImage } from "@/types/product";
+import { Product, ProductImage } from "@/types/product";
 
 import { useState } from "react";
 
@@ -169,4 +169,115 @@ const createImageObj = (image: RemoteImage | File) => {
     };
 
     return image;
+}
+
+
+export type OpenEditProductProps = {
+    product: Product;
+    onSave: (props:onSaveProps) => void;
+    onCancel: () => void;
+}
+
+export function useProductModal() {
+    const [isOpen, setIsOpen] = useState(false);
+    const [type, setType] = useState<"create" | "edit">("create");
+    const [groupName, setGroupName] = useState<string | null>(null);
+    const [initSerialNumber, setInitSerialNumber] = useState<string | null>(null);
+    const [initName, setInitName] = useState<string | null>(null);
+    const [initIntro, setInitIntro] = useState<string | null>(null);
+    const [initDetails, setInitDetails] = useState<string | null>(null);
+    const [initPrice, setInitPrice] = useState<number | null>(null);
+    const [initImages, setInitImages] = useState<ProductImage[] | null>(null);
+
+    const [onSave, setOnSave] = useState<(props: onSaveProps) => void>(() => () => {});
+    const [onCancel, setOnCancel] = useState<() => void>(() => () => {});
+
+    // const openCreateSingleProduct = ({
+    //     beforeOpen = () => {},
+    //     onOK = () => {},
+    //     onCancel = () => {}
+    // }) => {
+    //     beforeOpen();
+    //     setOnOK(onOK);
+    //     setOnCancel(onCancel);
+    //     setType("create");
+    //     setIsOpen(true);
+    // };
+
+
+
+
+    const openEditProduct = ({product, onSave, onCancel}: OpenEditProductProps) => {
+        setIsOpen(true);
+        setType("edit");
+        product.groupName && setGroupName(product.groupName);
+        setInitSerialNumber(product.id);
+        setInitName(product.name);
+        setInitIntro(product.intro);
+        setInitDetails(product.details);
+        setInitPrice(product.price);
+        setInitImages(product.images);
+
+        setOnSave(onSave);
+        setOnCancel(onCancel);
+    };
+
+    const close = () => {
+        setIsOpen(false);
+        setGroupName(null);
+        setInitSerialNumber(null);
+        setInitName(null);
+        setInitIntro(null);
+        setInitDetails(null);
+        setInitPrice(null);
+        setInitImages(null);
+
+        setOnSave(() => () => {});
+        setOnCancel(() => () => {});
+    };
+
+
+    const ProductModalComponent = () => {
+        return (
+            <>
+                {
+                    isOpen && (
+                        type === "edit"?
+                        <ProductModal
+                            type="edit"
+                            groupName={groupName?? undefined}
+                            initSerialNumber={initSerialNumber!}
+                            initName={initName!}
+                            initIntro={initIntro!}
+                            initDetails={initDetails!}
+                            initPrice={initPrice!}
+                            initImages={initImages!}
+                            onCancel={() => {
+                                onCancel();
+                                close();
+                            }}
+                            onSave={(props) => {
+                                onSave(props);
+                                close();
+                            }}
+                        /> : null
+
+                    )
+
+                }
+            </>
+        );
+
+    };
+
+
+
+    return {
+        // openCreate,
+        openEditProduct,
+        close,
+        ProductModalComponent
+    };
+
+
 }
