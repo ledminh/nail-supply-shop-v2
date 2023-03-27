@@ -179,7 +179,7 @@ export type OpenEditProductProps = {
 }
 
 export type OpenCreateProductProps = {
-    groupName: string;
+    groupName?: string;
     onSave: (props:onSaveProps) => void;
     onCancel?: () => void;
 }

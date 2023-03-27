@@ -3,6 +3,12 @@ import { Dispatch, SetStateAction } from "react";
 import {Product, ProductGroup} from '@/types/product';
 import { OpenCreateProductProps } from "@/components/composites/ProductModal";
 import { OpenCreateGroupProps } from "@/components/composites/ProductGroupModal";
+import createFormData from "@/utils/createFormData";
+
+import processImages from "@/utils/processImages";
+
+import axios from 'axios';
+
 
 type Props = {
     products: (Product|ProductGroup)[],
@@ -19,8 +25,43 @@ export default function useCreate({
 
 
 
-    const createProduct = () => {}
-    const createGroup = () => {}
+    const createProduct = () => {
+        openCreateProduct({
+            onSave({serialNumber, name, intro, details, price, images}) {
+
+                async function createProduct() {
+                    const processedImages = await processImages(images);
+
+                    const formData = createFormData({serialNumber, name, intro, details, price, images: processedImages});
+
+                    const res = await axios.post('/api/products?type=create', formData);
+
+                    setProducts([res.data.product, ...products ]);
+                }
+
+                createProduct();
+            }
+        })
+    }
+    
+    const createGroup = () => {
+        openCreateGroup({
+            onSave({name, products}) {
+                async function createGroup() {
+                            
+
+                    const res = await axios.post('/api/groups?type=create', {
+                        name,
+                        products
+                    });
+
+                    setProducts([res.data.group, ...products]);
+                }
+
+                createGroup();
+            }
+        })
+    }
 
 
     return {
