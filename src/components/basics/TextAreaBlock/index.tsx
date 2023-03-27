@@ -24,7 +24,7 @@ const TextAreaBlockCPN:TextAreaBlock = ({title, initContent, onSave}) => {
 
     return (
         <div className={styles.wrapper}>
-            <label htmlFor={`text-area-${title}`} className={styles.label}>{title}</label>
+            <label htmlFor={`text-area-${title}`} className={styles.label}><h3>{title}</h3></label>
             <textarea id={`text-area-${title}`} 
                     className={styles.textarea} 
                     placeholder={`Type your content for ${title} here ...`}

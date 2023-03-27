@@ -18,7 +18,7 @@ export default function Carousell<T>({
     items, initialItemID, ItemCPN, className, mainItemClassName, ulClassName, liClassName
 }: Props<T>) {
 
-    const [mainItem, setMainItem] = useState(items.find((item) => item.id === initialItemID)?? items[0]);
+    const [mainItem, setMainItem] = useState(items.find((item) => item.id === initialItemID) ?? items[0]);
     const [otherItems, setOtherItems] = useState(items.filter((item) => item.id !== mainItem.id));
 
     const classNames = [styles.wrapper, className].join(' ');
@@ -26,9 +26,9 @@ export default function Carousell<T>({
     const ulClassNames = [styles.otherItems, ulClassName].join(' ');
     const liClassNames = [styles.otherItem, liClassName].join(' ');
 
-    const otherItemOnClick = (id:string) => {
+    const otherItemOnClick = (id: string) => {
         const newMainItem = items.find((item) => item.id === id);
-        if(newMainItem) {
+        if (newMainItem) {
             setMainItem(newMainItem);
             setOtherItems(items.filter((item) => item.id !== newMainItem.id));
         }
@@ -36,19 +36,19 @@ export default function Carousell<T>({
 
     return (
         <div className={classNames}>
-            <div className = {mainItemClassNames}>
+            <div className={mainItemClassNames}>
                 <ItemCPN {...mainItem} />
             </div>
-            <ul className = {ulClassNames}>
+            <ul className={ulClassNames}>
                 {
                     otherItems.map((item) => (
-                        <li key={item.id} 
+                        <li key={item.id}
                             className={liClassNames}
                             onClick={() => otherItemOnClick(item.id)}
-                            >
+                        >
                             <ItemCPN {...item} />
                         </li>
-                        )) 
+                    ))
                 }
             </ul>
         </div>
