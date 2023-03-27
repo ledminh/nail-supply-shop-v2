@@ -178,6 +178,12 @@ export type OpenEditProductProps = {
     onCancel?: () => void;
 }
 
+export type OpenCreateProductProps = {
+    groupName: string;
+    onSave: (props:onSaveProps) => void;
+    onCancel?: () => void;
+}
+
 export function useProductModal() {
     const [isOpen, setIsOpen] = useState(false);
     const [type, setType] = useState<"create" | "edit">("create");
@@ -198,11 +204,7 @@ export function useProductModal() {
         groupName,
         onSave,
         onCancel
-    }: {
-        groupName?: string;
-        onSave: (props: onSaveProps) => void;
-        onCancel?: () => void;
-    }) => {
+    }: OpenCreateProductProps) => {
         setType("create");
         groupName && setGroupName(groupName);
         setOnSave(() => onSave);

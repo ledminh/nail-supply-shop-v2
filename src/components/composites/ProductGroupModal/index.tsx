@@ -71,6 +71,7 @@ export default function ProductGroupModal({ type, onSave, onCancel, initName, in
         setShow(false);
 
         openCreateProduct({
+            groupName: name,
             onSave: ({serialNumber, name, intro, details, price, images}) => {
                 const newProduct:PreparedProduct = {
                     id: serialNumber,
@@ -311,6 +312,11 @@ export type OpenEditGroupProps = {
     onCancel?:() => void;
 };
 
+export type OpenCreateGroupProps = {
+    onSave?:(props:onSaveProps) => void;
+    onCancel?:() => void;
+};
+
 export function useGroupModal () {
     const [show, setShow] = useState(false);
     const [type, setType] = useState<'edit' | 'create'>('create');
@@ -332,9 +338,14 @@ export function useGroupModal () {
         setShow(true);
     };
 
-    const openCreateGroup = () => {
+    const openCreateGroup = ({
+        onSave,
+        onCancel
+    }:OpenCreateGroupProps) => {
         setProductGroup(null);
         setType('create');
+        setOnSave(onSave || (() => () => {}));
+        setOnCancel(onCancel || (() => () => {}));
         setShow(true);
     };
 
