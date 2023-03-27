@@ -1,5 +1,6 @@
 import { RemoteImage } from '@/types/image';
 
+
 export interface Category {
     id: string;
     slug: string;
@@ -7,3 +8,5 @@ export interface Category {
     description: string;
     image: RemoteImage
 }
+
+

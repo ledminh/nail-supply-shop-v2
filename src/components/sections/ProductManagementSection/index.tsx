@@ -78,18 +78,22 @@ export default function ProductManagementSection({  }: Props) {
         <>
             <section className={styles.wrapper}>
                 <div className={styles.controls}>
-                    <Select 
-                        selectClass = {styles.select}
-                        optionClass = {styles.option}
-                        optionItems = {categories.map(convertCategoryToOptionItem)}
-                        initOptionItem = {currentCategory ? convertCategoryToOptionItem(currentCategory): undefined}
-                        onChange = {(cat) => {
-                            const category = categories.find((c) => c.id === cat.value);
-                            if (category) {
-                                setCurrentCategory(category);
-                            }
-                        }}
-                    />
+                    {
+                        categories.length !== 0 && currentCategory && (
+                            <Select 
+                            selectClass = {styles.select}
+                            optionClass = {styles.option}
+                            optionItems = {categories.map(convertCategoryToOptionItem)}
+                            initOptionItem = {convertCategoryToOptionItem(currentCategory)}
+                            onChange = {(cat) => {
+                                const category = categories.find((c) => c.id === cat.value);
+                                if (category) {
+                                    setCurrentCategory(category);
+                                }
+                            }}
+                        />)
+                    }
+
                     <div className={styles.buttons}>
                         <ButtonCPN 
                             type="normal"

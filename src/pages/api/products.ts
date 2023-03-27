@@ -9,6 +9,9 @@ import fs from 'fs';
 
 import formidable from 'formidable';
 
+import isProduct from '@/utils/isProduct';
+
+
 export type ProductApiResponse = (Product|ProductGroup)[] | Product | ProductGroup | { message: string };
 
 type NextApiCategoryResponse = NextApiResponse<ProductApiResponse>;
@@ -24,18 +27,17 @@ function deleteImages(imagePaths: string[]) {
   }
 }
 
-const isProduct = (product: Product|ProductGroup): product is Product => {
-  return "images" in product;
-}
 
 export default function handler(req: NextApiRequest, res: NextApiCategoryResponse) {
 
+  const { query: { type, productID, productGroupID } } = req;  
+
   switch (req.method) {
     case 'GET':
+
       res.status(200).json(products);
       break;
     case 'POST':
-      const { query: { type, productID, productGroupID } } = req;
 
       if (type === 'delete') {
         if (typeof productID === "string") {

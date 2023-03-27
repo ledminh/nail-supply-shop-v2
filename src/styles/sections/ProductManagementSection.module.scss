@@ -4,6 +4,36 @@ section.wrapper {
     margin: 0;
 }
 
+.controls {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    
+    width: 100%;    
+
+    gap: 10px;
+
+    margin-bottom: 20px;
+}
+
+.select {
+    padding: 10px;
+    flex-basis: 40%;
+}
+
+.buttons {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-end;
+    
+    flex-basis: 60%;    
+
+    gap: 10px;
+}
+
+
 .ul {
     display: flex;
     flex-direction: column;

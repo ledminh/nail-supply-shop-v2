@@ -1,6 +1,8 @@
 import { RemoteImage } from '@/types/image';
 import { Item } from './item';
 
+
+
 export type ProductImage = RemoteImage & Item;
 
 export interface Product {
@@ -14,6 +16,8 @@ export interface Product {
     
     groupName?: string,
     otherProducts?: Product[],
+    // dateCreated: string,
+    // sellCount: number,
 }
 
 export interface ProductGroup {
@@ -21,6 +25,7 @@ export interface ProductGroup {
     name: string;
     categoryID: string;
     products: Product[];
+    // dateCreated: string,
 }
 
 export interface OrderedProduct {
