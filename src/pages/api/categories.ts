@@ -7,6 +7,8 @@ import { Category } from '@/types/category';
 
 import formidable from 'formidable';
 
+import * as DB from '@/database';
+
 export type CategoryApiResponse = Category[] | Category | { message: string };
 type NextApiCategoryResponse = NextApiResponse<CategoryApiResponse>;
 
@@ -30,10 +32,17 @@ const deleteImage = (filename: string) => {
 
 
 export default function handler(req: NextApiRequest, res: NextApiCategoryResponse) {
-
+  
   switch (req.method) {
     case 'GET':
-      res.status(200).json(categories);
+      
+      DB.getCategories({}).then((categories) => {
+        res.status(200).json(categories);
+      }).catch((err) => {
+        res.status(500).json({ message: err.message });
+      });
+
+
       break;
     case 'POST':
       const { query: { type, id: catID } } = req;

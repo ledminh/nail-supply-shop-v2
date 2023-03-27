@@ -11,6 +11,8 @@ import formidable from 'formidable';
 
 import isProduct from '@/utils/isProduct';
 
+import * as DB from '@/database';
+
 
 export type ProductApiResponse = (Product|ProductGroup)[] | Product | ProductGroup | { message: string };
 
@@ -30,187 +32,25 @@ function deleteImages(imagePaths: string[]) {
 
 export default function handler(req: NextApiRequest, res: NextApiCategoryResponse) {
 
-  const { query: { type, productID, productGroupID } } = req;  
+  const { query: { catID } } = req;  
 
   switch (req.method) {
     case 'GET':
 
-      res.status(200).json(products);
+      if(typeof catID === 'string') {
+        
+        DB.getProducts({catID}).then((products) => {
+          res.status(200).json(products);
+        }).catch((err) => {
+          res.status(500).json({ message: err.message });
+        });
+      }
+
       break;
+    
     case 'POST':
 
-      if (type === 'delete') {
-        if (typeof productID === "string") {
-          const productIndex = products.findIndex((product) => product.id === productID);
       
-          if (productIndex === -1) {
-            res.status(404).json({ message: "Product not found" });
-            break;
-          }
-        
-          // Delete the product images
-          if (isProduct(products[productIndex])) {
-            const images = (products[productIndex] as Product).images;
-            deleteImages(images.map((image) => image.src));
-          }
-        
-          
-          products.splice(productIndex, 1);
-  
-          res.status(200).json(products);
-          return;
-        }
-        else if (typeof productGroupID === "string") {
-          const productGroupIndex = products.findIndex((product) => product.id === productGroupID);
-      
-          if (productGroupIndex === -1) {
-            res.status(404).json({ message: "Product group not found" });
-            break;
-          }
-        
-          // Delete the product group images
-          const images = (products[productGroupIndex] as ProductGroup).products.flatMap((product) => product.images);
-          deleteImages(images.map((image) => image.src));
-        
-          products.splice(productGroupIndex, 1);
-  
-          res.status(200).json(products);
-          return;
-        }
-        else {
-          res.status(400).json({ message: "Invalid product ID" });
-          break;
-        }
-      
-
-      }
-      else if (type === 'update') {
-        const form = new formidable.IncomingForm();
-
-        form.parse(req, (err, fields) => {
-          if (err) {
-            res.status(500).json({ message: err.message });
-            return;
-          }
-
-          const { id,
-            serialNumber,
-            name,
-            intro,
-            details,
-            price,
-            images } = fields;
-
-          // if(productGroupID) {
-          //   const productGroupIndex = products.findIndex((product) => product.id === productGroupID);
-
-          //   if (productGroupIndex === -1) {
-          //     res.status(404).json({ message: 'Product group not found' });
-          //     return;
-          //   }
-
-          //   const productIndex = (products[productGroupIndex] as ProductGroup).products.findIndex((product) => product.id === id);
-
-          //   if (productIndex === -1) {
-          //     res.status(404).json({ message: 'Product not found' });
-          //     return;
-          //   }
-
-          //   const oldImages = (products[productGroupIndex] as ProductGroup).products[productIndex].images;
-          //   const newImages = JSON.parse(images as string) as ProductImage[];
-
-          //   // filter out the images that are not in the new image list
-          //   const imagePaths = oldImages
-          //     .filter((image) => !newImages.some((newImage) => newImage.src === image.src))
-          //     .map((image) => image.src);
-
-
-          //   deleteImages(imagePaths);
-
-
-          //   (products[productGroupIndex] as ProductGroup).products[productIndex] = {
-          //     ...(products[productGroupIndex] as ProductGroup).products[productIndex],
-          //     id: serialNumber as string,
-          //     name: name as string,
-          //     intro: intro as string,
-          //     details: details as string,
-          //     price: parseInt(price as string, 10),
-          //     images: newImages,
-          //   };
-
-          //   res.status(200).json(products[productGroupIndex]);
-
-          //   return;
-          // }
-
-
-
-          const productIndex = products.findIndex((product) => product.id === id);
-
-          if (productIndex === -1) {
-            res.status(404).json({ message: 'Product not found' });
-            return;
-          }
-
-
-          const oldImages = (products[productIndex] as Product).images;
-          const newImages = JSON.parse(images as string) as ProductImage[];
-
-          // filter out the images that are not in the new image list
-          const imagePaths = oldImages
-            .filter((image) => !newImages.some((newImage) => newImage.src === image.src))
-            .map((image) => image.src);
-
-
-          deleteImages(imagePaths);
-
-
-          products[productIndex] = {
-            ...products[productIndex],
-            id: serialNumber as string,
-            name: name as string,
-            intro: intro as string,
-            details: details as string,
-            price: parseInt(price as string, 10),
-            images: newImages,
-          };
-
-          res.status(200).json(products[productIndex]);
-          return;
-          
-        });
-      } 
-      else if (type === 'create') {
-        // const form = new formidable.IncomingForm();
-                
-        // form.parse(req, (err, fields) => {
-        //   if (err) {
-        //     res.status(500).json({ message: err.message });
-        //     return;
-        //   }
-
-        //   const { name, description, imageFileName } = fields;
-          
-        //   const newCategory: Category = {
-        //     id: (Math.max(...categories.map((c) => parseInt(c.id, 10))) + 1).toString(),
-        //     slug: `category-${(name as string).toLowerCase().replace(/[^a-z0-9]+/g, '-')}`,
-        //     name: name as string,
-        //     description: description as string,
-        //     image: {
-        //       src: `/images/category/${imageFileName}`,
-        //       alt: name as string,
-        //     },
-        //   };
-
-        //   categories.push(newCategory);
-        //   res.status(200).json(newCategory);
-        // });
-
-      }
-      
-      else {
-        res.status(400).json({ message: 'Invalid type parameter' });
-      }
       break;
     default:
       res.setHeader('Allow', ['GET', 'POST']);

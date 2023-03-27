@@ -6,22 +6,22 @@
         "images": [
             {
                 "id": "img01_nailpolish_red",
-                "src": "images/placeholder_1.png",
+                "src": "/images/placeholder_1.png",
                 "alt": "Classic Red Nail Polish"
             },
             {
                 "id": "img02_nailpolish_red",
-                "src": "images/placeholder_3.png",
+                "src": "/images/placeholder_3.png",
                 "alt": "Classic Red Nail Polish"
             },
             {
                 "id": "img03_nailpolish_red",
-                "src": "images/placeholder_10.png",
+                "src": "/images/placeholder_10.png",
                 "alt": "Classic Red Nail Polish"
             },
             {
                 "id": "img04_nailpolish_red",
-                "src": "images/placeholder_2.png",
+                "src": "/images/placeholder_2.png",
                 "alt": "Classic Red Nail Polish"
             }
         ],
@@ -38,27 +38,27 @@
         "images": [
             {
                 "id": "img03_nailpolish_blue",
-                "src": "images/placeholder_2.png",
+                "src": "/images/placeholder_2.png",
                 "alt": "Ocean Blue Nail Polish"
             },
             {
                 "id": "img04_nailpolish_blue",
-                "src": "images/placeholder_5.png",
+                "src": "/images/placeholder_5.png",
                 "alt": "Ocean Blue Nail Polish"
             },
             {
                 "id": "img06_nailpolish_blue",
-                "src": "images/placeholder_6.png",
+                "src": "/images/placeholder_6.png",
                 "alt": "Ocean Blue Nail Polish"
             },
             {
                 "id": "img07_nailpolish_blue",
-                "src": "images/placeholder_7.png",
+                "src": "/images/placeholder_7.png",
                 "alt": "Ocean Blue Nail Polish"
             },
             {
                 "id": "img08_nailpolish_blue",
-                "src": "images/placeholder_8.png",
+                "src": "/images/placeholder_8.png",
                 "alt": "Ocean Blue Nail Polish"
             }
         ],
@@ -75,17 +75,17 @@
         "images": [
             {
             "id": "img05_nailpolish_black",
-            "src": "images/placeholder_3.png",
+            "src": "/images/placeholder_3.png",
             "alt": "Midnight Black Nail Polish"
             },
             {
                 "id": "img6_nailpolish_black",
-                "src": "images/placeholder_3.png",
+                "src": "/images/placeholder_3.png",
                 "alt": "Midnight Black Nail Polish"
             },
             {
                 "id": "img09_nailpolish_black",
-                "src": "images/placeholder_3.png",
+                "src": "/images/placeholder_3.png",
                 "alt": "Midnight Black Nail Polish"
             }
         ],
@@ -102,7 +102,7 @@
         "images": [
             {
             "id": "img04_nailpolish_nude",
-            "src": "images/placeholder_4.png",
+            "src": "/images/placeholder_4.png",
             "alt": "Elegant Nude Nail Polish"
             }
         ],
@@ -119,7 +119,7 @@
         "images": [
             {
             "id": "img05_gel_basecoat",
-            "src": "images/placeholder_5.png",
+            "src": "/images/placeholder_5.png",
             "alt": "Gel Nail Base Coat"
             }
         ],
@@ -136,7 +136,7 @@
         "images": [
             {
             "id": "img06_gel_topcoat",
-            "src": "images/placeholder_6.png",
+            "src": "/images/placeholder_6.png",
             "alt": "Gel Nail Top Coat"
             }
         ],
@@ -153,7 +153,7 @@
         "images": [
             {
             "id": "img07_gel_polish_pink",
-            "src": "images/placeholder_7.png",
+            "src": "/images/placeholder_7.png",
             "alt": "Soft Pink Gel Polish"
             }
         ],
@@ -170,7 +170,7 @@
         "images": [
             {
             "id": "img08_gel_polish_gray",
-            "src": "images/placeholder_8.png",
+            "src": "/images/placeholder_8.png",
             "alt": "Modern Gray Gel Polish"
             }
         ],
@@ -187,7 +187,7 @@
         "images": [
             {
             "id": "img09_acrylic_powder",
-            "src": "images/placeholder_9.png",
+            "src": "/images/placeholder_9.png",
             "alt": "Acrylic Nail Powder"
             }
         ],
@@ -204,7 +204,7 @@
         "images": [
             {
             "id": "mg10_acrylic_liquid",
-            "src": "images/placeholder_10.png",
+            "src": "/images/placeholder_10.png",
             "alt": "Acrylic Nail Liquid"
             }
         ],
@@ -221,7 +221,7 @@
         "images": [
             {
             "id": "img11_acrylic_brush",
-            "src": "images/placeholder_11.png",
+            "src": "/images/placeholder_11.png",
             "alt": "Acrylic Nail Brush"
             }
         ],
@@ -238,7 +238,7 @@
         "images": [
             {
             "id": "img12_nailart_rhinestones",
-            "src": "images/placeholder_12.png",
+            "src": "/images/placeholder_12.png",
             "alt": "Nail Art Rhinestones"
             }
         ],
@@ -255,7 +255,7 @@
         "images": [
             {
             "id": "img13_nailart_stickers",
-            "src": "images/placeholder_13.png",
+            "src": "/images/placeholder_13.png",
             "alt": "Nail Art Stickers"
             }
         ],
@@ -272,7 +272,7 @@
         "images": [
             {
             "id": "img14_nailart_glitter",
-            "src": "images/placeholder_14.png",
+            "src": "/images/placeholder_14.png",
             "alt": "Nail Art Glitter"
             }
         ],
@@ -289,7 +289,7 @@
         "images": [
             {
             "id": "img15_nail_file",
-            "src": "images/placeholder_1.png",
+            "src": "/images/placeholder_1.png",
             "alt": "Professional Nail File"
             }
         ],
@@ -306,7 +306,7 @@
         "images": [
             {
             "id": "img16_cuticle_pusher",
-            "src": "images/placeholder_2.png",
+            "src": "/images/placeholder_2.png",
             "alt": "Stainless Steel Cuticle Pusher"
             }
         ],
@@ -323,7 +323,7 @@
         "images": [
             {
             "id": "img17_nail_clipper",
-            "src": "images/placeholder_3.png",
+            "src": "/images/placeholder_3.png",
             "alt": "Precision Nail Clipper"
             }
         ],
@@ -340,7 +340,7 @@
         "images": [
             {
             "id": "img18_cuticle_oil",
-            "src": "images/placeholder_4.png",
+            "src": "/images/placeholder_4.png",
             "alt": "Nourishing Cuticle Oil"
             }
         ],
@@ -357,7 +357,7 @@
         "images": [
             {
                 "id": "img19_nail_strengthener",
-                "src": "images/placeholder_5.png",
+                "src": "/images/placeholder_5.png",
                 "alt": "Nail Strengthener"
             }
         ],
@@ -374,7 +374,7 @@
         "images": [
             {
                 "id": "img20_nail_polish_remover",
-                "src": "images/placeholder_6.png",
+                "src": "/images/placeholder_6.png",
                 "alt": "Gentle Nail Polish Remover"
             }
         ],
@@ -391,7 +391,7 @@
         "images": [
             {
             "id": "img21_nail_polish_mauve",
-            "src": "images/placeholder_7.png",
+            "src": "/images/placeholder_7.png",
             "alt": "Mauve Nail Polish"
             }
         ],
@@ -408,7 +408,7 @@
         "images": [
             {
             "id": "img22_nail_polish_teal",
-            "src": "images/placeholder_8.png",
+            "src": "/images/placeholder_8.png",
             "alt": "Teal Nail Polish"
             }
         ],
@@ -425,7 +425,7 @@
         "images": [
             {
             "id": "img23_nail_polish_nude",
-            "src": "images/placeholder_9.png",
+            "src": "/images/placeholder_9.png",
             "alt": "Nude Nail Polish"
             }
         ],
@@ -442,7 +442,7 @@
         "images": [
             {
                 "id": "img24_nail_polish_red",
-                "src": "images/placeholder_10.png",
+                "src": "/images/placeholder_10.png",
                 "alt": "Red Nail Polish"
             }
         ],
@@ -459,7 +459,7 @@
         "images": [
             {
             "id": "img25_topcoat",
-            "src": "images/placeholder_11.png",
+            "src": "/images/placeholder_11.png",
             "alt": "Quick Dry Top Coat"
             }
         ],
@@ -476,7 +476,7 @@
         "images": [
             {
                 "id": "img26_gel_basecoat",
-                "src": "images/placeholder_12.png",
+                "src": "/images/placeholder_12.png",
                 "alt": "Gel Base Coat"
             }
         ],
@@ -493,7 +493,7 @@
         "images": [
             {
             "id": "img27_gel_polish_pink",
-            "src": "images/placeholder_13.png",
+            "src": "/images/placeholder_13.png",
             "alt": "Pink Gel Polish"
             }
         ],
@@ -510,7 +510,7 @@
         "images": [
             {
             "id": "img28_gel_polish_blue",
-            "src": "images/placeholder_14.png",
+            "src": "/images/placeholder_14.png",
             "alt": "Blue Gel Polish"
             }
         ],
@@ -527,7 +527,7 @@
         "images": [
             {
                 "id": "img29_gel_polish_black",
-                "src": "images/placeholder_1.png",
+                "src": "/images/placeholder_1.png",
                 "alt": "Black Gel Polish"
             }
         ],
@@ -544,7 +544,7 @@
         "images": [
             {
                 "id": "img30_stamping_kit",
-                "src": "images/placeholder_2.png",
+                "src": "/images/placeholder_2.png",
                 "alt": "Nail Stamping Kit"
             }
         ],
