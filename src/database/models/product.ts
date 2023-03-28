@@ -23,7 +23,7 @@ export function find({catID, id}:findProps) {
         if(product) 
             return Promise.resolve(product);
         else 
-            return Promise.reject(new Error('Product/Group not found'));
+            return Promise.reject(new Error('Product not found'));
     }
 
 

@@ -1,5 +1,125 @@
 [
     {
+        "id": "grp01_nailpolish_combo",
+        "name": "Nail Polish Combo",
+        "categoryID": "cat_nail01_polishes",
+        "products": [
+            {
+                "id": "grp01_prd01_nailpolish_red",
+                "name": "Classic Red Nail Polish",
+                "price": 5.99,
+                "images": [
+                    {
+                        "id": "img01_nailpolish_red",
+                        "src": "/images/placeholder_1.png",
+                        "alt": "Classic Red Nail Polish"
+                    },
+                    {
+                        "id": "img02_nailpolish_red",
+                        "src": "/images/placeholder_3.png",
+                        "alt": "Classic Red Nail Polish"
+                    },
+                    {
+                        "id": "img03_nailpolish_red",
+                        "src": "/images/placeholder_10.png",
+                        "alt": "Classic Red Nail Polish"
+                    },
+                    {
+                        "id": "img04_nailpolish_red",
+                        "src": "/images/placeholder_2.png",
+                        "alt": "Classic Red Nail Polish"
+                    }
+                ],
+                "intro": "A classic red nail polish for a bold and elegant look.",
+                "details": "Our Classic Red Nail Polish offers long-lasting wear and a glossy finish. The quick-drying formula ensures a flawless application every time.",
+                "categoryID": "cat_nail01_polishes",
+                "dateCreated": "2023-01-02",
+                "sellCount": 125
+            },
+            {
+                "id": "grp01_prd02_nailpolish_blue",
+                "name": "Ocean Blue Nail Polish",
+                "price": 5.99,
+                "images": [
+                    {
+                        "id": "img03_nailpolish_blue",
+                        "src": "/images/placeholder_2.png",
+                        "alt": "Ocean Blue Nail Polish"
+                    },
+                    {
+                        "id": "img04_nailpolish_blue",
+                        "src": "/images/placeholder_5.png",
+                        "alt": "Ocean Blue Nail Polish"
+                    },
+                    {
+                        "id": "img06_nailpolish_blue",
+                        "src": "/images/placeholder_6.png",
+                        "alt": "Ocean Blue Nail Polish"
+                    },
+                    {
+                        "id": "img07_nailpolish_blue",
+                        "src": "/images/placeholder_7.png",
+                        "alt": "Ocean Blue Nail Polish"
+                    },
+                    {
+                        "id": "img08_nailpolish_blue",
+                        "src": "/images/placeholder_8.png",
+                        "alt": "Ocean Blue Nail Polish"
+                    }
+                ],
+                "intro": "A vibrant ocean blue nail polish for a refreshing look.",
+                "details": "Our Ocean Blue Nail Polish provides a long-lasting, chip-resistant finish. The fast-drying formula allows for easy and smooth application.",
+                "categoryID": "cat_nail01_polishes",
+                "dateCreated": "2023-01-10",
+                "sellCount": 98
+            },
+            {
+                "id": "grp01_prd03_nailpolish_black",
+                "name": "Midnight Black Nail Polish",
+                "price": 5.99,
+                "images": [
+                    {
+                    "id": "img05_nailpolish_black",
+                    "src": "/images/placeholder_3.png",
+                    "alt": "Midnight Black Nail Polish"
+                    },
+                    {
+                        "id": "img6_nailpolish_black",
+                        "src": "/images/placeholder_3.png",
+                        "alt": "Midnight Black Nail Polish"
+                    },
+                    {
+                        "id": "img09_nailpolish_black",
+                        "src": "/images/placeholder_3.png",
+                        "alt": "Midnight Black Nail Polish"
+                    }
+                ],
+                "intro": "A deep black nail polish for a sophisticated and mysterious look.",
+                "details": "Our Midnight Black Nail Polish features a long-lasting, glossy finish. The high-quality formula ensures even coverage and easy application.",
+                "categoryID": "cat_nail01_polishes",
+                "dateCreated": "2023-01-15",
+                "sellCount": 110
+            },
+            {
+                "id": "grp01_prd04_nailpolish_nude",
+                "name": "Elegant Nude Nail Polish",
+                "price": 5.99,
+                "images": [
+                    {
+                    "id": "img04_nailpolish_nude",
+                    "src": "/images/placeholder_4.png",
+                    "alt": "Elegant Nude Nail Polish"
+                    }
+                ],
+                "intro": "A chic nude nail polish for a timeless and natural look.",
+                "details": "Our Elegant Nude Nail Polish offers a durable, glossy finish. The smooth formula allows for easy application and long-lasting wear.",
+                "categoryID": "cat_nail01_polishes",
+                "dateCreated": "2023-01-18",
+                "sellCount": 105
+            }
+        ]
+    },
+    {
         "id": "prd01_nailpolish_red",
         "name": "Classic Red Nail Polish",
         "price": 5.99,

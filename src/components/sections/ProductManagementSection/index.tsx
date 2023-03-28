@@ -2,7 +2,9 @@ import List from "@/components/generics/List";
 import styles from "@styles/sections/ProductManagementSection.module.scss";
 import { Product, ProductGroup } from "@/types/product";
 
-import axios from "axios";
+import { Dispatch, SetStateAction } from "react";
+
+import axios, {AxiosResponse} from "axios";
 
 import { useWarningModal } from "@/components/composites/WarningModal";
 
@@ -67,15 +69,10 @@ export default function ProductManagementSection({ }: Props) {
 
     }, []);
 
+
     useEffect(() => {
         if (currentCategory) {
-            loadProducts(currentCategory.id).then((data) => {
-                if (data.success)
-                    setProducts(data.products!);
-                else {
-                    throw new Error(data.message);
-                }
-            });
+            loadProducts(currentCategory.id, setProducts);
         }
     }, [currentCategory]);
 
@@ -83,14 +80,9 @@ export default function ProductManagementSection({ }: Props) {
     useEffect(() => {
         if (reloadProducts) {
             setReloadProducts(false);
+            
             if (currentCategory) {
-                loadProducts(currentCategory.id).then((data) => {
-                    if (data.success)
-                        setProducts(data.products!);
-                    else {
-                        throw new Error(data.message);
-                    }
-                });
+                loadProducts(currentCategory.id, setProducts);
             }
         }
     }, [reloadProducts]);
@@ -151,7 +143,7 @@ ProductManagementSection.displayName = "ProductManagementSection";
  * Helper functions
  */
 
-async function loadCategories(): Promise<Category[]> {
+async function loadCategories() {
     try {
         const res = await axios.get("/api/categories");
         return res.data;
@@ -168,13 +160,22 @@ const convertCategoryToOptionItem = (category: Category): OptionItem<Category> =
     return convertToOptionItem({ item: category, getLabel, getValue });
 }
 
-async function loadProducts(catID: string): Promise<ProductApiResponse> {
-    try {
-        const res = await axios.get(`/api/products/?catID=${catID}`);
-        return res.data;
-    } catch (err) {
+async function loadProducts(catID: string, setProducts: Dispatch<SetStateAction<(Product | ProductGroup)[]>> ) {
+    axios.get(`/api/products/?catID=${catID}`)
+    .then(({data}:AxiosResponse<ProductApiResponse>) => {
+        if (!data.success) {
+            throw new Error(data.message);
+        }
+        else if(!data.products) {
+            throw new Error("No products found");
+        }
+
+
+        setProducts(data.products);
+
+    }).catch((err) => {
         throw err;
-    }
+    });
 }
 
 

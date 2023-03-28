@@ -17,9 +17,6 @@ function useDelete ({products, showWarning, setReloadProducts}:useDeleteProps) {
 
 
 
-
-
-
     const post = (url: string) => {
         axios.post(url)
             .then(({data}) => {

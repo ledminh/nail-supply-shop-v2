@@ -70,7 +70,7 @@ export default function handler(req: NextApiRequest, res: NextApiCategoryRespons
         if(typeof id !== 'string')
           return res.status(400).json({ success:false, message: 'Invalid group ID' });
 
-          // TODO return deleteGroup(id, res);
+          return deleteGroup(id, res);
       }
 
 
@@ -101,7 +101,7 @@ const getProducts = (catID: string, res:NextApiCategoryResponse) => {
     if(!Array.isArray(products)) {
       return res.status(500).json({ 
           success: false, 
-          message: 'Something went wrong' 
+          message: 'Products is not an array' 
         });
     } 
 
@@ -134,3 +134,33 @@ const deleteSingleProduct = (id: string, res:NextApiCategoryResponse) => {
   });
 
 }
+
+const deleteGroup = (id: string, res:NextApiCategoryResponse) => {
+  DB.getProduct({id}).then((group) => {
+    if(group) {
+
+      if(Array.isArray(group) || isProduct(group)) return;
+
+      const images = group.products.reduce((acc: ProductImage[], product) => {
+        acc.push(...product.images);
+
+        return acc;
+      }, []);
+
+
+      deleteImages(images.map((image) => image.src));
+
+      DB.deleteProduct({id}).then(() => {
+        res.status(200).json({ success: true, message: 'Product deleted' });
+      }).catch((err) => {
+        res.status(500).json({ success: false, message: err.message });
+      });
+    } else {
+      res.status(404).json({ success: false, message: 'Product not found' });
+    }
+  }).catch((err) => {
+    res.status(500).json({ success: false, message: err.message });
+  });
+
+}
+
