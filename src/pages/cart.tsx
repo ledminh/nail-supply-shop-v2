@@ -17,7 +17,27 @@ export default function Cart({contactInfo, aboutTextFooter }:Props) {
       contactInfo = {contactInfo}
       aboutText = {aboutTextFooter}
     >
-
+      <section className={styles.section + " " + styles.header}>
+        <h2>SHOPPING CART</h2>
+        <h3>(9 items)</h3>
+      </section>
+      <section className={styles.section + " " + styles.cart}>
+        <ul>
+          <li>
+            <p>QuantityPicker</p>
+            <p>Image</p>
+            <p>Product Name</p>
+            <p>Price</p>
+            <p>Total Price</p>
+            <button>Remove</button>
+          </li>
+        </ul>
+      </section>
+      <section className={styles.section + " " + styles.footer}>
+        <button>CHECK OUT</button>
+        <p><span>TOTAL: </span><span>$10000</span></p>
+        <button>CONTINUE SHOPPING</button>
+      </section>
     </PageLayout>
   )
 }
