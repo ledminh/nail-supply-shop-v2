@@ -1,4 +1,6 @@
 import '@/styles/globals.scss'
+import '@styles/customized-quill.scss';
+
 import type { AppProps } from 'next/app'
 
 import  CartContext  from '@contexts/CartContext';

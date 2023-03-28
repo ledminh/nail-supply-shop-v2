@@ -81,6 +81,7 @@ export default function AboutUsManagementSection({ }: Props) {
                 />
             </section>
             <section className={styles.contactInfoManagement}>
+                <h3 className={styles.title}>CONTACT INFOS</h3>
                 <ContactInfoManagement
                     initialEmail = {contactInfo? contactInfo.email: ""} 
                     initialPhone = {contactInfo? contactInfo.phone: ""}
@@ -88,7 +89,6 @@ export default function AboutUsManagementSection({ }: Props) {
                     onSave = {contactInfoOnSave}
                 />
             </section>
-
         </section>
     );
 }

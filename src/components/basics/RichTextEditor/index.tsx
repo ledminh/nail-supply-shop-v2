@@ -1,14 +1,12 @@
 import { FC } from "react";
 
 import ButtonCPN from "@components/basics/ButtonCPN";
-import { useState, useMemo } from "react";
+import { useState, useCallback, useMemo } from "react";
 
 
 import styles from "@styles/basics/RichTextEditorCPN.module.scss";
 
-import '@styles/customized-quill.scss';
-
-import ReactQuill from 'react-quill';
+import dynamic from 'next/dynamic';
 
 
 export interface Props  {
@@ -25,6 +23,16 @@ const RichTextEditorCPN:RichTextEditor = ({title, initContent, onSave}) => {
 
     const [content, setContent] = useState(initContent);
 
+    const ReactQuill = useMemo(() => {
+        return dynamic(() => import('react-quill'), {
+            ssr: false,
+            loading: () => <p>Loading ...</p>,
+        });
+    }, []);
+
+    const handleChange = useCallback((value: string) => {
+        setContent(value);
+    }, []);
 
     return (
         <div className={styles.wrapper}>
@@ -32,8 +40,8 @@ const RichTextEditorCPN:RichTextEditor = ({title, initContent, onSave}) => {
             <ReactQuill id={`text-area-${title}`}
                     theme="snow"
                     placeholder={`Type your content for ${title} here ...`}
-                    value = {content}
-                    onChange = {(value) => setContent(value)}
+                    value={content}
+                    onChange = {handleChange}
                 />
             <div className={styles.buttons}>
                 <ButtonCPN label="Save" 
