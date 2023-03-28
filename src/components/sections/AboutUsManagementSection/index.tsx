@@ -5,7 +5,7 @@ import styles from "@styles/sections/AboutUsManagementSection.module.scss";
 
 import type { ContactInfo } from '@/types/others';
 
-import {useState} from 'react';
+import {useEffect, useState} from 'react';
 
 import axios from 'axios';
 
@@ -21,8 +21,20 @@ export default function AboutUsManagementSection({ }: Props) {
     const [contactInfo, setContactInfo] = useState<ContactInfo|null>(null);
 
 
+    useEffect(() => {
+        axios.get("/api/about-us")
+            .then((res) => {               
+                const { aboutUsFooter, missionStatement, historyHTML, contactInfo } = res.data;
+                setAboutUsFooterContent(aboutUsFooter);
+                setMissionStatementContent(missionStatement);
+                setHistoryContentHTML(historyHTML);
+                setContactInfo(contactInfo);
+            });
+    }, []);
+
+
     const aboutUsFooterOnSave = (content: string) => {
-        axios.post("/api/about-us/footer", {content})
+        axios.post("/api/about-us/?type=footer", {content})
             .then((res) => {
                 console.log(res);
                 // setAboutUsFooterContent(content);
@@ -30,7 +42,7 @@ export default function AboutUsManagementSection({ }: Props) {
     }
 
     const missionStatementOnSave = (content: string) => {
-        axios.post("/api/about-us/mission-statement", {content})
+        axios.post("/api/about-us/?type=mission-statement", {content})
             .then((res) => {
                 console.log(res);
                 // setMissionStatementContent(content);
@@ -39,7 +51,7 @@ export default function AboutUsManagementSection({ }: Props) {
     }
 
     const historyOnSave = (content: string) => {
-        axios.post("/api/about-us/history", {content})
+        axios.post("/api/about-us/?type=history", {content})
             .then((res) => {
                 console.log(res);
                 // setHistoryContentHTML(content);
@@ -48,9 +60,8 @@ export default function AboutUsManagementSection({ }: Props) {
 
     const contactInfoOnSave = (email: string, phone: string, additionalInfos: string[]) => {
 
-        axios.post("/api/about-us/contact-info", {email, phone, additionalInfos})
+        axios.post("/api/about-us/?type=contact-info", {email, phone, additionalInfos})
             .then((res) => {
-                console.log(res);
                 setContactInfo({ email, phone, additionalInfos });
             });
     }

@@ -1,7 +1,7 @@
 import { FC } from "react";
 
 import ButtonCPN from "@components/basics/ButtonCPN";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 
 import styles from "@styles/basics/TextAreaBlockCPN.module.scss";
@@ -21,6 +21,10 @@ type TextAreaBlock = FC<Props>;
 const TextAreaBlockCPN:TextAreaBlock = ({title, initContent, onSave}) => {
 
     const [content, setContent] = useState(initContent);
+
+    useEffect(() => {
+        setContent(initContent);
+    }, [initContent]);
 
     return (
         <div className={styles.wrapper}>

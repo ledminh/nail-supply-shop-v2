@@ -1,7 +1,7 @@
 import { FC } from "react";
 
 import ButtonCPN from "@components/basics/ButtonCPN";
-import { useState, useCallback, useMemo } from "react";
+import { useState, useCallback, useMemo, useEffect } from "react";
 
 
 import styles from "@styles/basics/RichTextEditorCPN.module.scss";
@@ -22,6 +22,10 @@ type RichTextEditor = FC<Props>;
 const RichTextEditorCPN:RichTextEditor = ({title, initContent, onSave}) => {
 
     const [content, setContent] = useState(initContent);
+
+    useEffect(() => {
+        setContent(initContent);
+    }, [initContent]);
 
     const ReactQuill = useMemo(() => {
         return dynamic(() => import('react-quill'), {

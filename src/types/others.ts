@@ -26,3 +26,10 @@ export type AdminSection = {
     slug: string;
     component: React.FC;
 }
+
+export type AboutUsData = {
+  aboutUsFooter: string;
+  missionStatement: string;
+  historyHTML: string;
+  contactInfo: ContactInfo;
+};
