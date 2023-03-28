@@ -26,9 +26,3 @@ export type AdminSection = {
     slug: string;
     component: React.FC;
 }
-
-export type ContactInfos = {
-    email: string;
-    phone: string;
-    additionalInfos?: string[];
-}

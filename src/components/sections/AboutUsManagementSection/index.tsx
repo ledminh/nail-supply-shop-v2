@@ -3,7 +3,7 @@ import TextAreaBlockCPN from "@/components/basics/TextAreaBlock";
 import ContactInfoManagement from "@/components/composites/ContactInfoManagement";
 import styles from "@styles/sections/AboutUsManagementSection.module.scss";
 
-import type { ContactInfos } from '@/types/others';
+import type { ContactInfo } from '@/types/others';
 
 import {useState} from 'react';
 
@@ -18,7 +18,7 @@ export default function AboutUsManagementSection({ }: Props) {
     const [aboutUsFooterContent, setAboutUsFooterContent] = useState<string|null>(null);
     const [missionStatementContent, setMissionStatementContent] = useState<string|null>(null);
     const [historyContentHTML, setHistoryContentHTML] = useState<string|null>(null);
-    const [contactInfo, setContactInfo] = useState<ContactInfos|null>(null);
+    const [contactInfo, setContactInfo] = useState<ContactInfo|null>(null);
 
 
     const aboutUsFooterOnSave = (content: string) => {
