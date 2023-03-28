@@ -10,9 +10,10 @@ type useDeleteProps = {
     products: (Product|ProductGroup)[];
     setProducts: React.Dispatch<React.SetStateAction<(Product|ProductGroup)[]>>;
     showWarning: (warningProps: ShowWarningProps) => void;
+    setReloadProducts: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-function useDelete ({products, setProducts, showWarning}:useDeleteProps) {
+function useDelete ({products, setProducts, showWarning, setReloadProducts}:useDeleteProps) {
     const {warningMessages} = productManagementConfig;
 
 
@@ -28,10 +29,14 @@ function useDelete ({products, setProducts, showWarning}:useDeleteProps) {
             onOK: () => {
                 axios.post(`/api/products/?type=delete-single-product&id=${productID}`)
                 .then(({data}) => {
-                    setProducts(data);
+                    if(data.success)
+                        setReloadProducts(true);
+                    else {
+                        throw new Error(data.message);
+                    }
                 })
                 .catch((err) => {
-                    console.error(err);
+                    throw new Error(err.message);
                 });
             },
             

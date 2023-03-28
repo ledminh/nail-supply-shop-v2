@@ -34,3 +34,31 @@ export function getProducts({catID}:getProductsProps) {
 
     throw new Error('Something went wrong in database/getProducts');
 }
+
+/**************************
+ * getProduct
+ */
+
+type getProductProps = {
+    id: string;
+}
+
+export function getProduct({id}:getProductProps) {
+
+    const product = ProductModel.find({id});
+
+    return product;
+}
+
+
+/**************************
+ * deleteProduct
+ */
+
+type deleteProductProps = {
+    id: string;
+}
+
+export function deleteProduct({id}:deleteProductProps) {
+    return ProductModel.deleteProduct({id});
+}

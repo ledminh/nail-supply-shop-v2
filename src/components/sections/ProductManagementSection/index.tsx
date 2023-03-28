@@ -25,28 +25,31 @@ import { Category } from "@/types/category";
 import useCreate from "@/hooks/ProductManagementSection/useCreate";
 
 import { OptionItem, convertToOptionItem } from "@/components/generics/Select";
+import { ProductApiResponse } from "@/pages/api/products";
 
 export interface Props {
 }
 
 
 
-export default function ProductManagementSection({  }: Props) {
-    
+export default function ProductManagementSection({ }: Props) {
 
-    const [products, setProducts] = useState<(Product|ProductGroup)[]>([]);
+    const [reloadProducts, setReloadProducts] = useState<boolean>(false);
+
+    const [products, setProducts] = useState<(Product | ProductGroup)[]>([]);
     const [categories, setCategories] = useState<Category[]>([]);
-    const [currentCategory, setCurrentCategory] = useState<Category|null>(null);
+    const [currentCategory, setCurrentCategory] = useState<Category | null>(null);
 
-    const {showWarning,  WarningModalComponent} = useWarningModal();
-    const {openEditProduct, openCreateProduct, ProductModalComponent} = useProductModal();
-    const {openEditGroup, openCreateGroup, GroupModalComponent} = useGroupModal();
+    const { showWarning, WarningModalComponent } = useWarningModal();
+    const { openEditProduct, openCreateProduct, ProductModalComponent } = useProductModal();
+    const { openEditGroup, openCreateGroup, GroupModalComponent } = useGroupModal();
 
 
-    const {onDeleteProduct, onDeleteGroup} = useDelete({products, setProducts, showWarning});    
-    const {onEditProduct, onEditGroup} = useEdit({products, setProducts, openEditProduct, openEditGroup});
- 
-    const {createProduct, createGroup} = useCreate({products, setProducts, openCreateProduct, openCreateGroup});
+    const { onDeleteProduct, onDeleteGroup } = useDelete({ products, setProducts, showWarning, setReloadProducts });
+    const { createProduct, createGroup } = useCreate({ products, setProducts, openCreateProduct, openCreateGroup });
+    const { onEditProduct, onEditGroup } = useEdit({ products, setProducts, openEditProduct, openEditGroup });
+
+
 
     const ItemWrapper = getItemWrapper({
         onDeleteProduct,
@@ -66,12 +69,31 @@ export default function ProductManagementSection({  }: Props) {
 
     useEffect(() => {
         if (currentCategory) {
-            loadProducts(currentCategory.id).then((products) => {
-                setProducts(products);
+            loadProducts(currentCategory.id).then((data) => {
+                if (data.success)
+                    setProducts(data.products!);
+                else {
+                    throw new Error(data.message);
+                }
             });
         }
     }, [currentCategory]);
 
+    
+    useEffect(() => {
+        if (reloadProducts) {
+            setReloadProducts(false);
+            if (currentCategory) {
+                loadProducts(currentCategory.id).then((data) => {
+                    if (data.success)
+                        setProducts(data.products!);
+                    else {
+                        throw new Error(data.message);
+                    }
+                });
+            }
+        }
+    }, [reloadProducts]);
 
 
     return (
@@ -80,38 +102,38 @@ export default function ProductManagementSection({  }: Props) {
                 <div className={styles.controls}>
                     {
                         categories.length !== 0 && currentCategory && (
-                            <Select 
-                            selectClass = {styles.select}
-                            optionClass = {styles.option}
-                            optionItems = {categories.map(convertCategoryToOptionItem)}
-                            initOptionItem = {convertCategoryToOptionItem(currentCategory)}
-                            onChange = {(cat) => {
-                                const category = categories.find((c) => c.id === cat.value);
-                                if (category) {
-                                    setCurrentCategory(category);
-                                }
-                            }}
-                        />)
+                            <Select
+                                selectClass={styles.select}
+                                optionClass={styles.option}
+                                optionItems={categories.map(convertCategoryToOptionItem)}
+                                initOptionItem={convertCategoryToOptionItem(currentCategory)}
+                                onChange={(cat) => {
+                                    const category = categories.find((c) => c.id === cat.value);
+                                    if (category) {
+                                        setCurrentCategory(category);
+                                    }
+                                }}
+                            />)
                     }
 
                     <div className={styles.buttons}>
-                        <ButtonCPN 
+                        <ButtonCPN
                             type="normal"
                             label="Add Product"
                             onClick={createProduct}
-                            />
-                        <ButtonCPN 
+                        />
+                        <ButtonCPN
                             type="normal"
                             label="Add Group"
                             onClick={createGroup}
-                            />
+                        />
                     </div>
                 </div>
-                <List 
-                    items = {products}
-                    ItemCPN = {ItemWrapper}
-                    liClass = {styles.li}
-                    ulClass = {styles.ul}
+                <List
+                    items={products}
+                    ItemCPN={ItemWrapper}
+                    liClass={styles.li}
+                    ulClass={styles.ul}
                 />
             </section>
             <WarningModalComponent />
@@ -143,10 +165,10 @@ const getLabel = (category: Category) => category.name;
 const getValue = (category: Category) => category.id;
 
 const convertCategoryToOptionItem = (category: Category): OptionItem<Category> => {
-    return convertToOptionItem({item: category, getLabel, getValue});
+    return convertToOptionItem({ item: category, getLabel, getValue });
 }
 
-async function loadProducts(catID: string): Promise<(Product|ProductGroup)[]> {
+async function loadProducts(catID: string): Promise<ProductApiResponse> {
     try {
         const res = await axios.get(`/api/products/?catID=${catID}`);
         return res.data;
@@ -165,19 +187,19 @@ type getItemWrapperProps = {
     onEditProduct: (id: string) => void;
 }
 
-function getItemWrapper ({onDeleteProduct, onDeleteGroup, onEditGroup, onEditProduct}: getItemWrapperProps) {
+function getItemWrapper({ onDeleteProduct, onDeleteGroup, onEditGroup, onEditProduct }: getItemWrapperProps) {
 
-    const ItemWrapper = (product: Product|ProductGroup) => {
+    const ItemWrapper = (product: Product | ProductGroup) => {
         return (
             <>
                 {
                     isProduct(product) ? (
                         <AdminProductBlockCPN {...product} onDelete={onDeleteProduct} onClick={onEditProduct} />)
-                        : (<AdminProductGroupBlockCPN {...product} onDelete={onDeleteGroup} onClick={onEditGroup} onEditProduct={onEditProduct}/>)
+                        : (<AdminProductGroupBlockCPN {...product} onDelete={onDeleteGroup} onClick={onEditGroup} onEditProduct={onEditProduct} />)
                 }
             </>
         )
-    
+
     }
 
     return ItemWrapper;
