@@ -28,11 +28,10 @@ type getProductsProps = {
 export function getProducts({catID}:getProductsProps) {
 
     if(catID) {
-        const products = ProductModel.find({catID: catID});
-        return products;
+        return ProductModel.find({catID: catID});
     }
 
-    throw new Error('Something went wrong in database/getProducts');
+    return Promise.reject(new Error('Something went wrong in database/getProducts'));
 }
 
 /**************************
@@ -43,12 +42,8 @@ type getProductProps = {
     id: string;
 }
 
-export function getProduct({id}:getProductProps) {
+export const getProduct = ({id}:getProductProps) => ProductModel.find({id});
 
-    const product = ProductModel.find({id});
-
-    return product;
-}
 
 
 /**************************

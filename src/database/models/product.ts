@@ -27,7 +27,7 @@ export function find({catID, id}:findProps) {
     }
 
 
-    return Promise.reject(new Error('Something went wrong in database/getProducts'));
+    return Promise.reject(new Error('Something went wrong in database product.find'));
     
 }
 

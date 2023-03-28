@@ -8,13 +8,37 @@ import { ShowWarningProps } from '@/components/composites/WarningModal';
 
 type useDeleteProps = {
     products: (Product|ProductGroup)[];
-    setProducts: React.Dispatch<React.SetStateAction<(Product|ProductGroup)[]>>;
     showWarning: (warningProps: ShowWarningProps) => void;
     setReloadProducts: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-function useDelete ({products, setProducts, showWarning, setReloadProducts}:useDeleteProps) {
+function useDelete ({products, showWarning, setReloadProducts}:useDeleteProps) {
     const {warningMessages} = productManagementConfig;
+
+
+
+
+
+
+    const post = (url: string) => {
+        axios.post(url)
+            .then(({data}) => {
+                if(data.success)
+                    setReloadProducts(true);
+                else {
+                    throw new Error(data.message);
+                }
+            })
+            .catch((err) => {
+                throw new Error(err.message);
+            });
+    }
+
+
+    /*******************************
+     * Public functions
+     */
+
 
 
     const onDeleteProduct = (productID: string) => {
@@ -27,17 +51,7 @@ function useDelete ({products, setProducts, showWarning, setReloadProducts}:useD
         showWarning({
             message: warningMessages.deleteProduct(productName),
             onOK: () => {
-                axios.post(`/api/products/?type=delete-single-product&id=${productID}`)
-                .then(({data}) => {
-                    if(data.success)
-                        setReloadProducts(true);
-                    else {
-                        throw new Error(data.message);
-                    }
-                })
-                .catch((err) => {
-                    throw new Error(err.message);
-                });
+                post(`/api/products/?type=delete-single-product&id=${productID}`);
             },
             
         })
@@ -54,13 +68,7 @@ function useDelete ({products, setProducts, showWarning, setReloadProducts}:useD
         showWarning({
             message: warningMessages.deleteGroup(groupName),
             onOK: () => {
-                axios.post(`/api/products/?type=delete-group&id=${groupID}`)
-                .then(({data}) => {
-                    setProducts(data);
-                })
-                .catch((err) => {
-                    console.error(err);
-                });
+                post(`/api/products/?type=delete-group&id=${groupID}`);                
             },
             
         })

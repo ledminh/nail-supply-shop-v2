@@ -61,9 +61,21 @@ export default function handler(req: NextApiRequest, res: NextApiCategoryRespons
         if(typeof id !== 'string')  
           return res.status(400).json({ success:false, message: 'Invalid product ID' });
 
-        deleteSingleProduct(id, res);
+        return deleteSingleProduct(id, res);
       }
       
+      if(type === 'delete-group') {
+        const { id } = req.query;
+
+        if(typeof id !== 'string')
+          return res.status(400).json({ success:false, message: 'Invalid group ID' });
+
+          // TODO return deleteGroup(id, res);
+      }
+
+
+
+
       
       break;
     default:

@@ -45,7 +45,7 @@ export default function ProductManagementSection({ }: Props) {
     const { openEditGroup, openCreateGroup, GroupModalComponent } = useGroupModal();
 
 
-    const { onDeleteProduct, onDeleteGroup } = useDelete({ products, setProducts, showWarning, setReloadProducts });
+    const { onDeleteProduct, onDeleteGroup } = useDelete({ products, showWarning, setReloadProducts });
     const { createProduct, createGroup } = useCreate({ products, setProducts, openCreateProduct, openCreateGroup });
     const { onEditProduct, onEditGroup } = useEdit({ products, setProducts, openEditProduct, openEditGroup });
 
@@ -79,7 +79,7 @@ export default function ProductManagementSection({ }: Props) {
         }
     }, [currentCategory]);
 
-    
+
     useEffect(() => {
         if (reloadProducts) {
             setReloadProducts(false);
