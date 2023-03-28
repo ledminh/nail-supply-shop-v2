@@ -47,3 +47,13 @@ export function deleteProduct({id}:deleteProductProps) {
 
     return Promise.reject(new Error('Product not found'));
 }
+
+type addProductProps = {
+    product: Product;
+}
+
+export function addProduct({product}:addProductProps) {
+    // TODO: eliminate this type cast
+    (productsJSON as (Product|ProductGroup)[]).push(product);
+    return Promise.resolve();
+}

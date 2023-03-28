@@ -7,7 +7,7 @@ import { ProductImage } from '@/types/product';
 
 import fs from 'fs';
 
-import formidable from 'formidable';
+import formidable, { Fields } from 'formidable';
 
 import isProduct from '@/utils/isProduct';
 
@@ -73,11 +73,12 @@ export default function handler(req: NextApiRequest, res: NextApiCategoryRespons
           return deleteGroup(id, res);
       }
 
-
-
-
+      if(type === 'add-product') {
+        addProduct(req, res);
+      }        
       
       break;
+  
     default:
       res.setHeader('Allow', ['GET', 'POST']);
       res.status(405).json({ success: false, message: `Method ${req.method} not allowed` });
@@ -164,3 +165,65 @@ const deleteGroup = (id: string, res:NextApiCategoryResponse) => {
 
 }
 
+
+const addProduct = (req: NextApiRequest, res: NextApiCategoryResponse) => {
+  const form = new formidable.IncomingForm();
+
+  form.parse(req, (err, fields, files) => {
+    if(err) {
+      return res.status(500).json({ success: false, message: err.message });
+    }
+
+    // Check if all fields are strings
+    for(const field in fields) {
+      if(typeof fields[field] !== 'string') {
+        return res.status(400).json({ success: false, message: 'Invalid field type' });
+      }
+    }
+
+
+    const { serialNumber, categoryID, name, intro, details, price, images } = fields;
+
+    fields.serialNumber
+
+    if(typeof serialNumber !== 'string'
+      || typeof categoryID !== 'string'  
+      || typeof name !== 'string'
+      || typeof intro !== 'string' 
+      || typeof details !== 'string' 
+      || typeof price !== 'string'
+      || typeof images !== 'string') {
+        return res.status(400).json({ success: false, message: 'Missing fields' });
+    }
+
+    const product: Product = {
+      id: serialNumber,
+      categoryID,
+      name,
+      intro,
+      details,
+      price: Number(price),
+      images: JSON.parse(images),
+      dateCreated: new Date().toISOString(),
+      sellCount: 0
+    }
+
+    DB.addProduct({product}).then(() => {
+      return res.status(200).json({ success: true, message: 'Product added' });
+    }).catch((err) => {
+      return res.status(500).json({ success: false, message: err.message });
+    });
+
+  });
+}
+
+
+
+
+const isAllStrings = (obj: any)=> {
+  for(const key in obj) {
+    if(typeof obj[key] !== 'string') return false;
+  }
+
+  return true;
+}

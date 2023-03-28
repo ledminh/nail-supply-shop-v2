@@ -8,10 +8,12 @@ import createFormData from "@/utils/createFormData";
 import processImages from "@/utils/processImages";
 
 import axios from 'axios';
+import { Category } from "@/types/category";
 
 
 type Props = {
     products: (Product|ProductGroup)[],
+    currentCategory: Category |null,
     setProducts: Dispatch<SetStateAction<(Product|ProductGroup)[]>>,
     openCreateProduct: (props: OpenCreateProductProps) => void,
     openCreateGroup: (props:OpenCreateGroupProps) => void
@@ -20,10 +22,35 @@ type Props = {
 
 
 export default function useCreate({
-    products, setProducts, openCreateProduct, openCreateGroup
+    products, currentCategory, setProducts, openCreateProduct, openCreateGroup
 }:Props) {
 
 
+
+
+
+
+    const post = (url: string, formData:FormData) => {
+        axios.post(url, formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
+        }).then(({data}) => {
+                if(data.success)
+                    setProducts([data.product, ...products]);
+                else {
+                    throw new Error(data.message);
+                }
+        })
+        .catch((err) => {
+            throw new Error(err.message);
+        });
+    }
+
+
+    /***********************************
+     * Public functions
+     */
 
     const createProduct = () => {
         openCreateProduct({
@@ -31,12 +58,12 @@ export default function useCreate({
 
                 async function createProduct() {
                     const processedImages = await processImages(images);
+                    const categoryID = currentCategory!.id;
 
-                    const formData = createFormData({serialNumber, name, intro, details, price, images: processedImages});
+                    const formData = createFormData({serialNumber, categoryID, name, intro, details, price, images: JSON.stringify(processedImages)});
 
-                    const res = await axios.post('/api/products?type=create', formData);
+                    post('/api/products?type=add-product', formData);
 
-                    setProducts([res.data.product, ...products ]);
                 }
 
                 createProduct();

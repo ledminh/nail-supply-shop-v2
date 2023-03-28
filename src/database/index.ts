@@ -1,6 +1,8 @@
 import  * as CategoryModel  from './models/category';
 import * as ProductModel  from './models/product';
 
+import type { Product } from '@/types/product';
+
 
 /**********************
  * getCategories
@@ -56,4 +58,16 @@ type deleteProductProps = {
 
 export function deleteProduct({id}:deleteProductProps) {
     return ProductModel.deleteProduct({id});
+}
+
+/*****************************
+ * addProduct
+ */
+
+type addProductProps = {
+    product: Product;
+}
+
+export function addProduct({product}:addProductProps) {
+    return ProductModel.addProduct({product});
 }

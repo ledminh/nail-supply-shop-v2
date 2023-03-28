@@ -16,8 +16,10 @@ export interface Product {
     
     groupName?: string,
     otherProducts?: Product[],
-    // dateCreated: string,
-    // sellCount: number,
+    
+    // TODO: make those required
+    dateCreated?: string,
+    sellCount?: number,
 }
 
 export interface ProductGroup {

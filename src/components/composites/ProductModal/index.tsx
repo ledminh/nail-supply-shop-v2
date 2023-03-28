@@ -129,17 +129,22 @@ export default function ProductModal({ type, onSave, onCancel, groupName, initSe
                 </div>
                 <div className={styles.images}>
                     <div key="add-image" className={styles.imageBlock}>
-                        <label htmlFor="image">Add Image</label>
-                        <input type="file" id="image" onChange={(e) => {
+                        <label htmlFor="image">Add Images</label>
+                        <input type="file" 
+                            id="image" 
+                            onChange={(e) => {
                             if(!e.target.files?.[0]) return;
 
                             const newImage = e.target.files[0];
                             setImages((prev) => prev? [newImage, ...prev ] : [newImage]);
-                        }}/>
+                            }}
+                            multiple
+                            />
                     </div>
                     {
                         images && images.map((image) => (
                             <button className={styles.imageBlock}
+                                key={image instanceof File? image.name : image.src}
                                 onClick={(e) => {
                                     e.preventDefault();
                                     setImages((prev) => prev? prev.filter((img) => img !== image): null);
