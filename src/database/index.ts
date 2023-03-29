@@ -1,7 +1,7 @@
 import  * as CategoryModel  from './models/category';
 import * as ProductModel  from './models/product';
 
-import type { Product } from '@/types/product';
+import type { DBProduct } from '@/types/product';
 
 
 /**********************
@@ -60,12 +60,14 @@ export function deleteProduct({id}:deleteProductProps) {
     return ProductModel.deleteProduct({id});
 }
 
+
+
 /*****************************
  * addProduct
  */
 
 type addProductProps = {
-    product: Product;
+    product: DBProduct;
 }
 
 export function addProduct({product}:addProductProps) {

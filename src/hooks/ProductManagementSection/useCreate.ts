@@ -77,7 +77,7 @@ export default function useCreate({
                 async function createGroup() {
                             
 
-                    const res = await axios.post('/api/groups?type=create', {
+                    const res = await axios.post('/api/groups?type=add-group', {
                         name,
                         products
                     });

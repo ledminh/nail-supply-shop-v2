@@ -17,10 +17,13 @@ export interface Product {
     groupName?: string,
     otherProducts?: Product[],
     
-    // TODO: make those required
-    dateCreated?: string,
-    sellCount?: number,
 }
+
+export interface DBProduct extends Product {
+    dateCreated: string,
+    sellCount: number,
+}
+
 
 export interface ProductGroup {
     id: string;

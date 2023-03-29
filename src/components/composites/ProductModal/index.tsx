@@ -117,7 +117,7 @@ export default function ProductModal({ type, onSave, onCancel, groupName, initSe
                     <div className={styles.formGroup}>
                         <label htmlFor="price">Price</label>
                         <input type="number" id="price" value={price} onChange={(e) => {
-                            const value = parseInt(e.target.value);
+                            const value = parseFloat(e.target.value);
                             if(isNaN(value) || value < 0) return;
 
                             setPrice(value);
@@ -135,9 +135,10 @@ export default function ProductModal({ type, onSave, onCancel, groupName, initSe
                             onChange={(e) => {
                             if(!e.target.files?.[0]) return;
 
-                            const newImage = e.target.files[0];
-                            setImages((prev) => prev? [newImage, ...prev ] : [newImage]);
+                            const newImages = Array.from(e.target.files);
+                            setImages((prev) => prev? [...newImages, ...prev ] : [...newImages]);
                             }}
+
                             multiple
                             />
                     </div>

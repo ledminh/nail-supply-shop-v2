@@ -3,11 +3,11 @@
 import {Product, ProductGroup} from '@/types/product';
 import type { NextApiRequest, NextApiResponse } from 'next';
 
-import { ProductImage } from '@/types/product';
+import { ProductImage, DBProduct } from '@/types/product';
 
 import fs from 'fs';
 
-import formidable, { Fields } from 'formidable';
+import formidable from 'formidable';
 
 import isProduct from '@/utils/isProduct';
 
@@ -17,12 +17,20 @@ import * as DB from '@/database';
 export type ProductApiResponse = {
   success: true,
   products?: undefined,
+  product?: undefined,
   message: string
 } | {
   success: true,
   products: (Product|ProductGroup)[],
+  product?: undefined,
   message?: undefined
 } | {
+  success: true,
+  products?: undefined,
+  product: Product|ProductGroup,
+  message?: undefined
+} |
+{
   success: false,
   message: string
 };
@@ -32,8 +40,19 @@ type NextApiCategoryResponse = NextApiResponse<ProductApiResponse>;
 function deleteImages(imagePaths: string[]) {
   for (const imagePath of imagePaths) {
     try {
-      if(imagePath.startsWith('/images/product/') && fs.existsSync(`public/images/product/${imagePath}`))
-        fs.unlinkSync(`public/images/product/${imagePath}`);
+
+      if(imagePath.startsWith('/images/product/')) {
+        const imgName = imagePath.replace('/images/product/', '');
+
+        if(fs.existsSync(`public/images/product/${imgName}`)) {
+          fs.unlink(`public/images/product/${imgName}`, (err) => {
+            if(err) {
+              console.error(`Failed to delete image: ${imagePath}`, err);
+            }
+          });
+        }
+
+      } 
     } catch (err) {
       console.error(`Failed to delete image: ${imagePath}`, err);
     }
@@ -174,17 +193,11 @@ const addProduct = (req: NextApiRequest, res: NextApiCategoryResponse) => {
       return res.status(500).json({ success: false, message: err.message });
     }
 
-    // Check if all fields are strings
-    for(const field in fields) {
-      if(typeof fields[field] !== 'string') {
-        return res.status(400).json({ success: false, message: 'Invalid field type' });
-      }
-    }
+    
 
 
     const { serialNumber, categoryID, name, intro, details, price, images } = fields;
 
-    fields.serialNumber
 
     if(typeof serialNumber !== 'string'
       || typeof categoryID !== 'string'  
@@ -196,7 +209,7 @@ const addProduct = (req: NextApiRequest, res: NextApiCategoryResponse) => {
         return res.status(400).json({ success: false, message: 'Missing fields' });
     }
 
-    const product: Product = {
+    const product: DBProduct = {
       id: serialNumber,
       categoryID,
       name,
@@ -209,21 +222,10 @@ const addProduct = (req: NextApiRequest, res: NextApiCategoryResponse) => {
     }
 
     DB.addProduct({product}).then(() => {
-      return res.status(200).json({ success: true, message: 'Product added' });
+      return res.status(200).json({ success: true, product: product });
     }).catch((err) => {
       return res.status(500).json({ success: false, message: err.message });
     });
 
   });
-}
-
-
-
-
-const isAllStrings = (obj: any)=> {
-  for(const key in obj) {
-    if(typeof obj[key] !== 'string') return false;
-  }
-
-  return true;
 }

@@ -1,7 +1,11 @@
 import productsJSON from '../jsons/products.json';
-import type { Product, ProductGroup } from '@/types/product';
+import type { DBProduct, ProductGroup } from '@/types/product';
 
 
+
+/******************************
+ *  FIND PRODUCT/PRODUCT GROUP
+ ******************************/
 type findProps = {
     catID?: string;
     id?: string;
@@ -9,7 +13,7 @@ type findProps = {
 
 export function find({catID, id}:findProps) {
     
-    let products: (Product|ProductGroup)[] = productsJSON;
+    let products: (DBProduct|ProductGroup)[] = productsJSON;
 
     if(catID) {
         products = products.filter((product) => product.categoryID === catID);
@@ -31,6 +35,11 @@ export function find({catID, id}:findProps) {
     
 }
 
+
+/**********************************
+ *  DELETE PRODUCT / PRODUCT GROUP
+ **********************************/
+
 type deleteProductProps = {
     id: string;
 }
@@ -48,12 +57,16 @@ export function deleteProduct({id}:deleteProductProps) {
     return Promise.reject(new Error('Product not found'));
 }
 
+
+/******************************
+ *  ADD PRODUCT
+ ******************************/
+
 type addProductProps = {
-    product: Product;
+    product: DBProduct;
 }
 
 export function addProduct({product}:addProductProps) {
-    // TODO: eliminate this type cast
-    (productsJSON as (Product|ProductGroup)[]).push(product);
+    productsJSON.push(product);
     return Promise.resolve();
 }
