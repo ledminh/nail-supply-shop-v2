@@ -1,7 +1,7 @@
 import ButtonCPN from "@/components/basics/ButtonCPN";
 import styles from "@styles/composites/ContactInfoManagement.module.scss";
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 export interface Props {
     initialEmail?: string;
@@ -16,6 +16,13 @@ export default function ContactInfoManagement({initialEmail, initialPhone, initi
     const [email, setEmail] = useState(initialEmail ?? "");
     const [phone, setPhone] = useState(initialPhone ?? "");
     const [additionalInfos, setAdditionalInfos] = useState<string[]>(initialAdditionalInfos || []);
+
+
+    useEffect(() => {
+        setEmail(initialEmail ?? "");
+        setPhone(initialPhone ?? "");
+        setAdditionalInfos(initialAdditionalInfos || []);
+    }, [initialEmail, initialPhone, initialAdditionalInfos]);
 
     return (
         <div className={styles.wrapper}>

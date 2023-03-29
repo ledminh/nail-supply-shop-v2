@@ -1,8 +1,13 @@
 import  * as CategoryModel  from './models/category';
 import * as ProductModel  from './models/product';
+import * as AboutUsModel  from './models/aboutUs';
 
 import type { DBProduct, DBProductGroup } from '@/types/product';
 
+
+/********************************************************
+ * CATEGORY
+ */
 
 /**********************
  * getCategories
@@ -18,6 +23,18 @@ export function getCategories({}:getCategoriesProps) {
 }
 
 
+
+
+
+
+
+
+
+
+
+/***********************************************************
+ * PRODUCT
+ */ 
 
 /**************************
  * getProducts
@@ -122,4 +139,29 @@ type updateGroupProductProps = {
 
 export function updateGroupProduct({groupID, product}:updateGroupProductProps) {
     return ProductModel.updateGroupProduct({groupID, product});
+}
+
+
+/***********************************************************
+ * ABOUT US
+ */ 
+
+export function getAboutUsData() {
+    return AboutUsModel.getAboutUsData();
+}
+
+export function setAboutUsFooter(footer: string) {
+    return AboutUsModel.setAboutUsFooter(footer);
+}
+
+export function setAboutUsMissionStatement(missionStatement: string) {
+    return AboutUsModel.setAboutUsMissionStatement(missionStatement);
+}
+
+export function setAboutUsHistoryHTML(history: string) {
+    return AboutUsModel.setAboutUsHistoryHTML(history);
+}
+
+export function setAboutUsContactInfo(email: string, phone: string, additionalInfos?: string[]) {
+    return AboutUsModel.setAboutUsContactInfo(email, phone, additionalInfos);
 }
