@@ -86,3 +86,40 @@ type addGroupProps = {
 export function addGroup({group}:addGroupProps) {
     return ProductModel.addGroup({group});
 }
+
+/*****************************
+ * updateProduct
+ *****************************/
+
+type updateProductProps = {
+    product: DBProduct;
+}
+
+export function updateProduct({product}:updateProductProps) {
+    return ProductModel.updateProduct({product});
+}
+
+/*****************************
+ * updateGroup
+ ******************************/
+
+type updateGroupProps = {
+    group: DBProductGroup;
+}
+
+export function updateGroup({group}:updateGroupProps) {
+    return ProductModel.updateGroup({group});
+}
+
+/*****************************
+ * updateGroupProduct
+ ******************************/
+
+type updateGroupProductProps = {
+    groupID: string;
+    product: DBProduct;
+}
+
+export function updateGroupProduct({groupID, product}:updateGroupProductProps) {
+    return ProductModel.updateGroupProduct({groupID, product});
+}

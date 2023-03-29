@@ -9,16 +9,18 @@ import axios from 'axios';
 import isProduct from '@/utils/isProduct';
 import createFormData from '@/utils/createFormData';
 import processImages from '@/utils/processImages';
+import { Category } from '@/types/category';
 
 type Props = {
     products: (Product|ProductGroup)[];
+    currentCategory: Category | null;
     setProducts: Dispatch<SetStateAction<(Product | ProductGroup)[]>>
     openEditProduct: (props:OpenEditProductProps) => void;
     openEditGroup: (props: OpenEditGroupProps) => void;
 }
 
 
-function useEdit({products, setProducts, openEditProduct, openEditGroup}:Props) {
+function useEdit({products, currentCategory, setProducts, openEditProduct, openEditGroup}:Props) {
 
 
 
@@ -63,8 +65,8 @@ function useEdit({products, setProducts, openEditProduct, openEditGroup}:Props) 
         openEditProduct({
             product,
             onSave: ({serialNumber, name, intro, details, price, images}) => {
-                
-                const formData = createFormData({serialNumber, name, intro, details, price: price.toString()});
+                const categoryID = currentCategory!.id;
+                const formData = createFormData({serialNumber, categoryID, name, intro, details, price: price.toString()});
 
                 if(groupID) {
                     formData.append('groupID', groupID);
@@ -75,8 +77,10 @@ function useEdit({products, setProducts, openEditProduct, openEditGroup}:Props) 
                         formData.append('images', JSON.stringify(images));
                         return axios.post('/api/products?type=update-product', formData);
                     })
-                    .then((res) => res.data)
-                    .then((data) => {
+                    .then(({data}) => {
+                        if(!data.success) {
+                            throw new Error(data.message);
+                        }
 
                         if(groupID) {
                             const group = products.find((product) => product.id === groupID);
@@ -89,7 +93,7 @@ function useEdit({products, setProducts, openEditProduct, openEditGroup}:Props) 
                                 throw new Error("Group is a product");
                             }
 
-                            group.products = group.products.map((prod) => prod.id === data.id ? data : prod);
+                            group.products = group.products.map((prod) => prod.id === data.product.id ? data.product : prod);
 
                             setProducts(products.map((prod) => prod.id === groupID ? group : prod));
 
@@ -97,7 +101,7 @@ function useEdit({products, setProducts, openEditProduct, openEditGroup}:Props) 
                         }
                         
 
-                        setProducts(products.map((prod) => prod.id === data.id ? data : prod));
+                        setProducts(products.map((prod) => prod.id === data.product.id ? data.product : prod));
                     });               
             }
 

@@ -99,6 +99,10 @@ export default function handler(req: NextApiRequest, res: NextApiCategoryRespons
       if(type === 'add-group') {
         addGroup(req, res);
       }
+
+      if(type === 'update-product') {
+        updateProduct(req, res);
+      }
       
       break;
   
@@ -195,10 +199,7 @@ const addProduct = (req: NextApiRequest, res: NextApiCategoryResponse) => {
   form.parse(req, (err, fields, files) => {
     if(err) {
       return res.status(500).json({ success: false, message: err.message });
-    }
-
-    
-
+    }  
 
     const { serialNumber, categoryID, name, intro, details, price, images } = fields;
 
@@ -272,6 +273,122 @@ const addGroup = (req: NextApiRequest, res: NextApiCategoryResponse) => {
 
   });
 }
+
+const updateProduct = (req: NextApiRequest, res: NextApiCategoryResponse) => {
+
+  const form = new formidable.IncomingForm();
+
+  form.parse(req, (err, fields, files) => {
+    if(err) {
+      return res.status(500).json({ success: false, message: err.message });
+    }  
+
+    const { serialNumber, categoryID, groupID, name, intro, details, price, images } = fields;
+
+
+    if(typeof serialNumber !== 'string'
+      || typeof categoryID !== 'string'  
+      || typeof name !== 'string'
+      || typeof intro !== 'string' 
+      || typeof details !== 'string' 
+      || typeof price !== 'string'
+      || typeof images !== 'string') {
+        return res.status(400).json({ success: false, message: 'Missing fields' });
+    }
+
+    const newImages:ProductImage[] = JSON.parse(images);
+
+    if(typeof groupID === 'string') {
+      DB.getProduct({id: groupID}).then((group) => {
+        if(!group || Array.isArray(group) || isProduct(group)) {
+          return res.status(404).json({ success: false, message: 'Product not found' });
+        }
+
+        const oldProduct = group.products.find((product) => product.id === serialNumber);
+
+        if(!oldProduct) {
+          return res.status(404).json({ success: false, message: 'Product not found' });
+        }
+
+        const oldImages = oldProduct.images;
+
+        const imagesToDelete = oldImages.filter((oldImage) => {
+          return !newImages.find((newImage) => newImage.src === oldImage.src);
+        });
+
+        deleteImages(imagesToDelete.map((image) => image.src));
+
+        const newProduct: DBProduct = {
+          id: serialNumber,
+          categoryID,
+          name,
+          intro,
+          details,
+          price: Number(price),
+          images: newImages,
+          dateCreated: oldProduct.dateCreated,
+          sellCount: oldProduct.sellCount
+        }
+
+        DB.updateGroupProduct({groupID, product: newProduct}).then(() => {
+          return res.status(200).json({ success: true, product: newProduct });
+        }).catch((err) => {
+          return res.status(500).json({ success: false, message: err.message });
+        });
+
+      }).catch((err) => {
+        return res.status(500).json({ success: false, message: err.message });
+      });
+
+    }
+
+
+    DB.getProduct({id: serialNumber}).then((product) => {
+      if(!product || Array.isArray(product) || !isProduct(product)) {
+        return res.status(404).json({ success: false, message: 'Product not found' });
+      }
+
+      
+      const oldImages = product.images;
+
+      const imagesToDelete = oldImages.filter((oldImage) => {
+        return !newImages.find((newImage) => newImage.src === oldImage.src);
+      });
+
+      deleteImages(imagesToDelete.map((image) => image.src));
+
+      const newProduct: DBProduct = {
+        id: serialNumber,
+        categoryID,
+        name,
+        intro,
+        details,
+        price: Number(price),
+        images: newImages,
+        dateCreated: product.dateCreated,
+        sellCount: product.sellCount
+      }
+      
+      DB.updateProduct({product: newProduct}).then(() => {
+        return res.status(200).json({ success: true, product: newProduct });
+      }).catch((err) => {
+        return res.status(500).json({ success: false, message: err.message });
+      });
+
+
+    });
+
+
+
+
+    
+
+  });
+
+
+}
+
+    
 
 
 const generateID = () => {

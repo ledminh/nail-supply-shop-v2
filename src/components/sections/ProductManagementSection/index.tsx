@@ -49,7 +49,7 @@ export default function ProductManagementSection({ }: Props) {
 
     const { onDeleteProduct, onDeleteGroup } = useDelete({ products, showWarning, setReloadProducts });
     const { createProduct, createGroup } = useCreate({ currentCategory, products, setProducts, openCreateProduct, openCreateGroup });
-    const { onEditProduct, onEditGroup } = useEdit({ products, setProducts, openEditProduct, openEditGroup });
+    const { onEditProduct, onEditGroup } = useEdit({ currentCategory, products, setProducts, openEditProduct, openEditGroup });
 
 
 
