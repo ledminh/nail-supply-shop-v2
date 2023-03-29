@@ -24,6 +24,8 @@ const processImages = async (images: (File | ProductImage)[]):Promise<ProductIma
                 alt: filename,
             })
         );
+
+
         return [...productImages, ...newProductImages];
     }
 

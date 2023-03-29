@@ -104,6 +104,10 @@ export default function handler(req: NextApiRequest, res: NextApiCategoryRespons
         updateProduct(req, res);
       }
       
+      if(type === 'update-group') {
+        updateGroup(req, res);
+      }
+      
       break;
   
     default:
@@ -385,6 +389,82 @@ const updateProduct = (req: NextApiRequest, res: NextApiCategoryResponse) => {
 
   });
 
+
+}
+
+const updateGroup = (req: NextApiRequest, res: NextApiCategoryResponse) => {
+  const form = new formidable.IncomingForm();
+
+  form.parse(req, (err, fields, files) => {
+    if(err) {
+      return res.status(500).json({ success: false, message: err.message });
+    }  
+
+    const { id, name, categoryID, products } = fields;
+
+
+    if(
+      typeof id !== 'string'
+      || typeof name !== 'string'
+      || typeof categoryID !== 'string'  
+      || typeof products !== 'string'
+      ) {
+        return res.status(400).json({ success: false, message: 'Missing fields' });
+    }
+
+
+    const newProducts:DBProduct[] = JSON.parse(products);
+
+    DB.getProduct({id}).then((group) => {
+      if(!group || Array.isArray(group) || isProduct(group)) {
+        return res.status(404).json({ success: false, message: 'Product not found' });
+      }
+
+      const oldProducts = group.products;
+
+      const imagesToDelete = oldProducts.reduce((acc, product) => {
+        const newProduct = newProducts.find((newProduct) => newProduct.id === product.id);
+
+        if(!newProduct) {
+          return [...acc, ...product.images];
+        }
+
+        const oldImages = product.images;
+
+        const imagesToDelete = oldImages.filter((oldImage) => {
+          return !newProduct.images.find((newImage) => newImage.src === oldImage.src);
+        });
+
+        return [...acc, ...imagesToDelete];
+
+      }, [] as ProductImage[]);
+
+      deleteImages(imagesToDelete.map((image) => image.src));
+
+
+      const newGroup: DBProductGroup = {
+        id,
+        name,
+        categoryID,
+        products: newProducts,
+        dateCreated: group.dateCreated,
+      }
+
+      DB.updateGroup({group: newGroup}).then(() => {
+        return res.status(200).json({ success: true, product: newGroup });
+      }
+      ).catch((err) => {
+        return res.status(500).json({ success: false, message: err.message });
+      });
+
+    }).catch((err) => {
+
+      return res.status(500).json({ success: false, message: err.message });
+
+    });
+
+
+  });
 
 }
 

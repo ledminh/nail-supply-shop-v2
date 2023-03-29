@@ -17,10 +17,11 @@ type Props = {
     setProducts: Dispatch<SetStateAction<(Product | ProductGroup)[]>>
     openEditProduct: (props:OpenEditProductProps) => void;
     openEditGroup: (props: OpenEditGroupProps) => void;
+    setReloadProducts: Dispatch<SetStateAction<boolean>>;
 }
 
 
-function useEdit({products, currentCategory, setProducts, openEditProduct, openEditGroup}:Props) {
+function useEdit({products, currentCategory, setProducts, openEditProduct, openEditGroup, setReloadProducts}:Props) {
 
 
 
@@ -101,7 +102,7 @@ function useEdit({products, currentCategory, setProducts, openEditProduct, openE
                         }
                         
 
-                        setProducts(products.map((prod) => prod.id === data.product.id ? data.product : prod));
+                        setReloadProducts(true);
                     });               
             }
 
@@ -111,7 +112,7 @@ function useEdit({products, currentCategory, setProducts, openEditProduct, openE
 
     const onEditGroup = (groupID: string) => {
         const group = products.find((product) => product.id === groupID);
-
+        
         if (!group) {
             throw new Error("Group not found");
         }
@@ -120,32 +121,37 @@ function useEdit({products, currentCategory, setProducts, openEditProduct, openE
             throw new Error("Group is a product");
         }
 
-
+        
         openEditGroup({
             productGroup: group,
             onSave: ({name, products}) => {
 
                 async function editGroup() {
                     const uploadPromises = products.map((product) => processImages(product.images));
-
-                    const processedImagesArr = await Promise.all(uploadPromises);
                     
+                    const processedImagesArr = await Promise.all(uploadPromises);
+                                        
                     const processedProducts = processedImagesArr.map((image, index) => ({
                         ...products[index],
                         images: image
                     }));
 
                     const categoryID = currentCategory!.id;
+                    const id = groupID;
 
-                    const formData = createFormData({name, categoryID, products: processedProducts});
-                
+                    const formData = createFormData({id, name, categoryID, products: JSON.stringify(processedProducts)});
+                    
+
                     const {data} = await axios.post('/api/products?type=update-group', formData);
+                    
 
+                    
                     if(!data.success) {
                         throw new Error(data.message);
                     }
 
-                    setProducts(products.map((prod) => prod.id === data.product.id ? data.product : prod));
+
+                    setReloadProducts(true);
                 }
 
 
