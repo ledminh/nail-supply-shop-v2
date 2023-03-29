@@ -27,3 +27,9 @@ export type AdminSection = {
     component: React.FC;
 }
 
+export type AboutUsData = {
+  aboutUsFooter: string;
+  missionStatement: string;
+  historyHTML: string;
+  contactInfo: ContactInfo;
+};

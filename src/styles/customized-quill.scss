@@ -1,0 +1,11 @@
+@use 'base' as *;
+@import '~react-quill/dist/quill.snow.css';
+
+.quill {
+    border: 1px solid black;
+    border-radius: $border-radius;
+}
+
+.ql-container.ql-snow {
+    height: 280px;
+}
