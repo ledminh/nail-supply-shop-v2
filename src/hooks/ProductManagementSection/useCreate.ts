@@ -26,10 +26,6 @@ export default function useCreate({
 }:Props) {
 
 
-
-
-
-
     const post = (url: string, formData:FormData) => {
         axios.post(url, formData, {
             headers: {
@@ -73,16 +69,26 @@ export default function useCreate({
     
     const createGroup = () => {
         openCreateGroup({
+            categoryID: currentCategory!.id,
+
             onSave({name, products}) {
                 async function createGroup() {
-                            
+                    
+                    const uploadPromises = products.map((product) => processImages(product.images));
 
-                    const res = await axios.post('/api/groups?type=add-group', {
-                        name,
-                        products
-                    });
+                    const processedImagesArr = await Promise.all(uploadPromises);
+                    
+                    const processedProducts = processedImagesArr.map((image, index) => ({
+                        ...products[index],
+                        images: image
+                    }));
 
-                    setProducts([res.data.group, ...products]);
+                    const categoryID = currentCategory!.id;
+
+                    const formData = createFormData({name, categoryID, products: JSON.stringify(processedProducts)});
+
+                    post('/api/products?type=add-group', formData);              
+
                 }
 
                 createGroup();

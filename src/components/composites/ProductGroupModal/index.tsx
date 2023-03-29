@@ -27,6 +27,7 @@ type onSaveProps = {
 export type Props = {
     onSave: (props:onSaveProps) => void;
     onCancel: () => void;
+    categoryID: string;
 } & ({
     type: "create";
     initName?: undefined;
@@ -39,19 +40,13 @@ export type Props = {
 })
     
 
-export default function ProductGroupModal({ type, onSave, onCancel, initName, initProducts}: Props) {
+export default function ProductGroupModal({ type, onSave, onCancel, initName, initProducts, categoryID}: Props) {
 
     const [name, setName] = useState(initName ?? "");
     const [products, setProducts] = useState<PreparedProduct[]>(initProducts ?? []);
     const [show, setShow] = useState(true);
     
-    const [productModalType, setProductModalType] = useState<'create'|'edit'>('create');
-    const [isProductModalOpen, setIsProductModalOpen] = useState(false);
-    const [beingEditedProduct, setBeingEditedProduct] = useState<PreparedProduct | null>(null);
-    
 
-    const [toBeDeletedProductID, setToBeDeletedProductID] = useState(-1);
-    const [isWarningModalOpen, setIsWarningModalOpen] = useState(false);
 
 
     const {showWarning, WarningModalComponent} = useWarningModal();
@@ -75,7 +70,7 @@ export default function ProductGroupModal({ type, onSave, onCancel, initName, in
             onSave: ({serialNumber, name, intro, details, price, images}) => {
                 const newProduct:PreparedProduct = {
                     id: serialNumber,
-                    categoryID: products[0].categoryID,
+                    categoryID,
                     name,
                     intro,
                     details,
@@ -315,6 +310,7 @@ export type OpenEditGroupProps = {
 export type OpenCreateGroupProps = {
     onSave?:(props:onSaveProps) => void;
     onCancel?:() => void;
+    categoryID:string;
 };
 
 export function useGroupModal () {
@@ -324,6 +320,7 @@ export function useGroupModal () {
 
     const [onSave, setOnSave] = useState<(props:onSaveProps) => void>(() => () => {});
     const [onCancel, setOnCancel] = useState<() => void>(() => () => {});
+    const [categoryID, setCategoryID] = useState<string|null>(null);
 
     const openEditGroup = (
         {
@@ -332,20 +329,23 @@ export function useGroupModal () {
             onCancel
         }:OpenEditGroupProps) => {
         setProductGroup(productGroup);
-        setOnSave(onSave || (() => () => {}));
-        setOnCancel(onCancel || (() => () => {}));
+        setCategoryID(productGroup.categoryID);
+        setOnSave(() => onSave);
+        onCancel && setOnCancel(() => onCancel);
         setType('edit');
         setShow(true);
     };
 
     const openCreateGroup = ({
         onSave,
-        onCancel
+        onCancel,
+        categoryID
     }:OpenCreateGroupProps) => {
         setProductGroup(null);
+        setCategoryID(categoryID);
         setType('create');
-        setOnSave(onSave || (() => () => {}));
-        setOnCancel(onCancel || (() => () => {}));
+        setOnSave(() => onSave);
+        onCancel && setOnCancel(() => onCancel);
         setShow(true);
     };
 
@@ -361,11 +361,13 @@ export function useGroupModal () {
                             type="edit"
                             onSave={() => {}}
                             onCancel={() => setShow(false)}
+                            categoryID={categoryID!}
                             initName={productGroup!.name}
                             initProducts={productGroup!.products}
                             />:
                         <ProductGroupModal
                             type="create"
+                            categoryID={categoryID!}
                             onSave={(props) => {
                                 onSave(props);
                                 setShow(false);

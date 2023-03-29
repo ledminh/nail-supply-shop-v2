@@ -1,5 +1,5 @@
 import productsJSON from '../jsons/products.json';
-import type { DBProduct, ProductGroup } from '@/types/product';
+import type { DBProduct, DBProductGroup, ProductGroup } from '@/types/product';
 
 
 
@@ -13,7 +13,7 @@ type findProps = {
 
 export function find({catID, id}:findProps) {
     
-    let products: (DBProduct|ProductGroup)[] = productsJSON;
+    let products: (DBProduct|DBProductGroup)[] = productsJSON;
 
     if(catID) {
         products = products.filter((product) => product.categoryID === catID);
@@ -69,4 +69,18 @@ type addProductProps = {
 export function addProduct({product}:addProductProps) {
     productsJSON.push(product);
     return Promise.resolve();
+}
+
+
+/******************************
+ *  ADD GROUP
+ ******************************/
+
+type addGroupProps = {
+    group: DBProductGroup;
+}
+
+export function addGroup({group}:addGroupProps) {
+    productsJSON.push(group);
+    return Promise.resolve(group);
 }

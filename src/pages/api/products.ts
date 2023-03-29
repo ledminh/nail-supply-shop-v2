@@ -3,7 +3,7 @@
 import {Product, ProductGroup} from '@/types/product';
 import type { NextApiRequest, NextApiResponse } from 'next';
 
-import { ProductImage, DBProduct } from '@/types/product';
+import { ProductImage, DBProduct, DBProductGroup } from '@/types/product';
 
 import fs from 'fs';
 
@@ -94,7 +94,11 @@ export default function handler(req: NextApiRequest, res: NextApiCategoryRespons
 
       if(type === 'add-product') {
         addProduct(req, res);
-      }        
+      }
+      
+      if(type === 'add-group') {
+        addGroup(req, res);
+      }
       
       break;
   
@@ -228,4 +232,48 @@ const addProduct = (req: NextApiRequest, res: NextApiCategoryResponse) => {
     });
 
   });
+}
+
+
+const addGroup = (req: NextApiRequest, res: NextApiCategoryResponse) => {
+  const form = new formidable.IncomingForm();
+
+  form.parse(req, (err, fields, files) => {
+    if(err) {
+      return res.status(500).json({ success: false, message: err.message });
+    }
+
+    
+
+
+    const { name, categoryID, products} = fields;
+
+
+    if(typeof name !== 'string'
+      || typeof products !== 'string'
+      || typeof categoryID !== 'string') {
+        return res.status(400).json({ success: false, message: 'Missing fields' });
+    }
+
+    const group: DBProductGroup = {
+      id: 'prod-' + generateID(),
+      name,
+      categoryID,
+      products: JSON.parse(products),
+      dateCreated: new Date().toISOString(),
+      
+    }
+
+    DB.addGroup({group}).then((group) => {
+      return res.status(200).json({ success: true, product: group });
+    }).catch((err) => {
+      return res.status(500).json({ success: false, message: err.message });
+    });
+
+  });
+}
+
+
+const generateID = () => {
+  return Math.random().toString(36).substring(2, 13);
 }

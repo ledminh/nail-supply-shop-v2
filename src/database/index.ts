@@ -1,7 +1,7 @@
 import  * as CategoryModel  from './models/category';
 import * as ProductModel  from './models/product';
 
-import type { DBProduct } from '@/types/product';
+import type { DBProduct, DBProductGroup } from '@/types/product';
 
 
 /**********************
@@ -72,4 +72,17 @@ type addProductProps = {
 
 export function addProduct({product}:addProductProps) {
     return ProductModel.addProduct({product});
+}
+
+
+/*****************************
+ * addGroup
+ */
+
+type addGroupProps = {
+    group: DBProductGroup;
+}
+
+export function addGroup({group}:addGroupProps) {
+    return ProductModel.addGroup({group});
 }

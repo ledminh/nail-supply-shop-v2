@@ -3,6 +3,7 @@
         "id": "grp01_nailpolish_combo",
         "name": "Nail Polish Combo",
         "categoryID": "cat_nail01_polishes",
+        "dateCreated": "2023-01-01",
         "products": [
             {
                 "id": "grp01_prd01_nailpolish_red",

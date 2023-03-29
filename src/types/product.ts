@@ -30,7 +30,12 @@ export interface ProductGroup {
     name: string;
     categoryID: string;
     products: Product[];
-    // dateCreated: string,
+    
+}
+
+export interface DBProductGroup extends ProductGroup {
+    products: DBProduct[],
+    dateCreated: string,
 }
 
 export interface OrderedProduct {
