@@ -12,16 +12,17 @@
 }
 
 .quantityPicker {
-    display: grid;
-
-    grid-template-rows: repeat(3, 34px);
-    grid-template-columns: 34px;
-
-    justify-self: stretch;
-    align-self: stretch;
+    display: flex;
+    flex-direction: column-reverse;
 
 
-    width: 35px;
+    justify-self: center;
+    align-self: center;
+
+
+
+    width: 30px;
+    height: 90px;
     border-radius: $border-radius;
     overflow: hidden;
 }
@@ -40,6 +41,8 @@
     justify-content: center;
     align-items: center;
     
+    width: 30px;
+    height: 30px;
 }
 
 .quantityButton:hover {
