@@ -360,8 +360,14 @@ export function useGroupModal () {
                         type === 'edit'?
                         <ProductGroupModal
                             type="edit"
-                            onSave={() => {}}
-                            onCancel={() => setShow(false)}
+                            onSave={(props) => {
+                                onSave(props);
+                                setShow(false);
+                            }}
+                            onCancel={() => {
+                                onCancel();
+                                setShow(false);
+                            }}
                             categoryID={categoryID!}
                             initName={productGroup!.name}
                             initProducts={productGroup!.products}

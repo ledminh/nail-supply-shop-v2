@@ -125,35 +125,31 @@ function useEdit({products, currentCategory, setProducts, openEditProduct, openE
             productGroup: group,
             onSave: ({name, products}) => {
 
-                const formData = createFormData({name});
+                async function editGroup() {
+                    const uploadPromises = products.map((product) => processImages(product.images));
 
-                const imagePromises = products.map((product) => ({
-                    productID: product.id,
-                    promise: processImages(product.images)
-                }));
+                    const processedImagesArr = await Promise.all(uploadPromises);
+                    
+                    const processedProducts = processedImagesArr.map((image, index) => ({
+                        ...products[index],
+                        images: image
+                    }));
 
+                    const categoryID = currentCategory!.id;
 
-                Promise.all(imagePromises.map((imagePromise) => imagePromise.promise))
-                    .then((images) => {
-                        formData.append('products', JSON.stringify(imagePromises.map((imagePromise, index) => {
-                            
-                            const product = products.find((prod) => prod.id === imagePromise.productID);
-
-
-                            return {
-                                ...product,
-                                id: imagePromise.productID,
-                                images: images[index]
-                            }
-                        })));
+                    const formData = createFormData({name, categoryID, products: processedProducts});
                 
-                        axios.post('/api/products?type=update-product-group', formData)
-                            .then((res) => res.data)
-                            .then((data) => {
-                                setProducts(products.map((prod) => prod.id === data.id ? data : prod));
+                    const {data} = await axios.post('/api/products?type=update-group', formData);
 
-                            });
-                    })
+                    if(!data.success) {
+                        throw new Error(data.message);
+                    }
+
+                    setProducts(products.map((prod) => prod.id === data.product.id ? data.product : prod));
+                }
+
+
+                editGroup();
             }
         });
     }
