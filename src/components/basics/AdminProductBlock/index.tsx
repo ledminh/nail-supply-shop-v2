@@ -11,7 +11,7 @@ import { Product } from "@/types/product";
 export interface Props extends Product {
     
     onDelete: (productID: string) => void,
-    onClick: (productID: string) => void,
+    onClick: ({productID}: {productID:string}) => void,
     className?: string,
 };
 
@@ -27,7 +27,7 @@ const AdminProductBlockCPN:AdminCategoryBlock = ({id, images, name, price, intro
             onClick = {(e) => {
                 e.preventDefault();
                 e.stopPropagation();
-                onClick(id);
+                onClick({productID: id});
             }}
         >
             <ImageCPN

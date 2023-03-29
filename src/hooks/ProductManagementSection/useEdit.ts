@@ -22,30 +22,81 @@ function useEdit({products, setProducts, openEditProduct, openEditGroup}:Props) 
 
 
 
-    const onEditProduct = (productID: string) => {
-        const product = products.find((product) => product.id === productID);
+    const onEditProduct = ({productID, groupID}: {productID:string, groupID?:string}) => {
+        let product: Product;
 
-        if (!product) {
-            throw new Error("Product not found");
+        if(groupID) {
+            const group = products.find((product) => product.id === groupID);
+
+            if (!group) {
+                throw new Error("Group not found");
+            }
+
+            if(isProduct(group)) {
+                throw new Error("Group is a product");
+            }
+
+            const _product = group.products.find((product) => product.id === productID);
+
+            if(!_product) {
+                throw new Error("Product not found");
+            }
+
+            product = _product;
+        }
+        else {
+            const _product = products.find((product) => product.id === productID);
+
+            if(!_product) {
+                throw new Error("Product not found");
+            }
+
+            if(!isProduct(_product)) {
+                throw new Error("Product is a group");
+            }
+
+            product = _product;
         }
 
-        if(!isProduct(product)) {
-            throw new Error("Product is a group");
-        }
+        
 
         openEditProduct({
             product,
             onSave: ({serialNumber, name, intro, details, price, images}) => {
                 
                 const formData = createFormData({serialNumber, name, intro, details, price: price.toString()});
+
+                if(groupID) {
+                    formData.append('groupID', groupID);
+                }
                 
                 processImages(images)
                     .then((images) => {
                         formData.append('images', JSON.stringify(images));
-                        return axios.post('/api/products?type=update-product-single', formData);
+                        return axios.post('/api/products?type=update-product', formData);
                     })
                     .then((res) => res.data)
                     .then((data) => {
+
+                        if(groupID) {
+                            const group = products.find((product) => product.id === groupID);
+
+                            if (!group) {
+                                throw new Error("Group not found");
+                            }
+
+                            if(isProduct(group)) {
+                                throw new Error("Group is a product");
+                            }
+
+                            group.products = group.products.map((prod) => prod.id === data.id ? data : prod);
+
+                            setProducts(products.map((prod) => prod.id === groupID ? group : prod));
+
+                            return;
+                        }
+                        
+
                         setProducts(products.map((prod) => prod.id === data.id ? data : prod));
                     });               
             }

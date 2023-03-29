@@ -185,7 +185,7 @@ type getItemWrapperProps = {
     onDeleteProduct: (productID: string) => void;
     onDeleteGroup: (groupID: string) => void;
     onEditGroup: (groupID: string) => void;
-    onEditProduct: (id: string) => void;
+    onEditProduct: ({productID, groupID}: {productID:string, groupID?:string}) => void;
 }
 
 function getItemWrapper({ onDeleteProduct, onDeleteGroup, onEditGroup, onEditProduct }: getItemWrapperProps) {
@@ -196,7 +196,7 @@ function getItemWrapper({ onDeleteProduct, onDeleteGroup, onEditGroup, onEditPro
                 {
                     isProduct(product) ? (
                         <AdminProductBlockCPN {...product} onDelete={onDeleteProduct} onClick={onEditProduct} />)
-                        : (<AdminProductGroupBlockCPN {...product} onDelete={onDeleteGroup} onClick={onEditGroup} onEditProduct={onEditProduct} />)
+                        : (<AdminProductGroupBlockCPN {...product} onDelete={onDeleteGroup} onClick={onEditGroup} onEditProduct={(id) => onEditProduct({productID:id, groupID: product.id})} />)
                 }
             </>
         )

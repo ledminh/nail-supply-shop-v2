@@ -42,7 +42,7 @@ export type Props = {
 
 export default function ProductGroupModal({ type, onSave, onCancel, initName, initProducts, categoryID}: Props) {
 
-    const [name, setName] = useState(initName ?? "");
+    const [groupName, setGroupName] = useState(initName ?? "");
     const [products, setProducts] = useState<PreparedProduct[]>(initProducts ?? []);
     const [show, setShow] = useState(true);
     
@@ -53,11 +53,11 @@ export default function ProductGroupModal({ type, onSave, onCancel, initName, in
     const {openEditProduct, openCreateProduct, ProductModalComponent } = useProductModal();
 
     const _onSave = () => {
-        if(!name) return;
+        if(!groupName) return;
 
         
         onSave({
-            name, products
+            name:groupName, products
         });
     };
 
@@ -66,10 +66,11 @@ export default function ProductGroupModal({ type, onSave, onCancel, initName, in
         setShow(false);
 
         openCreateProduct({
-            groupName: name,
+            groupName: groupName,
             onSave: ({serialNumber, name, intro, details, price, images}) => {
                 const newProduct:PreparedProduct = {
                     id: serialNumber,
+                    groupName: groupName,
                     categoryID,
                     name,
                     intro,
@@ -180,7 +181,7 @@ export default function ProductGroupModal({ type, onSave, onCancel, initName, in
             <fieldset className={styles.footer}>
                 <ButtonCPN type="normal" 
                     label={type === 'edit'? 'Save' : 'Add'} 
-                    disabled = {!name} 
+                    disabled = {!groupName} 
                     onClick={_onSave}/>
                 <ButtonCPN type="attention" 
                     label="Cancel" 
@@ -204,7 +205,7 @@ export default function ProductGroupModal({ type, onSave, onCancel, initName, in
                             <legend>Info</legend>
                             <div className={styles.formGroup}>
                                 <label htmlFor="name">Name</label>
-                                <input type="text" id="name" value={name} onChange={(e) => setName(e.target.value)}/>
+                                <input type="text" id="name" value={groupName} onChange={(e) => setGroupName(e.target.value)}/>
                             </div>
                         </fieldset>
                         <div className={styles.productsHeader}>

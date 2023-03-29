@@ -83,6 +83,8 @@ export default function useCreate({
                         images: image
                     }));
 
+                    console.log(processedProducts);
+
                     const categoryID = currentCategory!.id;
 
                     const formData = createFormData({name, categoryID, products: JSON.stringify(processedProducts)});
