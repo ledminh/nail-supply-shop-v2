@@ -16,15 +16,15 @@ import { useProductModal } from "@/components/composites/ProductModal";
 
 import useDelete from "@/hooks/ProductManagementSection/useDelete";
 import { useGroupModal } from "@/components/composites/ProductGroupModal";
-import useEdit from "@/hooks/ProductManagementSection/useEdit";
+import useEdit from "@hooks/ProductManagementSection/useEdit";
 
-import isProduct from "@/utils/isProduct";
+import isProduct from "@utils/isProduct";
 import Select from "@/components/generics/Select";
 import ButtonCPN from "@/components/basics/ButtonCPN";
 import { Category } from "@/types/category";
 
 
-import useCreate from "@/hooks/ProductManagementSection/useCreate";
+import useCreate from "@hooks/ProductManagementSection/useCreate";
 
 import { OptionItem, convertToOptionItem } from "@/components/generics/Select";
 import { ProductApiResponse } from "@/pages/api/products";

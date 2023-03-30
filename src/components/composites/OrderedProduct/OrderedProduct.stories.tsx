@@ -28,7 +28,7 @@ const Wrapper = () => {
   
   return (
     <div style={{ width: "100%", maxWidth: "800px", display: "flex", flexFlow: "column", gap:"20px"}}>
-      <OrderedProduct {...product} onChange={onChange}/>
+      <OrderedProduct {...product} onChange={onChange} onRemove={()=>{}}/>
       <div>
         <p>Quantity: {product.quantity}</p>
       </div>

@@ -1,0 +1,107 @@
+@use '../base' as *;
+
+.wrapper {
+    padding: 0 20px;
+    max-width: 1000px;
+}
+
+.ulClass {
+    display: flex;
+    flex-direction: row;
+    flex-flow: wrap;
+    align-items: center;
+    justify-content: center;
+
+    gap: 20px;
+}
+
+.liClass {
+    width: 100%;
+
+
+}
+
+.footer {
+    display: flex;
+    flex-direction: row;
+    flex-flow: wrap;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 20px;
+
+    padding: 10px;
+}
+
+.checkoutButton {
+    border: none;
+    background-color: $button-color;
+    color: white;
+    border-radius: $border-radius;
+    font-size: 1rem;
+    font-weight: 600;
+    padding: 10px 20px;
+
+    cursor: pointer;
+    
+    &:hover {
+        background-color: darken($button-color, 10%);
+    }
+
+    &:disabled {
+        background-color: rgba(gray, 0.5);
+        cursor: not-allowed;
+    }
+}
+
+.total {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    font-weight: 600;
+    font-size: 1.2rem;
+}
+
+.continueShopping {
+    flex-basis: 100%;
+
+    text-align: center;
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: $button-color;
+    cursor: pointer;
+
+    &:hover {
+        text-decoration: underline;
+    }
+}
+
+
+@media (min-width: $first-breakpoint) {
+    
+    .checkoutButton {
+        font-size: 1.2rem;
+    }
+
+    .total {
+        font-size: 1.4rem;
+    }
+
+    .continueShopping {
+        font-size: 1.4rem;
+    }
+
+}
+
+@media (min-width: $second-breakpoint) {
+    .ulClass {
+        justify-content: space-between;
+    }
+
+    .liClass {
+        width: 45%;
+    }
+    
+}

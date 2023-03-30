@@ -12,13 +12,15 @@ export interface Props  {
     buttonClassName?: string;
     valueClassName?: string;
     className?: string;
+    min?: number;
+    max?: number;
     
 };
 
 type QuantityPicker = FC<Props>;
 
 
-const QuantityPickerCPN:QuantityPicker = ({ value = 0, onChange, buttonClassName, valueClassName, className}) => {
+const QuantityPickerCPN:QuantityPicker = ({ value = 0, onChange, buttonClassName, valueClassName, className, min, max}) => {
 
     const [_value, _setValue] = useState(value);
 
@@ -27,15 +29,20 @@ const QuantityPickerCPN:QuantityPicker = ({ value = 0, onChange, buttonClassName
     }, [value]);
 
     const increment = () => {
-        _setValue(_value + 1);
+        const _max = max || Number.MAX_SAFE_INTEGER;
         
+        if (_value < _max) {
+            _setValue(_value + 1);
+        }
+
         if (onChange) {
             onChange(_value + 1);
         }
     };
     
     const decrement = () => {
-        if (_value > 0) {
+        const _min = min || 0;
+        if (_value > _min) {
             _setValue(_value - 1);
             
             if (onChange) {
