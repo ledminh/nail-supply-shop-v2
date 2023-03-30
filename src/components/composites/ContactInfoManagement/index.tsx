@@ -64,9 +64,10 @@ export default function ContactInfoManagement({initialEmail, initialPhone, initi
                 />
             </div>
             <div className={styles.field + ' ' + styles.buttons}>
-                <ButtonCPN type="normal" label= "SAVE"
+                <ButtonCPN type="normal" label= {email === initialEmail && phone === initialPhone && additionalInfos === initialAdditionalInfos ? "SAVED" : "SAVE"}
                     onClick={() => {onSave && onSave(email, phone, additionalInfos)}}
                     className={styles.button}
+                    disabled={email === initialEmail && phone === initialPhone && additionalInfos === initialAdditionalInfos}
                 />
                 <ButtonCPN type="attention" label= "RESET"
                     onClick={() => {

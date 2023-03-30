@@ -1,5 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
-import { AboutUsData } from '@/types/others';
+import { ContactInfo } from '@/types/others';
 
 import * as DB from '@/database';
 
@@ -13,7 +13,7 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
             getAboutUsData(res);
             break;
         case 'POST':
-            const {query: {type}, body:{content}} = req;
+            const {query: {type}, body:{content, email, phone, additionalInfos}} = req;
             
             if(type === 'footer') {
                 setAboutUsFooter(res, content);    
@@ -22,10 +22,11 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
             } else if (type === 'history') {
                 setAboutUsHistoryHTML(res, content);
             } else if (type === 'contact-info') {
-                const {email, phone, additionalInfos} = content as AboutUsData['contactInfo'];
+                
                 setAboutUsContactInfo(res, email, phone, additionalInfos);
-            } else {
-                res.status(400).json({message: 'Invalid endpoint'});
+            }
+            else {
+                res.status(400).json({message: 'Invalid request type'});
             }
             break;
         default:

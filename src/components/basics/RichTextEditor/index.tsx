@@ -48,9 +48,10 @@ const RichTextEditorCPN:RichTextEditor = ({title, initContent, onSave}) => {
                     onChange = {handleChange}
                 />
             <div className={styles.buttons}>
-                <ButtonCPN label="Save" 
+                <ButtonCPN label={content === initContent ? "Saved" : "Save"}
                         type="normal"
                         onClick={() => onSave(content)}
+                        disabled={content === initContent}
                     />
                 <ButtonCPN label="Cancel" 
                         type="attention"

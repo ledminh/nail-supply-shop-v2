@@ -36,9 +36,10 @@ const TextAreaBlockCPN:TextAreaBlock = ({title, initContent, onSave}) => {
                     onChange = {(e) => setContent(e.target.value)}
                     />
             <div className={styles.buttons}>
-                <ButtonCPN label="Save" 
+                <ButtonCPN label={content === initContent ? "Saved" : "Save"} 
                         type="normal"
                         onClick={() => onSave(content)}
+                        disabled={content === initContent}
                     />
                 <ButtonCPN label="Cancel" 
                         type="attention"

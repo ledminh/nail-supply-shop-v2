@@ -35,17 +35,21 @@ export default function AboutUsManagementSection({ }: Props) {
 
     const aboutUsFooterOnSave = (content: string) => {
         axios.post("/api/about-us/?type=footer", {content})
-            .then((res) => {
-                console.log(res);
-                // setAboutUsFooterContent(content);
+            .then((res) => {  
+                setAboutUsFooterContent(content);
+            })
+            .catch((err) => {
+                throw err;
             });
     }
 
     const missionStatementOnSave = (content: string) => {
         axios.post("/api/about-us/?type=mission-statement", {content})
             .then((res) => {
-                console.log(res);
-                // setMissionStatementContent(content);
+                setMissionStatementContent(content);
+            })
+            .catch((err) => {
+                throw err;
             });
 
     }
@@ -53,8 +57,10 @@ export default function AboutUsManagementSection({ }: Props) {
     const historyOnSave = (content: string) => {
         axios.post("/api/about-us/?type=history", {content})
             .then((res) => {
-                console.log(res);
-                // setHistoryContentHTML(content);
+                setHistoryContentHTML(content);
+            })
+            .catch((err) => {
+                throw err;
             });
     }
 
@@ -62,7 +68,10 @@ export default function AboutUsManagementSection({ }: Props) {
 
         axios.post("/api/about-us/?type=contact-info", {email, phone, additionalInfos})
             .then((res) => {
-                setContactInfo({ email, phone, additionalInfos });
+                setContactInfo({email, phone, additionalInfos});
+            })
+            .catch((err) => {
+                throw err;
             });
     }
 
