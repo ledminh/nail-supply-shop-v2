@@ -91,27 +91,29 @@ export default function Cart({contactInfo, aboutTextFooter }:Props) {
       contactInfo = {contactInfo}
       aboutText = {aboutTextFooter}
     >
-      <section className={styles.section + " " + styles.header}>
-        <h2 className={styles.title}>SHOPPING CART</h2>
-        <h3 className={styles.numItems}>(9 items)</h3>
-      </section>
-      <section className={styles.section + " " + styles.cart}>
-        <List 
-          items = {cartItems} 
-          ItemCPN = {ItemWrapper}
-          liClass = {styles.liClass}
-          ulClass = {styles.ulClass}
-          />
-      </section>
-      <section className={styles.section + " " + styles.footer}>
-        <button className={styles.checkoutButton}
-          onClick={() => onCheckout()}
-        >
-          CHECK OUT
-        </button>
-        <p><span>TOTAL: </span><span>$10000</span></p>
-        <Link className={styles.continueShopping} href="/shop">CONTINUE SHOPPING</Link>
-      </section>
+      <div className={styles.wrapper}>
+        <section className={styles.section + " " + styles.header}>
+          <h2 className={styles.title}>SHOPPING CART</h2>
+          <h3 className={styles.numItems}>(9 items)</h3>
+        </section>
+        <section className={styles.section + " " + styles.cart}>
+          <List 
+            items = {cartItems} 
+            ItemCPN = {ItemWrapper}
+            liClass = {styles.liClass}
+            ulClass = {styles.ulClass}
+            />
+        </section>
+        <section className={styles.section + " " + styles.footer}>
+          <button className={styles.checkoutButton}
+            onClick={() => onCheckout()}
+          >
+            CHECK OUT
+          </button>
+          <p className={styles.total}><span>TOTAL: </span><span>$10000</span></p>
+          <Link className={styles.continueShopping} href="/shop">CONTINUE SHOPPING</Link>
+        </section>
+      </div>
     </PageLayout>
   )
 }
