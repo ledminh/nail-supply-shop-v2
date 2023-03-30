@@ -40,6 +40,7 @@ export default function OrderedProduct({ id, name, price, quantity, image, onCha
         <div className={styles.wrapper}>
             <QuantityPickerCPN
                 value = {quantity}
+                min = {1}
                 onChange = {(value) => {
                     onChange({id, quantity: value});
                 }}

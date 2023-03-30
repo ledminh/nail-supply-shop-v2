@@ -8,77 +8,80 @@ import OrderedProduct from '@/components/composites/OrderedProduct';
 import { OrderedProduct as OrderedProductType} from '@/types/product';
 import Link from 'next/link';
 
+import {useState} from 'react';
+import { useRouter } from 'next/router';
+
 export interface Props {
   contactInfo: ContactInfo,
   aboutTextFooter: string,
 };
 
+const initCartItems:OrderedProductType[] = [
+  {
+    id: "1",
+    name: "Nail Essential 1",
+    price: 100,
+    quantity: 1,
+    image: {
+      src: "/images/placeholder_1.png",
+      alt: "sample image",
+    }
+  },
+  {
+    id: "2",
+    name: "Nail Essential 2",
+    price: 200,
+    quantity: 2,
+    image: {
+      src: "/images/placeholder_2.png",
+      alt: "sample image",
+    }
+  },
+  {
+    id: "3",
+    name: "Nail Essential 3",
+    price: 300,
+    quantity: 3,
+    image: {
+      src: "/images/placeholder_3.png",
+      alt: "sample image",
+    }
+  }
+]
+
 export default function Cart({contactInfo, aboutTextFooter }:Props) {
 
-  
+  const [cartItems, setCartItems] = useState<OrderedProductType[]>(initCartItems); 
+  const [totalPrice, setTotalPrice] = useState<number>(getTotalPrice(initCartItems));
+  const [numItems, setNumItems] = useState<number>(getNumItems(initCartItems));
+
+  const router = useRouter();
 
   const onChange = ({id, quantity}: {id:string, quantity:number}) => {
-    console.log("onChange", id, quantity);
+    const newCartItems = cartItems.map(item => {
+      if (item.id === id) {
+        return {
+          ...item,
+          quantity
+        }
+      }
+      return item;
+    });
+
+    setCartItems(newCartItems);
+    setTotalPrice(getTotalPrice(newCartItems));
+    setNumItems(getNumItems(newCartItems));
   }
+
 
   const onRemove = (id:string) => {
-    console.log("onRemove", id);
+    const newCartItems = cartItems.filter(item => item.id !== id);
+    setCartItems(newCartItems);
+    setTotalPrice(getTotalPrice(newCartItems));
+    setNumItems(getNumItems(newCartItems));
   }
-
-  const onCheckout = () => {}
-
-  const cartItems:OrderedProductType[] = [
-    {
-      id: "1",
-      name: "Nail Essential 1",
-      price: 100,
-      quantity: 1,
-      image: {
-        src: "/images/placeholder_1.png",
-        alt: "sample image",
-      }
-    },
-    {
-      id: "2",
-      name: "Nail Essential 2",
-      price: 200,
-      quantity: 2,
-      image: {
-        src: "/images/placeholder_2.png",
-        alt: "sample image",
-      }
-    },
-    {
-      id: "3",
-      name: "Nail Essential 3",
-      price: 300,
-      quantity: 3,
-      image: {
-        src: "/images/placeholder_3.png",
-        alt: "sample image",
-      }
-    },
-    {
-      id: "4",
-      name: "Nail Essential 4",
-      price: 400,
-      quantity: 4,
-      image: {
-        src: "/images/placeholder_4.png",
-        alt: "sample image",
-      }
-    },
-    {
-      id: "5",
-      name: "Nail Essential 5",
-      price: 500,
-      quantity: 5,
-      image: {
-        src: "/images/placeholder_5.png",
-        alt: "sample image",
-      }
-    }
-  ]
+  
+  const onCheckout = () => router.push("/checkout");
 
 
   const ItemWrapper = getItemWrapper({
@@ -94,7 +97,7 @@ export default function Cart({contactInfo, aboutTextFooter }:Props) {
       <div className={styles.wrapper}>
         <section className={styles.section + " " + styles.header}>
           <h2 className={styles.title}>SHOPPING CART</h2>
-          <h3 className={styles.numItems}>(9 items)</h3>
+          <h3 className={styles.numItems}>({numItems} items)</h3>
         </section>
         <section className={styles.section + " " + styles.cart}>
           <List 
@@ -107,10 +110,11 @@ export default function Cart({contactInfo, aboutTextFooter }:Props) {
         <section className={styles.section + " " + styles.footer}>
           <button className={styles.checkoutButton}
             onClick={() => onCheckout()}
+            disabled={numItems === 0}
           >
             CHECK OUT
           </button>
-          <p className={styles.total}><span>TOTAL: </span><span>$10000</span></p>
+          <p className={styles.total}><span>TOTAL: </span><span>${totalPrice}</span></p>
           <Link className={styles.continueShopping} href="/shop">CONTINUE SHOPPING</Link>
         </section>
       </div>
@@ -163,4 +167,13 @@ function getItemWrapper({onChange, onRemove}:getItemWrapperProps) {
   }
 
   return ItemWrapper;
+}
+
+
+function getTotalPrice(cartItems: OrderedProductType[]) {
+  return cartItems.reduce((acc, cur) => acc + cur.price * cur.quantity, 0);
+}
+
+function getNumItems(cartItems: OrderedProductType[]) {
+  return cartItems.reduce((acc, cur) => acc + cur.quantity, 0);
 }

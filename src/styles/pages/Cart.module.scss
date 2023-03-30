@@ -18,11 +18,7 @@
 .liClass {
     width: 100%;
 
-    transition: .2s all;
 
-    &:hover {
-        transform: scale(1.02);
-    }
 }
 
 .footer {
@@ -50,6 +46,11 @@
     
     &:hover {
         background-color: darken($button-color, 10%);
+    }
+
+    &:disabled {
+        background-color: rgba(gray, 0.5);
+        cursor: not-allowed;
     }
 }
 
