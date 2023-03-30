@@ -24,9 +24,10 @@ const removeIconImage:LocalImage = {
 
 export interface Props extends OrderedProductType {
     onChange: ({id, quantity}: {id:string, quantity:number}) => void;
+    onRemove: (id:string) => void;
 }
 
-export default function OrderedProduct({ id, name, price, quantity, image, onChange }: Props) {
+export default function OrderedProduct({ id, name, price, quantity, image, onChange, onRemove }: Props) {
 
     const [totalPrice, setTotalPrice] = useState(price*quantity);
 
@@ -56,7 +57,9 @@ export default function OrderedProduct({ id, name, price, quantity, image, onCha
                 <p className={styles.price}>{price}</p>
             </div>
             <div className={styles.totalPrice}>{totalPrice}</div>
-            <button className={styles.removeButton}>
+            <button className={styles.removeButton}
+                onClick = {() => onRemove(id)}
+            >
                 <ImageCPN
                     image = {removeIconImage}
                     size = "small"
