@@ -57,7 +57,7 @@ export default function Checkout({contactInfo, aboutTextFooter }:Props) {
           <ShippingAddressForm 
             onChange={onShippingAddressChange}
           />
-          <StripeCheckoutButtonCPN orderedProducts={orderedProducts} email={"test@example.com"} disabled={isCheckoutDisabled}/>  
+          <StripeCheckoutButtonCPN orderedProducts={orderedProducts} email={shippingAddress?.email} disabled={isCheckoutDisabled}/>  
         </section>
       </div>
     </PageLayout>

@@ -37,14 +37,12 @@ export default async (req: NextApiRequest, res: NextApiCheckoutResponse) => {
             payment_method_types: ['card'],
 
             line_items: line_items,
-            customer_email: email,
+            customer_email: email? email : undefined,
             automatic_tax: {
                 enabled: true,
             },
 
-            tax_id_collection: {
-                enabled: true,
-            },
+            
             success_url: `${req.headers.origin}/confirmation?session_id={CHECKOUT_SESSION_ID}`,
             
             cancel_url: `${req.headers.origin}/checkout?session_id={CHECKOUT_SESSION_ID}`,

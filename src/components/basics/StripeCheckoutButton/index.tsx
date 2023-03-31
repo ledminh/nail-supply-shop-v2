@@ -10,7 +10,7 @@ import { OrderedProduct } from "@/types/product";
 
 export interface Props  {
     orderedProducts: OrderedProduct[],
-    email: string,
+    email?: string,
     disabled?: boolean,
 };
 
