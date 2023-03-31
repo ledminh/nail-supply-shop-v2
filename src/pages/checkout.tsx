@@ -34,7 +34,7 @@ export default function Checkout({contactInfo, aboutTextFooter }:Props) {
         <section className={styles.payment}>
           <h3 className={styles.paymentTitle}>Payment</h3>
           <ShippingAddressForm/>
-          <StripeCheckoutButtonCPN amount={100}/>  
+          <StripeCheckoutButtonCPN amount={10000}/>  
         </section>
       </div>
     </PageLayout>

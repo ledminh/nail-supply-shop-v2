@@ -37,3 +37,16 @@
     }
 
 }
+
+@media (min-width: $first-breakpoint) {
+    
+    .field {
+        label {
+            flex-basis: 30%;
+        }
+
+        input {
+            flex-basis: 65%;
+        }
+    }
+}

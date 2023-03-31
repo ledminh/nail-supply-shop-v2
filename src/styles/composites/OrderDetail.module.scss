@@ -41,3 +41,12 @@
     padding: 10px 0;
     border-bottom: 1px solid $separator-color;
 }
+
+@media (min-width: $first-breakpoint) {
+    
+    .header {
+        align-items: flex-start;
+    }
+
+    
+}

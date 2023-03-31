@@ -33,9 +33,40 @@
     flex-flow: column;
     align-items: center;
  
-    gap: 10px;
+    gap: 25px;
  
     background-color: rgba($color: #000000, $alpha: .15);
     padding: 10px;
     border-radius: $border-radius;
+}
+
+.paymentTitle {
+    border-bottom: 1px solid $separator-color;
+    width: 100%;
+    text-align: center;
+    padding-bottom: 10px;
+
+}
+
+@media (min-width: $first-breakpoint) {
+    .wrapper {
+        display: flex;
+        flex-wrap: wrap;
+
+        justify-content: space-between;
+    }
+
+    .header {
+        flex-basis: 100%;
+        align-items: flex-start;
+    }
+
+    .orderDetail, .payment {
+        flex-basis: 48%;
+    }
+
+    .paymentTitle {
+        text-align: left;
+    }
+
 }
