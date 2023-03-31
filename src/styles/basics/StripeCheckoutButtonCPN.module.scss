@@ -21,4 +21,9 @@
     &:hover {
         background-color: darken($button-color, 10%);
     }
+
+    &:disabled {
+        background-color: opacify($color: gray, $amount: .3);
+        cursor: not-allowed;
+    }
 }

@@ -9,6 +9,7 @@ import ShippingAddressForm from '@/components/composites/ShippingAddressForm';
 
 import Link from 'next/link';
 
+import { useState, useEffect } from 'react';
 
 export interface Props {
   contactInfo: ContactInfo,
@@ -17,11 +18,26 @@ export interface Props {
 
 export default function Checkout({contactInfo, aboutTextFooter }:Props) {
 
+  const [shippingAddress, setShippingAddress] = useState<ShippingAddress | null>(null); 
+  const [isCheckoutDisabled, setIsCheckoutDisabled] = useState<boolean>(true);
+  
+
+  useEffect(() => {
+    if (isValidShippingAddress(shippingAddress) && orderedProducts.length > 0) {
+      setIsCheckoutDisabled(false);
+    }
+    else {
+      setIsCheckoutDisabled(true);
+    }
+  }, [shippingAddress])
+  
+  
   const onShippingAddressChange = (shippingAddress:ShippingAddress) => {
-
-    
-
+    setShippingAddress(shippingAddress);
   }
+
+
+
 
   return (
     <PageLayout
@@ -41,7 +57,7 @@ export default function Checkout({contactInfo, aboutTextFooter }:Props) {
           <ShippingAddressForm 
             onChange={onShippingAddressChange}
           />
-          <StripeCheckoutButtonCPN orderedProducts={orderedProducts} email={"test@example.com"}/>  
+          <StripeCheckoutButtonCPN orderedProducts={orderedProducts} email={"test@example.com"} disabled={isCheckoutDisabled}/>  
         </section>
       </div>
     </PageLayout>
@@ -117,4 +133,25 @@ const contactInfo:ContactInfo = {
     }
   }
 }
+
+
+/*****************************
+ * Function helpers
+ */
+
+function isValidShippingAddress(shippingAddress:ShippingAddress | null):boolean {
+  if (!shippingAddress) {
+    return false;
+  }
+  
+  const {name, address1, city, state, zip} = shippingAddress;
+  
+  if (!name || !address1 || !city || !state || !zip) {
+    return false;
+  }
+
+
+  return true;
+}
+
 
