@@ -23,18 +23,20 @@ export default function Checkout({contactInfo, aboutTextFooter }:Props) {
       contactInfo = {contactInfo}
       aboutText = {aboutTextFooter}
     >
-      <section className={styles.header}>
-        <h2>Checkout</h2>
-        <Link className={styles.editCart} href="/cart">Edit Cart</Link>
-      </section>
-      <section className={styles.orderDetail}>
-        <OrderDetail orderedProducts={orderedProducts}/>
-      </section>
-      <section className={styles.payment}>
-        <h3>Payment</h3>
-        <ShippingAddressForm/>
-        <StripeCheckoutButtonCPN amount={100}/>  
-      </section>     
+      <div className={styles.wrapper}>
+        <section className={styles.header}>
+          <h2 className={styles.title}>Checkout</h2>
+          <Link className={styles.editCart} href="/cart">Edit Cart</Link>
+        </section>
+        <section className={styles.orderDetail}>
+          <OrderDetail orderedProducts={orderedProducts}/>
+        </section>
+        <section className={styles.payment}>
+          <h3 className={styles.paymentTitle}>Payment</h3>
+          <ShippingAddressForm/>
+          <StripeCheckoutButtonCPN amount={100}/>  
+        </section>
+      </div>
     </PageLayout>
   )
 }

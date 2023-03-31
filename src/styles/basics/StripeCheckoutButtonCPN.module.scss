@@ -1,13 +1,20 @@
-.placeholder {
+@use '../base' as *;
+
+.wrapper {
     display: flex;
-    justify-content: center;
+    flex-flow: column;
     align-items: center;
-    background-color: rgb(63, 63, 63);
-    border: 2px solid rgb(0, 0, 0);
-    color: #fff;
-    padding: 1rem;
-    font-size: 1.5rem;
-    font-weight: bold;
-    text-align: center;
-    border-radius: 0.5rem;
+    justify-content: center;
+    gap: 10px;
+    width: 100%;
+    padding: 10px;
+    border-radius: $border-radius;
+
+    border: none;
+
+    background-color: $button-color;
+    color: white;
+
+    font-weight: 700;
+    cursor: pointer;
 }

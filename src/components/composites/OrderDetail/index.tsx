@@ -16,11 +16,13 @@ export default function OrderDetail({ orderedProducts}: Props) {
 
     return (
         <div className={styles.wrapper}>
-            <h3>Order Detail</h3>
+            <h3 className={styles.header}>Order Detail</h3>
             <TableLayout
                 header = {header}
                 rows = {rows}
                 footer = {footer}
+                cellClassName = {styles.cell}
+                headerClassName = {styles.tableHeader}
             />
         </div>
     );
@@ -67,7 +69,7 @@ const getRow = (orderedProducts: OrderedProduct) => {
             },
             {
                 key: 'quantity',
-                value: "$"+ orderedProducts.quantity
+                value: "" + orderedProducts.quantity
             },
             {
                 key: 'total',
@@ -90,12 +92,12 @@ const getFooter = (orderedProducts: OrderedProduct[]) => {
                 value: ''
             },
             {
-                key: 'total',
+                key: 'total_label',
                 value: 'Total'
             },
             {
-                key: 'total',
-                value: orderedProducts.reduce((acc, curr) => acc + curr.price * curr.quantity, 0) + ""
+                key: 'total_value',
+                value: "$" + orderedProducts.reduce((acc, curr) => acc + curr.price * curr.quantity, 0) 
             }
         ]
     }

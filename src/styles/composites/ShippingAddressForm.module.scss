@@ -1,13 +1,39 @@
-.placeholder {
+@use '../base' as *;
+
+.wrapper {
     display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: rgb(63, 63, 63);
-    border: 2px solid rgb(0, 0, 0);
-    color: #fff;
-    padding: 1rem;
-    font-size: 1.5rem;
-    font-weight: bold;
-    text-align: center;
-    border-radius: 0.5rem;
+    flex-flow: column;
+    
+    gap: 18px;
+
+
+    width: 100%;
+}
+
+.field {
+    display: flex;
+    flex-flow: row;
+    flex-wrap: wrap;
+    gap: 8px;
+    justify-content: space-between;
+
+ 
+    label,
+    input {
+        flex-basis: 100%;
+    }
+
+    label {
+        font-size: .8rem;
+        text-transform: uppercase;
+    
+    }
+
+    input {
+        padding: 10px;
+        border-radius: $border-radius;
+        border: 1px solid $separator-color;
+        font-size: .8rem;
+    }
+
 }

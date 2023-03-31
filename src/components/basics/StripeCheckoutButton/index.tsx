@@ -44,7 +44,7 @@ const StripeCheckoutButtonCPN:StripeCheckoutButton = ({amount}) => {
         <button className={styles.wrapper}
             onClick={onClick}
         >
-            Checkout
+            CHECK OUT
         </button>
     );
 }
