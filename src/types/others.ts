@@ -43,4 +43,5 @@ export type ShippingAddress = {
     zip: string;
     phone: string;
     email: string;
+    sameAsBillingAddress: boolean;
 }

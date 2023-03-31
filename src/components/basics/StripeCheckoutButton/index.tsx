@@ -5,16 +5,18 @@ import {MouseEventHandler} from "react";
 import axios from "axios";
 import styles from "@styles/basics/StripeCheckoutButtonCPN.module.scss";
 import getStripe from "@/utils/getStripejs";
+import { OrderedProduct } from "@/types/product";
 
 
 export interface Props  {
-    amount: number;
+    orderedProducts: OrderedProduct[],
+    email: string,
 };
 
 type StripeCheckoutButton = FC<Props>;
 
 
-const StripeCheckoutButtonCPN:StripeCheckoutButton = ({amount}) => {
+const StripeCheckoutButtonCPN:StripeCheckoutButton = ({orderedProducts, email}) => {
 
     
     const onClick:MouseEventHandler<HTMLButtonElement> = async (e) => {
@@ -22,7 +24,7 @@ const StripeCheckoutButtonCPN:StripeCheckoutButton = ({amount}) => {
         
         try {
             // Create a Checkout Session.
-            const {data} = await axios.post('/api/checkout_sessions', { amount });
+            const {data} = await axios.post('/api/checkout_sessions', { orderedProducts, email });
 
 
             // Redirect to Checkout.

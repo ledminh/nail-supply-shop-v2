@@ -24,6 +24,7 @@ export default function OrderDetail({ orderedProducts}: Props) {
                 cellClassName = {styles.cell}
                 headerClassName = {styles.tableHeader}
             />
+            <p className={styles.note}>Please note that prices do not include tax, which will be calculated on the Stripe checkout page.</p>
         </div>
     );
 }

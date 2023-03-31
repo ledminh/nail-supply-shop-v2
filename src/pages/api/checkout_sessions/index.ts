@@ -1,5 +1,7 @@
+import { OrderedProduct } from "@/types/product";
 import { NextApiRequest, NextApiResponse } from "next";
 import type { Stripe } from "stripe";
+
 
 
 const stripe: Stripe = require("stripe")(process.env.STRIPE_SECRET_KEY!);
@@ -12,7 +14,21 @@ type NextApiCheckoutResponse = NextApiResponse<CheckoutResponse>;
 
 export default async (req: NextApiRequest, res: NextApiCheckoutResponse) => {
     if (req.method === "POST") {
-        const { amount, email } = req.body;
+        const { orderedProducts, email } = req.body;
+
+        const line_items = (orderedProducts as OrderedProduct[]).map((product) => ({
+            price_data: {
+                currency: "usd",
+                product_data: {
+                    name: product.name,
+                    images: [req.headers.origin + product.image.src],
+                },
+                unit_amount: product.price * 100,
+                tax_behavior: "exclusive" as Stripe.Checkout.SessionCreateParams.LineItem.PriceData.TaxBehavior,
+            },
+            quantity: product.quantity,
+        }));
+
 
         const params: Stripe.Checkout.SessionCreateParams = {
             mode: "payment",
@@ -20,22 +36,18 @@ export default async (req: NextApiRequest, res: NextApiCheckoutResponse) => {
             
             payment_method_types: ['card'],
 
-            line_items: [
-                {
-                    price_data: {
-                        currency: "usd",
-                        product_data: {
-                            name: "T-shirt",
-                        },
-                        unit_amount: amount,
-                    },
-                    quantity: 1,
-                },
-            ],
+            line_items: line_items,
+            customer_email: email,
+            automatic_tax: {
+                enabled: true,
+            },
+
+            tax_id_collection: {
+                enabled: true,
+            },
+            success_url: `${req.headers.origin}/confirmation?session_id={CHECKOUT_SESSION_ID}`,
             
-            success_url: `${req.headers.origin}/result?session_id={CHECKOUT_SESSION_ID}`,
-            
-            cancel_url: `${req.headers.origin}/result?session_id={CHECKOUT_SESSION_ID}`,
+            cancel_url: `${req.headers.origin}/checkout?session_id={CHECKOUT_SESSION_ID}`,
         
         };
 

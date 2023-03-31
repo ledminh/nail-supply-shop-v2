@@ -17,4 +17,8 @@
 
     font-weight: 700;
     cursor: pointer;
+
+    &:hover {
+        background-color: darken($button-color, 10%);
+    }
 }

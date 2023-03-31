@@ -19,6 +19,8 @@ export default function ShippingAddressForm({ onChange}: Props) {
     const [phone, setPhone] = useState("");
     const [email, setEmail] = useState("");
 
+    const [sameAsBillingAddress, setSameAsBillingAddress] = useState(false);
+
     useEffect(() => {
         if (onChange) {
             onChange({
@@ -30,6 +32,7 @@ export default function ShippingAddressForm({ onChange}: Props) {
                 zip,
                 phone,
                 email,
+                sameAsBillingAddress
             });
         }
     }, [name, address1, address2, city, state, zip, phone, email]);
@@ -67,6 +70,15 @@ export default function ShippingAddressForm({ onChange}: Props) {
             <div className={styles.field}>
                 <label htmlFor="email">Email</label>
                 <input type="text" id="email" value={email} onChange={e => setEmail(e.target.value)}/>
+            </div>
+            <div className={styles.field + ' ' + styles.sameAsBilling}>
+                <label htmlFor="sameAsBillingAddress">
+                    <input type="checkbox" id="sameAsBillingAddress" 
+                        checked={sameAsBillingAddress}
+                        onChange={e => setSameAsBillingAddress(e.target.checked)}
+                    />
+                    <span>Same as billing address</span>
+                </label>
             </div>
         </form>
     );
