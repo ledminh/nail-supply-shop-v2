@@ -1,12 +1,36 @@
 import styles from '@styles/layouts/TableLayout.module.scss';
 
+
+type HeaderCellData = {
+    key: string;
+    value: string;
+}
+
+type HeaderData = {
+    key: string;
+    cells: HeaderCellData[];
+}
+
+type CellData = {
+    key: string;
+    value: string;
+}
+
+type RowData = {
+    key: string;
+    cells: CellData[];
+}
+
+type FooterData = {
+    key: string;
+    cells: CellData[];
+}
+
+
 export interface Props {
-    header: {
-        key: string;
-        label: string;
-    }[];
-    rows: string[][];
-    footer: string[];
+    header: HeaderData;
+    rows: RowData[];
+    footer: FooterData;
 
     tableClassName?: string;
     headerClassName?: string;
@@ -29,19 +53,19 @@ export default function TableLayout({header, rows, footer, tableClassName, heade
     return (
         <div className={tableClass}>
             <div className={headerClass}>
-                {header.map((h) => (
+                {header.cells.map((h) => (
                     <div key={h.key} className={cellClass}>
-                        {h.label}
+                        {h.value}
                     </div>
                 ))}
             </div>
             <div className={bodyClass}>
                 {rows.map((row, index) => (
-                    <div key={index} className={rowClass}>
+                    <div key={row.key} className={rowClass}>
                         {
-                            row.map((cell, index) => (
-                                <div key={index} className={cellClass}>
-                                    {cell}
+                            row.cells.map((cell, index) => (
+                                <div key={cell.key} className={cellClass}>
+                                    {cell.value}
                                 </div>
                             ))
                         }
@@ -49,9 +73,9 @@ export default function TableLayout({header, rows, footer, tableClassName, heade
                 ))}
             </div>
             <div className={footerClass}>
-                {footer.map((cell, index) => (
-                    <div key={index} className={cellClass}>
-                        {cell}
+                {footer.cells.map((cell) => (
+                    <div key={cell.key} className={cellClass}>
+                        {cell.value}
                     </div>
                 ))}
             </div>

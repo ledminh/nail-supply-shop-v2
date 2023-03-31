@@ -3,34 +3,81 @@ import {  Meta, StoryObj } from "@storybook/react";
 import TableLayout from '.';
 import type { Props } from '.';
 
-const header = [
-  {
-      key: "empty",
-      label: "",
-  },
-  {
-      key: 'price',
-      label: 'Price',
-  },
-  {
-      key: 'quantity',
-      label: 'Quantity',
-  },
-  {
-      key: "total",
-      label: "Total",
-  },
-];
+const header = {
+  key: "header",
+  cells: [
+    {
+        key: "empty",
+        value: "",
+    },
+    {
+        key: 'price',
+        value: 'Price',
+    },
+    {
+        key: 'quantity',
+        value: 'Quantity',
+    },
+    {
+        key: "total",
+        value: "Total",
+    },
+  ]
+};
+
+const getRow = (name:string, price:number, quantity:number, total:number) => {
+  return {
+    key: name,
+    cells: [
+      {
+        key: "name",
+        value: name,
+      },
+      {
+        key: "price",
+        value: price + "",
+      },
+      {
+        key: "quantity",
+        value: quantity + "",
+      },
+      {
+        key: "total",
+        value: total + "",
+      },
+    ],
+  };
+};
 
 const rows = [
-  ['John', "100", "2", "200"],
-  ['Mary', "200", "3", "600"],
-  ['Peter', "300", "4", "1200"],
+  getRow("John", 100, 2, 200),
+  getRow("Mary", 200, 3, 600),
+  getRow("Peter", 300, 4, 1200),
 ];
 
-const footer = [
-  "", "", 'Total', "5400"
-]
+
+const footer = {
+  key: "footer",
+  cells: [
+    {
+      key: "empty_1",
+      value: "",
+    },
+    {
+      key: "empty_2",
+      value: "",
+    },
+    {
+      key: "total",
+      value: "Total",
+    },
+    {
+      key: "total",
+      value: "5400",
+    },
+  ],
+};
+
 
 const defaultArgs:Props = {
   header,
