@@ -4,7 +4,10 @@ import PageLayout from '@/components/layouts/PageLayout'
 
 import styles from '@/styles/pages/Checkout.module.scss'
 import StripeCheckoutButtonCPN from '@/components/basics/StripeCheckoutButton';
+import OrderDetail from '@/components/composites/OrderDetail';
+import ShippingAddressForm from '@/components/composites/ShippingAddressForm';
 
+import Link from 'next/link';
 
 
 export interface Props {
@@ -20,12 +23,67 @@ export default function Checkout({contactInfo, aboutTextFooter }:Props) {
       contactInfo = {contactInfo}
       aboutText = {aboutTextFooter}
     >
-      <StripeCheckoutButtonCPN amount={100}/>
+      <section className={styles.header}>
+        <h2>Checkout</h2>
+        <Link className={styles.editCart} href="/cart">Edit Cart</Link>
+      </section>
+      <section className={styles.orderDetail}>
+        <OrderDetail orderedProducts={orderedProducts}/>
+      </section>
+      <section className={styles.payment}>
+        <h3>Payment</h3>
+        <ShippingAddressForm/>
+        <StripeCheckoutButtonCPN amount={100}/>  
+      </section>     
     </PageLayout>
   )
 }
 
 Checkout.displayName = "Checkout";
+
+const orderedProducts = [
+  {
+    id: "1",
+    name: "Nail Essential 1",
+    price: 10,
+    quantity: 1,
+    image: {
+      src: "/images/placeholder_1.png",
+      alt: "Nail Essential 1"
+    }
+  },
+  {
+    id: "2",
+    name: "Nail Essential 2",
+    price: 20,
+    quantity: 2,
+    image: {
+      src: "/images/placeholder_2.png",
+      alt: "Nail Essential 2"
+    }
+  },
+  {
+    id: "3",
+    name: "Nail Essential 3",
+    price: 30,
+    quantity: 3,
+    image: {
+      src: "/images/placeholder_3.png",
+      alt: "Nail Essential 3"
+    }
+  },
+  {
+    id: "4",
+    name: "Nail Essential 4",
+    price: 40,
+    quantity: 4,
+    image: {
+      src: "/images/placeholder_4.png",
+      alt: "Nail Essential 4"
+    }
+  },
+]
+
 
 export const getServerSideProps = async () => {
   
