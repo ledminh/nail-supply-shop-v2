@@ -11,12 +11,13 @@ import { OrderedProduct } from "@/types/product";
 export interface Props  {
     orderedProducts: OrderedProduct[],
     email: string,
+    disabled?: boolean,
 };
 
 type StripeCheckoutButton = FC<Props>;
 
 
-const StripeCheckoutButtonCPN:StripeCheckoutButton = ({orderedProducts, email}) => {
+const StripeCheckoutButtonCPN:StripeCheckoutButton = ({orderedProducts, email, disabled}) => {
 
     
     const onClick:MouseEventHandler<HTMLButtonElement> = async (e) => {
@@ -45,6 +46,7 @@ const StripeCheckoutButtonCPN:StripeCheckoutButton = ({orderedProducts, email}) 
     return (
         <button className={styles.wrapper}
             onClick={onClick}
+            disabled={disabled}
         >
             CHECK OUT (with Stripe)
         </button>

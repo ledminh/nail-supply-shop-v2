@@ -1,4 +1,4 @@
-import { ContactInfo } from '@/types/others';
+import { ContactInfo, ShippingAddress } from '@/types/others';
 
 import PageLayout from '@/components/layouts/PageLayout'
 
@@ -17,6 +17,11 @@ export interface Props {
 
 export default function Checkout({contactInfo, aboutTextFooter }:Props) {
 
+  const onShippingAddressChange = (shippingAddress:ShippingAddress) => {
+
+    
+
+  }
 
   return (
     <PageLayout
@@ -33,7 +38,9 @@ export default function Checkout({contactInfo, aboutTextFooter }:Props) {
         </section>
         <section className={styles.payment}>
           <h3 className={styles.paymentTitle}>Payment</h3>
-          <ShippingAddressForm/>
+          <ShippingAddressForm 
+            onChange={onShippingAddressChange}
+          />
           <StripeCheckoutButtonCPN orderedProducts={orderedProducts} email={"test@example.com"}/>  
         </section>
       </div>
