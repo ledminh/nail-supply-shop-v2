@@ -16,7 +16,7 @@ export type Order = {
     orderedProducts: OrderedProduct[];
     status: {
         value: StatusValue;
-        lastUpdated: Date;
+        lastUpdated: string;
         description: string;
     },
 }

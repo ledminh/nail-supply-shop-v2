@@ -12,7 +12,6 @@ import OrderSummary from '@/components/composites/OrderSummary';
 
 import Link from 'next/link';
 
-import { useState, useEffect } from 'react';
 
 import { orderStatus } from '@/config';
 
@@ -24,14 +23,6 @@ export interface Props {
 
 export default function Confirmation({contactInfo, aboutTextFooter, order }:Props) {
 
-
-  const [linkToOrderPage, setLinkToOrderPage] = useState('');
-
-  useEffect(() => {
-    const rootUrl = `${window.location.protocol}//${window.location.hostname}`;
-
-    setLinkToOrderPage(rootUrl + '/order/' + order.id);
-  }, []);
 
 
   return (
@@ -56,7 +47,7 @@ export default function Confirmation({contactInfo, aboutTextFooter, order }:Prop
         </section>
         <section className={styles.text}>
           <p>A confirmation email has been sent to <span className={styles.email}>{shippingAddress.email}</span>.</p>
-          <p>You can check the status of your order at <Link href={linkToOrderPage} className={styles.linkToOrderPage}>{linkToOrderPage}</Link></p>
+          <p>You can check the status of your order <Link href={'/order/' + order.id} className={styles.linkToOrderPage}>HERE</Link></p>
           <p>Please remember your order number to contact our customer service by email at {contactInfo.email}, or by phone at {contactInfo.phone}.</p>
           <p>Thank you for choosing Nail Essential for all of your nail care needs!</p>
         </section>
@@ -143,7 +134,7 @@ const order:Order = {
   status: {
     value: "processing",
     description: orderStatus["processing"],
-    lastUpdated: new Date()
+    lastUpdated: new Date().toDateString()
   }
 }
 

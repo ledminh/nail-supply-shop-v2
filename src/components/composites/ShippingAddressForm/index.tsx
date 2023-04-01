@@ -1,7 +1,7 @@
 import styles from "@styles/composites/ShippingAddressForm.module.scss";
 import { useEffect, useState } from "react";
 
-import { ShippingAddress } from "@/types/others";
+import { ShippingAddress } from "@/types/order";
 
 export interface Props {
     onChange?: (address: ShippingAddress) => void;
