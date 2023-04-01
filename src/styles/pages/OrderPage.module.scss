@@ -1,2 +1,64 @@
 @use '../base' as *;
 
+.wrapper {
+    width: 95%;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.header {
+    display: flex;
+    flex-flow: row;
+    justify-content: center;
+    
+
+    padding-bottom: 10px;
+    
+}
+
+.orderNumber {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+.status {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+
+    .title {
+        background-color: $secondary_background_color;
+        padding: 10px;
+        border-radius: $border_radius;
+
+        display: flex;
+        flex-flow: row;
+        gap: 10px;
+
+        .value {
+            color: darken(red, 20%);
+        }
+
+
+    }
+
+    
+    .lastUpdated {
+        font-style: italic;
+        font-size: 0.8rem;
+    }
+
+}
+
+@media (min-width: $second_breakpoint) {
+    .wrapper {
+        margin: 0;
+    }
+
+    .header {
+        justify-content: flex-start;
+    }
+}
+

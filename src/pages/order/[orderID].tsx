@@ -23,25 +23,27 @@ export default function OrderPage({contactInfo, aboutTextFooter, order}:Props) {
       contactInfo = {contactInfo}
       aboutText = {aboutTextFooter}
     >
-      <section className={styles.header}>
-        <h3 className={styles.orderNumber}>
-          <span className={styles.label}>ORDER NUMBER:</span><span className={styles.value}>{order.id}</span>
-        </h3>
-      </section>
-      <section className={styles.status}>
-        <h2 className={styles.title}>
-          <span className={styles.label}>STATUS:</span> 
-          <span className={styles.value}>{order.status.value}</span>
-        </h2>
-        <p className={styles.lastUpdated}>(Last updated: 03/12/2023)</p>
-        <p className={styles.description}>{order.status.description}</p>
-      </section>
-      <section className={styles.orderSummary}>
-        <OrderSummary orderedProducts={order.orderedProducts} />
-      </section>
-      <section className={styles.text}>
-        <p>If you have any question, please contact our customer service, by email at {contactInfo.email}, or by phone at {contactInfo.phone}</p>
-      </section>
+      <div className={styles.wrapper}>
+        <section className={styles.header}>
+          <h3 className={styles.orderNumber}>
+            <span className={styles.label}>ORDER NUMBER:</span><span className={styles.value}>{order.id}</span>
+          </h3>
+        </section>
+        <section className={styles.status}>
+          <h2 className={styles.title}>
+            <span className={styles.label}>STATUS:</span> 
+            <span className={styles.value}>{order.status.value}</span>
+          </h2>
+          <p className={styles.lastUpdated}>(Last updated: 03/12/2023)</p>
+          <p className={styles.description}>{order.status.description}</p>
+        </section>
+        <section className={styles.orderSummary}>
+          <OrderSummary orderedProducts={order.orderedProducts} />
+        </section>
+        <section className={styles.text}>
+          <p>If you have any question, please contact our customer service, by email at {contactInfo.email}, or by phone at {contactInfo.phone}</p>
+        </section>
+      </div>
     </PageLayout>
   )
 }
