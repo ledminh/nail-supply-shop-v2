@@ -8,17 +8,20 @@ import Select from "@/components/generics/Select";
 import { orderStatus } from "@/config";
 
 import { useState } from "react";
+import { StatusValue } from "@/types/order";
 
 
 export interface Props  {
-
+    onSave: (status: StatusValue) => void;
 };
 
 type StatusSelect = FC<Props>;
 
 
-const StatusSelectCPN:StatusSelect = ({}) => {
+const StatusSelectCPN:StatusSelect = ({onSave}) => {
     const [currentStatus, setCurrentStatus] = useState(statusItems[0]);
+    const [tempStatus, setTempStatus] = useState(statusItems[0]);
+
     const [showSelect, setShowSelect] = useState(false);
 
     const SelectCPN = (
@@ -27,19 +30,22 @@ const StatusSelectCPN:StatusSelect = ({}) => {
                 selectClass = {styles.select}
                 optionClass = {styles.option}
                 optionItems = {statusItems}
-                initOptionItem = {currentStatus}
-                onChange = {setCurrentStatus}
+                initOptionItem = {tempStatus}
+                onChange = {setTempStatus}
             />
             <button className={styles.saveButton}
                 onClick={() => {
-                    setShowSelect(false)
+                    onSave(tempStatus.label);
+                    setCurrentStatus(tempStatus);
+                    setShowSelect(false);
                 }}
             >
                 Save
             </button>
             <button className={styles.cancelButton}
                 onClick={() => {
-                    setShowSelect(false)
+                    setShowSelect(false);
+                    setTempStatus(currentStatus);
                 }}
             >
                 Cancel
@@ -54,6 +60,7 @@ const StatusSelectCPN:StatusSelect = ({}) => {
             </div>
             <button className={styles.changeButton}
                 onClick={() => {
+                    setTempStatus(currentStatus);
                     setShowSelect(true)
                 }}
             >
@@ -77,5 +84,5 @@ StatusSelectCPN.displayName = "StatusSelectCPN";
 
 const statusItems = Object.entries(orderStatus).map(([key, value]) => ({
     value: value,
-    label: key,
+    label: key as StatusValue,
 }));
