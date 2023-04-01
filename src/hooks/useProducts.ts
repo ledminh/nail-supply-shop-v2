@@ -35,7 +35,6 @@ const useProducts = ({products, categoryID, numProducts, productsPerPage}:Props)
         ).then((res) => res.json())
         .then(({newProducts}) => {
             setProducts((prevProducts) => [...prevProducts, ...newProducts]);
-            console.log('_products state value:', _products);
 
         });
     }

@@ -8,56 +8,40 @@ import { ContactInfo } from '@/types/others';
 import { Category } from '@/types/category';
 
 import styles from '@/styles/pages/Category.module.scss'
-import CategoryInfo from '@/components/composites/CategoryInfo';
-import SortAndOrder from '@/components/composites/SortAndOrder';
 import ProductList from '@/components/composites/ProductList';
 
 import { categoryConfig } from '@/config';
 import { ProductGroup, Product } from '@/types/product';
 import { ListCondition } from '@/types/list-conditions';
 import ButtonCPN from '@/components/basics/ButtonCPN';
-import useSortAndOrder from '@/hooks/useSortAndOrder';
 import useProducts from '@/hooks/useProducts';
 import { useCart } from '@contexts/CartContext';
-import Select, { convertToOptionItem } from '@/components/generics/Select';
 
 export interface Props {
   contactInfo: ContactInfo,
   aboutTextFooter: string,
   currentCategory: Category,
-  categories: Category[],
   products: (Product|ProductGroup)[],
   numProducts: number,
-  initCondition: ListCondition,
 
 };
 
-export default function CategoryPage({contactInfo, aboutTextFooter, currentCategory, categories, products, numProducts, initCondition }:Props) {
+export default function SearchPage({contactInfo, aboutTextFooter, currentCategory,  products, numProducts }:Props) {
 
-  const [firstLoad, setFirstLoad] = useState(true);
-
-  const router = useRouter();
-
+  
+  
 
   const { id:categoryID, name, image, description } = currentCategory;
+  
   const {sortItems, sortedOrderItems, productsPerPage} = categoryConfig;
 
 
   const {_products, setProducts, loadMore, isLoadMoreNeeded} = useProducts({products, categoryID, numProducts, productsPerPage})
 
-  const {sortAndOrderOnChange} = useSortAndOrder({router, setProducts, categoryID, productsPerPage, firstLoad, setFirstLoad});
 
   const {addToCart} = useCart();
 
 
-  const convertCategoryToOptionItem = (category: Category) => {
-
-    const getValue = (category: Category) => category.slug;
-    const getLabel = (category: Category) => category.name;
-
-    return convertToOptionItem({item:category, getValue, getLabel});
-
-  }
 
 
   return (
@@ -66,46 +50,24 @@ export default function CategoryPage({contactInfo, aboutTextFooter, currentCateg
       aboutText = {aboutTextFooter}
     >
       <div className={styles.wrapper}>
-        <aside className={styles.aside}>
-          <CategoryInfo
-            name = {name}
-            image = {image}
-            description = {description}
+        <div className={styles.productList}>
+          <ProductList
+            products = {_products}
+            type = "grid"
+            addToCart = {addToCart}
           />
-          <SortAndOrder
-            sortItems = {sortItems}
-            sortedOrderItems = {sortedOrderItems} 
-            initCondition = {initCondition}
-            onChange = {sortAndOrderOnChange}
-          />
-          <Select
-              selectClass = {styles.categorySelect}
-              optionClass = {styles.categoryOption}
-              optionItems = {categories.map(convertCategoryToOptionItem)}
-              initOptionItem = {convertCategoryToOptionItem(currentCategory)}
-              onChange = {(cat) => {router.push(`/category/${cat.value}`)}}
-            />
-        </aside>
-        <div className={styles.main}>
-          <div className={styles.productList}>
-            <ProductList
-              products = {_products}
-              type = "grid"
-              addToCart = {addToCart}
-            />
-          </div>
-          <div className={styles.button}>
-            {
-              isLoadMoreNeeded && (
-                <ButtonCPN
-                  label = "Load More"
-                  type="normal"
-                  onClick = {loadMore}
-                  className={styles.loadMoreButton}
-                />
-              )
-            }
-          </div>        
+        </div>
+        <div className={styles.button}>
+          {
+            isLoadMoreNeeded && (
+              <ButtonCPN
+                label = "Load More"
+                type="normal"
+                onClick = {loadMore}
+                className={styles.loadMoreButton}
+              />
+            )
+          }
         </div>
       </div>
       
@@ -113,7 +75,7 @@ export default function CategoryPage({contactInfo, aboutTextFooter, currentCateg
   )
 }
 
-CategoryPage.displayName = "Category";
+SearchPage.displayName = "SearchPage";
 
 export const getServerSideProps:GetServerSideProps<Props> = async (context) => {
   
@@ -330,5 +292,3 @@ export const getServerSideProps:GetServerSideProps<Props> = async (context) => {
     }
   }
 }
-
-
