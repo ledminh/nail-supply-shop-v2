@@ -1,5 +1,4 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
-import { ContactInfo } from '@/types/others';
 
 import * as DB from '@/database';
 

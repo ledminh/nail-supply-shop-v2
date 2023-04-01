@@ -26,12 +26,6 @@ export function getCategories({}:getCategoriesProps) {
 
 
 
-
-
-
-
-
-
 /***********************************************************
  * PRODUCT
  */ 
