@@ -36,7 +36,7 @@ const getRow = (orderedProduct: OrderedProduct) => {
         cells: [
             {
                 key: 'name',
-                value: orderedProduct.name + (orderedProduct.quantity > 1 ? "(x" + orderedProduct.quantity + ")" : "")
+                value: orderedProduct.name + (orderedProduct.quantity > 1 ? " (x" + orderedProduct.quantity + ")" : "")
             },
             {
                 key: 'dots',

@@ -1,24 +1,39 @@
-import { ContactInfo, ShippingAddress } from '@/types/others';
+import { ContactInfo } from '@/types/others';
+
+import { ShippingAddress } from '@/types/order';
 
 import PageLayout from '@/components/layouts/PageLayout'
 
 import styles from '@/styles/pages/Confirmation.module.scss'
 
 
-import { useState, useEffect } from 'react';
-import TableLayout from '@/components/layouts/Table';
 import ShippingAddressCPN from '@/components/basics/ShippingAddress';
 import OrderSummary from '@/components/composites/OrderSummary';
+
+import Link from 'next/link';
+
+import { useState, useEffect } from 'react';
+
+import { useRouter } from 'next/router';
 
 export interface Props {
   contactInfo: ContactInfo,
   aboutTextFooter: string,
+  orderID: string,
+  orderLink: string,
+  
 };
 
-export default function Confirmation({contactInfo, aboutTextFooter }:Props) {
+export default function Confirmation({contactInfo, aboutTextFooter, orderID }:Props) {
 
-  
 
+  const [linkToOrderPage, setLinkToOrderPage] = useState('');
+
+  useEffect(() => {
+    const rootUrl = `${window.location.protocol}//${window.location.hostname}`;
+
+    setLinkToOrderPage(rootUrl + '/order/' + orderID);
+  }, []);
 
 
   return (
@@ -30,7 +45,7 @@ export default function Confirmation({contactInfo, aboutTextFooter }:Props) {
         <section className={styles.header}>
           <h2 className={styles.title}>ORDER CONFIRMATION</h2>
           <h3 className={styles.orderNumber}>
-            Order Number: <span className={styles.value}>123456789</span>
+            Order Number: <span className={styles.value}>{orderID}</span>
           </h3>
         </section>
         <section className={styles.shippingAddress}>
@@ -42,9 +57,9 @@ export default function Confirmation({contactInfo, aboutTextFooter }:Props) {
           <OrderSummary orderedProducts={orderedProducts}/>
         </section>
         <section className={styles.text}>
-          <p>A confirmation email has been sent to <span className={styles.email}>{email}</span>.</p>
-          <p>You can check the status of your order at {orderLink}</p>
-          <p>Please remember your order number to contact our customer service by email at info@nailessential.com, or by phone at 1-800-555-1234.</p>
+          <p>A confirmation email has been sent to <span className={styles.email}>{shippingAddress.email}</span>.</p>
+          <p>You can check the status of your order at <Link href={linkToOrderPage} className={styles.linkToOrderPage}>{linkToOrderPage}</Link></p>
+          <p>Please remember your order number to contact our customer service by email at {contactInfo.email}, or by phone at {contactInfo.phone}.</p>
           <p>Thank you for choosing Nail Essential for all of your nail care needs!</p>
         </section>
       </div>
@@ -54,8 +69,6 @@ export default function Confirmation({contactInfo, aboutTextFooter }:Props) {
 
 Confirmation.displayName = "Confirmation";
 
-const orderLink = "https://www.nailessential.com/account/orders";
-const email = "john@example.com";
 
 const shippingAddress: ShippingAddress = {
   name: "John Doe",
@@ -122,7 +135,7 @@ const contactInfo:ContactInfo = {
         "Monday - Friday: 9:00am - 5:00pm EST",
         "Saturday: 10:00am - 2:00pm EST",
         "Sunday: Closed"
-    ]
+    ],
 }
 
 
@@ -130,7 +143,8 @@ const contactInfo:ContactInfo = {
   return {
     props: {
       contactInfo,
-      aboutTextFooter
+      aboutTextFooter,
+      orderID: "123456789",
     }
   }
 }

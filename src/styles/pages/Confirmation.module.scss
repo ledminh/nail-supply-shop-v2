@@ -32,6 +32,12 @@
     font-style: italic;
 }
 
+.linkToOrderPage {
+    color: $button-color;
+    text-decoration: underline;
+    font-weight: 700;
+}
+
 @media (min-width: $first-breakpoint) {
     .wrapper {
         display: flex;
