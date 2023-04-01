@@ -28,7 +28,7 @@ type FooterData = {
 
 
 export interface Props {
-    header: HeaderData;
+    header?: HeaderData;
     rows: RowData[];
     footer: FooterData;
 
@@ -52,13 +52,15 @@ export default function TableLayout({header, rows, footer, tableClassName, heade
 
     return (
         <div className={tableClass}>
-            <div className={headerClass}>
-                {header.cells.map((h) => (
-                    <div key={h.key} className={cellClass}>
-                        {h.value}
-                    </div>
-                ))}
-            </div>
+            {
+                header && ( <div className={headerClass}>
+                                {header.cells.map((h) => (
+                                    <div key={h.key} className={cellClass}>
+                                        {h.value}
+                                    </div>
+                                ))}
+                            </div>)
+            }
             <div className={bodyClass}>
                 {rows.map((row, index) => (
                     <div key={row.key} className={rowClass}>
