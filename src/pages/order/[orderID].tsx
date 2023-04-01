@@ -34,7 +34,7 @@ export default function OrderPage({contactInfo, aboutTextFooter, order}:Props) {
             <span className={styles.label}>STATUS:</span> 
             <span className={styles.value}>{order.status.value}</span>
           </h2>
-          <p className={styles.lastUpdated}>(Last updated: 03/12/2023)</p>
+          <p className={styles.lastUpdated}>(Last updated: {order.status.lastUpdated})</p>
           <p className={styles.description}>{order.status.description}</p>
         </section>
         <section className={styles.orderSummary}>
