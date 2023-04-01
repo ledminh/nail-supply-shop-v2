@@ -15,6 +15,7 @@ import ProductManagementSection from '@components/sections/ProductManagementSect
 import AboutUsManagementSection from '@components/sections/AboutUsManagementSection';
 import OrderManagementSection from '@components/sections/OrderManagementSection';
 import OthersManagementSection from '@components/sections/OthersManagementSection';
+import { StatusValue } from './types/order';
 
 
 /***************************
@@ -43,7 +44,7 @@ export const navigationItems:NavigationItem[] = [
         label: 'Shop',
         path: '/shop'
     },
-    {
+    {   
         id: nanoid(),
         label: 'Cart',
         path: '/cart'
@@ -87,6 +88,18 @@ export const homeConfig = {
     categoryIntro: "Find your signature style with our diverse selection of categories."
 } 
 
+
+/*****************************
+ *  Order
+ */
+
+
+export const orderStatus: Record<StatusValue, string> = {
+    processing: "Your order is being prepared for shipment",
+    shipped: "Order Shipped - In Transit: Your order is on its way to you",
+    delivered: "Order Delivered - Received by Customer: Your order has been successfully delivered",
+};
+  
 
 /*****************************
  *  /shop
@@ -189,7 +202,7 @@ export const adminConfig = {
 
 export const categoryManagementConfig = {
     warningMessage: (categoryName: string): string =>
-      `Delete ${categoryName} category? This will also delete all of its associated products.`
+        `Delete ${categoryName} category? This will also delete all of its associated products.`
 };
 
 /*****************************

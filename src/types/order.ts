@@ -1,3 +1,4 @@
+import { OrderedProduct } from "./product";
 
 export type ShippingAddress = {
     name: string;
@@ -8,3 +9,17 @@ export type ShippingAddress = {
     zip: string;
     email: string;
 }
+
+export type Order = {
+    id: string;
+    shippingAddress: ShippingAddress;
+    orderedProducts: OrderedProduct[];
+    status: {
+        value: StatusValue;
+        lastUpdated: Date;
+        description: string;
+    },
+}
+
+
+export type StatusValue =  "processing" | "shipped" | "delivered" ;

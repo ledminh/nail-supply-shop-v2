@@ -1,6 +1,6 @@
 import { ContactInfo } from '@/types/others';
 
-import { ShippingAddress } from '@/types/order';
+import { Order, ShippingAddress } from '@/types/order';
 
 import PageLayout from '@/components/layouts/PageLayout'
 
@@ -14,17 +14,15 @@ import Link from 'next/link';
 
 import { useState, useEffect } from 'react';
 
-import { useRouter } from 'next/router';
+import { orderStatus } from '@/config';
 
 export interface Props {
   contactInfo: ContactInfo,
   aboutTextFooter: string,
-  orderID: string,
-  orderLink: string,
-  
+  order: Order  
 };
 
-export default function Confirmation({contactInfo, aboutTextFooter, orderID }:Props) {
+export default function Confirmation({contactInfo, aboutTextFooter, order }:Props) {
 
 
   const [linkToOrderPage, setLinkToOrderPage] = useState('');
@@ -32,7 +30,7 @@ export default function Confirmation({contactInfo, aboutTextFooter, orderID }:Pr
   useEffect(() => {
     const rootUrl = `${window.location.protocol}//${window.location.hostname}`;
 
-    setLinkToOrderPage(rootUrl + '/order/' + orderID);
+    setLinkToOrderPage(rootUrl + '/order/' + order.id);
   }, []);
 
 
@@ -45,16 +43,16 @@ export default function Confirmation({contactInfo, aboutTextFooter, orderID }:Pr
         <section className={styles.header}>
           <h2 className={styles.title}>ORDER CONFIRMATION</h2>
           <h3 className={styles.orderNumber}>
-            Order Number: <span className={styles.value}>{orderID}</span>
+            Order Number: <span className={styles.value}>{order.id}</span>
           </h3>
         </section>
         <section className={styles.shippingAddress}>
           <p>Thank you for your purchase!</p>
           <p>Your order has been confirmed and will be shipped to the following address:</p>
-          <ShippingAddressCPN shippingAddress={shippingAddress}/>
+          <ShippingAddressCPN shippingAddress={order.shippingAddress}/>
         </section>
         <section className={styles.orderSummary}>
-          <OrderSummary orderedProducts={orderedProducts}/>
+          <OrderSummary orderedProducts={order.orderedProducts}/>
         </section>
         <section className={styles.text}>
           <p>A confirmation email has been sent to <span className={styles.email}>{shippingAddress.email}</span>.</p>
@@ -138,35 +136,24 @@ const contactInfo:ContactInfo = {
     ],
 }
 
-
+const order:Order = {
+  id: "123456",
+  shippingAddress,
+  orderedProducts,
+  status: {
+    value: "processing",
+    description: orderStatus["processing"],
+    lastUpdated: new Date()
+  }
+}
 
   return {
     props: {
       contactInfo,
       aboutTextFooter,
-      orderID: "123456789",
+      order
     }
   }
-}
-
-
-/*****************************
- * Function helpers
- */
-
-function isValidShippingAddress(shippingAddress:ShippingAddress | null):boolean {
-  if (!shippingAddress) {
-    return false;
-  }
-  
-  const {name, address1, city, state, zip} = shippingAddress;
-  
-  if (!name || !address1 || !city || !state || !zip) {
-    return false;
-  }
-
-
-  return true;
 }
 
 
