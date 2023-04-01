@@ -1,5 +1,6 @@
 import { FC } from "react";
 
+import { ShippingAddress as ShippingAddressType } from "@/types/others";
 
 
 import styles from "@styles/basics/ShippingAddressCPN.module.scss";
@@ -7,27 +8,33 @@ import styles from "@styles/basics/ShippingAddressCPN.module.scss";
 
 
 export interface Props  {
-
+    shippingAddress: ShippingAddressType;
 };
 
 type ShippingAddress = FC<Props>;
 
 
-const ShippingAddressCPN:ShippingAddress = ({}) => {
+const ShippingAddressCPN:ShippingAddress = ({shippingAddress}) => {
+
 
 
     return (
         <div className={styles.address}>
-            <span className={styles.label}>Name: </span>
-            <span className={styles.value}>John Doe</span>
-            <span className={styles.label}>Address: </span>
-            <span className={styles.value}>123 Main Street</span>
-            <span className={styles.label}>City: </span>
-            <span className={styles.value}>New York</span>
-            <span className={styles.label}>State: </span>
-            <span className={styles.value}>NY</span>
-            <span className={styles.label}>Zip: </span>
-            <span className={styles.value}>10001</span>
+            {
+                Object.keys(shippingAddress).map((key, index) => {
+                    const _key = key as keyof ShippingAddressType;
+                    const _value = shippingAddress[_key];
+
+                    if (!_value) return;
+
+                    return (
+                        <div key={index}>
+                            <span className={styles.label}>{key}: </span>
+                            <span className={styles.value}>{shippingAddress[key as keyof ShippingAddressType]}</span>
+                        </div>
+                    );
+                })
+            }
         </div>
     );
 }

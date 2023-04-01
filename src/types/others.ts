@@ -37,10 +37,9 @@ export type AboutUsData = {
 export type ShippingAddress = {
     name: string;
     address1: string;
-    address2: string;
+    address2?: string;
     city: string;
     state: string;
     zip: string;
-    phone: string;
     email: string;
 }

@@ -37,7 +37,7 @@ export default function Confirmation({contactInfo, aboutTextFooter }:Props) {
         <section className={styles.shippingAddress}>
           <p>Thank you for your purchase!</p>
           <p>Your order has been confirmed and will be shippted to the following address:</p>
-          <ShippingAddressCPN />
+          <ShippingAddressCPN shippingAddress={shippingAddress}/>
         </section>
         <section className={styles.orderSummary}>
           <OrderSummary orderedProducts={orderedProducts}/>
@@ -57,6 +57,16 @@ Confirmation.displayName = "Confirmation";
 
 const orderLink = "https://www.nailessential.com/account/orders";
 const email = "john@example.com";
+
+const shippingAddress: ShippingAddress = {
+  name: "John Doe",
+  address1: "1234 Main Street",
+  address2: "Apt 1",
+  city: "New York",
+  state: "NY",
+  zip: "10001",
+  email: "john@example.com"
+}; 
 
 const orderedProducts = [
   {

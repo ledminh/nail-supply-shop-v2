@@ -25,11 +25,10 @@ export default function ShippingAddressForm({ onChange}: Props) {
             onChange({
                 name,
                 address1,
-                address2,
+                address2: address2 === ''? undefined : address2,
                 city,
                 state,
                 zip,
-                phone,
                 email,
             });
         }

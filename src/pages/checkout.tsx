@@ -144,9 +144,9 @@ function isValidShippingAddress(shippingAddress:ShippingAddress | null):boolean 
     return false;
   }
   
-  const {name, address1, city, state, zip} = shippingAddress;
+  const {name, address1, city, state, zip, email} = shippingAddress;
   
-  if (!name || !address1 || !city || !state || !zip) {
+  if (!name || !address1 || !city || !state || !zip || !email) {
     return false;
   }
 
