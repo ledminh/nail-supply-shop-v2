@@ -34,14 +34,16 @@ export default function AboutPage({contactInfo, aboutTextFooter, aboutUsData }:P
         <section className={styles.contactUs}>
           <h2 className={styles.title}>Contact Us</h2>
           <p className={styles.text}>If you have any questions or feedback, please feel free to contact us using the information below:</p>
-          <p className={styles.text}><strong>Email:</strong> {aboutUsData.contactInfo.email}</p>
-          <p className={styles.text}><strong>Phone:</strong> {aboutUsData.contactInfo.phone}</p>
-          {
-            aboutUsData.contactInfo.additionalInfos && (
-              aboutUsData.contactInfo.additionalInfos.map((info, index) => (
-              <p key={info} className={styles.text}>{info}</p>
-            )))
-          }
+          <div className={styles.contactInfo}>
+            <p className={styles.text}><strong>Email:</strong> {aboutUsData.contactInfo.email}</p>
+            <p className={styles.text}><strong>Phone:</strong> {aboutUsData.contactInfo.phone}</p>
+            {
+              aboutUsData.contactInfo.additionalInfos && (
+                aboutUsData.contactInfo.additionalInfos.map((info, index) => (
+                <p key={info} className={styles.text}>{info}</p>
+              )))
+            }
+          </div>          
         </section>
       </div>
     </PageLayout>
