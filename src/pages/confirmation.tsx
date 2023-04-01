@@ -18,7 +18,6 @@ export interface Props {
 export default function Confirmation({contactInfo, aboutTextFooter }:Props) {
 
   
-  
 
 
 
@@ -30,13 +29,13 @@ export default function Confirmation({contactInfo, aboutTextFooter }:Props) {
       <div className={styles.wrapper}>
         <section className={styles.header}>
           <h2 className={styles.title}>ORDER CONFIRMATION</h2>
-          <h4 className={styles.orderNumber}>
+          <h3 className={styles.orderNumber}>
             Order Number: <span className={styles.value}>123456789</span>
-          </h4>
+          </h3>
         </section>
         <section className={styles.shippingAddress}>
           <p>Thank you for your purchase!</p>
-          <p>Your order has been confirmed and will be shippted to the following address:</p>
+          <p>Your order has been confirmed and will be shipped to the following address:</p>
           <ShippingAddressCPN shippingAddress={shippingAddress}/>
         </section>
         <section className={styles.orderSummary}>

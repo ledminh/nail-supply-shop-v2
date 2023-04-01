@@ -19,7 +19,7 @@ export default function OrderSummary({ orderedProducts}: Props) {
                 rows = {rows}
                 footer = {footer}
                 cellClassName = {styles.cell}
-                headerClassName = {styles.tableHeader}
+                rowClassName={styles.row}
             />
         </div>
     );

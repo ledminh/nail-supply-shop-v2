@@ -19,7 +19,7 @@ const ShippingAddressCPN:ShippingAddress = ({shippingAddress}) => {
 
 
     return (
-        <div className={styles.address}>
+        <div className={styles.wrapper}>
             {
                 Object.keys(shippingAddress).map((key, index) => {
                     const _key = key as keyof ShippingAddressType;
@@ -28,7 +28,7 @@ const ShippingAddressCPN:ShippingAddress = ({shippingAddress}) => {
                     if (!_value) return;
 
                     return (
-                        <div key={index}>
+                        <div key={key} className={styles.item}>
                             <span className={styles.label}>{key}: </span>
                             <span className={styles.value}>{shippingAddress[key as keyof ShippingAddressType]}</span>
                         </div>

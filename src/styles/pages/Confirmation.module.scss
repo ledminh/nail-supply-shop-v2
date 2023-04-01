@@ -1,0 +1,63 @@
+@use '../base' as *;
+
+.wrapper {
+    width: 95%;
+    margin: 0 auto;
+}
+
+.header {
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+    gap: 10px;
+
+    padding-bottom: 10px;
+    
+    text-align: center;
+}
+
+.orderNumber {
+    .value {
+        color: $button-color;
+    }
+}
+
+
+.text {
+    display: flex;
+    flex-direction: column;
+
+    gap: 10px;
+
+    font-style: italic;
+}
+
+@media (min-width: $first-breakpoint) {
+    .wrapper {
+        display: flex;
+
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        
+        section {
+            flex-basis: 48%;
+        
+        
+        }
+        
+        section.header,
+        section.text {
+            flex-basis: 100%;
+        }
+
+    }
+
+    
+}
+
+@media (min-width: $second-breakpoint) {
+    .header {
+        align-items: flex-start;
+    }
+}
