@@ -33,6 +33,9 @@
 
 @media (min-width: $second-breakpoint) {
     .wrapper {
-        width: 80%;
+        width: 90%;
+        section {
+            padding: 25px 70px;
+        }
     }
 }
