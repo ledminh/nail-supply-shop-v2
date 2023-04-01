@@ -4,7 +4,9 @@ import StatusSelectCPN from '.';
 
 import type { Props } from '.';
 
-const defaultArgs:Props = {};
+const defaultArgs:Props = {
+  onSave: (status) => console.log(status)
+};
 
 
 export default {
