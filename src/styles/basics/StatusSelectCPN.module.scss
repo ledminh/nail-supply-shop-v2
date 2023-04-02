@@ -68,3 +68,13 @@
         }
     }
 }
+
+@media (min-width: $first-breakpoint) {
+    
+    .selectBlock {
+        
+        button {
+            flex-basis: 45%;
+        }
+    }
+}

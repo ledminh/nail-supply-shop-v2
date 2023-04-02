@@ -54,7 +54,9 @@ const defaultArgs:Props = {
       value: "processing",
       description: orderStatus.processing 
     },
-  }
+  },
+  onStatusChange: () => {},
+  onOrderDelete: () => {}
 }
 
 

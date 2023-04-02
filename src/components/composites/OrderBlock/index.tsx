@@ -6,11 +6,13 @@ import StatusSelectCPN from "@/components/basics/StatusSelect";
 import ButtonCPN from "@components/basics/ButtonCPN";
 
 export interface Props {
-    order: Order
+    order: Order,
+    onStatusChange: (id: string, status: string) => void,
+    onOrderDelete: (id: string) => void
 }
 
 
-export default function OrderBlock({ order }: Props) {
+export default function OrderBlock({ order, onStatusChange, onOrderDelete }: Props) {
 
 
     return (
@@ -64,14 +66,18 @@ export default function OrderBlock({ order }: Props) {
             <div className={styles.field + ' ' + styles.status}>
                 <div className={styles.label}>Status</div>
                 <div className={styles.value}>
-                    <StatusSelectCPN onSave={() => {}} />
+                    <StatusSelectCPN onSave={(status) => {
+                        onStatusChange(order.id, status);
+                    }} />
                 </div>
             </div>
             <div className={styles.field + ' ' + styles.deleteButton}>
                 <ButtonCPN
                     type="danger"
                     label="Delete"
-                    onClick={() => { }}
+                    onClick={() => { 
+                        onOrderDelete(order.id);
+                    }}
                     className={styles.deleteButton}
                     />
             </div>
