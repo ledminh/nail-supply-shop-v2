@@ -15,36 +15,45 @@ export default function OrderBlock({ order }: Props) {
 
     return (
         <div className={styles.wrapper}>
-            <div className={styles.orderNumber}>
-                <span>{order.id}</span>
+            <div className={styles.field + ' ' + styles.orderNumber}>
+                <span className={styles.label}>Order #</span>
+                <span className={styles.value}>{order.id}</span>
             </div>
-            <div className={styles.lastUpdated}>
-                <span>{order.status.lastUpdated}</span>
+            <div className={styles.field + ' ' + styles.lastUpdated}>
+                <span className={styles.label}>Last Updated</span>
+                <span className={styles.value}>{order.status.lastUpdated}</span>
             </div>
-            <div className={styles.products}>
-                {
-                    order.orderedProducts.map((product) => {
-                        return (
-                            <span className={styles.product} key={product.id}>
-                                {`${product.name}${product.quantity > 1 ? ` (x${product.quantity})` : ''}`}
-                            </span>
-                        )
-                    })
-                }
+            <div className={styles.field + ' ' + styles.products}>
+                <div className={styles.label}>Products</div>
+                <div className={styles.value}>
+                    {
+                        order.orderedProducts.map((product) => {
+                            return (
+                                <span className={styles.product} key={product.id}>
+                                    {`${product.name}${product.quantity > 1 ? ` (x${product.quantity})` : ''}`}
+                                </span>
+                            )
+                        })
+                    }
+                </div>
             </div>
-            <div className={styles.shippingAddress}>
-                {
-                    Object.entries(order.shippingAddress).map(([key, value]) => {
-                        return (
-                            <span key={key}>
-                                {value}
-                            </span>
-                        )
-                    })
-                }
+            <div className={styles.field + ' ' + styles.shippingAddress}>
+                <div className={styles.label}>Shipping Address</div>
+                <div className={styles.value}>
+                    {
+                        Object.entries(order.shippingAddress).map(([key, value]) => {
+                            return (
+                                <span key={key}>
+                                    {value}
+                                </span>
+                            )
+                        })
+                    }
+                </div>
             </div>
-            <div className={styles.price}>
-                <span>
+            <div className={styles.field + ' ' + styles.price}>
+                <span className={styles.label}>Total</span>
+                <span className={styles.value}>
                     {
                         "$" + order.orderedProducts.reduce((acc, product) => {
                             return acc + (product.price * product.quantity);
@@ -52,10 +61,13 @@ export default function OrderBlock({ order }: Props) {
                     }
                 </span>
             </div>
-            <div className={styles.status}>
-                <StatusSelectCPN onSave={() => {}} />
+            <div className={styles.field + ' ' + styles.status}>
+                <div className={styles.label}>Status</div>
+                <div className={styles.value}>
+                    <StatusSelectCPN onSave={() => {}} />
+                </div>
             </div>
-            <div className={styles.deleteButton}>
+            <div className={styles.field + ' ' + styles.deleteButton}>
                 <ButtonCPN
                     type="danger"
                     label="Delete"

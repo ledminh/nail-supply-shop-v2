@@ -25,7 +25,7 @@ const StatusSelectCPN:StatusSelect = ({onSave}) => {
     const [showSelect, setShowSelect] = useState(false);
 
     const SelectCPN = (
-        <div className={styles.select}>
+        <div className={styles.selectBlock}>
             <Select
                 selectClass = {styles.select}
                 optionClass = {styles.option}
@@ -33,7 +33,7 @@ const StatusSelectCPN:StatusSelect = ({onSave}) => {
                 initOptionItem = {tempStatus}
                 onChange = {setTempStatus}
             />
-            <button className={styles.saveButton}
+            <button className={styles.save}
                 onClick={() => {
                     onSave(tempStatus.label);
                     setCurrentStatus(tempStatus);
@@ -42,7 +42,7 @@ const StatusSelectCPN:StatusSelect = ({onSave}) => {
             >
                 Save
             </button>
-            <button className={styles.cancelButton}
+            <button className={styles.cancel}
                 onClick={() => {
                     setShowSelect(false);
                     setTempStatus(currentStatus);
@@ -54,7 +54,7 @@ const StatusSelectCPN:StatusSelect = ({onSave}) => {
     );
     
     const DisplayCPN = (
-        <div className={styles.display}>
+        <div className={styles.displayBlock}>
             <div className={styles.value}>
                 {currentStatus.label}
             </div>
