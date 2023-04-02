@@ -1,4 +1,4 @@
-import { Order } from "@/types/order";
+import { Order, StatusValue } from "@/types/order";
 import styles from "@styles/composites/OrderBlock.module.scss";
 
 import StatusSelectCPN from "@/components/basics/StatusSelect";
@@ -7,7 +7,7 @@ import ButtonCPN from "@components/basics/ButtonCPN";
 
 export interface Props {
     order: Order,
-    onStatusChange: (id: string, status: string) => void,
+    onStatusChange: (id: string, status: StatusValue) => void,
     onOrderDelete: (id: string) => void
 }
 
