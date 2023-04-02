@@ -9,12 +9,13 @@ import { searchIcon } from '@/config';
 
 interface Props {
     onSearchSubmit: (query: string) => void;
+    placeholder?: string;
 }
 
 export type SearchBar = FC<Props>;
 
 
-const SearchBarCPN:SearchBar = ({onSearchSubmit}) => {
+const SearchBarCPN:SearchBar = ({onSearchSubmit, placeholder}) => {
 
     const [query, setQuery] = useState('');
 
@@ -45,7 +46,7 @@ const SearchBarCPN:SearchBar = ({onSearchSubmit}) => {
         <div className={styles.wrapper}>
             <input type="text" 
                 className={styles.input}
-                placeholder="Search" 
+                placeholder={placeholder?? 'Search'} 
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
                 onKeyDown={onKeyDown}

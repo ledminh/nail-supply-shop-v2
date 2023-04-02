@@ -8,8 +8,7 @@ export default function OrderManagementSection({ }: Props) {
 
 
     return (
-        <section className={styles.placeholder}>
-            OrderManagement Section
+        <section className={styles.wrapper}>
         </section>
     );
 }
