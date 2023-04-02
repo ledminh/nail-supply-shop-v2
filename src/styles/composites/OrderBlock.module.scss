@@ -26,6 +26,8 @@
     .value {
         flex-basis: 70%;
         font-size: .8rem;
+
+        word-wrap: break-word;
     }
 
 
@@ -44,7 +46,7 @@
 
     .value {
         display: block;
-        
+        width: 100%;
         span {
             display: inline-block;
             margin-right: 5px;
@@ -65,11 +67,12 @@
 }
 
 .field.shippingAddress {
-    align-items: flex-start;
-
     .value {
         display: flex;
         flex-flow: column;
+
+        word-break: break-word;
+ 
     }
 }
 
@@ -86,23 +89,21 @@
 
 @media (min-width: $first-breakpoint) {
     .wrapper {
-        display: flex;
-        flex-flow: row nowrap;
-        justify-content: space-between;
-        align-items: flex-start;
+        display: grid;
+        grid-template-columns: repeat(3, 1fr) 1.5fr .5fr 1fr 1fr;
+        
+        align-items: baseline;
+        border: none;
+    }
+
+    .field {
+        padding: 10px 0 0 0;
     }
 
     .label {
         display: none;
     }
 
-    .field {
-
-        flex-basis: 14%;
-
-        justify-content: center;
-        
-    }
 
     .orderNumber {
         background-color: transparent;

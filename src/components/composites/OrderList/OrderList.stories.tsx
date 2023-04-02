@@ -55,6 +55,14 @@ const orders:Order[] = [
   {
     ...order,
     id: "2",
+    shippingAddress: {
+      name: "John Doe",
+      address1: "333 Main St",
+      city: "New York",
+      state: "NY",
+      zip: "10001",
+      email: "n@yahoo.com"
+    },
   },
   {
     ...order,
@@ -87,4 +95,3 @@ type Story = StoryObj<typeof OrderList>;
 
 
 export const Default: Story = {};
-

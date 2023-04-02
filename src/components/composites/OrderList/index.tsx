@@ -43,8 +43,6 @@ export default function OrderList({ orders, onStatusChange, onOrderDelete }: Pro
                 <span className={styles.value}>$0.00</span>
             </div>
         </div>
-
-
     );
 }
 
