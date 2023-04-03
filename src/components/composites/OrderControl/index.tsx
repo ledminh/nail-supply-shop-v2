@@ -3,11 +3,13 @@ import styles from "@styles/composites/OrderControl.module.scss";
 import SearchBarCPN from "../SearchBar";
 import { orderStatus } from "@/config";
 
+import { StatusValue } from "@/types/order";
+
 import { useState, useEffect } from "react";
 
 export interface Props {
     onChange: (options: {
-        status: string;
+        status: StatusValue;
         month: string;
         year: string;
         sort: string;
@@ -56,24 +58,33 @@ export default function OrderControl({ onChange }: Props) {
                     initOptionItem = {curMonthYear}
                     onChange = {(monthYear) => setCurMonthYear(monthYear)}
                     />
-                <Select
-                    selectClass = {styles.selectMonth}
-                    optionClass = {styles.optionMonth}
-                    optionItems = {monthItems}
-                    initOptionItem = {curMonth}
-                    onChange = {(month) => setCurMonth(month)}
-                    />
-                <Select
-                    selectClass = {styles.selectYear}
-                    optionClass = {styles.optionYear}
-                    optionItems = {yearItems}
-                    initOptionItem = {curYear}
-                    onChange = {(year) => setCurYear(year)}
-                    />
+                {
+                    curMonthYear.value === 'month' && (
+                        <Select
+                            selectClass = {styles.selectMonth}
+                            optionClass = {styles.optionMonth}
+                            optionItems = {monthItems}
+                            initOptionItem = {curMonth}
+                            onChange = {(month) => setCurMonth(month)}
+                            />
+                    )
+                }
+                {
+                    curMonthYear.value === 'year' && (
+                        <Select
+                            selectClass = {styles.selectYear}
+                            optionClass = {styles.optionYear}
+                            optionItems = {yearItems}
+                            initOptionItem = {curYear}
+                            onChange = {(year) => setCurYear(year)}
+                            />
+                    )
+                }
             </section>
             <section className={styles.searchBar}>
                 <SearchBarCPN
                     onSearchSubmit = {(query) => setCurQuery(query)}
+                    placeholder = "Order number ..."
                     />
             </section>
             <section className={styles.sort}>
@@ -99,9 +110,14 @@ OrderControl.displayName = "OrderControl";
  * Filter and Sort Options *
  */
     // status items
+
+
+
 const statusItems = Object.entries(orderStatus).map(([key, value]) => {
+    const _value = value as StatusValue;
+
     return {
-        value,
+        value: _value,
         label: key,
     };
 });
@@ -125,9 +141,13 @@ const getMonthItems = () => {
     const year = now.getFullYear();
     const month = now.getMonth() + 1;
     for (let i = 0; i < 12; i++) {
+        const curMonth  = month > i? month - i: month - i + 12;
+        const curYear = month > i? year: year - 1;
+
+
         const monthItem = {
-            label: `${month - i}/${year}`,
-            value: `${month - i}/${year}`
+            label: `${curMonth}/${curYear}`,
+            value: `${curMonth}/${curYear}`
         };
         monthItems.push(monthItem);
     }
