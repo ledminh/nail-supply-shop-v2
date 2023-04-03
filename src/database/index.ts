@@ -4,7 +4,7 @@ import * as AboutUsModel  from './models/aboutUs';
 import * as OrderModel  from './models/order';
 
 import type { DBProduct, DBProductGroup } from '@/types/product';
-import type { StatusValue } from '@/types/order';
+import type { FilterOrder, StatusValue } from '@/types/order';
 
 /********************************************************
  * CATEGORY
@@ -181,4 +181,10 @@ export const updateOrderStatus = async (id: string, status: StatusValue) => {
     const order = OrderModel.updateOrderStatus(id, status);
 
     return order;
+}
+
+export const filterOrders = async ({status, month, year, sort, query}:FilterOrder) => {
+    const orders = OrderModel.filterOrders({status, month, year, sort, query});
+
+    return orders;
 }

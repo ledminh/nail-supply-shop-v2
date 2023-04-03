@@ -1,6 +1,6 @@
 import { orderStatus } from '@/config';
 import ordersJSON from '../jsons/orders.json';
-import type { Order, StatusValue } from '@/types/order';
+import type { FilterOrder, Order, StatusValue } from '@/types/order';
 
 
 const orders:Order[] = ordersJSON as Order[];
@@ -40,4 +40,53 @@ export function updateOrderStatus(id: string, status: StatusValue) {
     };
 
     return Promise.resolve(order);
+}
+
+export function filterOrders({status, month, year, sort, query}: FilterOrder) {
+    if(query !== '') {
+        return Promise.resolve(orders.filter((order) => {
+            return order.id.includes(query);
+        }));
+    }
+
+    let filteredOrders = orders;
+
+    if(status !== 'all') {
+        filteredOrders = filteredOrders.filter((order) => order.status.value === status);
+    }
+
+    if(month !== null) {
+        filteredOrders = filteredOrders.filter((order) => {
+            const date = new Date(order.status.lastUpdated);
+            return date.getMonth().toString() === month;
+        });
+    }
+
+    if(year !== null) {
+        filteredOrders = filteredOrders.filter((order) => {
+            const date = new Date(order.status.lastUpdated);
+            return date.getFullYear().toString() === year;
+        });
+    }
+
+    if(sort === 'newest') {
+        filteredOrders = filteredOrders.sort((a, b) => {
+            const dateA = new Date(a.status.lastUpdated);
+            const dateB = new Date(b.status.lastUpdated);
+
+            return dateA.getTime() - dateB.getTime();
+        });
+    } else if(sort === 'oldest') {
+        filteredOrders = filteredOrders.sort((a, b) => {
+            const dateA = new Date(a.status.lastUpdated);
+            const dateB = new Date(b.status.lastUpdated);
+
+            return dateB.getTime() - dateA.getTime();
+        });
+    }
+
+
+
+
+    return Promise.resolve(filteredOrders);
 }

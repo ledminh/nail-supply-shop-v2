@@ -3,6 +3,8 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { Order, StatusValue } from '@/types/order';
 
+import { FilterOrder } from '@/types/order';
+
 import * as DB from '@/database';
 
 export type ProductApiResponse = {
@@ -45,6 +47,15 @@ export default function handler(req: NextApiRequest, res: NextApiCategoryRespons
               
               let _status = status as StatusValue;
               return updateOrderStatus(id, _status, res);
+            }
+
+            if(type === 'filter') {
+              const {status, month, year, sort, query} = req.body;
+
+
+
+              return filterOrders({status, month, year, sort, query}, res);
+            
             }
 
             res.status(400).json({ success: false, message: "Invalid request" });
@@ -91,6 +102,15 @@ const updateOrderStatus = async (id: string, status: StatusValue, res: NextApiCa
 
     res.status(200).json({ success: true, orders: [order] });
 }
+
+const filterOrders = async ({status, month, year, sort, query}:FilterOrder, res: NextApiCategoryResponse) => {
+
+    const orders = await DB.filterOrders({status, month, year, sort, query});
+
+    res.status(200).json({ success: true, orders });
+}
+
+
 
 const generateID = () => {
   return Math.random().toString(36).substring(2, 13);

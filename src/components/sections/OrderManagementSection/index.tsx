@@ -6,15 +6,12 @@ import { useState, useEffect } from "react";
 import { Order, StatusValue } from "@/types/order";
 
 import axios from "axios";
-import { orderStatus } from "@/config";
 
-type ControlProps = {
-    status: StatusValue;
-    month: string;
-    year: string;
-    sort: string;
-    query: string;
-};
+import { FilterOrder } from "@/types/order";
+
+
+
+type ControlProps = FilterOrder
     
 export interface Props {
 }
@@ -40,9 +37,23 @@ export default function OrderManagementSection({ }: Props) {
     }, []);
 
 
-
     const onControlChange = ({ status, month, year, sort, query}: ControlProps) => {
         
+        axios.post(`/api/orders/?type=filter`, {
+            status,
+            month,
+            year,
+            sort,
+            query,
+            })
+            .then(({data}) => {
+                if(data.success) {
+                    setOrders(data.orders);
+                }
+                else {
+                    throw new Error(data.message);
+                }
+            });
     };
 
     const onStatusChange = (id: string, status: StatusValue) => {
@@ -96,3 +107,15 @@ export default function OrderManagementSection({ }: Props) {
 }
 
 OrderManagementSection.displayName = "OrderManagementSection";
+
+
+const getCurrentMonthYear = () => {
+    const date = new Date();
+    const month = date.getMonth() + 1;
+    const year = date.getFullYear();
+
+    return {
+        month,
+        year,
+    };
+}

@@ -24,3 +24,11 @@ export type Order = {
 
 
 export type StatusValue =  "processing" | "shipped" | "delivered" ;
+
+export type FilterOrder = {
+    status: StatusValue | 'all';
+    month: string | null;
+    year: string | null;
+    sort: string;
+    query: string;
+};
