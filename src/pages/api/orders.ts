@@ -52,7 +52,7 @@ export default function handler(req: NextApiRequest, res: NextApiCategoryRespons
             if(type === 'filter') {
               const {status, month, year, sort, query} = req.body;
 
-
+              console.log(req.body);
 
               return filterOrders({status, month, year, sort, query}, res);
             

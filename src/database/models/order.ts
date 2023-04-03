@@ -53,12 +53,19 @@ export function filterOrders({status, month, year, sort, query}: FilterOrder) {
 
     if(status !== 'all') {
         filteredOrders = filteredOrders.filter((order) => order.status.value === status);
+
     }
 
+
     if(month !== null) {
+        
         filteredOrders = filteredOrders.filter((order) => {
             const date = new Date(order.status.lastUpdated);
-            return date.getMonth().toString() === month;
+            const month = (date.getMonth() + 1).toString();
+            const year = date.getFullYear().toString();
+
+
+            return date.getMonth().toString() === month + '/' + year;
         });
     }
 

@@ -22,19 +22,19 @@ export default function OrderManagementSection({ }: Props) {
 
     const [orders, setOrders] = useState<Order[]>([]);
 
-    useEffect(() => {
-        axios.get('/api/orders')
-            .then(({data}) => {
-                if(data.success)
-                    setOrders(data.orders);
-                else {
-                    throw new Error(data.message);
-                }
-            })
-            .catch(err => {
-                throw err;
-            });
-    }, []);
+    // useEffect(() => {
+    //     axios.get('/api/orders')
+    //         .then(({data}) => {
+    //             if(data.success)
+    //                 setOrders(data.orders);
+    //             else {
+    //                 throw new Error(data.message);
+    //             }
+    //         })
+    //         .catch(err => {
+    //             throw err;
+    //         });
+    // }, []);
 
 
     const onControlChange = ({ status, month, year, sort, query}: ControlProps) => {

@@ -31,10 +31,10 @@ export default function OrderControl({ onChange }: Props) {
 
     const [statusItems, setStatusItems] = useState<StatusItem[]>([]);
     const [curStatus, setCurStatus] = useState<StatusItem|null>(null);
-    const [curMonthYear, setCurMonthYear] = useState(monthYearItems[0]);
-    const [curMonth, setCurMonth] = useState<Item|null>(monthItems[0]);
-    const [curYear, setCurYear] = useState<Item|null>(yearItems[0]);
-    const [curSort, setCurSort] = useState(sortItems[0]);
+    const [curMonthYear, setCurMonthYear] = useState<Item|null>(null);
+    const [curMonth, setCurMonth] = useState<Item|null>(null);
+    const [curYear, setCurYear] = useState<Item|null>(null);
+    const [curSort, setCurSort] = useState<Item|null>(null);
     const [curQuery, setCurQuery] = useState('');
 
     useEffect(() => {
@@ -53,9 +53,22 @@ export default function OrderControl({ onChange }: Props) {
         
         setStatusItems(statusItems);
         setCurStatus(statusItems[0]);
+        setCurMonthYear(monthYearItems[0]);
+
+        if(monthYearItems[0].value === 'month') {
+            setCurMonth(monthItems[0]);
+        }
+        else if(monthYearItems[0].value === 'year') {
+            setCurYear(yearItems[0]);
+        }
+
+        setCurSort(sortItems[0]);
+
     }, []);
 
     useEffect(() => {
+        if(!curMonthYear) return;
+
         if(curMonthYear.value === 'month') {
             setCurYear(null);
             setCurMonth(monthItems[0]);
@@ -69,8 +82,10 @@ export default function OrderControl({ onChange }: Props) {
 
 
     useEffect(() => {
+        if(!curStatus || !curMonthYear || !curSort) return;
+        
         onChange({
-            status: curStatus? curStatus.value: 'processing',
+            status: curStatus.value,
             month: curMonth? curMonth.value: null,
             year: curYear? curYear.value : null,
             sort: curSort.value,
@@ -79,6 +94,7 @@ export default function OrderControl({ onChange }: Props) {
     }, [curStatus, curMonth, curYear, curSort, curQuery]);
 
 
+    if(statusItems.length === 0 || curStatus === null || curMonthYear === null || curSort === null) return <>Loading</>
 
 
 
@@ -89,15 +105,13 @@ export default function OrderControl({ onChange }: Props) {
                 <span className={styles.label}>
                     Filters
                 </span>
-                {
-                    curStatus && (  <Select
-                                        selectClass = {styles.selectStatus}
-                                        optionClass = {styles.optionStatus}
-                                        optionItems = {statusItems}
-                                        initOptionItem = {curStatus}
-                                        onChange = {(status) => setCurStatus(status)}
-                                        />)
-                }
+                <Select
+                    selectClass = {styles.selectStatus}
+                    optionClass = {styles.optionStatus}
+                    optionItems = {statusItems}
+                    initOptionItem = {curStatus}
+                    onChange = {(status) => setCurStatus(status)}
+                    />
                 <Select
                     selectClass = {styles.selectMonthYear}
                     optionClass = {styles.optionMonthYear}
