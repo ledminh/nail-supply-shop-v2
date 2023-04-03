@@ -1,5 +1,6 @@
 import { OrderedProduct } from "./product";
 
+
 export type ShippingAddress = {
     name: string;
     address1: string;

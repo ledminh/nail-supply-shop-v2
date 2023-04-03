@@ -1,6 +1,7 @@
 import  * as CategoryModel  from './models/category';
 import * as ProductModel  from './models/product';
 import * as AboutUsModel  from './models/aboutUs';
+import * as OrderModel  from './models/order';
 
 import type { DBProduct, DBProductGroup } from '@/types/product';
 
@@ -158,4 +159,14 @@ export function setAboutUsHistoryHTML(history: string) {
 
 export function setAboutUsContactInfo(email: string, phone: string, additionalInfos?: string[]) {
     return AboutUsModel.setAboutUsContactInfo(email, phone, additionalInfos);
+}
+
+
+/***********************************************************
+ * ORDERS
+ */ 
+export const getOrders = async () => {
+    const orders = OrderModel.find();    
+
+    return orders;
 }

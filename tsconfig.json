@@ -28,6 +28,6 @@
     },
     "types": ["jest"]
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "src/stories/_pageTemplate.stories.tsx_"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "src/stories/_pageTemplate.stories.tsx_", "generateOrders.js"],
   "exclude": ["node_modules"]
 }

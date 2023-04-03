@@ -49,7 +49,7 @@ export default function OrderControl({ onChange }: Props) {
 
     useEffect(() => {
         onChange({
-            status: curStatus!.value,
+            status: curStatus? curStatus.value: 'processing',
             month: curMonth.value,
             year: curYear.value,
             sort: curSort.value,
@@ -57,19 +57,26 @@ export default function OrderControl({ onChange }: Props) {
         });
     }, [curStatus, curMonth, curYear, curSort, curQuery]);
 
+
+
+
+
+
     return (
         <section className={styles.wrapper}>
             <section className={styles.filters}>
                 <span className={styles.label}>
                     Filters
                 </span>
-                <Select
-                    selectClass = {styles.selectStatus}
-                    optionClass = {styles.optionStatus}
-                    optionItems = {statusItems}
-                    initOptionItem = {curStatus!}
-                    onChange = {(status) => setCurStatus(status)}
-                    />
+                {
+                    curStatus && (  <Select
+                                        selectClass = {styles.selectStatus}
+                                        optionClass = {styles.optionStatus}
+                                        optionItems = {statusItems}
+                                        initOptionItem = {curStatus}
+                                        onChange = {(status) => setCurStatus(status)}
+                                        />)
+                }
                 <Select
                     selectClass = {styles.selectMonthYear}
                     optionClass = {styles.optionMonthYear}

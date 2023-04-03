@@ -19,13 +19,13 @@ type StatusSelect = FC<Props>;
 
 type StatusItem = {
     value: StatusValue;
-    label: string;
+    label: StatusValue;
 }
 
 const StatusSelectCPN:StatusSelect = ({onSave}) => {
     const [statusItems, setStatusItems] = useState<StatusItem[]>([]);
     const [currentStatus, setCurrentStatus] = useState<StatusItem|null>(null);
-    const [tempStatus, setTempStatus] = useState(statusItems[0]);
+    const [tempStatus, setTempStatus] = useState<StatusItem|null>(null);
 
     const [showSelect, setShowSelect] = useState(false);
 
@@ -35,15 +35,16 @@ const StatusSelectCPN:StatusSelect = ({onSave}) => {
         
             return {
                 value: _value,
-                label: key,
+                label: _value,
             };
         });
         
         setStatusItems(statusItems);
         setCurrentStatus(statusItems[0]);
+        setTempStatus(statusItems[0]);
     }, []);
 
-    const SelectCPN = (
+    const SelectCPN = statusItems.length > 0  && tempStatus && currentStatus ? (
         <div className={styles.selectBlock}>
             <Select
                 selectClass = {styles.select}
@@ -64,29 +65,29 @@ const StatusSelectCPN:StatusSelect = ({onSave}) => {
             <button className={styles.cancel}
                 onClick={() => {
                     setShowSelect(false);
-                    setTempStatus(currentStatus!);
+                    setTempStatus(currentStatus);
                 }}
             >
                 Cancel
             </button>
         </div>
-    );
+    ): null;
     
-    const DisplayCPN = (
+    const DisplayCPN = currentStatus ? (
         <div className={styles.displayBlock}>
             <div className={styles.value}>
-                {currentStatus!.label}
+                {currentStatus.label}
             </div>
             <button className={styles.changeButton}
                 onClick={() => {
-                    setTempStatus(currentStatus!);
+                    setTempStatus(currentStatus);
                     setShowSelect(true)
                 }}
             >
                 Change
             </button>
         </div>
-    );
+    ): null;
 
     return (
         <div className={styles.wrapper}>
