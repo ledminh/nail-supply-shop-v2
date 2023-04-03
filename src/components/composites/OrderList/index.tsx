@@ -5,6 +5,8 @@ import OrderBlock from "../OrderBlock";
 
 import type { Order, StatusValue } from "@/types/order";
 
+import { useState, useEffect } from "react";
+
 export interface Props {
     orders: Order[];
     onStatusChange: (id: string, status: StatusValue) => void;
@@ -13,6 +15,14 @@ export interface Props {
 
 
 export default function OrderList({ orders, onStatusChange, onOrderDelete }: Props) {
+
+    const [total, setTotal] = useState(0);
+
+    useEffect(() => {
+        const total = getTotal(orders);
+        setTotal(total);
+    }, [orders]);
+
 
     const ItemCPN = getItemCPN({
         onStatusChange, 
@@ -40,7 +50,7 @@ export default function OrderList({ orders, onStatusChange, onOrderDelete }: Pro
             <div className={styles.border}/>
             <div className={styles.total}>
                 <span className={styles.label}>Total</span>
-                <span className={styles.value}>$0.00</span>
+                <span className={styles.value}>${total}</span>
             </div>
         </div>
     );
@@ -62,4 +72,12 @@ const getItemCPN = ({onStatusChange, onOrderDelete }:getItemCPNPropsType) => {
 
 
     return ItemCPN;
+}
+
+const getTotal = (orders: Order[]) => {
+    return orders.reduce((acc, order) => {
+        return acc + order.orderedProducts.reduce((acc, product) => {
+            return acc + product.price * product.quantity;
+        }, 0);
+    }, 0);
 }

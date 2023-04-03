@@ -31,11 +31,11 @@ const StatusSelectCPN:StatusSelect = ({onSave}) => {
 
     useEffect(() => {
         const statusItems = Object.entries(orderStatus).map(([key, value]) => {
-            const _value = value as StatusValue;
+            const _key = key as StatusValue;
         
             return {
-                value: _value,
-                label: _value,
+                value: _key,
+                label: _key,
             };
         });
         

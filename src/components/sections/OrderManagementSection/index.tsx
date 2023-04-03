@@ -45,6 +45,7 @@ export default function OrderManagementSection({ }: Props) {
     };
 
     const onStatusChange = (id: string, status: StatusValue) => {
+        console.log(id, status);
     };
 
     const onOrderDelete = (id: string) => {

@@ -23,7 +23,7 @@ export default function OrderBlock({ order, onStatusChange, onOrderDelete }: Pro
             </div>
             <div className={styles.field + ' ' + styles.lastUpdated}>
                 <span className={styles.label}>Last Updated</span>
-                <span className={styles.value}>{order.status.lastUpdated}</span>
+                <span className={styles.value}>{new Date(order.status.lastUpdated).toDateString()}</span>
             </div>
             <div className={styles.field + ' ' + styles.products}>
                 <div className={styles.label}>Products</div>
