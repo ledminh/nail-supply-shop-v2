@@ -58,3 +58,35 @@ section.sort {
     align-items: center;
     gap: 10px;
 }
+
+@media (min-width: $first-breakpoint) {
+    .wrapper {
+        flex-direction: row;
+        flex-wrap: nowrap;
+        justify-content: space-between;
+    }
+
+
+    section.filters {
+        border: none;
+        flex-basis: 40%;
+        flex-wrap: nowrap;
+        justify-content: flex-start;
+
+        .label {
+            flex-basis: 20%;
+        }
+
+    }
+
+    section.searchBar {
+        flex-basis: 30%;
+        order: 2;
+        justify-content: right;
+    }
+
+    section.sort {
+        flex-basis: 30%;
+
+    }
+}
