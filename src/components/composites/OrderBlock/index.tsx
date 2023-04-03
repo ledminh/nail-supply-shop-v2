@@ -67,8 +67,10 @@ export default function OrderBlock({ order, onStatusChange, onOrderDelete }: Pro
                 <div className={styles.label}>Status</div>
                 <div className={styles.value}>
                     <StatusSelectCPN onSave={(status) => {
-                        onStatusChange(order.id, status);
-                    }} />
+                        onStatusChange(order.id, status);    
+                    }} 
+                    initStatusValue={order.status.value}
+                    />
                 </div>
             </div>
             <div className={styles.field + ' ' + styles.deleteButton}>

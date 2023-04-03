@@ -1,7 +1,7 @@
 // /api/products.ts
 
 import type { NextApiRequest, NextApiResponse } from 'next';
-import { Order } from '@/types/order';
+import { Order, StatusValue } from '@/types/order';
 
 import * as DB from '@/database';
 
@@ -18,13 +18,36 @@ type NextApiCategoryResponse = NextApiResponse<ProductApiResponse>;
 
 
 export default function handler(req: NextApiRequest, res: NextApiCategoryResponse) {
+    const {query: {type, id, status}} = req;
 
     switch (req.method) {
         case 'GET':
-            getOrders(req, res);
-
+            getOrders(res);
             break;
         case 'POST':
+            if(type === 'delete') {
+              if(typeof id !== 'string'){
+                return res.status(400).json({ success: false, message: "Invalid id" });
+              }
+              return deleteOrder(id, res);       
+            
+            }
+            
+
+            if(type === 'status') {
+              if(typeof id !== 'string'){
+                return res.status(400).json({ success: false, message: "Invalid id" });
+              }
+              
+              if( typeof status !== 'string'){
+                return res.status(400).json({ success: false, message: "Invalid status" });
+              }
+              
+              let _status = status as StatusValue;
+              return updateOrderStatus(id, _status, res);
+            }
+
+            res.status(400).json({ success: false, message: "Invalid request" });
             break;
 
         default:
@@ -40,12 +63,33 @@ export default function handler(req: NextApiRequest, res: NextApiCategoryRespons
  * Function helpers
  */
 
-const getOrders = async (req: NextApiRequest, res: NextApiCategoryResponse) => {
-    const orders = await DB.getOrders();
+const getOrders = async ( res: NextApiCategoryResponse) => {
+    const orders = await DB.getOrders() as Order[];
 
     res.status(200).json({ success: true, orders });
     
     return orders;
+}
+
+const deleteOrder = async (id: string, res: NextApiCategoryResponse) => {
+    const order = await DB.deleteOrder(id);
+
+    if(!order) {
+        return res.status(400).json({ success: false, message: "Order not found" });
+    }
+
+    res.status(200).json({ success: true, orders: [order] });
+
+}
+
+const updateOrderStatus = async (id: string, status: StatusValue, res: NextApiCategoryResponse) => {
+    const order = await DB.updateOrderStatus(id, status);
+
+    if(!order) {
+        return res.status(400).json({ success: false, message: "Order not found" });
+    }
+
+    res.status(200).json({ success: true, orders: [order] });
 }
 
 const generateID = () => {

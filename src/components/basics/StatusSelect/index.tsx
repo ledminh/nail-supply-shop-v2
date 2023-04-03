@@ -13,6 +13,7 @@ import { StatusValue } from "@/types/order";
 
 export interface Props  {
     onSave: (status: StatusValue) => void;
+    initStatusValue: StatusValue;
 };
 
 type StatusSelect = FC<Props>;
@@ -22,7 +23,7 @@ type StatusItem = {
     label: StatusValue;
 }
 
-const StatusSelectCPN:StatusSelect = ({onSave}) => {
+const StatusSelectCPN:StatusSelect = ({onSave, initStatusValue}) => {
     const [statusItems, setStatusItems] = useState<StatusItem[]>([]);
     const [currentStatus, setCurrentStatus] = useState<StatusItem|null>(null);
     const [tempStatus, setTempStatus] = useState<StatusItem|null>(null);
@@ -39,9 +40,14 @@ const StatusSelectCPN:StatusSelect = ({onSave}) => {
             };
         });
         
+        const initStatusItem = statusItems.find((item) => item.value === initStatusValue) as StatusItem;
+
+        setCurrentStatus(initStatusItem);
+        setTempStatus(initStatusItem);
+
         setStatusItems(statusItems);
-        setCurrentStatus(statusItems[0]);
-        setTempStatus(statusItems[0]);
+
+
     }, []);
 
     const SelectCPN = statusItems.length > 0  && tempStatus && currentStatus ? (

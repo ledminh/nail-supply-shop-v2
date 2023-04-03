@@ -4,7 +4,7 @@ import * as AboutUsModel  from './models/aboutUs';
 import * as OrderModel  from './models/order';
 
 import type { DBProduct, DBProductGroup } from '@/types/product';
-
+import type { StatusValue } from '@/types/order';
 
 /********************************************************
  * CATEGORY
@@ -169,4 +169,16 @@ export const getOrders = async () => {
     const orders = OrderModel.find();    
 
     return orders;
+}
+
+export const deleteOrder = async (id: string) => {
+    const order = OrderModel.deleteOrder(id);
+
+    return order;
+}
+
+export const updateOrderStatus = async (id: string, status: StatusValue) => {
+    const order = OrderModel.updateOrderStatus(id, status);
+
+    return order;
 }

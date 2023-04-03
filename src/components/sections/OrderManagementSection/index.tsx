@@ -6,6 +6,7 @@ import { useState, useEffect } from "react";
 import { Order, StatusValue } from "@/types/order";
 
 import axios from "axios";
+import { orderStatus } from "@/config";
 
 type ControlProps = {
     status: StatusValue;
@@ -45,10 +46,39 @@ export default function OrderManagementSection({ }: Props) {
     };
 
     const onStatusChange = (id: string, status: StatusValue) => {
-        console.log(id, status);
+        axios.post(`/api/orders/?type=status&id=${id}&status=${status}`)
+            .then(({data}) => {
+                if(data.success) {
+                    const updatedOrder = data.orders[0];
+                    console.log(updatedOrder);
+                    setOrders(orders.map(order => {
+                        if(order.id === updatedOrder.id) {
+                            return updatedOrder;
+                        }
+                        return order;
+                    }));
+                }
+                else {
+                    throw new Error(data.message);
+                }
+                })
+            .catch(err => {
+                throw err;
+            });
+        
     };
 
     const onOrderDelete = (id: string) => {
+
+        axios.post(`/api/orders/?type=delete&id=${id}`)
+            .then(({data}) => {
+                if(data.success) {
+                    setOrders(orders.filter(order => order.id !== id));
+                }
+                else {
+                    throw new Error(data.message);
+                }
+            });
     };
 
     return (

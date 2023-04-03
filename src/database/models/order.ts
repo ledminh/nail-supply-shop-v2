@@ -1,11 +1,43 @@
+import { orderStatus } from '@/config';
 import ordersJSON from '../jsons/orders.json';
-import type { Order } from '@/types/order';
+import type { Order, StatusValue } from '@/types/order';
 
+
+const orders:Order[] = ordersJSON as Order[];
 
 
 
 export function find() {
-    const orders = ordersJSON;
 
     return Promise.resolve(orders);
+}
+
+export function deleteOrder(id: string) {
+    const order = orders.find((order) => order.id === id);
+
+    if(!order) {
+        return Promise.reject(new Error('Order not found'));
+    }
+
+    const index = orders.indexOf(order);
+
+    orders.splice(index, 1);
+
+    return Promise.resolve(order);
+}
+
+export function updateOrderStatus(id: string, status: StatusValue) {
+    const order = orders.find((order) => order.id === id);
+
+    if(!order) {
+        return Promise.reject(new Error('Order not found'));
+    }
+
+    order.status = {
+        value: status,
+        lastUpdated: new Date().toISOString(),
+        description: orderStatus[status]
+    };
+
+    return Promise.resolve(order);
 }
