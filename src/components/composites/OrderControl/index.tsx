@@ -17,11 +17,16 @@ export interface Props {
     }) => void;
 }
 
+type StatusItem = {
+    value: StatusValue;
+    label: string;
+}
+
 
 export default function OrderControl({ onChange }: Props) {
 
-
-    const [curStatus, setCurStatus] = useState(statusItems[0]);
+    const [statusItems, setStatusItems] = useState<StatusItem[]>([]);
+    const [curStatus, setCurStatus] = useState<StatusItem|null>(null);
     const [curMonthYear, setCurMonthYear] = useState(monthYearItems[0]);
     const [curMonth, setCurMonth] = useState(monthItems[0]);
     const [curYear, setCurYear] = useState(yearItems[0]);
@@ -29,8 +34,22 @@ export default function OrderControl({ onChange }: Props) {
     const [curQuery, setCurQuery] = useState('');
 
     useEffect(() => {
+        const statusItems = Object.entries(orderStatus).map(([key, value]) => {
+            const _value = value as StatusValue;
+        
+            return {
+                value: _value,
+                label: key,
+            };
+        });
+        
+        setStatusItems(statusItems);
+        setCurStatus(statusItems[0]);
+    }, []);
+
+    useEffect(() => {
         onChange({
-            status: curStatus.value,
+            status: curStatus!.value,
             month: curMonth.value,
             year: curYear.value,
             sort: curSort.value,
@@ -48,7 +67,7 @@ export default function OrderControl({ onChange }: Props) {
                     selectClass = {styles.selectStatus}
                     optionClass = {styles.optionStatus}
                     optionItems = {statusItems}
-                    initOptionItem = {curStatus}
+                    initOptionItem = {curStatus!}
                     onChange = {(status) => setCurStatus(status)}
                     />
                 <Select
@@ -109,18 +128,8 @@ OrderControl.displayName = "OrderControl";
 /***************************
  * Filter and Sort Options *
  */
-    // status items
 
 
-
-const statusItems = Object.entries(orderStatus).map(([key, value]) => {
-    const _value = value as StatusValue;
-
-    return {
-        value: _value,
-        label: key,
-    };
-});
 
     // month or year
 const monthYearItems = [

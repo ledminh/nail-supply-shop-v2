@@ -7,7 +7,7 @@ import Select from "@/components/generics/Select";
 
 import { orderStatus } from "@/config";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { StatusValue } from "@/types/order";
 
 
@@ -17,12 +17,31 @@ export interface Props  {
 
 type StatusSelect = FC<Props>;
 
+type StatusItem = {
+    value: StatusValue;
+    label: string;
+}
 
 const StatusSelectCPN:StatusSelect = ({onSave}) => {
-    const [currentStatus, setCurrentStatus] = useState(statusItems[0]);
+    const [statusItems, setStatusItems] = useState<StatusItem[]>([]);
+    const [currentStatus, setCurrentStatus] = useState<StatusItem|null>(null);
     const [tempStatus, setTempStatus] = useState(statusItems[0]);
 
     const [showSelect, setShowSelect] = useState(false);
+
+    useEffect(() => {
+        const statusItems = Object.entries(orderStatus).map(([key, value]) => {
+            const _value = value as StatusValue;
+        
+            return {
+                value: _value,
+                label: key,
+            };
+        });
+        
+        setStatusItems(statusItems);
+        setCurrentStatus(statusItems[0]);
+    }, []);
 
     const SelectCPN = (
         <div className={styles.selectBlock}>
@@ -35,7 +54,7 @@ const StatusSelectCPN:StatusSelect = ({onSave}) => {
             />
             <button className={styles.save}
                 onClick={() => {
-                    onSave(tempStatus.label);
+                    onSave(tempStatus.value);
                     setCurrentStatus(tempStatus);
                     setShowSelect(false);
                 }}
@@ -45,7 +64,7 @@ const StatusSelectCPN:StatusSelect = ({onSave}) => {
             <button className={styles.cancel}
                 onClick={() => {
                     setShowSelect(false);
-                    setTempStatus(currentStatus);
+                    setTempStatus(currentStatus!);
                 }}
             >
                 Cancel
@@ -56,11 +75,11 @@ const StatusSelectCPN:StatusSelect = ({onSave}) => {
     const DisplayCPN = (
         <div className={styles.displayBlock}>
             <div className={styles.value}>
-                {currentStatus.label}
+                {currentStatus!.label}
             </div>
             <button className={styles.changeButton}
                 onClick={() => {
-                    setTempStatus(currentStatus);
+                    setTempStatus(currentStatus!);
                     setShowSelect(true)
                 }}
             >
@@ -81,8 +100,3 @@ const StatusSelectCPN:StatusSelect = ({onSave}) => {
 export default StatusSelectCPN;
 
 StatusSelectCPN.displayName = "StatusSelectCPN";
-
-const statusItems = Object.entries(orderStatus).map(([key, value]) => ({
-    value: value,
-    label: key as StatusValue,
-}));
