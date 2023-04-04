@@ -1,12 +1,11 @@
 import { GetServerSideProps } from 'next';
 
-import { useState } from 'react';
-import { useRouter } from 'next/router';
-
+import { useState, useEffect } from 'react';
 import PageLayout from '@/components/layouts/PageLayout'
 import { ContactInfo } from '@/types/others';
 import { Category } from '@/types/category';
 
+import { useRouter } from 'next/router';
 import styles from '@/styles/pages/Category.module.scss'
 import CategoryInfo from '@/components/composites/CategoryInfo';
 import SortAndOrder from '@/components/composites/SortAndOrder';
@@ -16,12 +15,12 @@ import { categoryConfig } from '@/config';
 import { ProductGroup, Product } from '@/types/product';
 import { ListCondition } from '@/types/list-conditions';
 import ButtonCPN from '@/components/basics/ButtonCPN';
-import useSortAndOrder from '@/hooks/useSortAndOrder';
-import useProducts from '@/hooks/useProducts';
 import { useCart } from '@contexts/CartContext';
 import Select, { convertToOptionItem } from '@/components/generics/Select';
 
 import { getAboutUsData, getCategories, getProducts } from '@/database';
+
+import axios from 'axios';
 
 
 export interface Props {
@@ -29,32 +28,86 @@ export interface Props {
 
   contactInfo: ContactInfo,
   aboutUsFooter: string,
-  currentCategory: Category,
+  initCategory: Category,
   categories: Category[],
   products: (Product|ProductGroup)[],
-  numProducts: number,
   initCondition: ListCondition,
 
 };
 
-export default function CategoryPage({errorMessage, contactInfo, aboutUsFooter, currentCategory, categories, products, numProducts, initCondition }:Props) {
+export default function CategoryPage({errorMessage, contactInfo, aboutUsFooter, initCategory, categories, products, initCondition }:Props) {
 
   if(errorMessage) {
     throw new Error(errorMessage);
   }
 
-  const [firstLoad, setFirstLoad] = useState(true);
-
   const router = useRouter();
 
+  const { sortItems, sortedOrderItems, productsPerPage } = categoryConfig;
 
-  const { id:categoryID, name, image, description } = currentCategory;
-  const {sortItems, sortedOrderItems, productsPerPage} = categoryConfig;
+  const [curCategory, setCurCategory] = useState(initCategory);
+  const [_products, setProducts] = useState<(Product|ProductGroup)[]>(products);
+  const [condition, setCondition] = useState<ListCondition>(initCondition);
+  const [offset, setOffset] = useState(0);
 
 
-  const {_products, setProducts, loadMore, isLoadMoreNeeded} = useProducts({products, categoryID, numProducts, productsPerPage});
+  useEffect(() => {
 
-  const {sortAndOrderOnChange} = useSortAndOrder({router, setProducts, categoryID, productsPerPage, firstLoad, setFirstLoad});
+    const loadOptions = {
+      type: 'load',
+      catSlug: curCategory.slug,
+      sort: condition.sort!.value,
+      sortedOrder: condition.sortedOrder!.value,
+      offset,
+      limit: productsPerPage
+    }
+
+    axios.post("/api/products", loadOptions)
+      .then(({data}) => {
+        if(data.success) {
+          setProducts([..._products, ...data.products]);
+        }
+      })
+      .catch(err => {
+        throw new Error(err);
+      });
+
+  }, [offset, curCategory, condition]);
+
+
+
+  const sortAndOrderOnChange = ({sort, sortedOrder}:ListCondition) => {
+  
+    setOffset(0);
+    setCondition({sort, sortedOrder});
+
+    router.push(`/category/${curCategory.slug}?sort=${sort!.value}&sortedOrder=${sortedOrder!.value}`, undefined, {shallow: true});
+
+  }
+
+  const onCategoryChange = (optionItem: ReturnType<typeof convertToOptionItem>) => {
+    const cat = categories.find(cat => cat.slug === optionItem.value);
+
+    if(!cat) {
+      throw new Error("Category not found");
+    }
+
+    setCurCategory(cat);
+
+    router.push(`/category/${cat.slug}?sort=${condition.sort!.value}&sortedOrder=${condition.sortedOrder!.value}`, undefined, {shallow: true});
+  }
+
+  const loadMore = () => {
+    if(_products.length === curCategory.numProducts) {
+      return;
+    }
+
+    setOffset(offset + productsPerPage);
+
+    
+  }
+
+
 
   const {addToCart} = useCart();
 
@@ -67,9 +120,9 @@ export default function CategoryPage({errorMessage, contactInfo, aboutUsFooter, 
       <div className={styles.wrapper}>
         <aside className={styles.aside}>
           <CategoryInfo
-            name = {name}
-            image = {image}
-            description = {description}
+            name = {curCategory.name}
+            image = {curCategory.image}
+            description = {curCategory.description}
           />
           <SortAndOrder
             sortItems = {sortItems}
@@ -81,8 +134,8 @@ export default function CategoryPage({errorMessage, contactInfo, aboutUsFooter, 
               selectClass = {styles.categorySelect}
               optionClass = {styles.categoryOption}
               optionItems = {categories.map(convertCategoryToOptionItem)}
-              initOptionItem = {convertCategoryToOptionItem(currentCategory)}
-              onChange = {(cat) => {router.push(`/category/${cat.value}`)}}
+              initOptionItem = {convertCategoryToOptionItem(curCategory)}
+              onChange = {onCategoryChange}
             />
         </aside>
         <div className={styles.main}>
@@ -95,7 +148,7 @@ export default function CategoryPage({errorMessage, contactInfo, aboutUsFooter, 
           </div>
           <div className={styles.button}>
             {
-              isLoadMoreNeeded && (
+              _products.length < curCategory.numProducts  && (
                 <ButtonCPN
                   label = "Load More"
                   type="normal"
@@ -166,10 +219,10 @@ export const getServerSideProps:GetServerSideProps = async (context) => {
     const contactInfo = aboutUsRes.data!.contactInfo;
     const categories = categoriesRes.data;
 
-    const currentCategory = categories.find(cat => cat.slug === slug);
+    const initCategory = categories.find(cat => cat.slug === slug);
 
 
-    if(!currentCategory) {
+    if(!initCategory) {
       throw new Error("Category not found");
     }
     
@@ -180,14 +233,13 @@ export const getServerSideProps:GetServerSideProps = async (context) => {
         contactInfo,
         aboutUsFooter,
         categories,
-        currentCategory,
+        initCategory,
         products,
         initCondition: {
           sort: sortItem,
           sortedOrder: sortedOrderItem,
         },
 
-        numProducts: 10,
       }
     }
   }

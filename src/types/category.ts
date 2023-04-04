@@ -6,7 +6,8 @@ export interface Category {
     slug: string;
     name: string;
     description: string;
-    image: RemoteImage
+    image: RemoteImage;
+    numProducts: number;
 }
 
 
