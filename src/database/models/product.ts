@@ -1,42 +1,83 @@
 import productsJSON from '../jsons/products.json';
-import type { DBProduct, DBProductGroup, ProductGroup } from '@/types/product';
+import categoryJSON from '../jsons/categories.json';
 
+import type { DBProduct, DBProductGroup } from '@/types/product';
+import type { Category } from '@/types/category';
+
+const CATEGORIES = categoryJSON as Category[];
+const PRODUCTS = productsJSON as (DBProduct|DBProductGroup)[];
 
 
 /******************************
  *  FIND PRODUCT/PRODUCT GROUP
  ******************************/
+type FindProductResponse = {
+    success: true;
+    data: DBProduct|DBProductGroup| (DBProduct|DBProductGroup)[];
+} | {
+    success: false;
+    message: string;
+}
+
+
 type findProps = {
     catID?: string;
     id?: string;
-    sort?: {
-        [key: string]: number;
-    };
-    limit?: number;
+    catSlug?: string;
 }
 
-export function find({catID, id, sort, limit}:findProps) {
+export function find({catID, catSlug, id}:findProps):Promise<FindProductResponse> {
     
-    let products: (DBProduct|DBProductGroup)[] = productsJSON;
+    let products: (DBProduct|DBProductGroup)[] = [];
 
     if(catID) {
-        products = products.filter((product) => product.categoryID === catID);
+        products = PRODUCTS.filter((product) => product.categoryID === catID);
         
-        return Promise.resolve(products);
+        return Promise.resolve({
+            success: true,
+            data: products
+        });
     }
+
+    if(catSlug) {
+        const category = CATEGORIES.find((category) => category.slug === catSlug);
+
+        if(category) {
+            products = PRODUCTS.filter((product) => product.categoryID === category.id);
+            return Promise.resolve({
+                success: true,
+                data: products
+            });
+        } else {
+            return Promise.reject({
+                success: false,
+                message: 'Category not found'
+            });
+        }
+    }
+
 
     if(id) {
         const product = products.find((product) => product.id === id);
         
         if(product) 
-            return Promise.resolve(product);
+            return Promise.resolve({
+                success: true,
+                data: product
+            });
         else 
-            return Promise.reject(new Error('Product not found'));
+            return Promise.reject({
+                success: false,
+                message: 'Product not found'
+            });
     }
 
 
 
-    return Promise.reject(new Error('Something went wrong in database product.find'));
+    return Promise.reject({
+        success: false,
+        message: 'Product not found'
+    });
     
 }
 

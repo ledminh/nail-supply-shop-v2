@@ -37,35 +37,29 @@ export function getCategories({}:getCategoriesProps) {
 
 type getProductsProps = {
     catID?: string;
-    newest?: boolean;
-    mostPopular?: boolean;
+    catSlug?: string;
 }
 
-export function getProducts({catID, newest, mostPopular}:getProductsProps) {
+export function getProducts({catID, catSlug }:getProductsProps) {
 
-    if(catID) {
-        return ProductModel.find({catID: catID});
+    let options = {};
+
+    if (catID) {
+        options = {
+            catID
+        }
     }
 
-    if(newest) {
-        return ProductModel.find({
-            sort: {
-                dateCreated: -1
-            },
-            limit: 6
-        });
+    if (catSlug) {
+        options = {
+            ...options,
+            catSlug
+        }
     }
 
-    if(mostPopular) {
-        return ProductModel.find({
-            sort: {
-                sold: -1
-            },
-            limit: 6
-        });
-    }
 
-    return Promise.reject(new Error('Something went wrong in database/getProducts'));
+    return ProductModel.find(options);
+    
 }
 
 /**************************

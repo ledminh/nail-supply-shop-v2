@@ -21,7 +21,7 @@ import useProducts from '@/hooks/useProducts';
 import { useCart } from '@contexts/CartContext';
 import Select, { convertToOptionItem } from '@/components/generics/Select';
 
-import { getAboutUsData } from '@/database';
+import { getAboutUsData, getCategories, getProducts } from '@/database';
 
 
 export interface Props {
@@ -131,39 +131,7 @@ export const getServerSideProps:GetServerSideProps = async (context) => {
   const { slug } = params;
 
   if(!sort || !sortedOrder) {
-    let sortItem = categoryConfig.sortItems[0];
-    let sortedOrderItem = categoryConfig.sortedOrderItems[0];
-
-    if(sort) {
-      const sortItemIndex = categoryConfig.sortItems.findIndex(item => item.value === sort);
-
-      if(sortItemIndex !== -1) {
-        sortItem = categoryConfig.sortItems[sortItemIndex];
-      }
-    }
-
-    if(sortedOrder) {
-      const sortedOrderItemIndex = categoryConfig.sortedOrderItems.findIndex(item => item.value === sortedOrder);
-
-      if(sortedOrderItemIndex !== -1) {
-        sortedOrderItem = categoryConfig.sortedOrderItems[sortedOrderItemIndex];
-      }
-    }
-
-    const queryParams = {
-      sort: sortItem.value,
-      sortedOrder: sortedOrderItem.value,
-    };
-
-    return {
-      redirect: {
-        destination: `/category/${slug}?${new URLSearchParams(queryParams)}`,
-        permanent: true,
-      },
-    };
-
-    
-  
+    return redirectToSortedPage(sort, sortedOrder, slug);
   }
 
 
@@ -177,48 +145,6 @@ export const getServerSideProps:GetServerSideProps = async (context) => {
     };
     
     
-  const categories:Category[] = [
-      {
-          ...categorySample,
-          id: "1",
-          slug: "category-1"
-      },
-      {
-          ...categorySample,
-          id: "2",
-          slug: "category-2"
-      },
-      {
-          ...categorySample,
-          id: "3",
-          slug: "category-3"
-      },
-      {
-          ...categorySample,
-          id: "4",
-          slug: "category-4"
-      },
-      {
-          ...categorySample,
-          id: "5",
-          slug: "category-5"
-      },
-      {
-          ...categorySample,
-          id: "6",
-          slug: "category-6"
-      },
-      {
-          ...categorySample,
-          id: "7",
-          slug: "category-7"
-      },
-      {
-          ...categorySample,
-          id: "8",
-          slug: "category-8"
-      },
-  ];
 
   const productSample = {
     id: "1",
@@ -299,7 +225,9 @@ export const getServerSideProps:GetServerSideProps = async (context) => {
 
 
   try {
-    const [aboutUsRes] = await Promise.all([getAboutUsData()]);
+    const [aboutUsRes, categoriesRes, productsRes] = await Promise.all([getAboutUsData(), getCategories({}), getProducts({catSlug: slug})]);
+
+
 
     if(!aboutUsRes.success) {
       return {
@@ -309,16 +237,43 @@ export const getServerSideProps:GetServerSideProps = async (context) => {
       }
     }
 
+    if(!categoriesRes.success) {
+      return {
+        props: {
+          errorMessage: categoriesRes.message
+        }
+      }
+    }
+
+    if(!productsRes.success) {
+      return {
+        props: {
+          errorMessage: productsRes.message
+        }
+      }
+    }
+
+
     const aboutUsFooter = aboutUsRes.data!.aboutUsFooter;
     const contactInfo = aboutUsRes.data!.contactInfo;
+    const categories = categoriesRes.data;
+
+    const currentCategory = categories.find(cat => cat.slug === slug);
+
+
+    if(!currentCategory) {
+      throw new Error("Category not found");
+    }
     
+    const products = productsRes.data;
+
     return {
       props: {
         contactInfo,
         aboutUsFooter,
         categories,
-        currentCategory: categories[1],
-        products: productWithGroupSamples,
+        currentCategory,
+        products,
         initCondition: {
           sort: sortItem,
           sortedOrder: sortedOrderItem,
@@ -340,4 +295,32 @@ export const getServerSideProps:GetServerSideProps = async (context) => {
 
 }
 
+
+/****************************
+ * Helper Functions
+ */
+
+const redirectToSortedPage = (sort:string | string[] | undefined, sortedOrder:string | string[] | undefined, slug: string) => {
+
+  let sortItemIndex = sort? categoryConfig.sortItems.findIndex(item => item.value === sort) : 0;
+  let sortedOrderItemIndex = sortedOrder? categoryConfig.sortedOrderItems.findIndex(item => item.value === sortedOrder) : 0;
+
+
+  const sortItem = categoryConfig.sortItems[sortItemIndex === -1? 0 : sortItemIndex];
+  const sortedOrderItem = categoryConfig.sortedOrderItems[sortedOrderItemIndex === -1? 0 : sortedOrderItemIndex];
+  
+  const queryParams = {
+    sort: sortItem.value,
+    sortedOrder: sortedOrderItem.value,
+  };
+
+
+  return {
+    redirect: {
+      destination: `/category/${slug}?${new URLSearchParams(queryParams)}`,
+      permanent: true,
+    },
+  };
+
+}
 
