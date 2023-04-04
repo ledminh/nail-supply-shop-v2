@@ -15,8 +15,8 @@ const useProducts = ({products, categoryID, numProducts, productsPerPage}:Props)
     const [isLoadMoreNeeded, setIsLoadMoreNeeded] = useState<boolean>(products.length < numProducts);
 
     useEffect(() => {
-        setIsLoadMoreNeeded(products.length < numProducts);
-    }, [products, numProducts]);
+        setIsLoadMoreNeeded(_products.length < numProducts);
+    }, [_products, numProducts]);
 
 
     const loadMore = () => {

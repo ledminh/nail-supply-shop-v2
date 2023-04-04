@@ -52,21 +52,11 @@ export default function CategoryPage({errorMessage, contactInfo, aboutUsFooter, 
   const {sortItems, sortedOrderItems, productsPerPage} = categoryConfig;
 
 
-  const {_products, setProducts, loadMore, isLoadMoreNeeded} = useProducts({products, categoryID, numProducts, productsPerPage})
+  const {_products, setProducts, loadMore, isLoadMoreNeeded} = useProducts({products, categoryID, numProducts, productsPerPage});
 
   const {sortAndOrderOnChange} = useSortAndOrder({router, setProducts, categoryID, productsPerPage, firstLoad, setFirstLoad});
 
   const {addToCart} = useCart();
-
-
-  const convertCategoryToOptionItem = (category: Category) => {
-
-    const getValue = (category: Category) => category.slug;
-    const getLabel = (category: Category) => category.name;
-
-    return convertToOptionItem({item:category, getValue, getLabel});
-
-  }
 
 
   return (
@@ -242,3 +232,11 @@ const redirectToSortedPage = (sort:string | string[] | undefined, sortedOrder:st
 
 }
 
+const convertCategoryToOptionItem = (category: Category) => {
+
+  const getValue = (category: Category) => category.slug;
+  const getLabel = (category: Category) => category.name;
+
+  return convertToOptionItem({item:category, getValue, getLabel});
+
+}

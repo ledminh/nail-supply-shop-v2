@@ -145,7 +145,13 @@ const getProducts = (catID: string, res:NextApiCategoryResponse) => {
 
 
 const deleteSingleProduct = (id: string, res:NextApiCategoryResponse) => {
-  DB.getProduct({id}).then((product) => {
+  DB.getProduct({id}).then((dBRes) => {
+    if(!dBRes.success) {
+      return res.status(500).json({ success: false, message: dBRes.message });
+    }
+
+    const product = dBRes.data;
+
     if(product) {
 
       if(Array.isArray(product) || !isProduct(product)) return;
@@ -168,7 +174,14 @@ const deleteSingleProduct = (id: string, res:NextApiCategoryResponse) => {
 }
 
 const deleteGroup = (id: string, res:NextApiCategoryResponse) => {
-  DB.getProduct({id}).then((group) => {
+  DB.getProduct({id}).then((dBRes) => {
+    if(!dBRes.success) {
+      return res.status(500).json({ success: false, message: dBRes.message });
+    }
+
+    const group = dBRes.data;
+
+
     if(group) {
 
       if(Array.isArray(group) || isProduct(group)) return;
@@ -303,8 +316,14 @@ const updateProduct = (req: NextApiRequest, res: NextApiCategoryResponse) => {
     const newImages:ProductImage[] = JSON.parse(images);
 
     if(typeof groupID === 'string') {
-      DB.getProduct({id: groupID}).then((group) => {
-        if(!group || Array.isArray(group) || isProduct(group)) {
+      DB.getProduct({id: groupID}).then((dBRes) => {
+        if(!dBRes.success) {
+          return res.status(500).json({ success: false, message: dBRes.message });
+        }
+
+        const group = dBRes.data;
+
+        if(Array.isArray(group) || isProduct(group)) {
           return res.status(404).json({ success: false, message: 'Product not found' });
         }
 
@@ -347,8 +366,14 @@ const updateProduct = (req: NextApiRequest, res: NextApiCategoryResponse) => {
     }
 
 
-    DB.getProduct({id: serialNumber}).then((product) => {
-      if(!product || Array.isArray(product) || !isProduct(product)) {
+    DB.getProduct({id: serialNumber}).then((dBRes) => {
+      if(!dBRes.success) {
+        return res.status(500).json({ success: false, message: dBRes.message });
+      }
+
+      const product = dBRes.data;
+
+      if(Array.isArray(product) || !isProduct(product)) {
         return res.status(404).json({ success: false, message: 'Product not found' });
       }
 
@@ -415,7 +440,13 @@ const updateGroup = (req: NextApiRequest, res: NextApiCategoryResponse) => {
 
     const newProducts:DBProduct[] = JSON.parse(products);
 
-    DB.getProduct({id}).then((group) => {
+    DB.getProduct({id}).then((dBRes) => {
+      if(!dBRes.success) {
+        return res.status(500).json({ success: false, message: dBRes.message });
+      }
+
+      const group = dBRes.data;
+      
       if(!group || Array.isArray(group) || isProduct(group)) {
         return res.status(404).json({ success: false, message: 'Product not found' });
       }
