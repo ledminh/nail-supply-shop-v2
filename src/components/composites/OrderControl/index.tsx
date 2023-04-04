@@ -1,20 +1,16 @@
 import Select from "@/components/generics/Select";
 import styles from "@styles/composites/OrderControl.module.scss";
 import SearchBarCPN from "../SearchBar";
-import { orderStatus } from "@/config";
 
-import { StatusValue } from "@/types/order";
+import { FilterOrder, StatusValue } from "@/types/order";
+
+import { orderStatus } from "@/config";
 
 import { useState, useEffect } from "react";
 
 export interface Props {
-    onChange: (options: {
-        status: StatusValue | 'all';
-        month: string|null;
-        year: string|null;
-        sort: string;
-        query: string;
-    }) => void;
+    onChange: (filter:FilterOrder) => void;
+    initFilter: FilterOrder;
 }
 
 type StatusItem = {
@@ -27,76 +23,135 @@ type Item = {
     label: string;
 }
 
-export default function OrderControl({ onChange }: Props) {
+export default function OrderControl({ onChange, initFilter }: Props) {
 
     const [statusItems, setStatusItems] = useState<StatusItem[]>([]);
+    const [filter, setFilter] = useState<FilterOrder>(initFilter);
+    const [curMonthYear, setCurMonthYear] = useState(monthYearItems[0]);
+
+    const [monthItems, setMonthItems] = useState<Item[]>([]);
+    const [yearItems, setYearItems] = useState<Item[]>([]);
+
+
+
     const [curStatus, setCurStatus] = useState<StatusItem|null>(null);
-    const [curMonthYear, setCurMonthYear] = useState<Item|null>(null);
     const [curMonth, setCurMonth] = useState<Item|null>(null);
     const [curYear, setCurYear] = useState<Item|null>(null);
     const [curSort, setCurSort] = useState<Item|null>(null);
-    const [curQuery, setCurQuery] = useState('');
+    const [curQuery, setCurQuery] = useState("");
 
+
+        
     useEffect(() => {
-        const statusItems:StatusItem[] = [{
+        const statusItems = [{
             value: 'all',
             label: 'all',
         },
-        ...Object.entries(orderStatus).map(([key, value]) => {
-            const _key = key as StatusValue;
-        
+            ...Object.entries(orderStatus).map(([key, value]) => {
             return {
-                value: _key,
-                label: _key,
+                value: key as StatusValue,
+                label: key as StatusValue,
             };
-        })];
-        
+        })] as StatusItem[];
+
+        const monthItems = getMonthItems();
+        const yearItems = getYearItems();
+
         setStatusItems(statusItems);
-        setCurStatus(statusItems[0]);
-        setCurMonthYear(monthYearItems[0]);
+        setMonthItems(monthItems);
+        setYearItems(yearItems);
 
-        if(monthYearItems[0].value === 'month') {
-            setCurMonth(monthItems[0]);
-        }
-        else if(monthYearItems[0].value === 'year') {
-            setCurYear(yearItems[0]);
-        }
+        const curStatus = statusItems.find((item) => item.value === filter.status) || statusItems[0];
+        setCurStatus(curStatus);
 
-        setCurSort(sortItems[0]);
-
-    }, []);
-
-    useEffect(() => {
-        if(!curMonthYear) return;
+        const curSort = sortItems.find((item) => item.value === filter.sort) || sortItems[0];
+        setCurSort(curSort);
 
         if(curMonthYear.value === 'month') {
+            const curMonth = monthItems.find((item) => item.value === filter.month) || monthItems[0];
+            setCurMonth(curMonth);
             setCurYear(null);
-            setCurMonth(monthItems[0]);
         }
-        else if(curMonthYear.value === 'year') {
+        else {
+            const curYear = yearItems.find((item) => item.value === filter.year) || yearItems[0];
+            setCurYear(curYear);
             setCurMonth(null);
+        }
+    }, []);   
+    
+    
+    
+    useEffect(() => {
+        onChange(filter);
+    }, [filter]);
+
+    const onStatusChange = (status: StatusItem) => {
+        setCurStatus(status);
+
+        setFilter({
+            ...filter,
+            status: status.value,
+        });
+    }
+
+    const onMonthYearChange = (monthYear: Item) => {
+        setCurMonthYear(monthYear);
+
+        if(monthYear.value === 'month') {
+            setCurMonth(monthItems[0]);
+            setCurYear(null);
+        }
+        else {
             setCurYear(yearItems[0]);
+            setCurMonth(null);
         }
 
-    }, [curMonthYear]);
-
-
-    useEffect(() => {
-        if(!curStatus || !curMonthYear || !curSort) return;
-        
-        onChange({
-            status: curStatus.value,
-            month: curMonth? curMonth.value: null,
-            year: curYear? curYear.value : null,
-            sort: curSort.value,
-            query: curQuery,
+        setFilter({
+            ...filter,
+            month: monthYear.value === 'month' ? monthItems[0].value : null,
+            year: monthYear.value === 'year' ? yearItems[0].value : null,
         });
-    }, [curStatus, curMonth, curYear, curSort, curQuery]);
+    }
+
+    const onMonthChange = (month: Item) => {
+        setCurMonth(month);
+
+        setFilter({
+            ...filter,
+            month: month.value,
+        });
+    }
+
+    const onYearChange = (year: Item) => {
+        setCurYear(year);
+
+        setFilter({
+            ...filter,
+            year: year.value,
+        });
+    }
+
+    const onSortChange = (sort: Item) => {
+        setCurSort(sort);
+    
+        setFilter({
+            ...filter,
+            sort: sort.value,
+        });
+    }
+
+    const onQueryChange = (query: string) => {
+        setCurQuery(query);
+
+        setFilter({
+            ...filter,
+            query,
+        });
+
+    }
 
 
-    if(statusItems.length === 0 || curStatus === null || curMonthYear === null || curSort === null) return <>Loading</>
-
-
+    if(!curStatus || !curMonthYear || !curSort) return null;
 
 
     return (
@@ -110,14 +165,14 @@ export default function OrderControl({ onChange }: Props) {
                     optionClass = {styles.optionStatus}
                     optionItems = {statusItems}
                     initOptionItem = {curStatus}
-                    onChange = {(status) => setCurStatus(status)}
+                    onChange = {onStatusChange}
                     />
                 <Select
                     selectClass = {styles.selectMonthYear}
                     optionClass = {styles.optionMonthYear}
                     optionItems = {monthYearItems}
                     initOptionItem = {curMonthYear}
-                    onChange = {(monthYear) => setCurMonthYear(monthYear)}
+                    onChange = {onMonthYearChange}
                     />
                 {
                     curMonthYear.value === 'month' && curMonth &&(
@@ -126,7 +181,7 @@ export default function OrderControl({ onChange }: Props) {
                             optionClass = {styles.optionMonth}
                             optionItems = {monthItems}
                             initOptionItem = {curMonth}
-                            onChange = {(month) => setCurMonth(month)}
+                            onChange = {onMonthChange}
                             />
                     )
                 }
@@ -137,14 +192,14 @@ export default function OrderControl({ onChange }: Props) {
                             optionClass = {styles.optionYear}
                             optionItems = {yearItems}
                             initOptionItem = {curYear}
-                            onChange = {(year) => setCurYear(year)}
+                            onChange = {onYearChange}
                             />
                     )
                 }
             </section>
             <section className={styles.searchBar}>
                 <SearchBarCPN
-                    onSearchSubmit = {(query) => setCurQuery(query)}
+                    onSearchSubmit = {onQueryChange}
                     placeholder = "Order number ..."
                     />
             </section>
@@ -157,7 +212,7 @@ export default function OrderControl({ onChange }: Props) {
                     optionClass = {styles.optionSort}
                     optionItems = {sortItems}
                     initOptionItem = {curSort}
-                    onChange = {(sort) => setCurSort(sort)}
+                    onChange = {onSortChange}
                     />
             </section> 
         </section>
@@ -206,7 +261,6 @@ const getMonthItems = () => {
 };
 
 
-const monthItems = getMonthItems();
 
 
 // get year items from now back to 10 years ago in  format "YYYY"
@@ -224,7 +278,6 @@ const getYearItems = () => {
     return yearItems;
 };
 
-const yearItems = getYearItems();
 
 // sort items "Newest to Oldest" and "Oldest to Newest"
 

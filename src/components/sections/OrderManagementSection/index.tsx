@@ -1,9 +1,12 @@
 import OrderControl from "@/components/composites/OrderControl";
 import OrderList from "@/components/composites/OrderList";
 import styles from "@styles/sections/OrderManagementSection.module.scss";
+import { orderStatus } from "@/config";
 
 import { useState, useEffect } from "react";
 import { Order, StatusValue } from "@/types/order";
+
+
 
 import axios from "axios";
 
@@ -11,41 +14,45 @@ import { FilterOrder } from "@/types/order";
 
 
 
-type ControlProps = FilterOrder
     
 export interface Props {
 }
 
 
-
 export default function OrderManagementSection({ }: Props) {
 
     const [orders, setOrders] = useState<Order[]>([]);
+    const [filter, setFilter] = useState<FilterOrder|null>(null);
+    
+    
+    useEffect(() => {
+        const initFilter: FilterOrder = {
+            status: 'all',
+            month: getMonthItems()[0].value,
+            year: null,
+            sort: 'newest',
+            query: '',
+        }
 
-    // useEffect(() => {
-    //     axios.get('/api/orders')
-    //         .then(({data}) => {
-    //             if(data.success)
-    //                 setOrders(data.orders);
-    //             else {
-    //                 throw new Error(data.message);
-    //             }
-    //         })
-    //         .catch(err => {
-    //             throw err;
-    //         });
-    // }, []);
+        setFilter(initFilter);
+
+        axios.post(`/api/orders/?type=filter`, initFilter)
+            .then(({data}) => {
+                if(data.success) {
+                    setOrders(data.orders);
+                }
+                else {
+                    throw new Error(data.message);
+                }
+            });
+    }, []);
+    
 
 
-    const onControlChange = ({ status, month, year, sort, query}: ControlProps) => {
+
+    const onControlChange = (filter:FilterOrder) => {
         
-        axios.post(`/api/orders/?type=filter`, {
-            status,
-            month,
-            year,
-            sort,
-            query,
-            })
+        axios.post(`/api/orders/?type=filter`, filter)
             .then(({data}) => {
                 if(data.success) {
                     setOrders(data.orders);
@@ -94,9 +101,14 @@ export default function OrderManagementSection({ }: Props) {
 
     return (
         <section className={styles.wrapper}>
-            <OrderControl
-                onChange={onControlChange}
-            />
+            {
+                filter && (
+                    <OrderControl
+                        onChange={onControlChange}
+                        initFilter={filter}
+                    />
+                )
+            }
             <OrderList
                 orders = {orders} 
                 onStatusChange = {onStatusChange}
@@ -109,13 +121,30 @@ export default function OrderManagementSection({ }: Props) {
 OrderManagementSection.displayName = "OrderManagementSection";
 
 
-const getCurrentMonthYear = () => {
-    const date = new Date();
-    const month = date.getMonth() + 1;
-    const year = date.getFullYear();
 
-    return {
-        month,
-        year,
-    };
-}
+// get month items from now back to 12 months ago in  format "MM/YYYY"
+const getMonthItems = () => {
+    const monthItems = [];
+    const now = new Date();
+    const year = now.getFullYear();
+    const month = now.getMonth() + 1;
+    for (let i = 0; i < 12; i++) {
+        const curMonth  = month > i? month - i: month - i + 12;
+        const curYear = month > i? year: year - 1;
+
+
+        const monthItem = {
+            label: `${curMonth}/${curYear}`,
+            value: `${curMonth}/${curYear}`
+        };
+        monthItems.push(monthItem);
+    }
+    return monthItems;
+};
+
+
+const monthItems = getMonthItems();
+
+
+
+

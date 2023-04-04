@@ -69,6 +69,8 @@ export function filterOrders({status, month, year, sort, query}: FilterOrder) {
         });
     }
 
+    console.log(filteredOrders);
+
     if(year !== null) {
         filteredOrders = filteredOrders.filter((order) => {
             const date = new Date(order.status.lastUpdated);
