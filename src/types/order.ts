@@ -27,8 +27,14 @@ export type StatusValue =  "processing" | "shipped" | "delivered" ;
 
 export type FilterOrder = {
     status: StatusValue | 'all';
-    month: string | null;
-    year: string | null;
+    month: string;
+    year: null;
+    sort: string;
+    query: string;
+} | {
+    status: StatusValue | 'all';
+    month: null;
+    year: string;
     sort: string;
     query: string;
 };

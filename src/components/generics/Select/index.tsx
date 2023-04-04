@@ -1,7 +1,7 @@
 import React, { FC, useState, useEffect } from "react";
 import styles from "@styles/generics/Select.module.scss";
 
-export type OptionItem<T> = T & {
+export type OptionItem<T = any> = T & {
     value: string;
     label: string;
 };
@@ -27,10 +27,6 @@ function Select<T>  ({
         ) || optionItems[0]
     );
 
-    useEffect(() => {
-        onChange(selectedOption);
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [selectedOption]);
 
     const selectClasses = [styles.wrapper, selectClass].join(" ");
     const optionClasses = [styles.option, optionClass].join(" ");
@@ -41,6 +37,7 @@ function Select<T>  ({
         );
         if (selectedOption) {
         setSelectedOption(selectedOption);
+        onChange(selectedOption);
         }
     };
 

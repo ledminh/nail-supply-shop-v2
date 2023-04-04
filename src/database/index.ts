@@ -183,8 +183,8 @@ export const updateOrderStatus = async (id: string, status: StatusValue) => {
     return order;
 }
 
-export const filterOrders = async ({status, month, year, sort, query}:FilterOrder) => {
-    const orders = OrderModel.filterOrders({status, month, year, sort, query});
+export const filterOrders = async (filter:FilterOrder) => {
+    const orders = OrderModel.filterOrders(filter);
 
     return orders;
 }

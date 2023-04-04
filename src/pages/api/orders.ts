@@ -103,9 +103,9 @@ const updateOrderStatus = async (id: string, status: StatusValue, res: NextApiCa
     res.status(200).json({ success: true, orders: [order] });
 }
 
-const filterOrders = async ({status, month, year, sort, query}:FilterOrder, res: NextApiCategoryResponse) => {
+const filterOrders = async (filter:FilterOrder, res: NextApiCategoryResponse) => {
 
-    const orders = await DB.filterOrders({status, month, year, sort, query});
+    const orders = await DB.filterOrders(filter);
 
     res.status(200).json({ success: true, orders });
 }

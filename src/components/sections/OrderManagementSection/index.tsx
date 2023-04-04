@@ -6,11 +6,14 @@ import { orderStatus } from "@/config";
 import { useState, useEffect } from "react";
 import { Order, StatusValue } from "@/types/order";
 
+import { MONTH_ITEMS, YEAR_ITEMS } from "./data";
+
 
 
 import axios from "axios";
 
 import { FilterOrder } from "@/types/order";
+import { FilterChangeOptions } from "@/components/composites/OrderControl/type";
 
 
 
@@ -18,39 +21,20 @@ import { FilterOrder } from "@/types/order";
 export interface Props {
 }
 
+const initFilter: FilterOrder = {
+    status: 'all',
+    month: MONTH_ITEMS[0].value,
+    year: null,
+    sort: 'newest',
+    query: '',
+}
 
 export default function OrderManagementSection({ }: Props) {
 
     const [orders, setOrders] = useState<Order[]>([]);
-    const [filter, setFilter] = useState<FilterOrder|null>(null);
-    
+    const [filter, setFilter] = useState(initFilter);
     
     useEffect(() => {
-        const initFilter: FilterOrder = {
-            status: 'all',
-            month: getMonthItems()[0].value,
-            year: null,
-            sort: 'newest',
-            query: '',
-        }
-
-        setFilter(initFilter);
-
-        axios.post(`/api/orders/?type=filter`, initFilter)
-            .then(({data}) => {
-                if(data.success) {
-                    setOrders(data.orders);
-                }
-                else {
-                    throw new Error(data.message);
-                }
-            });
-    }, []);
-    
-
-
-
-    const onControlChange = (filter:FilterOrder) => {
         
         axios.post(`/api/orders/?type=filter`, filter)
             .then(({data}) => {
@@ -61,6 +45,55 @@ export default function OrderManagementSection({ }: Props) {
                     throw new Error(data.message);
                 }
             });
+    }, []);
+    
+    useEffect(() => {
+        
+        axios.post(`/api/orders/?type=filter`, filter)
+            .then(({data}) => {
+                if(data.success) {
+                    setOrders(data.orders);
+                }
+                else {
+                    throw new Error(data.message);
+                }
+            });
+    }, [filter]);
+    
+
+    const onFilterChange = ({status, month, year, sort, query}:FilterChangeOptions) => {
+        
+        
+        const newFilter = {...filter};
+
+        if(status) {
+            newFilter.status = status;
+            
+        }
+
+        if(month) {
+            newFilter.month = month;
+            newFilter.year = null;
+        }
+
+        if(year) {
+            newFilter.year = year;
+            newFilter.month = null;
+        }
+
+        if(sort) {
+            newFilter.sort = sort;
+        }
+
+        if(query) {
+            newFilter.query = query;
+        }
+
+
+
+        setFilter(newFilter);
+
+        
     };
 
     const onStatusChange = (id: string, status: StatusValue) => {
@@ -68,7 +101,7 @@ export default function OrderManagementSection({ }: Props) {
             .then(({data}) => {
                 if(data.success) {
                     const updatedOrder = data.orders[0];
-                    console.log(updatedOrder);
+
                     setOrders(orders.map(order => {
                         if(order.id === updatedOrder.id) {
                             return updatedOrder;
@@ -85,6 +118,7 @@ export default function OrderManagementSection({ }: Props) {
             });
         
     };
+
 
     const onOrderDelete = (id: string) => {
 
@@ -104,8 +138,9 @@ export default function OrderManagementSection({ }: Props) {
             {
                 filter && (
                     <OrderControl
-                        onChange={onControlChange}
-                        initFilter={filter}
+                        onFilterChange={onFilterChange}
+                        monthItems={MONTH_ITEMS}
+                        yearItems={YEAR_ITEMS}
                     />
                 )
             }

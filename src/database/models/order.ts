@@ -57,19 +57,24 @@ export function filterOrders({status, month, year, sort, query}: FilterOrder) {
     }
 
 
+
     if(month !== null) {
         
         filteredOrders = filteredOrders.filter((order) => {
             const date = new Date(order.status.lastUpdated);
-            const month = (date.getMonth() + 1).toString();
-            const year = date.getFullYear().toString();
+            const lastUpdatedMonth = (date.getMonth() + 1).toString();
+            const lastUpdatedYear = date.getFullYear().toString();
 
+            const monthQuery = month.substring(0, month.indexOf('/'));
+            const yearQuery = month.substring(month.indexOf('/') + 1);
+            
 
-            return date.getMonth().toString() === month + '/' + year;
+            return lastUpdatedMonth === monthQuery && lastUpdatedYear === yearQuery;
         });
+
+
     }
 
-    console.log(filteredOrders);
 
     if(year !== null) {
         filteredOrders = filteredOrders.filter((order) => {
@@ -78,14 +83,14 @@ export function filterOrders({status, month, year, sort, query}: FilterOrder) {
         });
     }
 
-    if(sort === 'newest') {
+    if(sort === 'oldest') {
         filteredOrders = filteredOrders.sort((a, b) => {
             const dateA = new Date(a.status.lastUpdated);
             const dateB = new Date(b.status.lastUpdated);
 
             return dateA.getTime() - dateB.getTime();
         });
-    } else if(sort === 'oldest') {
+    } else if(sort === 'newest') {
         filteredOrders = filteredOrders.sort((a, b) => {
             const dateA = new Date(a.status.lastUpdated);
             const dateB = new Date(b.status.lastUpdated);
