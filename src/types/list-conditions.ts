@@ -1,7 +1,7 @@
-type SortType = 'name' | 'price';
+export type SortType = 'name' | 'price';
 type SortLabel = 'Name' | 'Price';
 
-type SortedOrderType = 'asc' | 'desc'; 
+export type SortedOrderType = 'asc' | 'desc'; 
 type SortedOrderLabel = 'Ascending' | 'Descending';
 
 export type SortItem = {

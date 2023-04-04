@@ -3,6 +3,8 @@ import categoryJSON from '../jsons/categories.json';
 
 import type { DBProduct, DBProductGroup } from '@/types/product';
 import type { Category } from '@/types/category';
+import { SortType, SortedOrderType } from '@/types/list-conditions';
+import isProduct from '@/utils/isProduct';
 
 const CATEGORIES = categoryJSON as Category[];
 const PRODUCTS = productsJSON as (DBProduct|DBProductGroup)[];
@@ -20,65 +22,78 @@ type FindProductResponse = {
 }
 
 
-type findProps = {
-    catID?: string;
-    id?: string;
-    catSlug?: string;
+export type FindProductOptions = {
+    catID?: string, catSlug?: string, sort?: SortType, sortedOrder?: SortedOrderType, offset?: number, limit?: number, id?: string
 }
 
-export function find({catID, catSlug, id}:findProps):Promise<FindProductResponse> {
+export function find(options: FindProductOptions):Promise<FindProductResponse> {
+    let products = PRODUCTS;
     
-    let products: (DBProduct|DBProductGroup)[] = [];
+    if(options.id) {
+        const product = PRODUCTS.find((product) => product.id === options.id);
 
-    if(catID) {
-        products = PRODUCTS.filter((product) => product.categoryID === catID);
-        
-        return Promise.resolve({
-            success: true,
-            data: products
-        });
+        if(product) {
+            return Promise.resolve({success: true, data: product});
+        }
+
+        return Promise.reject({success: false, message: 'Product not found'});
     }
 
-    if(catSlug) {
-        const category = CATEGORIES.find((category) => category.slug === catSlug);
+    if(options.catID) {
+        products = products.filter((product) => product.categoryID === options.catID);
+    }
+
+    if(options.catSlug) {
+        const category = CATEGORIES.find((category) => category.slug === options.catSlug);
 
         if(category) {
-            products = PRODUCTS.filter((product) => product.categoryID === category.id);
-            return Promise.resolve({
-                success: true,
-                data: products
-            });
-        } else {
-            return Promise.reject({
-                success: false,
-                message: 'Category not found'
-            });
+            products = products.filter((product) => product.categoryID === category.id);
         }
     }
 
+    if(options.sort) {
+        products = products.sort((a, b) => {
+            if(options.sort === 'name') {
+                if(a.name < b.name) {
+                    return -1;
+                }
+                if(a.name > b.name) {
+                    return 1;
+                }
+                return 0;
+            }
+            else if(options.sort === 'price') {
+                const aPrice = isProduct(a)?  a.price : a.products[0].price;
+                const bPrice = isProduct(b)?  b.price : b.products[0].price;
 
-    if(id) {
-        const product = products.find((product) => product.id === id);
-        
-        if(product) 
-            return Promise.resolve({
-                success: true,
-                data: product
-            });
-        else 
-            return Promise.reject({
-                success: false,
-                message: 'Product not found'
-            });
+                if(aPrice < bPrice) {
+                    return -1;
+                }
+                if(aPrice > bPrice) {
+                    return 1;
+                }
+                return 0;
+            }
+            else {
+                return 0;
+            }
+            
+        });
     }
 
+    if(options.sortedOrder === 'desc') {
+        products = products.reverse();
+    }
 
+    if(options.offset) {
+        products = products.slice(options.offset);
+    }
 
-    return Promise.reject({
-        success: false,
-        message: 'Product not found'
-    });
-    
+    if(options.limit) {
+        products = products.slice(0, options.limit);
+    }
+
+    return Promise.resolve({success: true, data: products});
 }
 
 

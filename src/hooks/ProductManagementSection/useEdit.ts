@@ -24,7 +24,6 @@ type Props = {
 function useEdit({products, currentCategory, setProducts, openEditProduct, openEditGroup, setReloadProducts}:Props) {
 
 
-
     const onEditProduct = ({productID, groupID}: {productID:string, groupID?:string}) => {
         let product: Product;
 

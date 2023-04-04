@@ -54,7 +54,6 @@ export default function CategoryPage({errorMessage, contactInfo, aboutUsFooter, 
   useEffect(() => {
 
     const loadOptions = {
-      type: 'load',
       catSlug: curCategory.slug,
       sort: condition.sort!.value,
       sortedOrder: condition.sortedOrder!.value,

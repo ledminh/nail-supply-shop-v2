@@ -35,28 +35,8 @@ export function getCategories({}:getCategoriesProps) {
  * getProducts
  */
 
-type getProductsProps = {
-    catID?: string;
-    catSlug?: string;
-}
 
-export function getProducts({catID, catSlug }:getProductsProps) {
-
-    let options = {};
-
-    if (catID) {
-        options = {
-            catID
-        }
-    }
-
-    if (catSlug) {
-        options = {
-            ...options,
-            catSlug
-        }
-    }
-
+export function getProducts(options:ProductModel.FindProductOptions) {
 
     return ProductModel.find(options);
     
