@@ -9,9 +9,13 @@ import type { DBProduct, DBProductGroup, ProductGroup } from '@/types/product';
 type findProps = {
     catID?: string;
     id?: string;
+    sort?: {
+        [key: string]: number;
+    };
+    limit?: number;
 }
 
-export function find({catID, id}:findProps) {
+export function find({catID, id, sort, limit}:findProps) {
     
     let products: (DBProduct|DBProductGroup)[] = productsJSON;
 
@@ -29,6 +33,7 @@ export function find({catID, id}:findProps) {
         else 
             return Promise.reject(new Error('Product not found'));
     }
+
 
 
     return Promise.reject(new Error('Something went wrong in database product.find'));

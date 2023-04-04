@@ -5,14 +5,23 @@ import PageLayout from '@/components/layouts/PageLayout';
 import TabLayout from '@/components/layouts/TabLayout';
 
 import { adminConfig } from '@/config';
+import { getAboutUsData } from '@/database';
 
 export interface Props {
+  errorMessage?: string,
+
   contactInfo: ContactInfo;
-  aboutTextFooter: string;
+  aboutUsFooter: string;
 }
 
 export default function AdminPage(props: Props) {
-  const { contactInfo, aboutTextFooter } = props;
+  const { errorMessage, contactInfo, aboutUsFooter } = props;
+
+  if (errorMessage) {
+    throw new Error(errorMessage);
+  }
+
+
   const router = useRouter();
   let { section_slug } = router.query;
 
@@ -34,7 +43,7 @@ export default function AdminPage(props: Props) {
   const { component: SectionComponent } = section;
 
   return (
-    <PageLayout contactInfo={contactInfo} aboutText={aboutTextFooter}>
+    <PageLayout contactInfo={contactInfo} aboutText={aboutUsFooter}>
       <TabLayout tabs={sections} currentTabSlug={section_slug}>
         <SectionComponent />
       </TabLayout>
@@ -44,27 +53,37 @@ export default function AdminPage(props: Props) {
 
 AdminPage.displayName = 'AdminPage';
 
-export const getServerSideProps:GetServerSideProps<Props> = async (context) => {  
+export const getServerSideProps = async () => {  
 
 
-  const aboutTextFooter = "Nail Essential is a family-owned business that has been providing high-quality nail care products to professionals and enthusiasts for over 20 years. Our mission is to make it easy for our customers to find the products they need to create beautiful and healthy nails. We take pride in offering a wide selection of top-quality products, competitive pricing, and exceptional customer service. Thank you for choosing Nail Essential for all of your nail care needs."
+  try {
+    const aboutUsRes = await getAboutUsData();
 
-  const contactInfo:ContactInfo = {
-      email: "customer.service@example.com",
-      phone: "1-800-555-5555",
-      additionalInfos: [
-          "Monday - Friday: 9:00am - 5:00pm EST",
-          "Saturday: 10:00am - 2:00pm EST",
-          "Sunday: Closed"
-      ]
-  }
+    if(!aboutUsRes.success) {
+      return {
+        props: {
+          errorMessage: aboutUsRes.message
+        }
+      }
+    }
 
-
-  return {
-    props: {
-      contactInfo,
-      aboutTextFooter,
-
+    const aboutUsFooter = aboutUsRes.data!.aboutUsFooter;
+    const contactInfo = aboutUsRes.data!.contactInfo;
+    
+    return {
+      props: {
+        contactInfo,
+        aboutUsFooter,
+        
+      }
     }
   }
+  catch (err:any) {
+    return {
+      props: {
+        errorMessage: err.message
+      }
+    }
+  }
+
 }

@@ -15,6 +15,7 @@ type Response = {
 }
 
 export function getAboutUsData(): Promise<Response> {
+    
     return Promise.resolve({success: true, data: aboutUs});
 }
 

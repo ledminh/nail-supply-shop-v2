@@ -21,9 +21,14 @@ import useProducts from '@/hooks/useProducts';
 import { useCart } from '@contexts/CartContext';
 import Select, { convertToOptionItem } from '@/components/generics/Select';
 
+import { getAboutUsData } from '@/database';
+
+
 export interface Props {
+  errorMessage?: string,
+
   contactInfo: ContactInfo,
-  aboutTextFooter: string,
+  aboutUsFooter: string,
   currentCategory: Category,
   categories: Category[],
   products: (Product|ProductGroup)[],
@@ -32,7 +37,11 @@ export interface Props {
 
 };
 
-export default function CategoryPage({contactInfo, aboutTextFooter, currentCategory, categories, products, numProducts, initCondition }:Props) {
+export default function CategoryPage({errorMessage, contactInfo, aboutUsFooter, currentCategory, categories, products, numProducts, initCondition }:Props) {
+
+  if(errorMessage) {
+    throw new Error(errorMessage);
+  }
 
   const [firstLoad, setFirstLoad] = useState(true);
 
@@ -63,7 +72,7 @@ export default function CategoryPage({contactInfo, aboutTextFooter, currentCateg
   return (
     <PageLayout
       contactInfo = {contactInfo}
-      aboutText = {aboutTextFooter}
+      aboutText = {aboutUsFooter}
     >
       <div className={styles.wrapper}>
         <aside className={styles.aside}>
@@ -115,7 +124,7 @@ export default function CategoryPage({contactInfo, aboutTextFooter, currentCateg
 
 CategoryPage.displayName = "Category";
 
-export const getServerSideProps:GetServerSideProps<Props> = async (context) => {
+export const getServerSideProps:GetServerSideProps = async (context) => {
   
   const { sort, sortedOrder } = context.query;
   const params = context.params as {slug: string};
@@ -155,21 +164,6 @@ export const getServerSideProps:GetServerSideProps<Props> = async (context) => {
 
     
   
-  }
-
-
-
-
-  const aboutTextFooter = "Nail Essential is a family-owned business that has been providing high-quality nail care products to professionals and enthusiasts for over 20 years. Our mission is to make it easy for our customers to find the products they need to create beautiful and healthy nails. We take pride in offering a wide selection of top-quality products, competitive pricing, and exceptional customer service. Thank you for choosing Nail Essential for all of your nail care needs."
-
-  const contactInfo:ContactInfo = {
-      email: "customer.service@example.com",
-      phone: "1-800-555-5555",
-      additionalInfos: [
-          "Monday - Friday: 9:00am - 5:00pm EST",
-          "Saturday: 10:00am - 2:00pm EST",
-          "Sunday: Closed"
-      ]
   }
 
 
@@ -304,31 +298,46 @@ export const getServerSideProps:GetServerSideProps<Props> = async (context) => {
   const sortedOrderItem = sortedOrderItemIndex !== -1? categoryConfig.sortedOrderItems[sortedOrderItemIndex]: categoryConfig.sortedOrderItems[0];
 
 
+  try {
+    const [aboutUsRes] = await Promise.all([getAboutUsData()]);
 
+    if(!aboutUsRes.success) {
+      return {
+        props: {
+          errorMessage: aboutUsRes.message
+        }
+      }
+    }
 
-  
+    const aboutUsFooter = aboutUsRes.data!.aboutUsFooter;
+    const contactInfo = aboutUsRes.data!.contactInfo;
+    
+    return {
+      props: {
+        contactInfo,
+        aboutUsFooter,
+        categories,
+        currentCategory: categories[1],
+        products: productWithGroupSamples,
+        initCondition: {
+          sort: sortItem,
+          sortedOrder: sortedOrderItem,
+        },
 
-
-
-
-
-  return {
-    props: {
-      contactInfo,
-      aboutTextFooter,
-      categories,
-
-      currentCategory: categories[1],
-      products: productWithGroupSamples,
-      initCondition: {
-        sort: sortItem,
-        sortedOrder: sortedOrderItem,
-      },
-
-      numProducts: 10,
-      
+        numProducts: 10,
+      }
     }
   }
+  catch (err:any) {
+    return {
+      props: {
+        errorMessage: err.message
+      }
+    }
+  }  
+
+
+
 }
 
 

@@ -8,19 +8,21 @@ import {getAboutUsData} from '@/database';
 
 
 export interface Props {
-  contactInfo: ContactInfo,
-  aboutTextFooter: string,
+  errorMessage?: string,
   aboutUsData: AboutUsData
 };
 
 
-export default function AboutPage({contactInfo, aboutTextFooter, aboutUsData }:Props) {
-
+export default function AboutPage({errorMessage, aboutUsData }:Props) {
+  
+  if(errorMessage) {
+    throw new Error(errorMessage);
+  }
   
   return (
     <PageLayout
-      contactInfo = {contactInfo}
-      aboutText = {aboutTextFooter}
+      contactInfo = {aboutUsData.contactInfo}
+      aboutText = {aboutUsData.aboutUsFooter}
     >
       <div className={styles.wrapper}>
         <section className={styles.missionStatement}>
@@ -53,33 +55,35 @@ export default function AboutPage({contactInfo, aboutTextFooter, aboutUsData }:P
 AboutPage.displayName = "AboutPage";
 
 export const getServerSideProps = async () => {
-  
-  const aboutTextFooter = "Nail Essential is a family-owned business that has been providing high-quality nail care products to professionals and enthusiasts for over 20 years. Our mission is to make it easy for our customers to find the products they need to create beautiful and healthy nails. We take pride in offering a wide selection of top-quality products, competitive pricing, and exceptional customer service. Thank you for choosing Nail Essential for all of your nail care needs."
-
-const contactInfo:ContactInfo = {
-    email: "customer.service@example.com",
-    phone: "1-800-555-5555",
-    additionalInfos: [
-        "Monday - Friday: 9:00am - 5:00pm EST",
-        "Saturday: 10:00am - 2:00pm EST",
-        "Sunday: Closed"
-    ]
-}
-
-const dbRes = await getAboutUsData();
-
-if(!dbRes.success) 
-  throw new Error("Error while fetching data from database");
+ 
 
 
+  try {
+    const aboutUsRes = await getAboutUsData();
 
-  return {
-    props: {
-      contactInfo,
-      aboutTextFooter,
-      aboutUsData: dbRes.data
+    if(!aboutUsRes.success) {
+      return {
+        props: {
+          errorMessage: aboutUsRes.message
+        }
+      }
+    }
+
+    return {
+      props: {
+        aboutUsData: aboutUsRes.data
+      }
     }
   }
+  catch (err:any) {
+    return {
+      props: {
+        errorMessage: err.message
+      }
+    }
+  }
+
+  
 }
 
 
