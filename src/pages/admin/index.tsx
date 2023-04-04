@@ -17,7 +17,6 @@ const AdminIndexPage = () => {
 
     return null;
 
-    return null;
 };
 
 export default AdminIndexPage;

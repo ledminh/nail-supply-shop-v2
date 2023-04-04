@@ -14,7 +14,6 @@ import CategoryManagementSection from '@components/sections/CategoryManagementSe
 import ProductManagementSection from '@components/sections/ProductManagementSection';
 import AboutUsManagementSection from '@components/sections/AboutUsManagementSection';
 import OrderManagementSection from '@components/sections/OrderManagementSection';
-import OthersManagementSection from '@components/sections/OthersManagementSection';
 import { StatusValue } from './types/order';
 
 
@@ -182,13 +181,7 @@ const adminSections: AdminSection[] = [
         name: "Orders",
         slug: "orders",
         component: OrderManagementSection
-    },
-    {
-        id: "admin/others",
-        name: "Others",
-        slug: "others",
-        component: OthersManagementSection
-    },
+    }
 ]
     
 
