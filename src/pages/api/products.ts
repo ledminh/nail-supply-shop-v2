@@ -93,7 +93,3 @@ const getProducts = (options: FindProductOptions, res:NextApiCategoryResponse) =
   });
 
 }
-
-    
-
-
