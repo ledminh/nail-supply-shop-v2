@@ -6,6 +6,7 @@ import type { Category } from '@/types/category';
 import { SortType, SortedOrderType } from '@/types/list-conditions';
 import isProduct from '@/utils/isProduct';
 
+
 const CATEGORIES = categoryJSON as Category[];
 const PRODUCTS = productsJSON as (DBProduct|DBProductGroup)[];
 
@@ -23,12 +24,23 @@ type FindProductResponse = {
 
 
 export type FindProductOptions = {
-    catID?: string, catSlug?: string, sort?: SortType, sortedOrder?: SortedOrderType, offset?: number, limit?: number, id?: string
+    catID?: string, catSlug?: string, sort?: SortType, sortedOrder?: SortedOrderType, offset?: number, limit?: number, id?: string, name?:string, groupName?: string
 }
 
 export function find(options: FindProductOptions):Promise<FindProductResponse> {
     let products = PRODUCTS;
     
+    if(options.name) {
+        const name = options.name.toLowerCase();
+        products = products.filter((product) => product.name.toLowerCase().includes(name.toLowerCase()));
+
+        if(products.length === 0) {
+            return Promise.reject({success: false, message: 'Product not found'});
+        }
+
+        return Promise.resolve({success: true, data: products});
+    }
+
     if(options.id) {
         const product = PRODUCTS.find((product) => product.id === options.id);
 
@@ -38,6 +50,20 @@ export function find(options: FindProductOptions):Promise<FindProductResponse> {
 
         return Promise.reject({success: false, message: 'Product not found'});
     }
+
+    if(options.groupName) {
+        const productGroup = PRODUCTS.find((product) => isProduct(product) === false && product.name === options.groupName);
+
+
+        
+        if(productGroup) {
+            const group = productGroup as DBProductGroup;
+            return Promise.resolve({success: true, data: group.products});
+        }
+
+        return Promise.reject({success: false, message: 'Product group not found'});
+    }
+
 
     if(options.catID) {
         products = products.filter((product) => product.categoryID === options.catID);

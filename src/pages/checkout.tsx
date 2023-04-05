@@ -13,6 +13,7 @@ import Link from 'next/link';
 import { useState, useEffect } from 'react';
 
 import { getAboutUsData } from '@/database';
+import { useCart } from '@/contexts/CartContext';
 
 
 export interface Props {
@@ -32,7 +33,7 @@ export default function Checkout({errorMessage, contactInfo, aboutUsFooter }:Pro
   
 
   useEffect(() => {
-    if (isValidShippingAddress(shippingAddress) && orderedProducts.length > 0) {
+    if (isValidShippingAddress(shippingAddress) && cart.length > 0) {
       setIsCheckoutDisabled(false);
     }
     else {
@@ -45,7 +46,7 @@ export default function Checkout({errorMessage, contactInfo, aboutUsFooter }:Pro
     setShippingAddress(shippingAddress);
   }
 
-
+  const {cart} = useCart();
 
 
   return (
@@ -59,14 +60,14 @@ export default function Checkout({errorMessage, contactInfo, aboutUsFooter }:Pro
           <Link className={styles.editCart} href="/cart">Edit Cart</Link>
         </section>
         <section className={styles.orderDetail}>
-          <OrderDetail orderedProducts={orderedProducts}/>
+          <OrderDetail orderedProducts={cart}/>
         </section>
         <section className={styles.payment}>
           <h3 className={styles.paymentTitle}>Payment</h3>
           <ShippingAddressForm 
             onChange={onShippingAddressChange}
           />
-          <StripeCheckoutButtonCPN orderedProducts={orderedProducts} email={shippingAddress?.email} disabled={isCheckoutDisabled}/>  
+          <StripeCheckoutButtonCPN orderedProducts={cart} email={shippingAddress?.email} disabled={isCheckoutDisabled}/>  
         </section>
       </div>
     </PageLayout>
@@ -75,48 +76,6 @@ export default function Checkout({errorMessage, contactInfo, aboutUsFooter }:Pro
 
 Checkout.displayName = "Checkout";
 
-const orderedProducts = [
-  {
-    id: "1",
-    name: "Nail Essential 1",
-    price: 10,
-    quantity: 1,
-    image: {
-      src: "/images/placeholder_1.png",
-      alt: "Nail Essential 1"
-    }
-  },
-  {
-    id: "2",
-    name: "Nail Essential 2",
-    price: 20,
-    quantity: 2,
-    image: {
-      src: "/images/placeholder_2.png",
-      alt: "Nail Essential 2"
-    }
-  },
-  {
-    id: "3",
-    name: "Nail Essential 3",
-    price: 30,
-    quantity: 3,
-    image: {
-      src: "/images/placeholder_3.png",
-      alt: "Nail Essential 3"
-    }
-  },
-  {
-    id: "4",
-    name: "Nail Essential 4",
-    price: 40,
-    quantity: 4,
-    image: {
-      src: "/images/placeholder_4.png",
-      alt: "Nail Essential 4"
-    }
-  },
-]
 
 
 export const getServerSideProps = async () => {

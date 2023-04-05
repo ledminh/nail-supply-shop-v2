@@ -196,8 +196,6 @@ const featuredProductGroups = [
       },
     ]
 
-
-
     
     return {
       props: {

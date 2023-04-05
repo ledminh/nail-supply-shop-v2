@@ -19,6 +19,7 @@ import QuantityPickerCPN from '@/components/basics/QuantityPicker';
 import { ProductImage } from '@/types/product';
 import { useCart } from '@/contexts/CartContext';
 
+import { getProducts, getProduct, getCategories } from '@/database';
 import { getAboutUsData } from '@/database';
 
 
@@ -143,140 +144,10 @@ export const getServerSideProps:GetServerSideProps = async (context) => {
   const {id} = context.params as {id: string};
 
 
-  const images =  [
-    {
-      id: "img-1",
-      src: "https://picsum.photos/seed/picsum/200/200",
-      alt: "Product Image 1"
-    },
-    {
-      id: "img-2",
-      src: "https://picsum.photos/seed/picsum/200/200",
-      alt: "Product Image 2"
-    },
-    {
-      id: "img-3",
-      src: "https://picsum.photos/seed/picsum/200/200",
-      alt: "Product Image 3"
-    },
-    {
-      id: "img-4",
-      src: "https://picsum.photos/seed/picsum/200/200",
-      alt: "Product Image 4"
-    },
-    
-  ]
-
-  const categorySample = {
-    image: {
-      src: "https://loremflickr.com/400/400",
-      alt: "Category Image",
-    },
-    name: "Category Name",
-    description: "lore ipsum dolor sit amet ronco aenean donec dolor lorem etiam kwon",
-  };
-
-  const categories:Category[] = [
-    {
-      ...categorySample,
-      id: "1",
-      slug: "category-1"
-    },
-    {
-      ...categorySample,
-      id: "2",
-      slug: "category-2"
-    },
-    {
-      ...categorySample,
-      id: "3",
-      slug: "category-3"
-    },
-    {
-      ...categorySample,
-      id: "4",
-      slug: "category-4"
-    },
-    {
-      ...categorySample,
-      id: "5",
-      slug: "category-5"
-    },
-    {
-      ...categorySample,
-      id: "6",
-      slug: "category-6"
-    },
-    {
-      ...categorySample,
-      id: "7",
-      slug: "category-7"
-    },
-    {
-      ...categorySample,
-      id: "8",
-      slug: "category-8"
-    },
-  ]
-
-  const productSample = {
-    id: "1",
-    name: "Product Name",
-    price: 100,
-    intro: "This is some intro text. I'm trying to make it longer to see if it fit on the frame",
-    details: "This is some details text. I'm trying to make it longer to see if it fit on the frame. Something more to say here to make it longer, and even longer, longer, longer",
-    categoryID: "1",
-    images: [
-      {
-        id: "img-1",
-        src: "https://picsum.photos/seed/picsum/200/200",
-        alt: "Product Image 1"
-      },
-      {
-        id: "img-2",
-        src: "https://picsum.photos/seed/picsum/200/200",
-        alt: "Product Image 2"
-      },
-      {
-        id: "img-3",
-        src: "https://picsum.photos/seed/picsum/200/200",
-        alt: "Product Image 3"
-      }
-    ]
-  }
-  
-  const productSamples = [
-    {
-      ...productSample,
-      name: 'Product Name 1',
-      id: "1"
-    },
-    {
-      ...productSample,
-      name: 'Product Name 2',
-      id: "2"
-    },
-    {
-      ...productSample,
-      name: 'Product Name 3',
-      id: "3"
-    },
-    {
-      ...productSample,
-      name: 'Product Name 4',
-      id: "4"
-    },
-    {
-      ...productSample,
-      name: 'Product Name 5',
-      id: "5"
-    }
-  ]
-
 
 
   try {
-    const [aboutUsRes] = await Promise.all([getAboutUsData()]);
+    const [aboutUsRes, productRes, categoriesRes] = await Promise.all([getAboutUsData(), getProduct({id}), getCategories({})]);
 
     if(!aboutUsRes.success) {
       return {
@@ -286,24 +157,73 @@ export const getServerSideProps:GetServerSideProps = async (context) => {
       }
     }
 
+    if(!productRes.success) {
+      return {
+        props: {
+          errorMessage: productRes.message
+        }
+      }
+    }
+
+    if(!categoriesRes.success) {
+      return {
+        props: {
+          errorMessage: categoriesRes.message
+        }
+      }
+    }
+
     const aboutUsFooter = aboutUsRes.data!.aboutUsFooter;
     const contactInfo = aboutUsRes.data!.contactInfo;
+    const product = productRes.data as Product;
+    const categories = categoriesRes.data;
+
+    if(!product.groupName) {
+      return {
+        props: {
+          contactInfo,
+          aboutUsFooter,
+          productID: id,
+          images:product.images,
+          name: product.name,
+          intro: product.intro,
+          details: product.details,
+          price: product.price,
+          
+          categoryID: product.categoryID,
+          categories,
+        }
+      }
+    }
+
+
+    const otherProductsRes = await getProducts({groupName: product.groupName});
     
+    if(!otherProductsRes.success) {
+      return {
+        props: {
+          errorMessage: otherProductsRes.message
+        }
+      }
+    }
+
+    const otherProducts = (otherProductsRes.data as Product[]).filter((p:Product) => p.id !== product.id);
+
     return {
       props: {
         contactInfo,
         aboutUsFooter,
         productID: id,
-        images: images,
-        name: "Product Name",
-        intro: "This is some intro text. I'm trying to make it longer to see if it fit on the frame.",
-        details: "This is some details text. I'm trying to make it longer to see if it fit on the frame. Something more to say here to make it longer, and even longer, longer, longer.",
-        price: 100,
+        images:product.images,
+        name: product.name,
+        intro: product.intro,
+        details: product.details,
+        price: product.price,
         
-        categoryID: "1",
+        categoryID: product.categoryID,
         categories,
-        groupName: "Group Name",
-        otherProducts: productSamples,
+        groupName: product.groupName,
+        otherProducts,
       }
     }
   }

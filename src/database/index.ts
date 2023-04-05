@@ -47,10 +47,11 @@ export function getProducts(options:ProductModel.FindProductOptions) {
  */
 
 type getProductProps = {
-    id: string;
+    id?: string;
+    name?: string;
 }
 
-export const getProduct = ({id}:getProductProps) => ProductModel.find({id});
+export const getProduct = ({id, name}:getProductProps) => ProductModel.find({id, name});
 
 
 
