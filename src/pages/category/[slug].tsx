@@ -1,4 +1,5 @@
 import { GetServerSideProps } from 'next';
+import { Dispatch, SetStateAction } from 'react';
 
 import { useState, useEffect } from 'react';
 import PageLayout from '@/components/layouts/PageLayout'
@@ -21,6 +22,7 @@ import Select, { convertToOptionItem } from '@/components/generics/Select';
 import { getAboutUsData, getCategories, getProducts } from '@/database';
 
 import axios from 'axios';
+import { FindProductOptions } from '@/database/models/product';
 
 
 export interface Props {
@@ -48,36 +50,28 @@ export default function CategoryPage({errorMessage, contactInfo, aboutUsFooter, 
   const [curCategory, setCurCategory] = useState(initCategory);
   const [_products, setProducts] = useState<(Product|ProductGroup)[]>(products);
   const [condition, setCondition] = useState<ListCondition>(initCondition);
-  const [offset, setOffset] = useState(0);
+  
 
 
   useEffect(() => {
-
-    const loadOptions = {
+    const loadOptions:FindProductOptions = {
       catSlug: curCategory.slug,
       sort: condition.sort!.value,
       sortedOrder: condition.sortedOrder!.value,
-      offset,
       limit: productsPerPage
     }
-
+    
     axios.post("/api/products", loadOptions)
       .then(({data}) => {
-        if(data.success) {
-          setProducts([..._products, ...data.products]);
-        }
-      })
-      .catch(err => {
-        throw new Error(err);
+        setProducts(data.products);
       });
 
-  }, [offset, curCategory, condition]);
+  }, [curCategory, condition]);
 
 
 
   const sortAndOrderOnChange = ({sort, sortedOrder}:ListCondition) => {
   
-    setOffset(0);
     setCondition({sort, sortedOrder});
 
     router.push(`/category/${curCategory.slug}?sort=${sort!.value}&sortedOrder=${sortedOrder!.value}`, undefined, {shallow: true});
@@ -101,7 +95,20 @@ export default function CategoryPage({errorMessage, contactInfo, aboutUsFooter, 
       return;
     }
 
-    setOffset(offset + productsPerPage);
+    const loadOptions:FindProductOptions = {
+      catSlug: curCategory.slug,
+      sort: condition.sort!.value,
+      sortedOrder: condition.sortedOrder!.value,
+      limit: productsPerPage,
+      offset: _products.length
+    }
+
+    axios.post("/api/products", loadOptions)
+      .then(({data}) => {
+        setProducts([..._products, ...data.products]);
+      });
+
+
 
     
   }

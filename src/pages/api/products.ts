@@ -3,12 +3,6 @@
 import {Product, ProductGroup} from '@/types/product';
 import type { NextApiRequest, NextApiResponse } from 'next';
 
-import { ProductImage, DBProduct, DBProductGroup } from '@/types/product';
-
-
-import formidable from 'formidable';
-
-import isProduct from '@/utils/isProduct';
 
 import * as DB from '@/database';
 import { FindProductOptions } from '@/database/models/product';
@@ -64,8 +58,6 @@ export default function handler(req: NextApiRequest, res: NextApiCategoryRespons
       res.status(405).json({ success: false, message: `Method ${req.method} not allowed` });
   }
 }
-
-
 
 
 /***************************
