@@ -23,9 +23,7 @@ type FindProductResponse = {
 }
 
 
-export type FindProductOptions = {
-    catID?: string, catSlug?: string, sort?: SortType, sortedOrder?: SortedOrderType, offset?: number, limit?: number, id?: string, name?:string, groupID?: string
-}
+export type FindProductOptions = {catID?: string, catSlug?: string, sort?: SortType, sortedOrder?: SortedOrderType, offset?: number, limit?: number, id?: string, name?:string, groupID?: string, type?: 'product'|'group'}
 
 export function find(options: FindProductOptions):Promise<FindProductResponse> {
     // flat out products   
@@ -38,6 +36,14 @@ export function find(options: FindProductOptions):Promise<FindProductResponse> {
         }
     }
 
+    if(options.type) {
+        if(options.type === 'product') {
+            products = products.filter((product) => isProduct(product));
+        }
+        else if(options.type === 'group') {
+            products = products.filter((product) => !isProduct(product));
+        }
+    }
     
     if(options.name) {
         const name = options.name.toLowerCase();

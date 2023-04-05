@@ -14,6 +14,11 @@ interface Props<T> {
     onChange: (selectedOption: OptionItem<T>) => void;
 }
 
+const HeadOption:OptionItem = {
+    value: "head",
+    label: "Select an option"
+};
+
 function Select<T>  ({
     selectClass,
     optionClass,
@@ -21,11 +26,9 @@ function Select<T>  ({
     initOptionItem,
     onChange,
 }:Props<T>)  {
-    const [selectedOption, setSelectedOption] = useState(
-        optionItems.find(
-        (optionItem) => optionItem.value === initOptionItem?.value
-        ) || optionItems[0]
-    );
+    const _initOptionItem = initOptionItem || HeadOption;
+
+    const [selectedOption, setSelectedOption] = useState(_initOptionItem);
 
 
     const selectClasses = [styles.wrapper, selectClass].join(" ");
@@ -47,6 +50,18 @@ function Select<T>  ({
                 onChange={_onChange}
                 onClick={(e) => e.preventDefault()}
                 >
+                {
+                    !initOptionItem && (
+                        <option
+                            key={HeadOption.value}
+                            className={optionClasses}
+                            value={HeadOption.value}
+                            onClick={(e) => e.preventDefault()}
+                        >
+                            {HeadOption.label}
+                        </option>
+                    )
+                }
         {optionItems.map((optionItem) => (
             <option 
                 key={optionItem.value} 

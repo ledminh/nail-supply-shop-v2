@@ -31,7 +31,6 @@ export default function ProductInfo({ name, intro, groupName, otherProducts, rou
                             selectClass = {styles.select}
                             optionClass = {styles.option}
                             optionItems = {optionItems?? []} 
-                            initOptionItem = {optionItems?.[0]}
                             onChange = {(selectedProduct) => {
                                 router.push(`/product/${selectedProduct.id}`);
                             }}

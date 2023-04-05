@@ -3,7 +3,7 @@
         "id": "grp01_nailpolish_combo",
         "name": "Nail Polish Combo",
         "categoryID": "cat_nail01_polishes",
-        "dateCreated": "2053-04-05",
+        "dateCreated": "3023-04-05",
         "products": [
             {
                 "id": "grp01_prd01_nailpolish_red",
@@ -34,7 +34,7 @@
                 "intro": "A classic red nail polish for a bold and elegant look.",
                 "details": "Our Classic Red Nail Polish offers long-lasting wear and a glossy finish. The quick-drying formula ensures a flawless application every time.",
                 "categoryID": "cat_nail01_polishes",
-                "dateCreated": "2023-01-02",
+                "dateCreated": "3023-01-02",
                 "sellCount": 125,
                 "groupID": "grp01_nailpolish_combo"
             },
@@ -72,7 +72,7 @@
                 "intro": "A vibrant ocean blue nail polish for a refreshing look.",
                 "details": "Our Ocean Blue Nail Polish provides a long-lasting, chip-resistant finish. The fast-drying formula allows for easy and smooth application.",
                 "categoryID": "cat_nail01_polishes",
-                "dateCreated": "2023-01-10",
+                "dateCreated": "2123-01-10",
                 "groupID": "grp01_nailpolish_combo",
                 "sellCount": 98
             },
@@ -100,7 +100,7 @@
                 "intro": "A deep black nail polish for a sophisticated and mysterious look.",
                 "details": "Our Midnight Black Nail Polish features a long-lasting, glossy finish. The high-quality formula ensures even coverage and easy application.",
                 "categoryID": "cat_nail01_polishes",
-                "dateCreated": "2023-01-15",
+                "dateCreated": "4023-01-15",
                 "sellCount": 110,
                 "groupID": "grp01_nailpolish_combo"
             },
@@ -119,7 +119,7 @@
                 "details": "Our Elegant Nude Nail Polish offers a durable, glossy finish. The smooth formula allows for easy application and long-lasting wear.",
                 "categoryID": "cat_nail01_polishes",
                 "dateCreated": "2023-01-18",
-                "sellCount": 105,
+                "sellCount": 10500,
                 "groupID": "grp01_nailpolish_combo"
             }
         ]

@@ -57,13 +57,15 @@ export const getServerSideProps = async () => {
     const newArrivalOptions:FindProductOptions = {
       limit: 6,
       sort: 'dateCreated',
-      sortedOrder: 'desc'
+      sortedOrder: 'desc',
+      type: 'product'
     }
 
     const customerFavoritesOptions:FindProductOptions = {
       limit: 6,
       sort: 'sellCount',
-      sortedOrder: 'desc'
+      sortedOrder: 'desc',
+      type: 'product'
     }
 
 
