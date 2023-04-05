@@ -18,7 +18,6 @@ export interface Props {
     name: string;
     products: Product[];
     onPathChange?: (newPath:string)=> void;
-
 }
 
 
@@ -27,13 +26,14 @@ export default function ProductGroupBlock({ name, products, onPathChange}: Props
     const [quantity, setQuantity] = useState(0);
     const [selectedProduct, setSelectedProduct] = useState(products[0]);
 
-    const { addToCart } = useCart();
+    const { addToCart, cart } = useCart();
 
     useEffect(() => {
         if(onPathChange) {
             onPathChange(`/product/${selectedProduct.id}`);
         }
     }, [selectedProduct]);
+
 
 
     const onAdd:MouseEventHandler<HTMLButtonElement>  = (e) => {

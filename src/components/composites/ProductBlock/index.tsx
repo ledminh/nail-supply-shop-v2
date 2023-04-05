@@ -6,30 +6,30 @@ import ImageCPN from "@components/basics/ImageCPN";
 import ButtonCPN from "@components/basics/ButtonCPN";
 import { RemoteImage } from "@/types/image";
 
-import { useState, useEffect, memo, useCallback } from "react";
-import { useCart } from "@/contexts/CartContext";
+import { useState, useEffect, useRef, memo, useCallback } from "react";
+import { useCart  } from "@/contexts/CartContext";
+
 
 export interface Props {
     id: string;
     name: string;
     price: number;
     images: RemoteImage[];
-
 }
 
 
 function ProductBlock({ id, name, price, images}: Props) {
 
     const [quantity, setQuantity] = useState(0);
-
-    const { addToCart } = useCart();
-
     
 
-    const onAdd = useCallback((e: React.MouseEvent<HTMLButtonElement>) => {
+    const { addToCart } = useCart();
+    
+    
+    const onAdd = (e: React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
 
-        if(quantity <= 0) return;
+        if (quantity === 0) return;
 
         addToCart({
             id,
@@ -40,8 +40,7 @@ function ProductBlock({ id, name, price, images}: Props) {
         });
 
         setQuantity(0);
-
-    }, [quantity, addToCart]);
+    };
     
 
     return (
@@ -78,17 +77,8 @@ function ProductBlock({ id, name, price, images}: Props) {
     );
 }
 
-function areEqual(prevProps: Props, nextProps: Props) {
-    // Compare only the props that affect the rendering of the component
-    return (
-        prevProps.id === nextProps.id &&
-        prevProps.name === nextProps.name &&
-        prevProps.price === nextProps.price &&
-        prevProps.images === nextProps.images
-    );
-}
 
-export default memo(ProductBlock, areEqual);
+export default memo(ProductBlock);
 
 
 ProductBlock.displayName = "ProductBlock";

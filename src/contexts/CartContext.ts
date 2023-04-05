@@ -1,10 +1,11 @@
-import { createContext, useState, useContext } from 'react';
+import { createContext, useState, useContext, useCallback } from 'react';
 import { OrderedProduct } from '@/types/product';
 
+
 interface CartContextValue {
-    addToCart: (orderedProduct: OrderedProduct) => void;
     cart: OrderedProduct[];
     updateCart: (id: string, quantity: number) => void;
+    addToCart: (orderedProduct: OrderedProduct) => void;
     removeProduct: (id: string) => void;
 }
 
@@ -25,11 +26,12 @@ export const useCart = () => {
 };
 
 
-
 export const useCartProviderValue = () => {
     const [cart, setCart] = useState<OrderedProduct[]>([]);
 
-    const addToCart = (orderedProduct: OrderedProduct) => {
+
+
+    const addToCart = useCallback((orderedProduct: OrderedProduct) => {
         if (cart.find((product) => product.id === orderedProduct.id)) {
         
             const newCart = cart.map((product) => {
@@ -46,11 +48,9 @@ export const useCartProviderValue = () => {
         
             return;
         }
-
+    
         setCart([...cart, orderedProduct]);
-    };
-
-
+    },[cart]);
     
 
     const updateCart = (id: string, quantity: number) => {

@@ -7,20 +7,7 @@ import styles from "@styles/composites/ProductList.module.scss";
 import ProductBlock from "../ProductBlock";
 import ProductGroupBlock from "../ProductGroupBlock";
 
-import { OrderedProduct } from "@/types/product";
-import { useCart } from "@/contexts/CartContext";
 
-// export type Props =  {
-//     products: (Product | ProductGroup)[];
-// } & (
-//     {
-//         type: "grid";
-//         addToCart: (orderedProduct: OrderedProduct) => void;
-//     } | {
-//         type: "list";
-//         addToCart: undefined;
-//     }
-// );
 
 export type Props =  {
     products: (Product | ProductGroup)[];

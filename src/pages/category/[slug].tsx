@@ -120,7 +120,6 @@ export default function CategoryPage({errorMessage, contactInfo, aboutUsFooter, 
 
 
 
-  const {addToCart} = useCart();
 
 
   return (
