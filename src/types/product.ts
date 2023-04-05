@@ -13,9 +13,7 @@ export interface Product {
     intro: string;
     details: string,
     categoryID: string
-    
-    groupName?: string,
-    otherProducts?: Product[],
+    groupID?: string,
     
 }
 

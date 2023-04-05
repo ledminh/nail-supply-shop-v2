@@ -24,11 +24,20 @@ type FindProductResponse = {
 
 
 export type FindProductOptions = {
-    catID?: string, catSlug?: string, sort?: SortType, sortedOrder?: SortedOrderType, offset?: number, limit?: number, id?: string, name?:string, groupName?: string
+    catID?: string, catSlug?: string, sort?: SortType, sortedOrder?: SortedOrderType, offset?: number, limit?: number, id?: string, name?:string, groupID?: string
 }
 
 export function find(options: FindProductOptions):Promise<FindProductResponse> {
+    // flat out products   
     let products = PRODUCTS;
+    
+    for(let i = 0; i < PRODUCTS.length; i++) {
+        const curProduct = PRODUCTS[i];
+        if(!isProduct(curProduct)) {
+            products = products.concat(curProduct.products);
+        }
+    }
+
     
     if(options.name) {
         const name = options.name.toLowerCase();
@@ -42,7 +51,7 @@ export function find(options: FindProductOptions):Promise<FindProductResponse> {
     }
 
     if(options.id) {
-        const product = PRODUCTS.find((product) => product.id === options.id);
+        const product = products.find((product) => product.id === options.id);
 
         if(product) {
             return Promise.resolve({success: true, data: product});
@@ -51,14 +60,12 @@ export function find(options: FindProductOptions):Promise<FindProductResponse> {
         return Promise.reject({success: false, message: 'Product not found'});
     }
 
-    if(options.groupName) {
-        const productGroup = PRODUCTS.find((product) => isProduct(product) === false && product.name === options.groupName);
-
+    if(options.groupID) {
+        const _products = products.filter((product) => isProduct(product) && product.groupID === options.groupID);
 
         
-        if(productGroup) {
-            const group = productGroup as DBProductGroup;
-            return Promise.resolve({success: true, data: group.products});
+        if(_products) {
+            return Promise.resolve({success: true, data: _products as DBProduct[]});
         }
 
         return Promise.reject({success: false, message: 'Product group not found'});
@@ -192,7 +199,7 @@ type addGroupProps = {
 }
 
 export function addGroup({group}:addGroupProps) {
-    productsJSON.push(group);
+    PRODUCTS.push(group);
     return Promise.resolve(group);
 }
 
@@ -205,11 +212,11 @@ type updateProductProps = {
 }
 
 export function updateProduct({product}:updateProductProps) {
-    const _product = productsJSON.find((product) => product.id === product.id);
+    const _product = PRODUCTS.find((product) => product.id === product.id);
 
     if(_product) {
-        const index = productsJSON.indexOf(_product);
-        productsJSON[index] = product;
+        const index = PRODUCTS.indexOf(_product);
+        PRODUCTS[index] = product;
 
         return Promise.resolve(product);
     }
@@ -229,8 +236,8 @@ export function updateGroup({group}:updateGroupProps) {
     const _group = productsJSON.find((group) => group.id === group.id);
 
     if(_group) {
-        const index = productsJSON.indexOf(_group);
-        productsJSON[index] = group;
+        const index = PRODUCTS.indexOf(_group);
+        PRODUCTS[index] = group;
 
         return Promise.resolve(group);
     }
@@ -248,7 +255,7 @@ type updateGroupProductProps = {
 }
 
 export function updateGroupProduct({groupID, product}:updateGroupProductProps) {
-    const group = productsJSON.find((group) => group.id === groupID);
+    const group = PRODUCTS.find((group) => group.id === groupID);
 
     if(group && isDBGroupProduct(group)) {
         const _product = group.products.find((product) => product.id === product.id);

@@ -19,8 +19,8 @@ import QuantityPickerCPN from '@/components/basics/QuantityPicker';
 import { ProductImage } from '@/types/product';
 import { useCart } from '@/contexts/CartContext';
 
-import { getProducts, getProduct, getCategories } from '@/database';
-import { getAboutUsData } from '@/database';
+import { getProducts, getProduct, getCategories, getAboutUsData } from '@/database';
+
 
 
 export interface Props {
@@ -178,7 +178,7 @@ export const getServerSideProps:GetServerSideProps = async (context) => {
     const product = productRes.data as Product;
     const categories = categoriesRes.data;
 
-    if(!product.groupName) {
+    if(!product.groupID) {
       return {
         props: {
           contactInfo,
@@ -197,7 +197,7 @@ export const getServerSideProps:GetServerSideProps = async (context) => {
     }
 
 
-    const otherProductsRes = await getProducts({groupName: product.groupName});
+    const otherProductsRes = await getProducts({groupID: product.groupID});
     
     if(!otherProductsRes.success) {
       return {
@@ -222,7 +222,7 @@ export const getServerSideProps:GetServerSideProps = async (context) => {
         
         categoryID: product.categoryID,
         categories,
-        groupName: product.groupName,
+        groupID: product.groupID,
         otherProducts,
       }
     }

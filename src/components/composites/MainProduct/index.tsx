@@ -1,16 +1,22 @@
 import ImageCPN from "@/components/basics/ImageCPN";
 import styles from "@styles/composites/MainProduct.module.scss";
 
-import type { Product } from "@/types/product";
+import type { Product, ProductGroup } from "@/types/product";
 import Link from "next/link";
+import isProduct from "@/utils/isProduct";
 
 
 export interface Props {
-    product: Product
+    product: Product | ProductGroup
 }
 
 
 export default function MainProduct({ product }: Props) {
+    
+    
+    if(!isProduct(product)) {
+        product = product.products[0];
+    }
 
     let { images, name, price, intro } = product;
 
@@ -19,7 +25,7 @@ export default function MainProduct({ product }: Props) {
     }
 
     return (
-        <Link href={`/products/${product.id}`}>
+        <Link href={`/product/${product.id}`}>
             <div className={styles.wrapper}>
                 <ImageCPN
                     image={images[0]}

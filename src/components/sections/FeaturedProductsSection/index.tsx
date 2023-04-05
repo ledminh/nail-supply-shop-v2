@@ -11,7 +11,7 @@ export interface Props {
 
 export default function FeaturedProductsSection({ featuredProductGroups }: Props) {
 
-    const items = featuredProductGroups.map((group, index) => {
+    const items = featuredProductGroups.map((group) => {
         return ({
             id: group.title,
             ...group
