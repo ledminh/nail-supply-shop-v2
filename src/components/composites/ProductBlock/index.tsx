@@ -15,15 +15,17 @@ export interface Props {
     name: string;
     price: number;
     images: RemoteImage[];
+    quantity: number;
+    onQuantityChange: (id:string, newQuantity: number) => void;
 }
 
 
-function ProductBlock({ id, name, price, images}: Props) {
+function ProductBlock({ id, name, price, images, quantity, onQuantityChange}: Props) {
 
-    const [quantity, setQuantity] = useState(0);
     
 
     const { addToCart } = useCart();
+
     
     
     const onAdd = (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -39,9 +41,10 @@ function ProductBlock({ id, name, price, images}: Props) {
             image: images[0],
         });
 
-        setQuantity(0);
+        onQuantityChange(id, 0);
     };
     
+
 
     return (
         <div className={styles.wrapper + (quantity > 0? ' ' + styles.highLighted: '' )}>
@@ -66,7 +69,7 @@ function ProductBlock({ id, name, price, images}: Props) {
                         />
                     <QuantityPickerCPN
                         value={quantity}
-                        onChange ={(q) => setQuantity(q)}
+                        onChange ={(q) => onQuantityChange(id, q)}
                         buttonClassName = {styles.quantityButton}
                         valueClassName = {styles.quantityValue}
                         className = {styles.quantityPicker}

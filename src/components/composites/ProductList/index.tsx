@@ -1,4 +1,4 @@
-import { memo, useEffect } from "react";
+import { useEffect, useState } from "react";
 
 import ProductTabCPN from "@/components/basics/ProductTabCPN";
 import LinksList from "@/components/generics/LinksList";
@@ -16,7 +16,12 @@ export type Props =  {
 
 function ProductList({ products, type }: Props) {
 
-    
+    const  [productQuantities, setProductQuantities] = useState<(ProductQuantity|ProductGroupQuantity)[]>(getProductQuantity(products));
+
+    useEffect(() => {
+        setProductQuantities(getProductQuantity(products));
+    }, [products]);
+
 
     if(type === "list") {
         
@@ -31,8 +36,40 @@ function ProductList({ products, type }: Props) {
         );
     }
 
+    const onQuantityChange = (id: string, quantity: number) => {
+        setProductQuantities((prev) => {
+            return prev.map((pq) => {
+                if(isProductGroupQuantity(pq)) {
+                    return {
+                        ...pq,
+                        quantities: pq.quantities.map((q) => {
+                            if(q.id === id) {
+                                return {
+                                    ...q,
+                                    quantity
+                                }
+                            }
+                            return q;
+                        })
+                    }
+                }
 
-    const ProductItemCPN = getProductItemCPN();
+                if(pq.id === id) {
+                    return {
+                        ...pq,
+                        quantity
+                    }
+                }
+                
+                return pq;
+            })
+        });
+    }
+
+    const ProductItemCPN = getProductItemCPN(
+        onQuantityChange,
+        productQuantities
+    );
 
     return (
         <LinksList items = {withPath(products)}
@@ -59,26 +96,27 @@ function isProductGroup(product: Product | ProductGroup): product is ProductGrou
 }
 
 
-
-
-
-function getProductItemCPN() {
+function getProductItemCPN(onQuantityChange: (id: string, quantity: number) => void, productQuantities: (ProductQuantity|ProductGroupQuantity)[]) {
     
     const ProductItemCPN = (props: Product | ProductGroup) => {
         
         
         if(isProductGroup(props)) {
-            return <ProductGroupBlock {...props} />
+            return <ProductGroupBlock {...props} 
+                        onQuantityChange={onQuantityChange} 
+                        quantities={(productQuantities.find(pq => pq.id === props.id) as ProductGroupQuantity).quantities}
+                            />
         }
         
-        return <ProductBlock {...props}  />
+        return <ProductBlock {...props} 
+                    onQuantityChange={onQuantityChange} 
+                    quantity={(productQuantities.find(pq => pq.id === props.id) as ProductQuantity).quantity}
+                    />
     }
 
 
     return ProductItemCPN;
 }
-
-
 
 
 function withPath(products: (Product | ProductGroup)[]) {
@@ -97,4 +135,37 @@ function withPath(products: (Product | ProductGroup)[]) {
         }
         
     });
+}
+
+
+
+export type ProductQuantity = {
+    id: string;
+    quantity: number;
+}
+
+type ProductGroupQuantity = {
+    id: string;
+    quantities: ProductQuantity[];
+}
+
+function getProductQuantity(products: (Product|ProductGroup)[]): (ProductQuantity|ProductGroupQuantity)[] {
+    return products.map((product) => {
+        if(isProductGroup(product)) {
+            return {
+                id: product.id,
+                quantities: product.products.map(p => ({id: p.id, quantity: 0}))
+            }
+        }
+
+        return {
+            id: product.id,
+            quantity: 0
+        }
+    
+    });
+}
+
+function isProductGroupQuantity(productQuantity: ProductQuantity|ProductGroupQuantity): productQuantity is ProductGroupQuantity {
+    return (productQuantity as ProductGroupQuantity).quantities !== undefined;
 }

@@ -10,6 +10,7 @@ import { useState, MouseEventHandler, useEffect } from "react";
 import { OrderedProduct } from "@/types/product";
 import Select, {convertToOptionItem, OptionItem} from "@/components/generics/Select";
 import { useCart } from "@/contexts/CartContext";
+import { ProductQuantity } from "../ProductList";
 
 
 
@@ -18,21 +19,26 @@ export interface Props {
     name: string;
     products: Product[];
     onPathChange?: (newPath:string)=> void;
+    quantities: ProductQuantity[];
+    onQuantityChange: (id:string, newQuantity: number) => void;
 }
 
 
-export default function ProductGroupBlock({ name, products, onPathChange}: Props) {
+export default function ProductGroupBlock({ name, products, onPathChange, quantities, onQuantityChange}: Props) {
 
-    const [quantity, setQuantity] = useState(0);
     const [selectedProduct, setSelectedProduct] = useState(products[0]);
+    const [quantity, setQuantity] = useState(0);
 
-    const { addToCart, cart } = useCart();
+    const { addToCart } = useCart();
 
     useEffect(() => {
         if(onPathChange) {
             onPathChange(`/product/${selectedProduct.id}`);
         }
+
+        setQuantity(quantities.find(q => q.id === selectedProduct.id)?.quantity || 0);
     }, [selectedProduct]);
+
 
 
 
@@ -48,8 +54,7 @@ export default function ProductGroupBlock({ name, products, onPathChange}: Props
             image: selectedProduct.images[0],
         });
 
-        setQuantity(0);
-
+        onQuantityChange(selectedProduct.id, 0);
 
     };
 
@@ -58,6 +63,7 @@ export default function ProductGroupBlock({ name, products, onPathChange}: Props
 
         if(curProduct){
             setSelectedProduct(curProduct);
+
         }
     };
 
@@ -92,7 +98,7 @@ export default function ProductGroupBlock({ name, products, onPathChange}: Props
                         />
                     <QuantityPickerCPN
                         value={quantity}
-                        onChange ={(q) => setQuantity(q)}
+                        onChange ={(q) => onQuantityChange(selectedProduct.id, q)}
                         buttonClassName = {styles.quantityButton}
                         valueClassName = {styles.quantityValue}
                         className = {styles.quantityPicker}
