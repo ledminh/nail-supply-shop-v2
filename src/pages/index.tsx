@@ -8,7 +8,8 @@ import type { ContactInfo } from '@/types/others';
 import type { Props as FeaturedProductGroup } from '@/components/composites/FeaturedProductGroup';
 import type { Category } from '@/types/category';
 
-import { getAboutUsData } from '@/database';
+import { getAboutUsData, getCategories, getProducts } from '@/database';
+import { FindProductOptions } from '@/database/models/product';
 
 
 export interface Props {
@@ -112,62 +113,24 @@ const featuredProductGroups = [
     },
 ]
 
-  const categorySample = {
-      image: {
-        src: "https://loremflickr.com/400/400",
-        alt: "Category Image",
-      },
-      name: "Category Name",
-      description: "lore ipsum dolor sit amet ronco aenean donec dolor lorem etiam kwon",
-    };
-    
-    
-  const categories:Category[] = [
-      {
-          ...categorySample,
-          id: "1",
-          slug: "category-1"
-      },
-      {
-          ...categorySample,
-          id: "2",
-          slug: "category-2"
-      },
-      {
-          ...categorySample,
-          id: "3",
-          slug: "category-3"
-      },
-      {
-          ...categorySample,
-          id: "4",
-          slug: "category-4"
-      },
-      {
-          ...categorySample,
-          id: "5",
-          slug: "category-5"
-      },
-      {
-          ...categorySample,
-          id: "6",
-          slug: "category-6"
-      },
-      {
-          ...categorySample,
-          id: "7",
-          slug: "category-7"
-      },
-      {
-          ...categorySample,
-          id: "8",
-          slug: "category-8"
-      },
-  ];
 
 
   try {
-    const [aboutUsRes] = await Promise.all([getAboutUsData()]);
+    const newArrivalOptions:FindProductOptions = {
+      limit: 6,
+      sort: 'dateCreated',
+      sortedOrder: 'desc'
+    }
+
+    const customerFavoritesOptions:FindProductOptions = {
+      limit: 6,
+      sort: 'sellCount',
+      sortedOrder: 'desc'
+    }
+
+
+
+    const [aboutUsRes, categoriesRes, resNewArrivals, resCustomerFavorites] = await Promise.all([getAboutUsData(), getCategories({}), getProducts(newArrivalOptions), getProducts(customerFavoritesOptions)]);
   
     if(!aboutUsRes.success) {
       return {
@@ -177,8 +140,64 @@ const featuredProductGroups = [
       }
     }
 
+    if(!categoriesRes.success) {
+      return {
+        props: {
+          errorMessage: categoriesRes.message
+        }
+      }
+    }
+
+    if (!resNewArrivals.success) {
+      return {
+        props: {
+          errorMessage: resNewArrivals.message
+        }
+      }
+    }
+
+    if (!resCustomerFavorites.success) {
+      return {
+        props: {
+          errorMessage: resCustomerFavorites.message
+        }
+      }
+    }
+
+    if(!Array.isArray(resNewArrivals.data)) {
+      return {
+        props: {
+          errorMessage: "New Arrivals data is not an array"
+        }
+      }
+    }
+
+    if(!Array.isArray(resCustomerFavorites.data)) {
+      return {
+        props: {
+          errorMessage: "Customer Favorites data is not an array"
+        }
+      }
+    }
+
     const aboutUsFooter = aboutUsRes.data!.aboutUsFooter;
     const contactInfo = aboutUsRes.data!.contactInfo;
+    const categories = categoriesRes.data;
+    const featuredProductGroups = [
+      {
+        title: "New Arrivals",
+        mainProduct: resNewArrivals.data[0],
+        otherProducts: resNewArrivals.data.slice(1)
+      },
+      {
+        title: "Customer Favorites",
+        mainProduct: resCustomerFavorites.data[0],
+        otherProducts: resCustomerFavorites.data.slice(1)
+      },
+    ]
+
+
+
     
     return {
       props: {

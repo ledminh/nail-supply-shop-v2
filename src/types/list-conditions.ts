@@ -1,4 +1,4 @@
-export type SortType = 'name' | 'price';
+export type SortType = 'name' | 'price' | 'dateCreated' | 'sellCount';
 type SortLabel = 'Name' | 'Price';
 
 export type SortedOrderType = 'asc' | 'desc'; 

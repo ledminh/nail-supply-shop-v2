@@ -74,6 +74,30 @@ export function find(options: FindProductOptions):Promise<FindProductResponse> {
                 }
                 return 0;
             }
+            else if (options.sort === 'dateCreated') {
+                const aDate = new Date(a.dateCreated);
+                const bDate = new Date(b.dateCreated);
+
+                if(aDate < bDate) {
+                    return -1;
+                }
+                if(aDate > bDate) {
+                    return 1;
+                }
+                return 0;
+            }
+            else if (options.sort === 'sellCount') {
+                const aSellCount = isProduct(a)?  a.sellCount : a.products[0].sellCount;
+                const bSellCount = isProduct(b)?  b.sellCount : b.products[0].sellCount;
+
+                if(aSellCount < bSellCount) {
+                    return -1;
+                }
+                if(aSellCount > bSellCount) {
+                    return 1;
+                }
+                return 0;
+            }
             else {
                 return 0;
             }
