@@ -1,3 +1,4 @@
+
 import QuantityPickerCPN from "@/components/basics/QuantityPicker";
 import styles from "@styles/composites/ProductBlock.module.scss";
 
@@ -5,8 +6,8 @@ import ImageCPN from "@components/basics/ImageCPN";
 import ButtonCPN from "@components/basics/ButtonCPN";
 import { RemoteImage } from "@/types/image";
 
-import { useState, MouseEventHandler } from "react";
-import { OrderedProduct } from "@/types/product";
+import { useState, useEffect, memo, useCallback } from "react";
+import { useCart } from "@/contexts/CartContext";
 
 export interface Props {
     id: string;
@@ -14,19 +15,22 @@ export interface Props {
     price: number;
     images: RemoteImage[];
 
-    addToCart: (orderedProduct: OrderedProduct) => void;
 }
 
 
-export default function ProductBlock({ id, name, price, images, addToCart}: Props) {
+function ProductBlock({ id, name, price, images}: Props) {
 
     const [quantity, setQuantity] = useState(0);
 
-    const onAdd:MouseEventHandler<HTMLButtonElement>  = (e) => {
+    const { addToCart } = useCart();
+
+    
+
+    const onAdd = useCallback((e: React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
 
         if(quantity <= 0) return;
-        
+
         addToCart({
             id,
             name,
@@ -37,11 +41,11 @@ export default function ProductBlock({ id, name, price, images, addToCart}: Prop
 
         setQuantity(0);
 
-    };
-
+    }, [quantity, addToCart]);
+    
 
     return (
-        <div className={styles.wrapper + (quantity> 0? ' ' + styles.highLighted: '' )}>
+        <div className={styles.wrapper + (quantity > 0? ' ' + styles.highLighted: '' )}>
             <ImageCPN
                 image = {images[0]}
                 size = "medium"
@@ -73,5 +77,18 @@ export default function ProductBlock({ id, name, price, images, addToCart}: Prop
         </div>    
     );
 }
+
+function areEqual(prevProps: Props, nextProps: Props) {
+    // Compare only the props that affect the rendering of the component
+    return (
+        prevProps.id === nextProps.id &&
+        prevProps.name === nextProps.name &&
+        prevProps.price === nextProps.price &&
+        prevProps.images === nextProps.images
+    );
+}
+
+export default memo(ProductBlock, areEqual);
+
 
 ProductBlock.displayName = "ProductBlock";

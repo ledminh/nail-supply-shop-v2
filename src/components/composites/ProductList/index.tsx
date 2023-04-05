@@ -1,4 +1,4 @@
-import { memo } from "react";
+import { memo, useEffect } from "react";
 
 import ProductTabCPN from "@/components/basics/ProductTabCPN";
 import LinksList from "@/components/generics/LinksList";
@@ -8,18 +8,94 @@ import ProductBlock from "../ProductBlock";
 import ProductGroupBlock from "../ProductGroupBlock";
 
 import { OrderedProduct } from "@/types/product";
+import { useCart } from "@/contexts/CartContext";
 
-export interface Props {
+// export type Props =  {
+//     products: (Product | ProductGroup)[];
+// } & (
+//     {
+//         type: "grid";
+//         addToCart: (orderedProduct: OrderedProduct) => void;
+//     } | {
+//         type: "list";
+//         addToCart: undefined;
+//     }
+// );
+
+export type Props =  {
     products: (Product | ProductGroup)[];
     type: "grid" | "list";
-    addToCart?: (orderedProduct: OrderedProduct) => void;
+} 
+
+function ProductList({ products, type }: Props) {
+
+    
+
+    if(type === "list") {
+        
+        return (
+            <LinksList items = {withPath(products)}
+                ItemCPN = {ProductTabCPN}
+                liClass = {styles.li + ' ' + styles.list} 
+                ulClass = {styles.ul + ' ' + styles.list}
+                linkClass = {styles.link + ' ' + styles.list}
+            />
+
+        );
+    }
+
+
+    const ProductItemCPN = getProductItemCPN();
+
+    return (
+        <LinksList items = {withPath(products)}
+            ItemCPN = {ProductItemCPN }
+            liClass = {styles.li + ' ' + styles.grid} 
+            ulClass = {styles.ul + ' ' + styles.grid}
+            linkClass = {styles.link + ' ' + styles.grid}
+        />
+
+    );           
+}
+
+ProductList.displayName = "ProductList";
+
+export default ProductList;
+
+
+/***************************
+ * Helpers
+ */
+
+function isProductGroup(product: Product | ProductGroup): product is ProductGroup {
+    return (product as ProductGroup).products !== undefined;
 }
 
 
-function ProductList({ products, type, addToCart }: Props) {
 
-    // Preprocess products to add path
-    const _products = products.map((product) => {
+
+
+function getProductItemCPN() {
+    
+    const ProductItemCPN = (props: Product | ProductGroup) => {
+        
+        
+        if(isProductGroup(props)) {
+            return <ProductGroupBlock {...props} />
+        }
+        
+        return <ProductBlock {...props}  />
+    }
+
+
+    return ProductItemCPN;
+}
+
+
+
+
+function withPath(products: (Product | ProductGroup)[]) {
+    return products.map((product) => {
         
         if(isProductGroup(product)) {
             return {
@@ -34,69 +110,4 @@ function ProductList({ products, type, addToCart }: Props) {
         }
         
     });
-
-
-
-    // Render list UI
-    if(type === "list") {
-        
-
-        return (
-            <LinksList items = {_products}
-                ItemCPN = {ProductTabCPN}
-                liClass = {styles.li + ' ' + styles.list} 
-                ulClass = {styles.ul + ' ' + styles.list}
-                linkClass = {styles.link + ' ' + styles.list}
-            />
-
-        );
-    }
-
-
-
-
-    // Render grid UI
-
-    const _addToCart = addToCart? addToCart : () => {};
-
-    
-
-    type ProductItemCPNProps = Product | ProductGroup;
-
-    function ProductItemCPN(props: ProductItemCPNProps) {
-        
-        if(isProductGroup(props)) {
-            
-
-            return <ProductGroupBlock {...{...props, addToCart: _addToCart}} />
-        }
-
-
-        return <ProductBlock {...{...props, addToCart: _addToCart}} />
-    }
-
-    return (
-        <LinksList items = {_products}
-            ItemCPN = {ProductItemCPN }
-            liClass = {styles.li + ' ' + styles.grid} 
-            ulClass = {styles.ul + ' ' + styles.grid}
-            linkClass = {styles.link + ' ' + styles.grid}
-        />
-
-    );           
-}
-
-ProductList.displayName = "ProductList";
-
-export default memo(ProductList);
-
-
-
-
-/***************************
- * Helpers
- */
-
-function isProductGroup(product: Product | ProductGroup): product is ProductGroup {
-    return (product as ProductGroup).products !== undefined;
 }

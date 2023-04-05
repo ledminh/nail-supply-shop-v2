@@ -9,22 +9,25 @@ import type { Product } from "@/types/product";
 import { useState, MouseEventHandler, useEffect } from "react";
 import { OrderedProduct } from "@/types/product";
 import Select, {convertToOptionItem, OptionItem} from "@/components/generics/Select";
+import { useCart } from "@/contexts/CartContext";
+
 
 
 
 export interface Props {
     name: string;
     products: Product[];
-    addToCart: (orderedProduct: OrderedProduct) => void;
     onPathChange?: (newPath:string)=> void;
 
 }
 
 
-export default function ProductGroupBlock({ name, products, addToCart, onPathChange}: Props) {
+export default function ProductGroupBlock({ name, products, onPathChange}: Props) {
 
     const [quantity, setQuantity] = useState(0);
     const [selectedProduct, setSelectedProduct] = useState(products[0]);
+
+    const { addToCart } = useCart();
 
     useEffect(() => {
         if(onPathChange) {
@@ -46,6 +49,7 @@ export default function ProductGroupBlock({ name, products, addToCart, onPathCha
         });
 
         setQuantity(0);
+
 
     };
 
@@ -76,7 +80,7 @@ export default function ProductGroupBlock({ name, products, addToCart, onPathCha
                     optionItems = {productOptions}
                     onChange = {onSelect}
                     selectClass={styles.select}
-                    headerLabel="Select a product"
+                    initOptionItem={productOptions[0]}
                     />
                 <div className={styles.controls}>
                     <ButtonCPN

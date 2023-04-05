@@ -58,7 +58,7 @@ export default function CategoryPage({errorMessage, contactInfo, aboutUsFooter, 
       setIsFirstLoad(false);
       return;
     }
-    
+
     const loadOptions:FindProductOptions = {
       catSlug: curCategory.slug,
       sort: condition.sort!.value,
@@ -154,7 +154,6 @@ export default function CategoryPage({errorMessage, contactInfo, aboutUsFooter, 
             <ProductList
               products = {_products}
               type = "grid"
-              addToCart = {addToCart}
             />
           </div>
           <div className={styles.button}>

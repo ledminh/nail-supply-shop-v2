@@ -50,6 +50,9 @@ export const useCartProviderValue = () => {
         setCart([...cart, orderedProduct]);
     };
 
+
+    
+
     const updateCart = (id: string, quantity: number) => {
         const newCart = cart.map((product) => {
             if (product.id === id) {
