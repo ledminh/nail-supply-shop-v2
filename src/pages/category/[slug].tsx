@@ -50,15 +50,21 @@ export default function CategoryPage({errorMessage, contactInfo, aboutUsFooter, 
   const [curCategory, setCurCategory] = useState(initCategory);
   const [_products, setProducts] = useState<(Product|ProductGroup)[]>(products);
   const [condition, setCondition] = useState<ListCondition>(initCondition);
-  
+  const [isFirstLoad, setIsFirstLoad] = useState(true);
 
 
   useEffect(() => {
+    if(isFirstLoad) {
+      setIsFirstLoad(false);
+      return;
+    }
+    
     const loadOptions:FindProductOptions = {
       catSlug: curCategory.slug,
       sort: condition.sort!.value,
       sortedOrder: condition.sortedOrder!.value,
-      limit: productsPerPage
+      limit: productsPerPage,
+      type: 'origin'
     }
     
     axios.post("/api/products", loadOptions)
@@ -100,16 +106,15 @@ export default function CategoryPage({errorMessage, contactInfo, aboutUsFooter, 
       sort: condition.sort!.value,
       sortedOrder: condition.sortedOrder!.value,
       limit: productsPerPage,
-      offset: _products.length
+      offset: _products.length,
+      type: 'origin'
     }
 
+    
     axios.post("/api/products", loadOptions)
       .then(({data}) => {
         setProducts([..._products, ...data.products]);
       });
-
-
-
     
   }
 
@@ -192,7 +197,7 @@ export const getServerSideProps:GetServerSideProps = async (context) => {
 
 
   try {
-    const [aboutUsRes, categoriesRes, productsRes] = await Promise.all([getAboutUsData(), getCategories({}), getProducts({catSlug: slug})]);
+    const [aboutUsRes, categoriesRes, productsRes] = await Promise.all([getAboutUsData(), getCategories({}), getProducts({catSlug: slug, type:'origin'})]);
 
 
 
@@ -233,6 +238,7 @@ export const getServerSideProps:GetServerSideProps = async (context) => {
     }
     
     const products = productsRes.data;
+
 
     return {
       props: {

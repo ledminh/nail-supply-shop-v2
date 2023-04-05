@@ -76,6 +76,7 @@ export default function ProductGroupBlock({ name, products, addToCart, onPathCha
                     optionItems = {productOptions}
                     onChange = {onSelect}
                     selectClass={styles.select}
+                    headerLabel="Select a product"
                     />
                 <div className={styles.controls}>
                     <ButtonCPN

@@ -11,21 +11,27 @@ interface Props<T> {
     optionClass?: string;
     optionItems: OptionItem<T>[];
     initOptionItem?: OptionItem<T>;
+    headerLabel?: string;
     onChange: (selectedOption: OptionItem<T>) => void;
 }
 
-const HeadOption:OptionItem = {
-    value: "head",
-    label: "Select an option"
-};
+
 
 function Select<T>  ({
     selectClass,
     optionClass,
     optionItems,
     initOptionItem,
+    headerLabel,
     onChange,
 }:Props<T>)  {
+    
+    const HeadOption:OptionItem = {
+        value: "head",
+        label: headerLabel || "Select",
+    };
+
+
     const _initOptionItem = initOptionItem || HeadOption;
 
     const [selectedOption, setSelectedOption] = useState(_initOptionItem);

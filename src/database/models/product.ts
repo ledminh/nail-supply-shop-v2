@@ -23,18 +23,19 @@ type FindProductResponse = {
 }
 
 
-export type FindProductOptions = {catID?: string, catSlug?: string, sort?: SortType, sortedOrder?: SortedOrderType, offset?: number, limit?: number, id?: string, name?:string, groupID?: string, type?: 'product'|'group'}
+export type FindProductOptions = {catID?: string, catSlug?: string, sort?: SortType, sortedOrder?: SortedOrderType, offset?: number, limit?: number, id?: string, name?:string, groupID?: string, type?: 'product'|'group'|'origin'}
 
 export function find(options: FindProductOptions):Promise<FindProductResponse> {
     // flat out products   
-    let products = PRODUCTS;
+    let products = [...PRODUCTS];
     
     for(let i = 0; i < PRODUCTS.length; i++) {
         const curProduct = PRODUCTS[i];
         if(!isProduct(curProduct)) {
-            products = products.concat(curProduct.products);
+            products = [...products, ...curProduct.products];
         }
     }
+    
 
     if(options.type) {
         if(options.type === 'product') {
@@ -42,6 +43,10 @@ export function find(options: FindProductOptions):Promise<FindProductResponse> {
         }
         else if(options.type === 'group') {
             products = products.filter((product) => !isProduct(product));
+
+        }
+        else if(options.type === 'origin') {
+            products = [...PRODUCTS];
         }
     }
     
@@ -89,6 +94,8 @@ export function find(options: FindProductOptions):Promise<FindProductResponse> {
             products = products.filter((product) => product.categoryID === category.id);
         }
     }
+    
+    console.log('hello', options, products.length);
 
     if(options.sort) {
         products = products.sort((a, b) => {

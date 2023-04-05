@@ -3,7 +3,7 @@
         "id": "grp01_nailpolish_combo",
         "name": "Nail Polish Combo",
         "categoryID": "cat_nail01_polishes",
-        "dateCreated": "3023-04-05",
+        "dateCreated": "2023-04-05",
         "products": [
             {
                 "id": "grp01_prd01_nailpolish_red",
@@ -34,7 +34,7 @@
                 "intro": "A classic red nail polish for a bold and elegant look.",
                 "details": "Our Classic Red Nail Polish offers long-lasting wear and a glossy finish. The quick-drying formula ensures a flawless application every time.",
                 "categoryID": "cat_nail01_polishes",
-                "dateCreated": "3023-01-02",
+                "dateCreated": "2023-01-02",
                 "sellCount": 125,
                 "groupID": "grp01_nailpolish_combo"
             },
