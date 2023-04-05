@@ -11,8 +11,10 @@ import Link from 'next/link';
 import { getAboutUsData } from '@/database';
 
 
-import {useState} from 'react';
+
+import {useState, useEffect} from 'react';
 import { useRouter } from 'next/router';
+import { useCart } from '@/contexts/CartContext';
 
 export interface Props {
   errorMessage?: string,
@@ -20,38 +22,7 @@ export interface Props {
   aboutUsFooter: string,
 };
 
-const initCartItems:OrderedProductType[] = [
-  {
-    id: "1",
-    name: "Nail Essential 1",
-    price: 100,
-    quantity: 1,
-    image: {
-      src: "/images/placeholder_1.png",
-      alt: "sample image",
-    }
-  },
-  {
-    id: "2",
-    name: "Nail Essential 2",
-    price: 200,
-    quantity: 2,
-    image: {
-      src: "/images/placeholder_2.png",
-      alt: "sample image",
-    }
-  },
-  {
-    id: "3",
-    name: "Nail Essential 3",
-    price: 300,
-    quantity: 3,
-    image: {
-      src: "/images/placeholder_3.png",
-      alt: "sample image",
-    }
-  }
-]
+
 
 export default function Cart({errorMessage, contactInfo, aboutUsFooter }:Props) {
 
@@ -59,43 +30,28 @@ export default function Cart({errorMessage, contactInfo, aboutUsFooter }:Props) 
     throw new Error(errorMessage);
   }
 
+  const {cart, updateCart, removeProduct} = useCart();
 
-  const [cartItems, setCartItems] = useState<OrderedProductType[]>(initCartItems); 
-  const [totalPrice, setTotalPrice] = useState<number>(getTotalPrice(initCartItems));
-  const [numItems, setNumItems] = useState<number>(getNumItems(initCartItems));
+
+  const [totalPrice, setTotalPrice] = useState<number>(getTotalPrice(cart));
+  const [numItems, setNumItems] = useState<number>(getNumItems(cart));
 
   const router = useRouter();
 
-  const onChange = ({id, quantity}: {id:string, quantity:number}) => {
-    const newCartItems = cartItems.map(item => {
-      if (item.id === id) {
-        return {
-          ...item,
-          quantity
-        }
-      }
-      return item;
-    });
 
-    setCartItems(newCartItems);
-    setTotalPrice(getTotalPrice(newCartItems));
-    setNumItems(getNumItems(newCartItems));
-  }
+  useEffect(() => {
+    setTotalPrice(getTotalPrice(cart));
+    setNumItems(getNumItems(cart));
+  }, [cart]);
+  
 
-
-  const onRemove = (id:string) => {
-    const newCartItems = cartItems.filter(item => item.id !== id);
-    setCartItems(newCartItems);
-    setTotalPrice(getTotalPrice(newCartItems));
-    setNumItems(getNumItems(newCartItems));
-  }
   
   const onCheckout = () => router.push("/checkout");
 
 
   const ItemWrapper = getItemWrapper({
-    onChange,
-    onRemove
+    onChange: updateCart,
+    onRemove: removeProduct
   });  
 
   return (
@@ -110,7 +66,7 @@ export default function Cart({errorMessage, contactInfo, aboutUsFooter }:Props) 
         </section>
         <section className={styles.section + " " + styles.cart}>
           <List 
-            items = {cartItems} 
+            items = {cart} 
             ItemCPN = {ItemWrapper}
             liClass = {styles.liClass}
             ulClass = {styles.ulClass}
@@ -172,7 +128,7 @@ export const getServerSideProps = async () => {
  */
 
 type getItemWrapperProps = {
-  onChange: ({id, quantity}: {id:string, quantity:number}) => void;
+  onChange: (id:string, quantity:number) => void;
   onRemove: (id:string) => void;
 }
 

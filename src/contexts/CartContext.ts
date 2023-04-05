@@ -3,6 +3,9 @@ import { OrderedProduct } from '@/types/product';
 
 interface CartContextValue {
     addToCart: (orderedProduct: OrderedProduct) => void;
+    cart: OrderedProduct[];
+    updateCart: (id: string, quantity: number) => void;
+    removeProduct: (id: string) => void;
 }
 
 
@@ -47,9 +50,31 @@ export const useCartProviderValue = () => {
         setCart([...cart, orderedProduct]);
     };
 
+    const updateCart = (id: string, quantity: number) => {
+        const newCart = cart.map((product) => {
+            if (product.id === id) {
+                return {
+                    ...product,
+                    quantity,
+                };
+            }
+            return product;
+        });
+
+        setCart(newCart);   
+    };
+
+    const removeProduct = (id: string) => {
+        const newCart = cart.filter((product) => product.id !== id);
+        setCart(newCart);
+    };
+
+
     return {
         cart,
         addToCart,
+        updateCart,
+        removeProduct,
     };
 };
 

@@ -23,7 +23,7 @@ const removeIconImage:LocalImage = {
 }
 
 export interface Props extends OrderedProductType {
-    onChange: ({id, quantity}: {id:string, quantity:number}) => void;
+    onChange: (id:string, quantity:number) => void;
     onRemove: (id:string) => void;
 }
 
@@ -42,7 +42,7 @@ export default function OrderedProduct({ id, name, price, quantity, image, onCha
                 value = {quantity}
                 min = {1}
                 onChange = {(value) => {
-                    onChange({id, quantity: value});
+                    onChange(id,value);
                 }}
                 buttonClassName = {styles.quantityButton}
                 valueClassName = {styles.quantityValue}

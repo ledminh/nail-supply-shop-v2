@@ -9,7 +9,7 @@ import styles from '@/styles/pages/Shop.module.scss'
 import { shopConfig } from '@/config';
 import HeroImageSection from '@/components/sections/HeroImageSection';
 
-import { getAboutUsData } from '@/database';
+import { getAboutUsData, getCategories } from '@/database';
 
 export interface Props {
   errorMessage?: string,
@@ -48,62 +48,8 @@ Shop.displayName = "Shop";
 export const getServerSideProps = async () => {
   
 
-
-const categorySample = {
-    image: {
-      src: "https://loremflickr.com/400/400",
-      alt: "Category Image",
-    },
-    name: "Category Name",
-    description: "lore ipsum dolor sit amet ronco aenean donec dolor lorem etiam kwon",
-  };
-  
-  
-const categories:Category[] = [
-    {
-        ...categorySample,
-        id: "1",
-        slug: "category-1"
-    },
-    {
-        ...categorySample,
-        id: "2",
-        slug: "category-2"
-    },
-    {
-        ...categorySample,
-        id: "3",
-        slug: "category-3"
-    },
-    {
-        ...categorySample,
-        id: "4",
-        slug: "category-4"
-    },
-    {
-        ...categorySample,
-        id: "5",
-        slug: "category-5"
-    },
-    {
-        ...categorySample,
-        id: "6",
-        slug: "category-6"
-    },
-    {
-        ...categorySample,
-        id: "7",
-        slug: "category-7"
-    },
-    {
-        ...categorySample,
-        id: "8",
-        slug: "category-8"
-    },
-];
-
   try {
-    const [aboutUsRes] = await Promise.all([getAboutUsData()]);
+    const [aboutUsRes, categoriesRes] = await Promise.all([getAboutUsData(), getCategories({})]);
 
     if(!aboutUsRes.success) {
       return {
@@ -113,8 +59,17 @@ const categories:Category[] = [
       }
     }
 
+    if(!categoriesRes.success) {
+      return {
+        props: {
+          errorMessage: categoriesRes.message
+        }
+      }
+    }
+
     const aboutUsFooter = aboutUsRes.data!.aboutUsFooter;
     const contactInfo = aboutUsRes.data!.contactInfo;
+    const categories = categoriesRes.data;
     
     return {
       props: {
