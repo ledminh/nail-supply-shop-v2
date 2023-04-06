@@ -30,13 +30,15 @@ export default function Cart({errorMessage, contactInfo, aboutUsFooter }:Props) 
     throw new Error(errorMessage);
   }
 
-  const {cart, updateCart, removeProduct} = useCart();
+  const {store, updateCart, removeProduct} = useCart();
 
+  const {cart} = store;
 
   const [totalPrice, setTotalPrice] = useState<number>(getTotalPrice(cart));
   const [numItems, setNumItems] = useState<number>(getNumItems(cart));
 
   const router = useRouter();
+
 
 
   useEffect(() => {

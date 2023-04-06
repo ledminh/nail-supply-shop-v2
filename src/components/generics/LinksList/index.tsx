@@ -1,10 +1,11 @@
-import { FC, useState } from "react";
+import { FC, useEffect, useState } from "react";
 
 import { LinkItem } from "@/types/item";
 
 import List from "components/generics/List";
 import Link from "next/link";
 
+import { useRef } from "react";
 
 
 
@@ -22,6 +23,9 @@ export interface Props<T extends JSX.IntrinsicAttributes & LinkItem> {
     
 };
 
+
+
+
 export default function LinksList<T extends JSX.IntrinsicAttributes & LinkItem>({
     items,
     ItemCPN,
@@ -33,6 +37,10 @@ export default function LinksList<T extends JSX.IntrinsicAttributes & LinkItem>(
     
 }: Props<T>) {
 
+
+    
+
+
     function LinkCPN(props: T ) {
         
         const [path, setPath] = useState(props.path);
@@ -43,10 +51,10 @@ export default function LinksList<T extends JSX.IntrinsicAttributes & LinkItem>(
         
         return (
             <Link className={linkClass} href={path}>
-                <ItemCPN {...{...props, onPathChange}} />
+                <ItemCPN {...props} onPathChange={onPathChange} />
             </Link>
         );
-    }    
+    }        
 
 
 

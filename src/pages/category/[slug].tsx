@@ -53,6 +53,7 @@ export default function CategoryPage({errorMessage, contactInfo, aboutUsFooter, 
   const [isFirstLoad, setIsFirstLoad] = useState(true);
 
 
+
   useEffect(() => {
     if(isFirstLoad) {
       setIsFirstLoad(false);

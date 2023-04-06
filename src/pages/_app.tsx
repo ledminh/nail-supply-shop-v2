@@ -9,8 +9,7 @@ import { useCartProviderValue } from '@contexts/CartContext';
 
 
 export default function App({ Component, pageProps }: AppProps) {
-  
-  
+    
   const cartProviderValue = useCartProviderValue();
 
   return (

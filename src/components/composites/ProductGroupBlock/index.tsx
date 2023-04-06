@@ -4,14 +4,10 @@ import styles from "@styles/composites/ProductGroupBlock.module.scss";
 import ImageCPN from "@components/basics/ImageCPN";
 import ButtonCPN from "@components/basics/ButtonCPN";
 
-import type { Product } from "@/types/product";
+import type { Product, OrderedProduct } from "@/types/product";
 
 import { useState, MouseEventHandler, useEffect } from "react";
-import { OrderedProduct } from "@/types/product";
 import Select, {convertToOptionItem, OptionItem} from "@/components/generics/Select";
-import { useCart } from "@/contexts/CartContext";
-import { ProductQuantity } from "../ProductList";
-
 
 
 
@@ -19,25 +15,27 @@ export interface Props {
     name: string;
     products: Product[];
     onPathChange?: (newPath:string)=> void;
-    quantities: ProductQuantity[];
-    onQuantityChange: (id:string, newQuantity: number) => void;
+    addToCart: (orderedProduct: OrderedProduct) => void;
+    setInitQuantity: (id:string, quantity: number) => void;
+    initQuantities: Record<string, number>;
 }
 
 
-export default function ProductGroupBlock({ name, products, onPathChange, quantities, onQuantityChange}: Props) {
+export default function ProductGroupBlock({ name, products, onPathChange, addToCart, setInitQuantity, initQuantities }: Props) {
 
     const [selectedProduct, setSelectedProduct] = useState(products[0]);
-    const [quantity, setQuantity] = useState(0);
+    const [quantity, setQuantity] = useState(initQuantities[selectedProduct.id] || 0);
 
-    const { addToCart } = useCart();
 
     useEffect(() => {
         if(onPathChange) {
             onPathChange(`/product/${selectedProduct.id}`);
         }
 
-        setQuantity(quantities.find(q => q.id === selectedProduct.id)?.quantity || 0);
+        setQuantity(initQuantities[selectedProduct.id] || 0);
+
     }, [selectedProduct]);
+
 
 
 
@@ -50,13 +48,14 @@ export default function ProductGroupBlock({ name, products, onPathChange, quanti
             id: selectedProduct.id,
             name: selectedProduct.name,
             price: selectedProduct.price,
-            quantity,
-            image: selectedProduct.images[0],
+            quantity: quantity,
+            image: selectedProduct.images[0]
         });
-
-        onQuantityChange(selectedProduct.id, 0);
-
+        
+        setQuantity(0);
+        setInitQuantity(selectedProduct.id, 0);
     };
+
 
     const onSelect = (selectedOption: OptionItem<Product>) => {
         const curProduct = products.find(p => p.id === selectedOption.id);
@@ -98,7 +97,11 @@ export default function ProductGroupBlock({ name, products, onPathChange, quanti
                         />
                     <QuantityPickerCPN
                         value={quantity}
-                        onChange ={(q) => onQuantityChange(selectedProduct.id, q)}
+                        onChange ={(q) => {
+                            setQuantity(q);
+                            setInitQuantity(selectedProduct.id, q);
+                        } 
+                            }
                         buttonClassName = {styles.quantityButton}
                         valueClassName = {styles.quantityValue}
                         className = {styles.quantityPicker}

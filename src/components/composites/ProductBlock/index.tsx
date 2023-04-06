@@ -6,44 +6,47 @@ import ImageCPN from "@components/basics/ImageCPN";
 import ButtonCPN from "@components/basics/ButtonCPN";
 import { RemoteImage } from "@/types/image";
 
-import { useState, useEffect, useRef, memo, useCallback } from "react";
-import { useCart  } from "@/contexts/CartContext";
+import { useState, memo, useCallback } from "react";
 
+import { OrderedProduct } from "@/types/product";
 
 export interface Props {
     id: string;
     name: string;
     price: number;
     images: RemoteImage[];
-    quantity: number;
-    onQuantityChange: (id:string, newQuantity: number) => void;
+    addToCart: (orderedProduct: OrderedProduct) => void;
+    setInitQuantity: (id:string, quantity: number) => void;
+    initQuantity: number;
 }
 
 
-function ProductBlock({ id, name, price, images, quantity, onQuantityChange}: Props) {
 
-    
 
-    const { addToCart } = useCart();
+function ProductBlock({ id, name, price, images, addToCart, setInitQuantity, initQuantity}: Props) {
 
+    const [quantity, setQuantity] = useState(initQuantity);
     
     
-    const onAdd = (e: React.MouseEvent<HTMLButtonElement>) => {
+    const onAdd = useCallback((e: React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
 
         if (quantity === 0) return;
 
         addToCart({
-            id,
-            name,
-            price,
-            quantity,
-            image: images[0],
+            id: id,
+            name: name,
+            price: price,
+            quantity: quantity,
+            image: images[0]
         });
 
-        onQuantityChange(id, 0);
-    };
+
+        setQuantity(0);
+        setInitQuantity(id, 0);
+    }, [quantity]);
     
+
 
 
     return (
@@ -69,7 +72,10 @@ function ProductBlock({ id, name, price, images, quantity, onQuantityChange}: Pr
                         />
                     <QuantityPickerCPN
                         value={quantity}
-                        onChange ={(q) => onQuantityChange(id, q)}
+                        onChange ={(q) => {
+                            setQuantity(q);
+                            setInitQuantity(id, q);
+                        }}   
                         buttonClassName = {styles.quantityButton}
                         valueClassName = {styles.quantityValue}
                         className = {styles.quantityPicker}

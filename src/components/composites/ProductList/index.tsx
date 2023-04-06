@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 
 import ProductTabCPN from "@/components/basics/ProductTabCPN";
 import LinksList from "@/components/generics/LinksList";
@@ -7,26 +7,31 @@ import styles from "@styles/composites/ProductList.module.scss";
 import ProductBlock from "../ProductBlock";
 import ProductGroupBlock from "../ProductGroupBlock";
 
-
+import CartContext from "@/contexts/CartContext";
 
 export type Props =  {
     products: (Product | ProductGroup)[];
     type: "grid" | "list";
 } 
 
+
+
+
 function ProductList({ products, type }: Props) {
 
-    const  [productQuantities, setProductQuantities] = useState<(ProductQuantity|ProductGroupQuantity)[]>(getProductQuantity(products));
+    const [_products, setProducts] = useState(withPath(products));
+    const [quantities, setQuantities] = useState<Record<string, number>>(toQuantites(products)); // product id -> quantity
+
 
     useEffect(() => {
-        setProductQuantities(getProductQuantity(products));
+        setProducts(withPath(products));
     }, [products]);
 
 
     if(type === "list") {
         
         return (
-            <LinksList items = {withPath(products)}
+            <LinksList items = {_products}
                 ItemCPN = {ProductTabCPN}
                 liClass = {styles.li + ' ' + styles.list} 
                 ulClass = {styles.ul + ' ' + styles.list}
@@ -36,49 +41,16 @@ function ProductList({ products, type }: Props) {
         );
     }
 
-    const onQuantityChange = (id: string, quantity: number) => {
-        setProductQuantities((prev) => {
-            return prev.map((pq) => {
-                if(isProductGroupQuantity(pq)) {
-                    return {
-                        ...pq,
-                        quantities: pq.quantities.map((q) => {
-                            if(q.id === id) {
-                                return {
-                                    ...q,
-                                    quantity
-                                }
-                            }
-                            return q;
-                        })
-                    }
-                }
 
-                if(pq.id === id) {
-                    return {
-                        ...pq,
-                        quantity
-                    }
-                }
-                
-                return pq;
-            })
-        });
-    }
-
-    const ProductItemCPN = getProductItemCPN(
-        onQuantityChange,
-        productQuantities
-    );
+    const ProductItemCPN = getProductItemCPN(quantities, setQuantities);
 
     return (
-        <LinksList items = {withPath(products)}
+        <LinksList items = {_products}
             ItemCPN = {ProductItemCPN }
             liClass = {styles.li + ' ' + styles.grid} 
             ulClass = {styles.ul + ' ' + styles.grid}
             linkClass = {styles.link + ' ' + styles.grid}
         />
-
     );           
 }
 
@@ -96,27 +68,42 @@ function isProductGroup(product: Product | ProductGroup): product is ProductGrou
 }
 
 
-function getProductItemCPN(onQuantityChange: (id: string, quantity: number) => void, productQuantities: (ProductQuantity|ProductGroupQuantity)[]) {
-    
-    const ProductItemCPN = (props: Product | ProductGroup) => {
-        
-        
-        if(isProductGroup(props)) {
-            return <ProductGroupBlock {...props} 
-                        onQuantityChange={onQuantityChange} 
-                        quantities={(productQuantities.find(pq => pq.id === props.id) as ProductGroupQuantity).quantities}
-                            />
-        }
-        
-        return <ProductBlock {...props} 
-                    onQuantityChange={onQuantityChange} 
-                    quantity={(productQuantities.find(pq => pq.id === props.id) as ProductQuantity).quantity}
-                    />
+function getProductItemCPN(quantities: Record<string, number>, setQuantities: React.Dispatch<React.SetStateAction<Record<string, number>>>) {
+
+    const setQuantity = (id: string, quantity: number) => {
+        setQuantities((prev) => {
+            return {
+                ...prev,
+                [id]: quantity
+            }
+        });
     }
 
 
+    
+    
+    
+    
+    const ProductItemCPN = (props: Product | ProductGroup) => {
+    
+        return (
+            <CartContext.Consumer>
+                {({addToCart}) => {
+                    return (
+                        isProductGroup(props) ?
+                        <ProductGroupBlock {...props} addToCart = {addToCart} setInitQuantity={setQuantity} initQuantities={quantities}/> :
+                        <ProductBlock {...props} addToCart = {addToCart} setInitQuantity={setQuantity} initQuantity={quantities[props.id]}/>
+                    ) 
+    
+                }}
+            </CartContext.Consumer>
+        )
+    }
+
     return ProductItemCPN;
+    
 }
+
 
 
 function withPath(products: (Product | ProductGroup)[]) {
@@ -137,35 +124,17 @@ function withPath(products: (Product | ProductGroup)[]) {
     });
 }
 
-
-
-export type ProductQuantity = {
-    id: string;
-    quantity: number;
-}
-
-type ProductGroupQuantity = {
-    id: string;
-    quantities: ProductQuantity[];
-}
-
-function getProductQuantity(products: (Product|ProductGroup)[]): (ProductQuantity|ProductGroupQuantity)[] {
-    return products.map((product) => {
-        if(isProductGroup(product)) {
-            return {
-                id: product.id,
-                quantities: product.products.map(p => ({id: p.id, quantity: 0}))
-            }
+function toQuantites(products: (Product | ProductGroup)[]) {
+    return products.reduce((acc, cur) => {
+        if(isProductGroup(cur)) {
+            cur.products.forEach(p => {
+                acc[p.id] = 0;
+            });
+        } else {
+            acc[cur.id] = 0;
         }
 
-        return {
-            id: product.id,
-            quantity: 0
-        }
-    
-    });
+        return acc;
+    }, {} as Record<string, number>);
 }
 
-function isProductGroupQuantity(productQuantity: ProductQuantity|ProductGroupQuantity): productQuantity is ProductGroupQuantity {
-    return (productQuantity as ProductGroupQuantity).quantities !== undefined;
-}

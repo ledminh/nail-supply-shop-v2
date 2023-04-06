@@ -16,6 +16,7 @@ export default function CategoryInfo({name, image, description }: Props) {
     const [showReadMore, setShowReadMore] = useState(false);
     const [_description, setDescription] = useState(description);
     
+    console.log("render");
 
     useEffect(() => {
         if (description.length > 100) {
