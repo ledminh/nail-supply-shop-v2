@@ -25,7 +25,7 @@ export interface Props {
 
 export default function ProductGroupBlock({ id, name, products, onPathChange, addToCart, setInitQuantity, initQuantities, initSelectedProductID, setInitSelectedProductID }: Props) {
     
-    const [selectedProduct, setSelectedProduct] = useState(products.find(p => p.id === initSelectedProductID)!);
+    const [selectedProduct, setSelectedProduct] = useState(products.find(p => p.id === initSelectedProductID)|| products[0]);
     
     const [quantity, setQuantity] = useState(initQuantities[selectedProduct.id]);
 
@@ -45,7 +45,7 @@ export default function ProductGroupBlock({ id, name, products, onPathChange, ad
     const onAdd:MouseEventHandler<HTMLButtonElement>  = (e) => {
         e.preventDefault();
         e.stopPropagation();
-        
+
         if(quantity <= 0) return;
         
         addToCart({

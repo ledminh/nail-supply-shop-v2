@@ -50,15 +50,10 @@ export default function CategoryPage({errorMessage, contactInfo, aboutUsFooter, 
   const [curCategory, setCurCategory] = useState(initCategory);
   const [_products, setProducts] = useState<(Product|ProductGroup)[]>(products);
   const [condition, setCondition] = useState<ListCondition>(initCondition);
-  const [isFirstLoad, setIsFirstLoad] = useState(true);
 
 
 
   useEffect(() => {
-    if(isFirstLoad) {
-      setIsFirstLoad(false);
-      return;
-    }
 
     const loadOptions:FindProductOptions = {
       catSlug: curCategory.slug,

@@ -48,9 +48,8 @@ export default function handler(req: NextApiRequest, res: NextApiCategoryRespons
 
       break;
     case 'POST':
-      const {catSlug, sort, sortedOrder, offset, limit} = req.body;
 
-      return getProducts({catSlug, sort, sortedOrder, offset, limit}, res);
+      return getProducts(req.body, res);
       
     
     default:

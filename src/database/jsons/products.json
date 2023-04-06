@@ -238,6 +238,142 @@
         "sellCount": 105
     },
     {
+        "id": "prd05_nailpolish_pink",
+        "name": "Sweet Pink Nail Polish",
+        "price": 5.99,
+        "images": [
+            {
+                "id": "img05_nailpolish_pink",
+                "src": "/images/placeholder_5.png",
+                "alt": "Sweet Pink Nail Polish"
+            },
+            {
+                "id": "img06_nailpolish_pink",
+                "src": "/images/placeholder_6.png",
+                "alt": "Sweet Pink Nail Polish"
+            },
+            {
+                "id": "img07_nailpolish_pink",
+                "src": "/images/placeholder_7.png",
+                "alt": "Sweet Pink Nail Polish"
+            }
+        ],
+        "intro": "A charming pink nail polish for a cute and playful look.",
+        "details": "Our Sweet Pink Nail Polish provides a long-lasting, glossy finish. The high-quality formula ensures even coverage and easy application.",
+        "categoryID": "cat_nail01_polishes",
+        "dateCreated": "2023-01-20",
+        "sellCount": 95
+    },
+    {
+        "id": "prd06_nailpolish_purple",
+        "name": "Royal Purple Nail Polish",
+        "price": 5.99,
+        "images": [
+            {
+                "id": "img08_nailpolish_purple",
+                "src": "/images/placeholder_8.png",
+                "alt": "Royal Purple Nail Polish"
+            },
+            {
+                "id": "img09_nailpolish_purple",
+                "src": "/images/placeholder_9.png",
+                "alt": "Royal Purple Nail Polish"
+            },
+            {
+                "id": "img10_nailpolish_purple",
+                "src": "/images/placeholder_10.png",
+                "alt": "Royal Purple Nail Polish"
+            }
+        ],
+        "intro": "A luxurious purple nail polish for a regal and sophisticated look.",
+        "details": "Our Royal Purple Nail Polish offers a long-lasting, glossy finish. The quick-drying formula ensures a flawless application every time.",
+        "categoryID": "cat_nail01_polishes",
+        "dateCreated": "2023-01-22",
+        "sellCount": 85
+    },
+    {
+        "id": "prd07_nailpolish_gold",
+        "name": "Glamorous Gold Nail Polish",
+        "price": 5.99,
+        "images": [
+            {
+                "id": "img01_nailpolish_gold",
+                "src": "/images/placeholder_1.png",
+                "alt": "Glamorous Gold Nail Polish"
+            },
+            {
+                "id": "img02_nailpolish_gold",
+                "src": "/images/placeholder_2.png",
+                "alt": "Glamorous Gold Nail Polish"
+            },
+            {
+                "id": "img03_nailpolish_gold",
+                "src": "/images/placeholder_3.png",
+                "alt": "Glamorous Gold Nail Polish"
+            }
+        ],
+        "intro": "A dazzling gold nail polish for a glitzy and glamorous look.",
+        "details": "Our Glamorous Gold Nail Polish provides a long-lasting, chip-resistant finish. The fast-drying formula allows for easy and smooth application.",
+        "categoryID": "cat_nail01_polishes",
+        "dateCreated": "2023-01-24",
+        "sellCount": 120
+    },
+    {
+        "id": "prd08_nailpolish_green",
+        "name": "Mint Green Nail Polish",
+        "price": 5.99,
+        "images": [
+            {
+                "id": "img01_nailpolish_green",
+                "src": "/images/placeholder_1.png",
+                "alt": "Mint Green Nail Polish"
+            },
+            {      
+                "id": "img02_nailpolish_green",
+                "src": "/images/placeholder_2.png",
+                "alt": "Mint Green Nail Polish"
+            },
+            {
+                "id": "img03_nailpolish_green",
+                "src": "/images/placeholder_3.png",
+                "alt": "Mint Green Nail Polish"
+            }
+        ],
+        
+        "intro": "A refreshing mint green nail polish for a cool and unique look.",
+        "details": "Our Mint Green Nail Polish offers a long-lasting, glossy finish. The high-quality formula ensures even coverage and easy application.",
+        "categoryID": "cat_nail01_polishes",
+        "dateCreated": "2023-01-28",
+        "sellCount": 90
+    },
+    {
+        "id": "prd09_nailpolish_orange",
+        "name": "Tangerine Orange Nail Polish", 
+        "price": 5.99,
+        "images": [
+            {
+            "id": "img01_nailpolish_orange",
+            "src": "/images/placeholder_1.png",
+            "alt": "Tangerine Orange Nail Polish"
+            },
+            {
+            "id": "img02_nailpolish_orange",
+            "src": "/images/placeholder_2.png",
+            "alt": "Tangerine Orange Nail Polish"
+            },
+            {
+            "id": "img03_nailpolish_orange",
+            "src": "/images/placeholder_3.png",
+            "alt": "Tangerine Orange Nail Polish"
+            }
+        ],
+        "intro": "A bright tangerine orange nail polish for a fun and lively look.",
+        "details": "Our Tangerine Orange Nail Polish provides a long-lasting, chip-resistant finish. The fast-drying formula allows for easy and smooth application.",
+        "categoryID": "cat_nail01_polishes",
+        "dateCreated": "2023-02-03",
+        "sellCount": 70
+    },
+    {
         "id": "prd05_gel_basecoat",
         "name": "Gel Nail Base Coat",
         "price": 7.99,
