@@ -41,12 +41,14 @@ function Select<T>  ({
     const optionClasses = [styles.option, optionClass].join(" ");
 
     const _onChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+        e.stopPropagation();
+
         const selectedOption = optionItems.find(
         (optionItem) => optionItem.value === e.target.value
         );
         if (selectedOption) {
-        setSelectedOption(selectedOption);
-        onChange(selectedOption);
+            setSelectedOption(selectedOption);
+            onChange(selectedOption);
         }
     };
 
@@ -54,7 +56,10 @@ function Select<T>  ({
         <select className={selectClasses} 
                 value={selectedOption.value} 
                 onChange={_onChange}
-                onClick={(e) => e.preventDefault()}
+                onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                }}
                 >
                 {
                     !initOptionItem && (
@@ -62,7 +67,10 @@ function Select<T>  ({
                             key={HeadOption.value}
                             className={optionClasses}
                             value={HeadOption.value}
-                            onClick={(e) => e.preventDefault()}
+                            onClick={(e) => {
+                                e.preventDefault();
+                                e.stopPropagation();
+                            }}
                         >
                             {HeadOption.label}
                         </option>
@@ -73,7 +81,10 @@ function Select<T>  ({
                 key={optionItem.value} 
                 className={optionClasses} 
                 value={optionItem.value}
-                onClick={(e) => e.preventDefault()}>
+                onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                }}>
                 {optionItem.label}
             </option>
         ))}

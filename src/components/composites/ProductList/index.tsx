@@ -20,7 +20,14 @@ export type Props =  {
 function ProductList({ products, type }: Props) {
 
     const [_products, setProducts] = useState(withPath(products));
+    
     const [quantities, setQuantities] = useState<Record<string, number>>(toQuantites(products)); // product id -> quantity
+
+    const [selectedProductIDs, setSelectedProductIDs] = useState<Record<string, string>>(toSelectedProductIDs(products)); // product group id -> product id
+
+
+
+
 
 
     useEffect(() => {
@@ -42,7 +49,7 @@ function ProductList({ products, type }: Props) {
     }
 
 
-    const ProductItemCPN = getProductItemCPN(quantities, setQuantities);
+    const ProductItemCPN = getProductItemCPN(quantities, setQuantities, selectedProductIDs, setSelectedProductIDs);
 
     return (
         <LinksList items = {_products}
@@ -68,7 +75,7 @@ function isProductGroup(product: Product | ProductGroup): product is ProductGrou
 }
 
 
-function getProductItemCPN(quantities: Record<string, number>, setQuantities: React.Dispatch<React.SetStateAction<Record<string, number>>>) {
+function getProductItemCPN(quantities: Record<string, number>, setQuantities: React.Dispatch<React.SetStateAction<Record<string, number>>>, selectedProductIDs: Record<string, string>, setSelectedProductIDs: React.Dispatch<React.SetStateAction<Record<string, string>>>) {
 
     const setQuantity = (id: string, quantity: number) => {
         setQuantities((prev) => {
@@ -77,21 +84,29 @@ function getProductItemCPN(quantities: Record<string, number>, setQuantities: Re
                 [id]: quantity
             }
         });
+    }  
+    
+    const setSelectedProductID = (id: string, productID: string) => {
+        
+        const newState = {
+            ...selectedProductIDs,
+            [id]: productID
+        };
+
+        
+        setSelectedProductIDs(newState);
     }
-
-
-    
-    
     
     
     const ProductItemCPN = (props: Product | ProductGroup) => {
+    
     
         return (
             <CartContext.Consumer>
                 {({addToCart}) => {
                     return (
                         isProductGroup(props) ?
-                        <ProductGroupBlock {...props} addToCart = {addToCart} setInitQuantity={setQuantity} initQuantities={quantities}/> :
+                        <ProductGroupBlock {...props} addToCart = {addToCart} setInitQuantity={setQuantity} initQuantities={quantities} initSelectedProductID={selectedProductIDs[props.id]} setInitSelectedProductID={setSelectedProductID}/> :
                         <ProductBlock {...props} addToCart = {addToCart} setInitQuantity={setQuantity} initQuantity={quantities[props.id]}/>
                     ) 
     
@@ -122,7 +137,23 @@ function withPath(products: (Product | ProductGroup)[]) {
         }
         
     });
+
+    
 }
+
+function toSelectedProductIDs(products: (Product | ProductGroup)[]) {
+    return products.reduce((acc, cur) => {
+        if(isProductGroup(cur)) {
+            return {
+                ...acc,
+                [cur.id]: cur.products[0].id
+            }
+        }
+
+        return acc;
+    }, {} as Record<string, string>);
+}
+
 
 function toQuantites(products: (Product | ProductGroup)[]) {
     return products.reduce((acc, cur) => {

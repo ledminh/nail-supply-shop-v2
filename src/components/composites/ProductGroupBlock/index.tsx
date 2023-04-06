@@ -6,42 +6,46 @@ import ButtonCPN from "@components/basics/ButtonCPN";
 
 import type { Product, OrderedProduct } from "@/types/product";
 
-import { useState, MouseEventHandler, useEffect } from "react";
+import { useState, MouseEventHandler, useEffect, useRef } from "react";
 import Select, {convertToOptionItem, OptionItem} from "@/components/generics/Select";
 
 
-
 export interface Props {
+    id: string;
     name: string;
     products: Product[];
     onPathChange?: (newPath:string)=> void;
     addToCart: (orderedProduct: OrderedProduct) => void;
     setInitQuantity: (id:string, quantity: number) => void;
     initQuantities: Record<string, number>;
+    initSelectedProductID: string;
+    setInitSelectedProductID: (id:string, selectedProductID: string) => void;
 }
 
 
-export default function ProductGroupBlock({ name, products, onPathChange, addToCart, setInitQuantity, initQuantities }: Props) {
-
-    const [selectedProduct, setSelectedProduct] = useState(products[0]);
-    const [quantity, setQuantity] = useState(initQuantities[selectedProduct.id] || 0);
+export default function ProductGroupBlock({ id, name, products, onPathChange, addToCart, setInitQuantity, initQuantities, initSelectedProductID, setInitSelectedProductID }: Props) {
+    
+    const [selectedProduct, setSelectedProduct] = useState(products.find(p => p.id === initSelectedProductID)!);
+    
+    const [quantity, setQuantity] = useState(initQuantities[selectedProduct.id]);
 
 
     useEffect(() => {
+
         if(onPathChange) {
             onPathChange(`/product/${selectedProduct.id}`);
         }
 
-        setQuantity(initQuantities[selectedProduct.id] || 0);
+        setQuantity(initQuantities[selectedProduct.id] || 0);        
 
     }, [selectedProduct]);
 
 
 
-
-
     const onAdd:MouseEventHandler<HTMLButtonElement>  = (e) => {
         e.preventDefault();
+        e.stopPropagation();
+        
         if(quantity <= 0) return;
         
         addToCart({
@@ -58,16 +62,21 @@ export default function ProductGroupBlock({ name, products, onPathChange, addToC
 
 
     const onSelect = (selectedOption: OptionItem<Product>) => {
-        const curProduct = products.find(p => p.id === selectedOption.id);
 
+        const curProduct = products.find(p => p.id === selectedOption.id);
+                
+        
         if(curProduct){
             setSelectedProduct(curProduct);
+            setInitSelectedProductID(id, curProduct.id);
 
         }
     };
 
     
     const productOptions = getProductOptions(products);
+
+
 
     return (
         <div className={styles.wrapper + (quantity> 0? ' ' + styles.highLighted: '' )}>
@@ -85,14 +94,18 @@ export default function ProductGroupBlock({ name, products, onPathChange, addToC
                     optionItems = {productOptions}
                     onChange = {onSelect}
                     selectClass={styles.select}
-                    initOptionItem={productOptions[0]}
+                    initOptionItem={productOptions.find(p => p.id === selectedProduct.id)}
                     />
                 <div className={styles.controls}>
                     <ButtonCPN
                         type="normal"
                         label="ADD TO CART"
                         className={styles.button}
-                        onClick={onAdd}
+                        onClick={(e) => {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            onAdd(e);
+                        }}
                         disabled={quantity === 0}
                         />
                     <QuantityPickerCPN
@@ -100,8 +113,7 @@ export default function ProductGroupBlock({ name, products, onPathChange, addToC
                         onChange ={(q) => {
                             setQuantity(q);
                             setInitQuantity(selectedProduct.id, q);
-                        } 
-                            }
+                        }}
                         buttonClassName = {styles.quantityButton}
                         valueClassName = {styles.quantityValue}
                         className = {styles.quantityPicker}

@@ -95,7 +95,6 @@ export function find(options: FindProductOptions):Promise<FindProductResponse> {
         }
     }
     
-    console.log('hello', options, products.length);
 
     if(options.sort) {
         products = products.sort((a, b) => {

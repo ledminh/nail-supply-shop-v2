@@ -3,11 +3,7 @@ import { FC, useEffect, useState } from "react";
 import { LinkItem } from "@/types/item";
 
 import List from "components/generics/List";
-import Link from "next/link";
-
-import { useRef } from "react";
-
-
+import { useRouter } from "next/router";
 
 export interface Props<T extends JSX.IntrinsicAttributes & LinkItem> {
     items: T[];
@@ -37,22 +33,25 @@ export default function LinksList<T extends JSX.IntrinsicAttributes & LinkItem>(
     
 }: Props<T>) {
 
-
+    const router = useRouter();
     
 
 
     function LinkCPN(props: T ) {
         
         const [path, setPath] = useState(props.path);
-
+        
         const onPathChange = (newPath: string) => {
             setPath(newPath);
         }
         
         return (
-            <Link className={linkClass} href={path}>
+            <div className={linkClass} onClick={(e) => {
+                e.preventDefault();
+                router.push(path);                
+            }}>
                 <ItemCPN {...props} onPathChange={onPathChange} />
-            </Link>
+            </div>
         );
     }        
 

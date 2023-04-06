@@ -30,6 +30,7 @@ function ProductBlock({ id, name, price, images, addToCart, setInitQuantity, ini
     
     const onAdd = useCallback((e: React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
+        e.stopPropagation();
 
         if (quantity === 0) return;
 

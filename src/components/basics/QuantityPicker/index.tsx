@@ -61,6 +61,7 @@ const QuantityPickerCPN:QuantityPicker = ({ value = 0, onChange, buttonClassName
             <button className={buttonClassNames}
                 onClick={(e) => {
                     e.preventDefault();
+                    e.stopPropagation();
                     decrement();
                     }}>
                     -
@@ -71,6 +72,7 @@ const QuantityPickerCPN:QuantityPicker = ({ value = 0, onChange, buttonClassName
             <button className={buttonClassNames} 
                 onClick={(e) => {
                     e.preventDefault();
+                    e.stopPropagation();
                     increment();
                     }}>
                     +
