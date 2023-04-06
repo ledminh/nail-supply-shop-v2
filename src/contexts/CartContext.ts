@@ -1,3 +1,4 @@
+
 import { createContext, useState, useContext, useCallback } from 'react';
 import { OrderedProduct } from '@/types/product';
 
@@ -46,7 +47,8 @@ const initialState:State = {
     cart: [],
 };
 
-type Action = { type: 'ADD_TO_CART'; payload: OrderedProduct } | { type: 'UPDATE_CART'; payload: { id: string; quantity: number } } | { type: 'REMOVE_PRODUCT'; payload: string };
+type Action = { type: 'ADD_TO_CART'; payload: OrderedProduct } | { type: 'UPDATE_CART'; payload: { id: string; quantity: number } } | { type: 'REMOVE_PRODUCT'; payload: string } | { type: 'SAVE_CART' } | { type: 'RETRIEVE_CART' };
+
 
 const cartReducer = (state: typeof initialState, action: Action) => {
     switch (action.type) {
@@ -98,6 +100,20 @@ const cartReducer = (state: typeof initialState, action: Action) => {
                 cart: newCart2,
             };
 
+        case 'SAVE_CART':
+            localStorage.setItem('cart', JSON.stringify(state.cart));
+            return state;
+    
+        case 'RETRIEVE_CART':
+            const cart = localStorage.getItem('cart');
+            if(cart) {
+                return {
+                    ...state,
+                    cart: JSON.parse(cart),
+                };
+            }
+
+            return state;
         default:
             return state;
     }
@@ -106,8 +122,23 @@ const cartReducer = (state: typeof initialState, action: Action) => {
 
 
 export const useCartProviderValue = () => {
-    const [store, dispatch] = useReducer(cartReducer, initialState);
+    const [store, dispatch] = useReducer(
+        cartReducer,
+        initialState);
     
+    useEffect(() => {
+        if(typeof window === 'undefined') return;
+
+        dispatch({ type: 'RETRIEVE_CART' });
+
+    }, []);
+    
+    useEffect(() => {
+        if(typeof window === 'undefined') return;
+
+        dispatch({ type: 'SAVE_CART' });
+
+    }, [store.cart]);
 
     const addToCart = useCallback((orderedProduct: OrderedProduct) => {
         dispatch({

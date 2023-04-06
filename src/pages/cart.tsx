@@ -81,8 +81,7 @@ export default function Cart({errorMessage, contactInfo, aboutUsFooter }:Props) 
           >
             CHECK OUT
           </button>
-          <p className={styles.total}><span>TOTAL: </span><span>${totalPrice}</span></p>
-          <Link className={styles.continueShopping} href="/shop">CONTINUE SHOPPING</Link>
+          <p className={styles.total}><span>TOTAL: </span><span>${totalPrice.toFixed(2)}</span></p>
         </section>
       </div>
     </PageLayout>

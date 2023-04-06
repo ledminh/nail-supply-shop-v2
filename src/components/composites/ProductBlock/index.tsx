@@ -17,15 +17,15 @@ export interface Props {
     images: RemoteImage[];
     addToCart: (orderedProduct: OrderedProduct) => void;
     setInitQuantity: (id:string, quantity: number) => void;
-    initQuantity: number;
+    initQuantities: Record<string, number>;
 }
 
 
 
 
-function ProductBlock({ id, name, price, images, addToCart, setInitQuantity, initQuantity}: Props) {
+function ProductBlock({ id, name, price, images, addToCart, setInitQuantity, initQuantities}: Props) {
 
-    const [quantity, setQuantity] = useState(initQuantity);
+    const [quantity, setQuantity] = useState(initQuantities[id] || 0);
     
     
     const onAdd = useCallback((e: React.MouseEvent<HTMLButtonElement>) => {
@@ -57,7 +57,7 @@ function ProductBlock({ id, name, price, images, addToCart, setInitQuantity, ini
                 size = "medium"
                 className={styles.image}
             />
- 
+
             <div className={styles.text}>
                 <p className={styles.price}>
                     {price}

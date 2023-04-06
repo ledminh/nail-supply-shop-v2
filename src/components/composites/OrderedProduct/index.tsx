@@ -57,7 +57,7 @@ export default function OrderedProduct({ id, name, price, quantity, image, onCha
                 <h3 className={styles.productName}>{name}</h3>
                 <p className={styles.price}>{price}</p>
             </div>
-            <div className={styles.totalPrice}>{totalPrice}</div>
+            <div className={styles.totalPrice}>{totalPrice.toFixed(2)}</div>
             <button className={styles.removeButton}
                 onClick = {() => onRemove(id)}
             >

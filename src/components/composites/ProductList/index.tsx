@@ -107,7 +107,7 @@ function getProductItemCPN(quantities: Record<string, number>, setQuantities: Re
                     return (
                         isProductGroup(props) ?
                         <ProductGroupBlock {...props} addToCart = {addToCart} setInitQuantity={setQuantity} initQuantities={quantities} initSelectedProductID={selectedProductIDs[props.id]} setInitSelectedProductID={setSelectedProductID}/> :
-                        <ProductBlock {...props} addToCart = {addToCart} setInitQuantity={setQuantity} initQuantity={quantities[props.id]}/>
+                        <ProductBlock {...props} addToCart = {addToCart} setInitQuantity={setQuantity} initQuantities={quantities}/>
                     ) 
     
                 }}
