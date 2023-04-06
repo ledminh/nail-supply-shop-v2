@@ -98,7 +98,6 @@ export const orderStatus: Record<StatusValue, string> = {
     shipped: "Order Shipped - In Transit: Your order is on its way to you",
     delivered: "Order Delivered - Received by Customer: Your order has been successfully delivered",
 };
-  
 
 /*****************************
  *  /shop
@@ -149,7 +148,7 @@ export const categoryConfig:CategoryConfig = {
     ],
 
     
-    productsPerPage: 20,
+    productsPerPage: 4,
 }
 
 

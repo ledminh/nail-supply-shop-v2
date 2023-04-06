@@ -16,7 +16,6 @@ import { categoryConfig } from '@/config';
 import { ProductGroup, Product } from '@/types/product';
 import { ListCondition } from '@/types/list-conditions';
 import ButtonCPN from '@/components/basics/ButtonCPN';
-import { useCart } from '@contexts/CartContext';
 import Select, { convertToOptionItem } from '@/components/generics/Select';
 
 import { getAboutUsData, getCategories, getProducts } from '@/database';
@@ -191,7 +190,7 @@ export const getServerSideProps:GetServerSideProps = async (context) => {
 
 
   try {
-    const [aboutUsRes, categoriesRes, productsRes] = await Promise.all([getAboutUsData(), getCategories({}), getProducts({catSlug: slug, type:'origin'})]);
+    const [aboutUsRes, categoriesRes, productsRes] = await Promise.all([getAboutUsData(), getCategories({}), getProducts({catSlug: slug, type:'origin', limit: categoryConfig.productsPerPage})]);
 
 
 
