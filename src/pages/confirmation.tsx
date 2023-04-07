@@ -2,6 +2,8 @@ import { ContactInfo } from '@/types/others';
 
 import { Order } from '@/types/order';
 
+import {useEffect} from 'react';
+
 import PageLayout from '@/components/layouts/PageLayout'
 
 import styles from '@/styles/pages/Confirmation.module.scss'
@@ -14,11 +16,12 @@ import OrderSummary from '@/components/composites/OrderSummary';
 import Link from 'next/link';
 import { getAboutUsData } from '@/database';
 
+import { useCart } from '@/contexts/CartContext';
 
 import { GetServerSideProps } from 'next';
 
 import {getTempOrder} from '@/database';
-import nextId from 'react-id-generator';
+
 
 export interface Props {
   errorMessage?: string,
@@ -32,6 +35,13 @@ export default function Confirmation({errorMessage, contactInfo, aboutUsFooter, 
   if(errorMessage) {
     throw new Error(errorMessage);
   }
+
+  const {clearCart} = useCart();
+
+  useEffect(() => {
+    clearCart();
+  }, []);
+
 
   return (
     <PageLayout
@@ -96,7 +106,7 @@ export const getServerSideProps:GetServerSideProps = async (context) => {
  
     const newOrder = {
       ...orderRes.data!,
-      id: nextId()
+      id: randomId()
     }
 
     const [resSave, resDelete] = await Promise.all([saveOrder(orderRes.data!), deleteTempOrder(temp_id)]);
@@ -141,4 +151,13 @@ export const getServerSideProps:GetServerSideProps = async (context) => {
 
 }
 
+
+/******************************
+ * Helper functions
+ */
+
+// random id generator with params for length and prefix
+export function randomId(length = 10, prefix = '') {
+  return prefix + Math.random().toString(36).substring(2, length);
+}
 

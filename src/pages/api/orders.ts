@@ -51,7 +51,6 @@ export default function handler(req: NextApiRequest, res: NextApiCategoryRespons
             if(type === 'filter') {
               const {status, month, year, sort, query} = req.body;
 
-              console.log(req.body);
 
               return filterOrders({status, month, year, sort, query}, res);
             
@@ -74,39 +73,52 @@ export default function handler(req: NextApiRequest, res: NextApiCategoryRespons
  */
 
 const getOrders = async ( res: NextApiCategoryResponse) => {
-    const orders = await DB.getOrders() as Order[];
+    const resDB = await DB.getOrders();
 
-    res.status(200).json({ success: true, orders });
+    if(!resDB.success) {
+        return res.status(400).json({ success: false, message: "No orders found" });
+    }
+
+    const {data} = resDB as {data: Order[]};
+
+    return res.status(200).json({ success: true, orders:data });
     
-    return orders;
 }
 
 const deleteOrder = async (id: string, res: NextApiCategoryResponse) => {
-    const order = await DB.deleteOrder(id);
+    const dbRes = await DB.deleteOrder(id);
 
-    if(!order) {
+    if(!dbRes.success) {
         return res.status(400).json({ success: false, message: "Order not found" });
     }
 
-    res.status(200).json({ success: true, orders: [order] });
+    res.status(200).json({ success: true, orders: dbRes.data as Order[]});
+
 
 }
 
 const updateOrderStatus = async (id: string, status: StatusValue, res: NextApiCategoryResponse) => {
-    const order = await DB.updateOrderStatus(id, status);
+    const dbRes = await DB.updateOrderStatus(id, status);
 
-    if(!order) {
+    if(!dbRes.success) {
         return res.status(400).json({ success: false, message: "Order not found" });
     }
 
-    res.status(200).json({ success: true, orders: [order] });
+    res.status(200).json({ success: true, orders: [dbRes.data as Order] });
 }
 
 const filterOrders = async (filter:FilterOrder, res: NextApiCategoryResponse) => {
 
-    const orders = await DB.filterOrders(filter);
+    const dbRes = await DB.filterOrders(filter);
 
-    res.status(200).json({ success: true, orders });
+    if(!dbRes.success) {
+      return res.status(400).json({ success: false, message: "No orders found" });
+    }
+
+    const {data} = dbRes as {data: Order[]};
+
+    return res.status(200).json({ success: true, orders:data });
+
 }
 
 

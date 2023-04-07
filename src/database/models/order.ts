@@ -1,11 +1,8 @@
 import { orderStatus } from '@/config';
-
-import {ordersStore} from '@/database/jsons';
+import { getDB }  from '../jsons';
 
 import type { FilterOrder, Order, StatusValue } from '@/types/order';
 
-
-const {ORDERS, ORDER_TEMPS} = ordersStore;
 
 
 type OrderResponse = Promise<{
@@ -16,112 +13,230 @@ type OrderResponse = Promise<{
     message: string;
 }>;
 
-export function find() {
+export function find():OrderResponse {
+    return new Promise((resolve, reject) => {
+        getDB().then((db) => {
+            const {data} = db;
 
-    return Promise.resolve(ORDERS);
-}
+            if(!data) {
+                return reject({
+                    success: false,
+                    message: 'No orders found'
+                });
+            }
 
-export function deleteOrder(id: string) {
-    const order = ORDERS.find((order) => order.id === id);
-
-    if(!order) {
-        return Promise.reject(new Error('Order not found'));
-    }
-
-    const index = ORDERS.indexOf(order);
-
-    ORDERS.splice(index, 1);
-
-    return Promise.resolve(order);
-}
-
-export function add(order: Order):OrderResponse {
-    ORDERS.push(order);
-
-    return Promise.resolve({
-        success: true,
-        data: order
+            resolve({
+                success: true,
+                data: data.ORDERS
+            });
+        });
     });
 }
 
-export function updateStatus(id: string, status: StatusValue) {
-    const order = ORDERS.find((order) => order.id === id);
+    
 
-    if(!order) {
-        return Promise.reject(new Error('Order not found'));
-    }
 
-    order.status = {
-        value: status,
-        lastUpdated: new Date().toISOString(),
-        description: orderStatus[status]
-    };
+export function deleteOrder(id: string):OrderResponse {
+    return new Promise((resolve, reject) => {
+        getDB().then((db) => {
+            const {data} = db;
 
-    return Promise.resolve(order);
+            if(!data) {
+                return reject({
+                    success: false,
+                    message: 'No orders found'
+                });
+            }
+
+            const {ORDERS} = data;
+
+            const index = ORDERS.findIndex((order) => order.id === id);
+
+            if(index === -1) {
+                return reject({
+                    success: false,
+                    message: 'Order not found'
+                });
+            }
+
+            ORDERS.splice(index, 1);
+
+            db.write().then(() => db.read()).then(() => {
+                if(!db.data)
+                    return reject({
+                        success: false,
+                        message: 'No orders found'
+                    });
+
+                resolve({
+                    success: true,
+                    data: db.data.ORDERS
+                });            
+        });
+    });
+});
 }
 
-export function filter({status, month, year, sort, query}: FilterOrder) {
-    if(query !== '') {
-        return Promise.resolve(ORDERS.filter((order) => {
-            return order.id.includes(query);
-        }));
-    }
+export function add(order: Order):OrderResponse {
+    return new Promise((resolve, reject) => {
+        getDB().then((db) => {
+            const {data} = db;
 
-    let filteredOrders = ORDERS;
+            if(!data) {
+                return reject({
+                    success: false,
+                    message: 'No orders found'
+                });
+            }
 
-    if(status !== 'all') {
-        filteredOrders = filteredOrders.filter((order) => order.status.value === status);
+            const {ORDERS} = data;
 
-    }
+            ORDERS.push(order);
 
+            db.write().then(() => db.read()).then(() => {
+                if(!db.data)
+                    return reject({
+                        success: false,
+                        message: 'No orders found'
+                    });
 
+                resolve({
+                    success: true,
+                    data: order
+                });            
+            });
+        });
+    });
+}
 
-    if(month !== null) {
+export function updateStatus(id: string, status: StatusValue):OrderResponse {
+    return new Promise((resolve, reject) => {
+        getDB()
+            .then((db) => {
+                const { data } = db;
         
-        filteredOrders = filteredOrders.filter((order) => {
-            const date = new Date(order.status.lastUpdated);
-            const lastUpdatedMonth = (date.getMonth() + 1).toString();
-            const lastUpdatedYear = date.getFullYear().toString();
-
-            const monthQuery = month.substring(0, month.indexOf('/'));
-            const yearQuery = month.substring(month.indexOf('/') + 1);
+                if (!data) {
+                    return reject({
+                    success: false,
+                    message: "No orders found",
+                    });
+                }
+        
+                const { ORDERS } = data;
+        
+                const index = ORDERS.findIndex((order) => order.id === id);
+        
+                if (index === -1) {
+                    return reject({
+                    success: false,
+                    message: "Order not found",
+                    });
+                }
+        
+                ORDERS[index].status = {
+                    value: status,
+                    lastUpdated: new Date().toISOString(),
+                    description: orderStatus[status],
+                };
+        
+                db
+                    .write()
+                    .then(() => db.read())
+                    .then(() => {
+                        if (!db.data)
+                            return reject({
+                            success: false,
+                            message: "No orders found",
+                            });
             
-
-            return lastUpdatedMonth === monthQuery && lastUpdatedYear === yearQuery;
-        });
-
-
-    }
-
-
-    if(year !== null) {
-        filteredOrders = filteredOrders.filter((order) => {
-            const date = new Date(order.status.lastUpdated);
-            return date.getFullYear().toString() === year;
-        });
-    }
-
-    if(sort === 'oldest') {
-        filteredOrders = filteredOrders.sort((a, b) => {
-            const dateA = new Date(a.status.lastUpdated);
-            const dateB = new Date(b.status.lastUpdated);
-
-            return dateA.getTime() - dateB.getTime();
-        });
-    } else if(sort === 'newest') {
-        filteredOrders = filteredOrders.sort((a, b) => {
-            const dateA = new Date(a.status.lastUpdated);
-            const dateB = new Date(b.status.lastUpdated);
-
-            return dateB.getTime() - dateA.getTime();
-        });
-    }
-
-
-
-
-    return Promise.resolve(filteredOrders);
+                        resolve({
+                            success: true,
+                            data: ORDERS[index],
+                        });
+                    });
+            })
+            .catch((error) => {
+                reject({
+                    success: false,
+                    message: error.message,
+                });
+            });
+    });
 }
+
+
+export function filter({status, month, year, sort, query}: FilterOrder):OrderResponse {
+    return new Promise(async (resolve, reject) => {
+        const db = await getDB();
+
+        if (!db.data) {
+            return reject({
+                success: false,
+                message: 'No orders found',
+            });
+        }
+
+        const { ORDERS } = db.data;
+
+        if (query !== '') {
+            const orders = ORDERS.filter((order) => {
+                return order.id.includes(query);
+            });
+            return resolve({
+                success: true,
+                data: orders,
+            });
+        }
+
+        let filteredOrders = ORDERS;
+
+        if (status !== 'all') {
+            filteredOrders = filteredOrders.filter((order) => order.status.value === status);
+        }
+
+        if (month !== null) {
+            filteredOrders = filteredOrders.filter((order) => {
+                const date = new Date(order.status.lastUpdated);
+                const lastUpdatedMonth = (date.getMonth() + 1).toString();
+                const lastUpdatedYear = date.getFullYear().toString();
+
+                const monthQuery = month.substring(0, month.indexOf('/'));
+                const yearQuery = month.substring(month.indexOf('/') + 1);
+
+                return lastUpdatedMonth === monthQuery && lastUpdatedYear === yearQuery;
+            });
+        }
+
+        if (year !== null) {
+            filteredOrders = filteredOrders.filter((order) => {
+                const date = new Date(order.status.lastUpdated);
+                return date.getFullYear().toString() === year;
+            });
+        }
+
+        if (sort === 'oldest') {
+            filteredOrders = filteredOrders.sort((a, b) => {
+                const dateA = new Date(a.status.lastUpdated);
+                const dateB = new Date(b.status.lastUpdated);
+
+                return dateA.getTime() - dateB.getTime();
+            });
+        } else if (sort === 'newest') {
+            filteredOrders = filteredOrders.sort((a, b) => {
+                const dateA = new Date(a.status.lastUpdated);
+                const dateB = new Date(b.status.lastUpdated);
+
+                return dateB.getTime() - dateA.getTime();
+            });
+        }
+
+        resolve({
+            success: true,
+            data: filteredOrders,
+        });
+    });
+}
+
 
 
 /*************************
@@ -137,50 +252,107 @@ type TempOrderResponse = Promise<{
 }>
 
 export function saveTemp(order: Order): TempOrderResponse {
-    ORDER_TEMPS.push(order);
+    return new Promise(async (resolve, reject) => {
+        const db = await getDB();
 
-    
-    return Promise.resolve({
-        success: true,
-        data: order
+        if (!db.data) {
+            return reject({
+                success: false,
+                message: 'No orders found',
+            });
+        }
+
+        const { ORDER_TEMPS } = db.data;
+
+        ORDER_TEMPS.push(order);
+
+        db.write()
+            .then(() => db.read())
+            .then(() => {
+                if (!db.data)
+                    return reject({
+                    success: false,
+                    message: "No orders found",
+                    });
+
+                resolve({
+                    success: true,
+                    data: order,
+                });
+            });
+
     });
 }
 
-
 export function findTemp(id: string): TempOrderResponse {
-    const order = ORDER_TEMPS.find((order) => order.id === id);
-    
- 
-    if(!order) {
-        return Promise.resolve({
-            success: false,
-            message: 'Order not found'
-        });
-    }
+    return new Promise(async (resolve, reject) => {
+        const db = await getDB();
 
-    return Promise.resolve({
-        success: true,
-        data: order
+        if (!db.data) {
+            return reject({
+                success: false,
+                message: 'No orders found',
+            });
+        }
+
+        const { ORDER_TEMPS } = db.data;
+
+        const order = ORDER_TEMPS.find((order) => order.id === id);
+
+        if (!order) {
+            return resolve({
+                success: false,
+                message: 'Order not found',
+            });
+        }
+
+        resolve({
+            success: true,
+            data: order,
+        });
     });
 }
 
 export function deleteTemp(id: string): TempOrderResponse {
-    const order = ORDER_TEMPS.find((order) => order.id === id);
+    return new Promise(async (resolve, reject) => {
+        const db = await getDB();
 
- 
-    if(!order) {
-        return Promise.resolve({
-            success: false,
-            message: 'Order not found'
-        });
-    }
+        if (!db.data) {
+            return reject({
+                success: false,
+                message: 'No orders found',
+            });
+        }
 
-    const index = ORDER_TEMPS.indexOf(order);
+        const { ORDER_TEMPS } = db.data;
 
-    ORDER_TEMPS.splice(index, 1);
+        const order = ORDER_TEMPS.find((order) => order.id === id);
 
-    return Promise.resolve({
-        success: true,
-        data: order
+        if (!order) {
+            return resolve({
+                success: false,
+                message: 'Order not found',
+            });
+        }
+
+        const index = ORDER_TEMPS.indexOf(order);
+
+        ORDER_TEMPS.splice(index, 1);
+
+        db.write()
+            .then(() => db.read())
+            .then(() => {
+                if (!db.data)
+                    return reject({
+                    success: false,
+                    message: "No orders found",
+                    });
+
+                resolve({
+                    success: true,
+                    data: order,
+                });
+            });
+
     });
 }
