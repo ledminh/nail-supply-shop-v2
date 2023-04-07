@@ -30,9 +30,8 @@ export default function Cart({errorMessage, contactInfo, aboutUsFooter }:Props) 
     throw new Error(errorMessage);
   }
 
-  const {store, updateCart, removeProduct} = useCart();
+  const {cart, updateCart, removeProduct, clearCart} = useCart();
 
-  const {cart} = store;
 
   const [totalPrice, setTotalPrice] = useState<number>(getTotalPrice(cart));
   const [numItems, setNumItems] = useState<number>(getNumItems(cart));
@@ -49,7 +48,7 @@ export default function Cart({errorMessage, contactInfo, aboutUsFooter }:Props) 
 
   
   const onCheckout = () => router.push("/checkout");
-
+  const onClearCart = () => clearCart();
 
   const ItemWrapper = getItemWrapper({
     onChange: updateCart,
@@ -64,25 +63,49 @@ export default function Cart({errorMessage, contactInfo, aboutUsFooter }:Props) 
       <div className={styles.wrapper}>
         <section className={styles.section + " " + styles.header}>
           <h2 className={styles.title}>SHOPPING CART</h2>
-          <h3 className={styles.numItems}>({numItems} items)</h3>
+          {
+            numItems !== 0 && <h3 className={styles.numItems}>({numItems} items)</h3>
+          }
         </section>
-        <section className={styles.section + " " + styles.cart}>
-          <List 
-            items = {cart} 
-            ItemCPN = {ItemWrapper}
-            liClass = {styles.liClass}
-            ulClass = {styles.ulClass}
-            />
-        </section>
-        <section className={styles.section + " " + styles.footer}>
-          <button className={styles.checkoutButton}
-            onClick={() => onCheckout()}
-            disabled={numItems === 0}
-          >
-            CHECK OUT
-          </button>
-          <p className={styles.total}><span>TOTAL: </span><span>${totalPrice.toFixed(2)}</span></p>
-        </section>
+        {
+          numItems === 0 && (
+            <section className={styles.section + " " + styles.emptyCart}>
+              <p className={styles.emptyCartText}>Your cart is empty.</p>
+              <Link href="/shop" className={styles.emptyCartLink}>Continue Shopping</Link>
+            </section>
+          )
+        }
+        {
+          numItems !== 0 && (
+            <>
+              <section className={styles.section + " " + styles.cart}>
+                <List 
+                  items = {cart} 
+                  ItemCPN = {ItemWrapper}
+                  liClass = {styles.liClass}
+                  ulClass = {styles.ulClass}
+                  />
+              </section>
+              <section className={styles.section + " " + styles.footer}>
+                <div className={styles.buttons}>
+                  <button className={styles.checkoutButton}
+                    onClick={() => onCheckout()}
+                    disabled={numItems === 0}
+                  >
+                    CHECK OUT
+                  </button>
+                  <button className={styles.clearCartButton}
+                    onClick={() => onClearCart()}
+                    disabled={numItems === 0}
+                  >
+                    CLEAR CART
+                  </button>
+                </div>
+                <p className={styles.total}><span>TOTAL: </span><span>${totalPrice.toFixed(2)}</span></p>
+              </section>            
+            </>
+          )
+        }
       </div>
     </PageLayout>
   )

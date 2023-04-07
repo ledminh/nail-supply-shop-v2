@@ -8,24 +8,35 @@ import HamburgerMenu from "@components/composites/HamburgerMenu";
 
 interface Props {
     currentPage: string;
+    numberOfItemsInCart?: number;
 }
 
 
-export default function NavigationBar({ currentPage }: Props) {
+export default function NavigationBar({ currentPage, numberOfItemsInCart }: Props) {
 
     const activeItemID = navigationItems.find((item) => item.path.toLowerCase() === currentPage.toLowerCase())?.id;
+
+    const _navigationItems = navigationItems.map((item) => {
+        if (item.label === 'Cart') {
+            return {
+                ...item,
+                label: `${item.label} ${numberOfItemsInCart && numberOfItemsInCart > 0 ? `(${numberOfItemsInCart})` : ''}`
+            }
+        }
+        return item;
+    })
 
     return (
         <>
             <div className={styles.hamburgerMenu}>
                 <HamburgerMenu
-                    navigationItems={navigationItems}
+                    navigationItems={_navigationItems}
                     currentPage={currentPage}
                 />
             </div>
             <div className={styles.linksList}>
                 <LinksList 
-                    items={navigationItems}
+                    items={_navigationItems}
                     ItemCPN={NavItemCPN}
                     liClass = {styles.li}
                     ulClass = {styles.ul}

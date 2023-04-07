@@ -74,7 +74,7 @@ const getRow = (orderedProducts: OrderedProduct) => {
             },
             {
                 key: 'total',
-                value: "$" + (orderedProducts.price * orderedProducts.quantity)
+                value: "$" + (orderedProducts.price * orderedProducts.quantity).toFixed(2)
             }
         ]
     }    
@@ -98,7 +98,7 @@ const getFooter = (orderedProducts: OrderedProduct[]) => {
             },
             {
                 key: 'total_value',
-                value: "$" + orderedProducts.reduce((acc, curr) => acc + curr.price * curr.quantity, 0) 
+                value: "$" + orderedProducts.reduce((acc, curr) => acc + curr.price * curr.quantity, 0).toFixed(2) 
             }
         ]
     }

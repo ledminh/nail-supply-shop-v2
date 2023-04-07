@@ -2,6 +2,7 @@ import styles from "@styles/composites/ShippingAddressForm.module.scss";
 import { useEffect, useState } from "react";
 
 import { ShippingAddress } from "@/types/order";
+import { State, City }  from 'country-state-city';
 
 export interface Props {
     onChange?: (address: ShippingAddress) => void;
@@ -49,13 +50,28 @@ export default function ShippingAddressForm({ onChange}: Props) {
                 <input type="text" id="address2" value={address2} onChange={e => setAddress2(e.target.value)} />
             </div>
             <div className={styles.field}>
-                <label htmlFor="city">City</label>
-                <input type="text" id="city" value={city} onChange={e => setCity(e.target.value)}/>
+                <label htmlFor="state">State</label>
+                <select id="state" value={state} onChange={e => setState(e.target.value)}>
+                    <option value="">Select a state</option>
+                    {State.getStatesOfCountry('US').map((state) => (
+                        <option key={state.isoCode} value={state.isoCode}>
+                            {state.name}
+                        </option>
+                    ))}
+                </select>
             </div>
             <div className={styles.field}>
-                <label htmlFor="state">State</label>
-                <input type="text" id="state" value={state} onChange={e => setState(e.target.value)}/>
+                <label htmlFor="city">City</label>
+                <select id="city" value={city} onChange={e => setCity(e.target.value)}>
+                    <option value="">Select a city</option>
+                    {City.getCitiesOfState('US', state).map((city) => (
+                        <option key={city.name} value={city.name}>
+                            {city.name}
+                        </option>
+                    ))}
+                </select>
             </div>
+
             <div className={styles.field}>
                 <label htmlFor="zip">Zip</label>
                 <input type="text" id="zip"  value={zip} onChange={e => setZip(e.target.value)}/>

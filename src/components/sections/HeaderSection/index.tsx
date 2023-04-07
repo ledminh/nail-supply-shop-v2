@@ -8,6 +8,8 @@ import { websiteTitle } from "@/config";
 import styles from "@styles/sections/HeaderSection.module.scss";
 import SeparatorCPN from "@/components/basics/SeparatorCPN";
 
+import CartContext from "@/contexts/CartContext";
+
 
 
 export interface Props  {
@@ -30,7 +32,11 @@ const HeaderSection:Header = ({currentPage, onSearchSubmit}) => {
                 <SearchBar onSearchSubmit={onSearchSubmit}/>
             </div>
             <div className={styles.navBar}>
-                <NavigationBar currentPage={currentPage} />
+                <CartContext.Consumer>
+                    {({cart}) => (
+                        <NavigationBar currentPage={currentPage} numberOfItemsInCart={cart.reduce((acc, item) => acc + item.quantity, 0)}/>
+                    )}
+                </CartContext.Consumer>
             </div>
             <div className={styles.separator}>
                 <SeparatorCPN/>

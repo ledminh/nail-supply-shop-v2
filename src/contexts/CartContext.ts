@@ -5,22 +5,20 @@ import { OrderedProduct } from '@/types/product';
 import { useEffect, useReducer } from 'react';
 
 interface CartContextValue {
-    store: {
-        cart: OrderedProduct[];
-    };
+    cart: OrderedProduct[];
     updateCart: (id: string, quantity: number) => void;
     addToCart: (orderedProduct: OrderedProduct) => void;
     removeProduct: (id: string) => void;
+    clearCart: () => void;
 }
 
 
 const initContextValue: CartContextValue = {
-    store: {
-        cart: [],
-    },
+    cart: [],
     updateCart: () => {},
     addToCart: () => {},
     removeProduct: () => {},
+    clearCart: () => {},
 };
 
 
@@ -47,7 +45,7 @@ const initialState:State = {
     cart: [],
 };
 
-type Action = { type: 'ADD_TO_CART'; payload: OrderedProduct } | { type: 'UPDATE_CART'; payload: { id: string; quantity: number } } | { type: 'REMOVE_PRODUCT'; payload: string } | { type: 'SAVE_CART' } | { type: 'RETRIEVE_CART' };
+type Action = { type: 'ADD_TO_CART'; payload: OrderedProduct } | { type: 'UPDATE_CART'; payload: { id: string; quantity: number } } | { type: 'REMOVE_PRODUCT'; payload: string } | { type: 'SAVE_CART' } | { type: 'RETRIEVE_CART' } | { type: 'CLEAR_CART' };
 
 
 const cartReducer = (state: typeof initialState, action: Action) => {
@@ -114,6 +112,14 @@ const cartReducer = (state: typeof initialState, action: Action) => {
             }
 
             return state;
+        
+        case 'CLEAR_CART':
+            localStorage.removeItem('cart');
+            return {
+                ...state,
+                cart: [],
+            };
+
         default:
             return state;
     }
@@ -166,13 +172,21 @@ export const useCartProviderValue = () => {
         });
     }, []);
 
+    const clearCart = useCallback(() => {
+        dispatch({
+            type: 'CLEAR_CART',
+        });
+    }, []);
+
+
 
 
     return {
-        store,
+        cart: store.cart,
         addToCart,
         updateCart,
         removeProduct,
+        clearCart,
     };
 };
 
