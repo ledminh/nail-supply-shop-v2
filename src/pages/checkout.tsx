@@ -67,7 +67,7 @@ export default function Checkout({errorMessage, contactInfo, aboutUsFooter }:Pro
           <ShippingAddressForm 
             onChange={onShippingAddressChange}
           />
-          <StripeCheckoutButtonCPN orderedProducts={cart} email={shippingAddress?.email} disabled={isCheckoutDisabled}/>  
+          <StripeCheckoutButtonCPN orderedProducts={cart} shippingAddress={shippingAddress!} disabled={isCheckoutDisabled}/>  
         </section>
       </div>
     </PageLayout>

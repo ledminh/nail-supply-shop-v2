@@ -7,7 +7,13 @@ import { SortType, SortedOrderType } from '@/types/list-conditions';
 import isProduct from '@/utils/isProduct';
 
 
-const CATEGORIES = categoryJSON as Category[];
+const CATEGORIES:Category[] = categoryJSON.map((category) => {
+    return {
+        ...category,
+        numProducts: parseInt(category.numProducts)
+    }
+});
+
 const PRODUCTS = productsJSON as (DBProduct|DBProductGroup)[];
 
 

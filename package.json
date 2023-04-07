@@ -57,6 +57,7 @@
     "next-connect": "^0.13.0",
     "react": "18.2.0",
     "react-dom": "18.2.0",
+    "react-id-generator": "^3.0.2",
     "react-quill": "^2.0.0",
     "sass": "^1.59.1",
     "storybook-addon-sass-postcss": "^0.1.3",

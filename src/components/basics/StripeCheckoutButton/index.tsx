@@ -6,18 +6,19 @@ import axios from "axios";
 import styles from "@styles/basics/StripeCheckoutButtonCPN.module.scss";
 import getStripe from "@/utils/getStripejs";
 import { OrderedProduct } from "@/types/product";
+import {ShippingAddress} from "@/types/order";
 
 
 export interface Props  {
     orderedProducts: OrderedProduct[],
-    email?: string,
+    shippingAddress: ShippingAddress,
     disabled?: boolean,
 };
 
 type StripeCheckoutButton = FC<Props>;
 
 
-const StripeCheckoutButtonCPN:StripeCheckoutButton = ({orderedProducts, email, disabled}) => {
+const StripeCheckoutButtonCPN:StripeCheckoutButton = ({orderedProducts, shippingAddress, disabled}) => {
 
     
     const onClick:MouseEventHandler<HTMLButtonElement> = async (e) => {
@@ -25,16 +26,18 @@ const StripeCheckoutButtonCPN:StripeCheckoutButton = ({orderedProducts, email, d
         
         try {
             // Create a Checkout Session.
-            const {data} = await axios.post('/api/checkout_sessions', { orderedProducts, email });
-
+            const {data} = await axios.post('/api/checkout_sessions', { orderedProducts, shippingAddress });
 
             // Redirect to Checkout.
             const stripe = await getStripe();
             
 
-            const { error } = await stripe!.redirectToCheckout({sessionId: data.id});
+            const res = await stripe!.redirectToCheckout({sessionId: data.id});
             
-            throw new Error(error?.message);
+            if (res.error) {
+                throw new Error(res.error?.message);
+            }
+
         }
         catch (error) {
             console.error(error);

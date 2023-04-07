@@ -1,33 +1,51 @@
 import { orderStatus } from '@/config';
-import ordersJSON from '../jsons/orders.json';
+
+import {ordersStore} from '@/database/jsons';
+
 import type { FilterOrder, Order, StatusValue } from '@/types/order';
 
 
-const orders:Order[] = ordersJSON as Order[];
+const {ORDERS, ORDER_TEMPS} = ordersStore;
 
 
+type OrderResponse = Promise<{
+    success: true;
+    data: Order | Order[];
+}|{
+    success: false;
+    message: string;
+}>;
 
 export function find() {
 
-    return Promise.resolve(orders);
+    return Promise.resolve(ORDERS);
 }
 
 export function deleteOrder(id: string) {
-    const order = orders.find((order) => order.id === id);
+    const order = ORDERS.find((order) => order.id === id);
 
     if(!order) {
         return Promise.reject(new Error('Order not found'));
     }
 
-    const index = orders.indexOf(order);
+    const index = ORDERS.indexOf(order);
 
-    orders.splice(index, 1);
+    ORDERS.splice(index, 1);
 
     return Promise.resolve(order);
 }
 
-export function updateOrderStatus(id: string, status: StatusValue) {
-    const order = orders.find((order) => order.id === id);
+export function add(order: Order):OrderResponse {
+    ORDERS.push(order);
+
+    return Promise.resolve({
+        success: true,
+        data: order
+    });
+}
+
+export function updateStatus(id: string, status: StatusValue) {
+    const order = ORDERS.find((order) => order.id === id);
 
     if(!order) {
         return Promise.reject(new Error('Order not found'));
@@ -42,14 +60,14 @@ export function updateOrderStatus(id: string, status: StatusValue) {
     return Promise.resolve(order);
 }
 
-export function filterOrders({status, month, year, sort, query}: FilterOrder) {
+export function filter({status, month, year, sort, query}: FilterOrder) {
     if(query !== '') {
-        return Promise.resolve(orders.filter((order) => {
+        return Promise.resolve(ORDERS.filter((order) => {
             return order.id.includes(query);
         }));
     }
 
-    let filteredOrders = orders;
+    let filteredOrders = ORDERS;
 
     if(status !== 'all') {
         filteredOrders = filteredOrders.filter((order) => order.status.value === status);
@@ -103,4 +121,66 @@ export function filterOrders({status, month, year, sort, query}: FilterOrder) {
 
 
     return Promise.resolve(filteredOrders);
+}
+
+
+/*************************
+ * Temp Order Functions
+ */
+
+type TempOrderResponse = Promise<{
+    success: true;
+    data: Order;
+}| {
+    success: false;
+    message: string;
+}>
+
+export function saveTemp(order: Order): TempOrderResponse {
+    ORDER_TEMPS.push(order);
+
+    
+    return Promise.resolve({
+        success: true,
+        data: order
+    });
+}
+
+
+export function findTemp(id: string): TempOrderResponse {
+    const order = ORDER_TEMPS.find((order) => order.id === id);
+    
+ 
+    if(!order) {
+        return Promise.resolve({
+            success: false,
+            message: 'Order not found'
+        });
+    }
+
+    return Promise.resolve({
+        success: true,
+        data: order
+    });
+}
+
+export function deleteTemp(id: string): TempOrderResponse {
+    const order = ORDER_TEMPS.find((order) => order.id === id);
+
+ 
+    if(!order) {
+        return Promise.resolve({
+            success: false,
+            message: 'Order not found'
+        });
+    }
+
+    const index = ORDER_TEMPS.indexOf(order);
+
+    ORDER_TEMPS.splice(index, 1);
+
+    return Promise.resolve({
+        success: true,
+        data: order
+    });
 }

@@ -4,7 +4,7 @@ import * as AboutUsModel  from './models/aboutUs';
 import * as OrderModel  from './models/order';
 
 import type { DBProduct, DBProductGroup } from '@/types/product';
-import type { FilterOrder, StatusValue } from '@/types/order';
+import type { Order, FilterOrder, StatusValue } from '@/types/order';
 
 /********************************************************
  * CATEGORY
@@ -166,20 +166,47 @@ export const getOrders = async () => {
     return orders;
 }
 
+export const saveOrder = async (order:Order) => {
+    const savedOrder = OrderModel.add(order);
+
+    return savedOrder;
+}
+
 export const deleteOrder = async (id: string) => {
     const order = OrderModel.deleteOrder(id);
 
     return order;
 }
 
+export const filterOrders = async (filter:FilterOrder) => {
+    const orders = OrderModel.filter(filter);
+
+    return orders;
+}
+
 export const updateOrderStatus = async (id: string, status: StatusValue) => {
-    const order = OrderModel.updateOrderStatus(id, status);
+    const order = OrderModel.updateStatus(id, status);
 
     return order;
 }
 
-export const filterOrders = async (filter:FilterOrder) => {
-    const orders = OrderModel.filterOrders(filter);
 
-    return orders;
+
+export const saveTempOrder = async (order:Order) => {
+    const savedOrder = OrderModel.saveTemp(order);
+
+    return savedOrder;
 }
+
+export const getTempOrder = async (id:string) => {
+    const order = OrderModel.findTemp(id);
+
+    return order;
+}
+
+export const deleteTempOrder = async (id:string) => {
+    const order = OrderModel.deleteTemp(id);
+
+    return order;
+}
+

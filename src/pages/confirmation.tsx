@@ -1,11 +1,12 @@
 import { ContactInfo } from '@/types/others';
 
-import { Order, ShippingAddress } from '@/types/order';
+import { Order } from '@/types/order';
 
 import PageLayout from '@/components/layouts/PageLayout'
 
 import styles from '@/styles/pages/Confirmation.module.scss'
 
+import { saveOrder, deleteTempOrder } from '@/database';
 
 import ShippingAddressCPN from '@/components/basics/ShippingAddress';
 import OrderSummary from '@/components/composites/OrderSummary';
@@ -14,7 +15,10 @@ import Link from 'next/link';
 import { getAboutUsData } from '@/database';
 
 
-import { orderStatus } from '@/config';
+import { GetServerSideProps } from 'next';
+
+import {getTempOrder} from '@/database';
+import nextId from 'react-id-generator';
 
 export interface Props {
   errorMessage?: string,
@@ -50,7 +54,7 @@ export default function Confirmation({errorMessage, contactInfo, aboutUsFooter, 
           <OrderSummary orderedProducts={order.orderedProducts}/>
         </section>
         <section className={styles.text}>
-          <p>A confirmation email has been sent to <span className={styles.email}>{shippingAddress.email}</span>.</p>
+          <p>A confirmation email has been sent to <span className={styles.email}>{order.shippingAddress.email}</span>.</p>
           <p>You can check the status of your order <Link href={'/order/' + order.id} className={styles.linkToOrderPage}>HERE</Link></p>
           <p>Please remember your order number to contact our customer service by email at {contactInfo.email}, or by phone at {contactInfo.phone}.</p>
           <p>Thank you for choosing Nail Essential for all of your nail care needs!</p>
@@ -63,75 +67,15 @@ export default function Confirmation({errorMessage, contactInfo, aboutUsFooter, 
 Confirmation.displayName = "Confirmation";
 
 
-const shippingAddress: ShippingAddress = {
-  name: "John Doe",
-  address1: "1234 Main Street",
-  address2: "Apt 1",
-  city: "New York",
-  state: "NY",
-  zip: "10001",
-  email: "john@example.com"
-}; 
 
-const orderedProducts = [
-  {
-    id: "1",
-    name: "Nail Essential 1",
-    price: 10,
-    quantity: 1,
-    image: {
-      src: "/images/placeholder_1.png",
-      alt: "Nail Essential 1"
-    }
-  },
-  {
-    id: "2",
-    name: "Nail Essential 2",
-    price: 20,
-    quantity: 2,
-    image: {
-      src: "/images/placeholder_2.png",
-      alt: "Nail Essential 2"
-    }
-  },
-  {
-    id: "3",
-    name: "Nail Essential 3",
-    price: 30,
-    quantity: 3,
-    image: {
-      src: "/images/placeholder_3.png",
-      alt: "Nail Essential 3"
-    }
-  },
-  {
-    id: "4",
-    name: "Nail Essential 4",
-    price: 40,
-    quantity: 4,
-    image: {
-      src: "/images/placeholder_4.png",
-      alt: "Nail Essential 4"
-    }
-  },
-]
+export const getServerSideProps:GetServerSideProps = async (context) => {
 
+  const {temp_id} = context.query as {temp_id:string};
 
-export const getServerSideProps = async () => {
-
-  const order:Order = {
-    id: "123456",
-    shippingAddress,
-    orderedProducts,
-    status: {
-      value: "processing",
-      description: orderStatus["processing"],
-      lastUpdated: new Date().toDateString()
-    }
-  }
-
+  console.log(temp_id);
+  
   try {
-    const [aboutUsRes] = await Promise.all([getAboutUsData()]);
+    const [aboutUsRes, orderRes] = await Promise.all([getAboutUsData(), getTempOrder(temp_id)]);
 
     if(!aboutUsRes.success) {
       return {
@@ -141,14 +85,48 @@ export const getServerSideProps = async () => {
       }
     }
 
+    if(!orderRes.success) {
+      return {
+        props: {
+          errorMessage: orderRes.message
+        }
+      }
+    }
+
+ 
+    const newOrder = {
+      ...orderRes.data!,
+      id: nextId()
+    }
+
+    const [resSave, resDelete] = await Promise.all([saveOrder(orderRes.data!), deleteTempOrder(temp_id)]);
+
+    if(!resSave.success) {
+      return {
+        props: {
+          errorMessage: resSave.message
+        }
+      }
+    }
+
+    if(!resDelete.success) {
+      return {
+        props: {
+          errorMessage: resDelete.message
+        }
+      }
+    }
+
+
     const aboutUsFooter = aboutUsRes.data!.aboutUsFooter;
     const contactInfo = aboutUsRes.data!.contactInfo;
-    
+ 
+
     return {
       props: {
         contactInfo,
         aboutUsFooter,
-        order
+        order: newOrder
       }
     }
   }
