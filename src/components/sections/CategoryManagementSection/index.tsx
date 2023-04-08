@@ -39,7 +39,9 @@ export default function CategoryManagementSection({  }: Props) {
     useEffect(() => {
         axios.get('/api/categories')
             .then((res:AxiosResponse<CategoryApiResponse>) => {
-                setCategories(res.data as Category[]);
+                if(res.data.success) {
+                    setCategories(res.data.categories as Category[]);
+                }
 
             })
             .catch((err) => {

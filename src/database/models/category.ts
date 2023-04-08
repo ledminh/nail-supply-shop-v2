@@ -1,21 +1,73 @@
 import categoriesJSON from '../jsons/categories.json';
 import type { Category } from '@/types/category';
+import { getDB }  from '../jsons';
 
-const CATEGORIES: Category[] = categoriesJSON.map((category) => ({
-    ...category,
-    numProducts: parseInt(category.numProducts)
-}));
 
-type CategoryResponse = {
+
+
+type Response<T> = {
     success: true;
-    data: Category[];
+    data: T;
 } | {
     success: false;
     message: string;
 }
 
+type CategoryResponse = Response<Category> | Response<Category[]>;
 
-export function find(): Promise<CategoryResponse> {
+type FindProps = {
+    id?: string;
+};
 
-    return Promise.resolve({success: true, data: CATEGORIES});
+
+export function find({id}:FindProps): Promise<CategoryResponse> {
+
+    if(id) {
+        return new Promise((resolve, reject) => {
+            getDB().then((db) => {
+                const {data} = db;
+    
+                if(!data) {
+                    return reject({
+                        success: false,
+                        message: 'No orders found'
+                    });
+                }
+    
+                const {CATEGORIES} = data;
+    
+                const category = CATEGORIES.find((cat) => cat.id === id);
+    
+                if(!category) {
+                    return reject({
+                        success: false,
+                        message: 'Order not found'
+                    });
+                }
+    
+                resolve({
+                    success: true,
+                    data: category
+                });
+            });
+        });    
+    }
+
+    return new Promise((resolve, reject) => {
+        getDB().then((db) => {
+            const {data} = db;
+
+            if(!data) {
+                return reject({
+                    success: false,
+                    message: 'No orders found'
+                });
+            }
+
+            resolve({
+                success: true,
+                data: data.CATEGORIES
+            });
+        });
+    });
 }

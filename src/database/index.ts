@@ -14,12 +14,9 @@ import type { Order, FilterOrder, StatusValue } from '@/types/order';
  * getCategories
  */
 
-type getCategoriesProps = {
-    
-};
 
-export function getCategories({}:getCategoriesProps) {
-    const categories = CategoryModel.find();
+export function getCategories() {
+    const categories = CategoryModel.find({});
     return categories;
 }
 

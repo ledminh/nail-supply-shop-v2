@@ -5,10 +5,12 @@ import { fileURLToPath } from 'node:url'
 import { Low } from 'lowdb'
 import { JSONFile } from 'lowdb/node'
 import { Order } from '@/types/order'
+import { Category } from '@/types/category'
 
 type Data = {
     ORDERS: Order[],
-    ORDER_TEMPS: Order[] 
+    ORDER_TEMPS: Order[],
+    CATEGORIES: Category[]
 }
 
 // File path
@@ -23,7 +25,7 @@ const db = new Low(adapter)
 // If db.json doesn't exist, db.data will be null
 // Use the code below to set default data
 // db.data = db.data || { posts: [] } // For Node < v15.x
-db.data =  db.data || { ORDERS: [], ORDER_TEMPS: [] }  // For Node >= 15.x
+db.data =  db.data || { ORDERS: [], ORDER_TEMPS: [], CATEGORIES: [] }  // For Node >= 15.x
 
 
 
