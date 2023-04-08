@@ -13,7 +13,46 @@ type OrderResponse = Promise<{
     message: string;
 }>;
 
-export function find():OrderResponse {
+
+
+type FindProps = {
+    id?: string;
+};
+
+export function find({id}:FindProps):OrderResponse {
+
+
+    if(id) {
+        return new Promise((resolve, reject) => {
+            getDB().then((db) => {
+                const {data} = db;
+    
+                if(!data) {
+                    return reject({
+                        success: false,
+                        message: 'No orders found'
+                    });
+                }
+    
+                const {ORDERS} = data;
+    
+                const order = ORDERS.find((order) => order.id === id);
+    
+                if(!order) {
+                    return reject({
+                        success: false,
+                        message: 'Order not found'
+                    });
+                }
+    
+                resolve({
+                    success: true,
+                    data: order
+                });
+            });
+        });    
+    }
+
     return new Promise((resolve, reject) => {
         getDB().then((db) => {
             const {data} = db;
@@ -31,6 +70,11 @@ export function find():OrderResponse {
             });
         });
     });
+
+
+    
+
+    
 }
 
     
@@ -78,34 +122,36 @@ export function deleteOrder(id: string):OrderResponse {
 }
 
 export function add(order: Order):OrderResponse {
-    return new Promise((resolve, reject) => {
-        getDB().then((db) => {
-            const {data} = db;
+    return new Promise(async (resolve, reject) => {
+        const db = await getDB();
 
-            if(!data) {
-                return reject({
-                    success: false,
-                    message: 'No orders found'
-                });
-            }
+        if (!db.data) {
+            return reject({
+                success: false,
+                message: 'No orders found',
+            });
+        }
 
-            const {ORDERS} = data;
+        const { ORDERS } = db.data;
 
-            ORDERS.push(order);
+        ORDERS.push(order);
 
-            db.write().then(() => db.read()).then(() => {
-                if(!db.data)
+        db.write()
+            .then(() => db.read())
+            .then(() => {
+                if (!db.data)
                     return reject({
                         success: false,
-                        message: 'No orders found'
+                        message: "No orders found",
                     });
+
 
                 resolve({
                     success: true,
-                    data: order
-                });            
+                    data: order,
+                });
             });
-        });
+
     });
 }
 
@@ -274,7 +320,8 @@ export function saveTemp(order: Order): TempOrderResponse {
                     success: false,
                     message: "No orders found",
                     });
-
+                
+                                
                 resolve({
                     success: true,
                     data: order,

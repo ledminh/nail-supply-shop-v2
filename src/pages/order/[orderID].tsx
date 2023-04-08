@@ -7,8 +7,7 @@ import styles from '@/styles/pages/OrderPage.module.scss';
 import { Order } from '@/types/order';
 import OrderSummary from '@/components/composites/OrderSummary';
 
-import { orderStatus } from '@/config';
-import { ShippingAddress } from '@/types/order';
+import { getOrder } from '@/database';
 
 import { getAboutUsData } from '@/database';
 
@@ -59,79 +58,25 @@ export default function OrderPage({errorMessage, contactInfo, aboutUsFooter, ord
 OrderPage.displayName = "OrderPage";
 
 
-const shippingAddress: ShippingAddress = {
-  name: "John Doe",
-  address1: "1234 Main Street",
-  address2: "Apt 1",
-  city: "New York",
-  state: "NY",
-  zip: "10001",
-  email: "john@example.com"
-}; 
-
-const orderedProducts = [
-  {
-    id: "1",
-    name: "Nail Essential 1",
-    price: 10,
-    quantity: 1,
-    image: {
-      src: "/images/placeholder_1.png",
-      alt: "Nail Essential 1"
-    }
-  },
-  {
-    id: "2",
-    name: "Nail Essential 2",
-    price: 20,
-    quantity: 2,
-    image: {
-      src: "/images/placeholder_2.png",
-      alt: "Nail Essential 2"
-    }
-  },
-  {
-    id: "3",
-    name: "Nail Essential 3",
-    price: 30,
-    quantity: 3,
-    image: {
-      src: "/images/placeholder_3.png",
-      alt: "Nail Essential 3"
-    }
-  },
-  {
-    id: "4",
-    name: "Nail Essential 4",
-    price: 40,
-    quantity: 4,
-    image: {
-      src: "/images/placeholder_4.png",
-      alt: "Nail Essential 4"
-    }
-  },
-]
 
 
 
 export const getServerSideProps:GetServerSideProps = async (context) => {
-  
-
-
-  const order:Order = {
-    id: "123456",
-    shippingAddress,
-    orderedProducts,
-    status: {
-      value: "processing",
-      description: orderStatus["processing"],
-      lastUpdated: new Date().toDateString()
+  if(!context.params || typeof context.params.orderID !== 'string') {
+    return {
+      props: {
+        errorMessage: "No order ID provided"
+      }
     }
   }
-  
+
+
+  const orderID = context.params.orderID;
+
+
 
   try {
-    const [aboutUsRes] = await Promise.all([getAboutUsData()]);
+    const [aboutUsRes, orderRes] = await Promise.all([getAboutUsData(), getOrder(orderID)]);
 
     if(!aboutUsRes.success) {
       return {
@@ -141,8 +86,20 @@ export const getServerSideProps:GetServerSideProps = async (context) => {
       }
     }
 
+    if(!orderRes.success) {
+      return {
+        props: {
+          errorMessage: orderRes.message
+        }
+      }
+    }
+
+
     const aboutUsFooter = aboutUsRes.data!.aboutUsFooter;
     const contactInfo = aboutUsRes.data!.contactInfo;
+    const order = orderRes.data;    
+    
+    
     
     return {
       props: {

@@ -1,4 +1,45 @@
 {
-  "ORDERS": [],
+  "ORDERS": [
+    {
+      "id": "mn0xc1veelo",
+      "shippingAddress": {
+        "name": "Minh Le",
+        "address1": "313",
+        "city": "Adams Morgan",
+        "state": "DC",
+        "zip": "29650",
+        "email": "duyminh.le310@gmail.com"
+      },
+      "orderedProducts": [
+        {
+          "id": "prd06_gel_topcoat",
+          "name": "Gel Nail Top Coat",
+          "price": 8.99,
+          "quantity": 4,
+          "image": {
+            "id": "img06_gel_topcoat",
+            "src": "/images/placeholder_6.png",
+            "alt": "Gel Nail Top Coat"
+          }
+        },
+        {
+          "id": "prd05_gel_basecoat",
+          "name": "Gel Nail Base Coat",
+          "price": 7.99,
+          "quantity": 3,
+          "image": {
+            "id": "img05_gel_basecoat",
+            "src": "/images/placeholder_5.png",
+            "alt": "Gel Nail Base Coat"
+          }
+        }
+      ],
+      "status": {
+        "value": "processing",
+        "lastUpdated": "2023-04-08T12:12:41.826Z",
+        "description": "Your order is being prepared for shipment"
+      }
+    }
+  ],
   "ORDER_TEMPS": []
 }

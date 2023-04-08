@@ -80,9 +80,16 @@ Confirmation.displayName = "Confirmation";
 
 export const getServerSideProps:GetServerSideProps = async (context) => {
 
-  const {temp_id} = context.query as {temp_id:string};
+  const {temp_id} = context.query;
 
-  console.log(temp_id);
+  if(typeof temp_id !== 'string') {
+    return {
+      props: {
+        errorMessage: 'Invalid confirmation id'
+      }
+    }
+  }
+
   
   try {
     const [aboutUsRes, orderRes] = await Promise.all([getAboutUsData(), getTempOrder(temp_id)]);
@@ -106,10 +113,13 @@ export const getServerSideProps:GetServerSideProps = async (context) => {
  
     const newOrder = {
       ...orderRes.data!,
-      id: randomId()
+      id: randomId(20)
     }
+    
 
-    const [resSave, resDelete] = await Promise.all([saveOrder(orderRes.data!), deleteTempOrder(temp_id)]);
+    const resSave = await saveOrder(newOrder);
+    const resDelete = await deleteTempOrder(temp_id);
+
 
     if(!resSave.success) {
       return {
@@ -158,6 +168,6 @@ export const getServerSideProps:GetServerSideProps = async (context) => {
 
 // random id generator with params for length and prefix
 export function randomId(length = 10, prefix = '') {
-  return prefix + Math.random().toString(36).substring(2, length);
+  return prefix + Math.random().toString(36).substring(2, length + 2);
 }
 

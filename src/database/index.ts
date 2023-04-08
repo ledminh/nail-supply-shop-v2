@@ -161,9 +161,15 @@ export function setAboutUsContactInfo(email: string, phone: string, additionalIn
  * ORDERS
  */ 
 export const getOrders = async () => {
-    const orders = OrderModel.find();    
+    const orders = OrderModel.find({});    
 
     return orders;
+}
+
+export const getOrder = async (id: string) => {
+    const order = OrderModel.find({id});
+
+    return order;
 }
 
 export const saveOrder = async (order:Order) => {
