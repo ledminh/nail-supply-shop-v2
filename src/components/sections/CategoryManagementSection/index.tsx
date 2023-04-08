@@ -74,7 +74,11 @@ export default function CategoryManagementSection({  }: Props) {
         axios
             .post(`/api/categories/?type=delete&id=${catID}`)
             .then(({ data }) => {
-                setCategories(data);
+                if(!data.success) {
+                    throw new Error('Failed to delete category');
+                }
+
+                setCategories(data.categories);
                 setToBeDeletedCategoryID(null);
             })
             .catch((err) => {

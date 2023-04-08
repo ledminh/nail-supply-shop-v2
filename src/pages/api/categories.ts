@@ -47,28 +47,17 @@ export default function handler(req: NextApiRequest, res: NextApiCategoryRespons
       getCategories(res);
       break;
     case 'POST':
-      // const { query: { type, id: catID } } = req;
+      const { query: { type, id: catID } } = req;
 
-      // // Inside the POST request handler for deleting a category
-      // if (type === "delete") {
-      //   if (typeof catID !== "string") {
-      //     res.status(400).json({ message: "Invalid category ID" });
-      //     break;
-      //   }
+      if (type === "delete") {
+        if (typeof catID !== "string") {
+          res.status(400).json({ success: false, message: "Invalid category ID" });
+          break;
+        }
 
-      //   const categoryIndex = categories.findIndex((category) => category.id === catID);
-
-      //   if (categoryIndex === -1) {
-      //     res.status(404).json({ message: "Category not found" });
-      //     break;
-      //   }
-
-      //   const category = categories[categoryIndex];
-      //   deleteImage(category.image.src); // Call the deleteImage function here
-      //   categories.splice(categoryIndex, 1);
-      //   res.status(200).json(categories);
-      //   break;
-      // }
+        deleteCategory(catID, res);
+        break;
+      }
       // else if (type === 'create') {
       //   const form = new formidable.IncomingForm();
                 
@@ -141,9 +130,9 @@ export default function handler(req: NextApiRequest, res: NextApiCategoryRespons
       //     res.status(200).json(categories);
       //   });
       // }
-      // else {
-      //   res.status(400).json({ message: 'Invalid type parameter' });
-      // }
+      else {
+        res.status(400).json({ success: false, message: 'Invalid type parameter' });
+      }
       break;
     default:
       res.setHeader('Allow', ['GET', 'POST']);
@@ -180,3 +169,18 @@ function getCategories(res: NextApiCategoryResponse) {
   });
 
 }
+
+function deleteCategory(catID: string, res: NextApiCategoryResponse) {
+  DB.deleteCategory(catID).then((dbRes) => {
+    if(!dbRes.success) {
+      res.status(500).json({ success: false, message: dbRes.message });
+      return;
+    }
+
+    res.status(200).json({ success: true, categories: dbRes.data as Category[] });
+
+  }).catch((err) => {
+    res.status(500).json({ success: false, message: err.message });
+  });
+}
+

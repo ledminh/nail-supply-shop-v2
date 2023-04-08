@@ -116,7 +116,7 @@ export function deleteOrder(id: string):OrderResponse {
                     success: true,
                     data: db.data.ORDERS
                 });            
-        });
+            });
     });
 });
 }

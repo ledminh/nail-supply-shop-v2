@@ -20,7 +20,10 @@ export function getCategories() {
     return categories;
 }
 
-
+export function deleteCategory(id: string) {
+    const category = CategoryModel.deleteCategory(id);
+    return category;
+}
 
 
 

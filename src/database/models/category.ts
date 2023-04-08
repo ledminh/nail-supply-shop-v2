@@ -1,4 +1,3 @@
-import categoriesJSON from '../jsons/categories.json';
 import type { Category } from '@/types/category';
 import { getDB }  from '../jsons';
 
@@ -67,6 +66,49 @@ export function find({id}:FindProps): Promise<CategoryResponse> {
             resolve({
                 success: true,
                 data: data.CATEGORIES
+            });
+        });
+    });
+}
+
+export function deleteCategory(id: string): Promise<CategoryResponse> {
+    return new Promise((resolve, reject) => {
+        getDB().then((db) => {
+            const {data} = db;
+
+            if(!data) {
+                return reject({
+                    success: false,
+                    message: 'No database found'
+                });
+            }
+
+            const {CATEGORIES} = data;
+
+            const category = CATEGORIES.find((cat) => cat.id === id);
+
+            if(!category) {
+                return reject({
+                    success: false,
+                    message: 'Category not found'
+                });
+            }
+
+            const index = CATEGORIES.indexOf(category);
+
+            CATEGORIES.splice(index, 1);
+
+            db.write().then(() => db.read()).then(() => {
+                if(!db.data)
+                    return reject({
+                        success: false,
+                        message: 'No database found'
+                    });
+
+                resolve({
+                    success: true,
+                    data: db.data.CATEGORIES
+                });            
             });
         });
     });
