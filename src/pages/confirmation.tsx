@@ -40,6 +40,7 @@ export default function Confirmation({errorMessage, contactInfo, aboutUsFooter, 
 
   useEffect(() => {
     clearCart();
+    deleteShippingAddressFromLocalStorage();
   }, []);
 
 
@@ -166,8 +167,19 @@ export const getServerSideProps:GetServerSideProps = async (context) => {
  * Helper functions
  */
 
-// random id generator with params for length and prefix
+// random id generator with params for length and prefix, only numbers
 export function randomId(length = 10, prefix = '') {
-  return prefix + Math.random().toString(36).substring(2, length + 2);
+  let result = prefix;
+  const characters = '0123456789';
+  const charactersLength = characters.length;
+  for (let i = 0; i < length; i++) {
+    result += characters.charAt(Math.floor(Math.random() * charactersLength));
+  }
+  return result;
 }
 
+// delete shipping address from local storage
+export function deleteShippingAddressFromLocalStorage() {
+
+  localStorage.removeItem('shippingAddress');
+}

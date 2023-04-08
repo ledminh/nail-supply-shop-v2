@@ -1,3 +1,5 @@
+'use client';
+
 import styles from "@styles/composites/ShippingAddressForm.module.scss";
 import { useEffect, useState } from "react";
 
@@ -6,6 +8,7 @@ import { State, City }  from 'country-state-city';
 
 export interface Props {
     onChange?: (address: ShippingAddress) => void;
+
 }
 
 
@@ -17,9 +20,22 @@ export default function ShippingAddressForm({ onChange}: Props) {
     const [city, setCity] = useState("");
     const [state, setState] = useState("");
     const [zip, setZip] = useState("");
-    const [phone, setPhone] = useState("");
     const [email, setEmail] = useState("");
 
+    const [firstLoad, setFirstLoad] = useState(true);
+
+    useEffect(() => {
+        const shippingAddress = getShippingAddressFromLocalStorage();
+        if (shippingAddress) {
+            setName(shippingAddress.name);
+            setAddress1(shippingAddress.address1);
+            setAddress2(shippingAddress.address2 || '');
+            setCity(shippingAddress.city);
+            setState(shippingAddress.state);
+            setZip(shippingAddress.zip);
+            setEmail(shippingAddress.email);
+        }
+    }, []);
 
     useEffect(() => {
         if (onChange) {
@@ -33,7 +49,24 @@ export default function ShippingAddressForm({ onChange}: Props) {
                 email,
             });
         }
-    }, [name, address1, address2, city, state, zip, phone, email]);
+
+        if(firstLoad) {
+            setFirstLoad(false);
+            return;
+        }
+
+        
+        saveShippingAddressToLocalStorage({
+            name,
+            address1,
+            address2: address2 === ''? undefined : address2,
+            city,
+            state,
+            zip,
+            email,
+        });
+
+    }, [name, address1, address2, city, state, zip, email]);
 
     return (
         <form className={styles.wrapper}>
@@ -77,10 +110,6 @@ export default function ShippingAddressForm({ onChange}: Props) {
                 <input type="text" id="zip"  value={zip} onChange={e => setZip(e.target.value)}/>
             </div>
             <div className={styles.field}>
-                <label htmlFor="phone">Phone Number</label>
-                <input type="text" id="phone" value={phone} onChange={e => setPhone(e.target.value)}/>
-            </div>
-            <div className={styles.field}>
                 <label htmlFor="email">Email</label>
                 <input type="text" id="email" value={email} onChange={e => setEmail(e.target.value)}/>
             </div>
@@ -89,3 +118,21 @@ export default function ShippingAddressForm({ onChange}: Props) {
 }
 
 ShippingAddressForm.displayName = "ShippingAddressForm";
+
+
+// save shipping address to local storage
+function saveShippingAddressToLocalStorage(shippingAddress:ShippingAddress) {
+    localStorage.setItem('shippingAddress', JSON.stringify(shippingAddress));
+}
+
+// get shipping address from local storage
+function getShippingAddressFromLocalStorage():ShippingAddress | null {
+
+    const shippingAddress = localStorage.getItem('shippingAddress');
+    
+    if (shippingAddress) {
+        return JSON.parse(shippingAddress);
+    }
+    
+    return null;
+}

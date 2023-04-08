@@ -125,12 +125,18 @@ function isValidShippingAddress(shippingAddress:ShippingAddress | null):boolean 
   
   const {name, address1, city, state, zip, email} = shippingAddress;
   
-  if (!name || !address1 || !city || !state || !zip || !email) {
+  if (!name || !address1 || !city || !state || !zip || !isValidEmail(email)) {
     return false;
   }
 
 
   return true;
+}
+
+// check if email is valid
+function isValidEmail(email:string):boolean {
+  const re = /\S+@\S+\.\S+/;
+  return re.test(email);
 }
 
 
