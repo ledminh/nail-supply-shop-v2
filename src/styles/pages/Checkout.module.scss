@@ -28,6 +28,27 @@
     }
 }
 
+.emptyCart {
+    .emptyCartTitle {
+        font-size: 1.5rem;
+        font-weight: 600;
+        margin-bottom: 10px;
+    }
+
+    .link {
+        color: $button-color;
+        font-weight: 600;
+        font-size: 1.2rem;
+        border-bottom: 2px solid transparent;
+        padding-bottom: 2px;
+
+        &:hover {
+            border-bottom: 2px solid $button-color;
+        }
+    }
+    
+}
+
 .payment {
     display: flex;
     flex-flow: column;

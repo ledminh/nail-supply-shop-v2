@@ -1,10 +1,12 @@
 @use '../base' as *;
 
 .wrapper {
-    display: flex;
-    flex-flow: column;
-
+    display: grid;
+    grid-template-rows: 50px auto;
     gap: 5px;
+    
+    
+    height: 100%;
 
     background-color: $secondary-background-color;
     padding: 10px;
@@ -16,6 +18,8 @@
     border-bottom: 1px solid $separator-color;
     padding-bottom: 5px;
 }
+
+
 
 .cell {
     &:first-child {

@@ -79,6 +79,64 @@
         "lastUpdated": "2023-04-08T12:51:45.615Z",
         "description": "Your order is being prepared for shipment"
       }
+    },
+    {
+      "id": "62625013244458110839",
+      "shippingAddress": {
+        "name": "Minh",
+        "address1": "313",
+        "city": "Baca County",
+        "state": "CO",
+        "zip": "29650",
+        "email": "22@gmail.com"
+      },
+      "orderedProducts": [
+        {
+          "id": "prd06_gel_topcoat",
+          "name": "Gel Nail Top Coat",
+          "price": 8.99,
+          "quantity": 5,
+          "image": {
+            "id": "img06_gel_topcoat",
+            "src": "/images/placeholder_6.png",
+            "alt": "Gel Nail Top Coat"
+          }
+        }
+      ],
+      "status": {
+        "value": "processing",
+        "lastUpdated": "2023-04-08T12:59:20.738Z",
+        "description": "Your order is being prepared for shipment"
+      }
+    },
+    {
+      "id": "22228492877565130822",
+      "shippingAddress": {
+        "name": "MInh",
+        "address1": "111",
+        "city": "Delmar",
+        "state": "DE",
+        "zip": "2999",
+        "email": "duyminh.le310@gmail.com"
+      },
+      "orderedProducts": [
+        {
+          "id": "prd01_nailpolish_red",
+          "name": "Classic Red Nail Polish",
+          "price": 5.99,
+          "quantity": 4,
+          "image": {
+            "id": "img01_nailpolish_red",
+            "src": "/images/placeholder_1.png",
+            "alt": "Classic Red Nail Polish"
+          }
+        }
+      ],
+      "status": {
+        "value": "processing",
+        "lastUpdated": "2023-04-08T13:13:06.641Z",
+        "description": "Your order is being prepared for shipment"
+      }
     }
   ],
   "ORDER_TEMPS": [

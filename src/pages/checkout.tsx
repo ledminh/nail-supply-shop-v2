@@ -57,18 +57,36 @@ export default function Checkout({errorMessage, contactInfo, aboutUsFooter }:Pro
       <div className={styles.wrapper}>
         <section className={styles.header}>
           <h2 className={styles.title}>Checkout</h2>
-          <Link className={styles.editCart} href="/cart">Edit Cart</Link>
+          {
+            cart.length > 0 && <Link className={styles.editCart} href="/cart">Edit Cart</Link>
+          }
         </section>
-        <section className={styles.orderDetail}>
-          <OrderDetail orderedProducts={cart}/>
-        </section>
-        <section className={styles.payment}>
-          <h3 className={styles.paymentTitle}>Payment</h3>
-          <ShippingAddressForm 
-            onChange={onShippingAddressChange}
-          />
-          <StripeCheckoutButtonCPN orderedProducts={cart} shippingAddress={shippingAddress!} disabled={isCheckoutDisabled}/>  
-        </section>
+        {
+          cart.length === 0 && (
+            <div className={styles.emptyCart}>
+              <h3 className={styles.emptyCartTitle}>Your cart is empty</h3>
+              <Link href="/shop" className={styles.link}>
+                Go back to shopping.
+              </Link>
+            </div>
+          )          
+        }
+        {
+          cart.length > 0 && (
+            <>
+              <section className={styles.orderDetail}>
+                <OrderDetail orderedProducts={cart}/>
+              </section>
+              <section className={styles.payment}>
+                <h3 className={styles.paymentTitle}>Payment</h3>
+                <ShippingAddressForm 
+                  onChange={onShippingAddressChange}
+                />
+                <StripeCheckoutButtonCPN orderedProducts={cart} shippingAddress={shippingAddress!} disabled={isCheckoutDisabled}/>  
+              </section> 
+            </>
+          )
+        }
       </div>
     </PageLayout>
   )

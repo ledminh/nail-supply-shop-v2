@@ -16,11 +16,12 @@ export default function OrderSummary({ orderedProducts}: Props) {
         <div className={styles.wrapper}>
             <h3 className={styles.title}>Order Summary</h3>
             <TableLayout
-                rows = {rows}
-                footer = {footer}
-                cellClassName = {styles.cell}
-                rowClassName={styles.row}
-            />
+                    tableClassName = {styles.table}
+                    rows = {rows}
+                    footer = {footer}
+                    cellClassName = {styles.cell}
+                    rowClassName={styles.row}
+                />
         </div>
     );
 }
@@ -44,7 +45,7 @@ const getRow = (orderedProduct: OrderedProduct) => {
             },
             {
                 key: 'total',
-                value: "$" + (orderedProduct.price * orderedProduct.quantity)
+                value: "$" + (orderedProduct.price * orderedProduct.quantity).toFixed(2)
             }
         ]
     }    
@@ -64,7 +65,7 @@ const getFooter = (orderedProducts: OrderedProduct[]) => {
             },
             {
                 key: 'total_value',
-                value: "$" + orderedProducts.reduce((acc, curr) => acc + curr.price * curr.quantity, 0) 
+                value: "$" + orderedProducts.reduce((acc, curr) => acc + curr.price * curr.quantity, 0).toFixed(2) 
             }
         ]
     }

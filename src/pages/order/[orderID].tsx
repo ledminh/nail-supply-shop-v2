@@ -32,16 +32,16 @@ export default function OrderPage({errorMessage, contactInfo, aboutUsFooter, ord
     >
       <div className={styles.wrapper}>
         <section className={styles.header}>
-          <h3 className={styles.orderNumber}>
+          <h2 className={styles.orderNumber}>
             <span className={styles.label}>ORDER NUMBER:</span><span className={styles.value}>{order.id}</span>
-          </h3>
+          </h2>
         </section>
         <section className={styles.status}>
-          <h2 className={styles.title}>
+          <h3 className={styles.title}>
             <span className={styles.label}>STATUS:</span> 
             <span className={styles.value}>{order.status.value}</span>
-          </h2>
-          <p className={styles.lastUpdated}>(Last updated: {order.status.lastUpdated})</p>
+          </h3>
+          <p className={styles.lastUpdated}>(Last updated: {formatDate(order.status.lastUpdated)})</p>
           <p className={styles.description}>{order.status.description}</p>
         </section>
         <section className={styles.orderSummary}>
@@ -117,4 +117,18 @@ export const getServerSideProps:GetServerSideProps = async (context) => {
     }
   }
 
+}
+
+/****************************
+ * Helper functions
+ */
+
+
+function formatDate(dateStr: string) {
+  const date = new Date(dateStr);
+  const month = date.getMonth() + 1;
+  const day = date.getDate();
+  const year = date.getFullYear();
+
+  return `${month}/${day}/${year}`;
 }

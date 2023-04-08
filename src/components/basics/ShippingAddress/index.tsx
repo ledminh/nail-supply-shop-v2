@@ -1,6 +1,6 @@
 import { FC } from "react";
 
-import { ShippingAddress as ShippingAddressType } from "@/types/others";
+import { ShippingAddress as ShippingAddressType } from "@/types/order";
 
 
 import styles from "@styles/basics/ShippingAddressCPN.module.scss";
