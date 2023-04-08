@@ -2,19 +2,19 @@ import Select from "@/components/generics/Select";
 import { Product } from "@/types/product";
 import styles from "@styles/composites/ProductInfo.module.scss";
 import { convertToOptionItem } from "@/components/generics/Select";
-import { NextRouter } from "next/router";
+
 
 export interface Props {
     name: string;
     intro: string;
     groupName?: string;
     otherProducts?: Product[];
-    router: NextRouter;
     className?: string;
+    onChange?: (selectedProduct: Product) => void;
 }
 
 
-export default function ProductInfo({ name, intro, groupName, otherProducts, router, className }: Props) {
+export default function ProductInfo({ name, intro, groupName, otherProducts, className, onChange }: Props) {
 
     const optionItems = otherProducts?.map(convertProductToOptionItem);
     const classNames = className ? `${styles.wrapper} ${className}` : styles.wrapper;
@@ -31,9 +31,7 @@ export default function ProductInfo({ name, intro, groupName, otherProducts, rou
                             selectClass = {styles.select}
                             optionClass = {styles.option}
                             optionItems = {optionItems?? []} 
-                            onChange = {(selectedProduct) => {
-                                router.push(`/product/${selectedProduct.id}`);
-                            }}
+                            onChange = {onChange? onChange : (selectedProduct) => {console.log(selectedProduct)}}
                         />
                     </div>
                     )

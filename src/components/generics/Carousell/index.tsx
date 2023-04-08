@@ -1,4 +1,4 @@
-import { FC, useState } from "react";
+import { FC, useEffect, useState } from "react";
 
 import styles from '@styles/generics/Carousell.module.scss';
 import { Item } from "@/types/item";
@@ -30,9 +30,19 @@ export default function Carousell<T>({
         const newMainItem = items.find((item) => item.id === id);
         if (newMainItem) {
             setMainItem(newMainItem);
-            setOtherItems(items.filter((item) => item.id !== newMainItem.id));
+            setOtherItems(items.filter((item) => {
+
+                return item.id !== newMainItem.id
+            
+            }));
         }
     }
+
+    useEffect(() => {
+        const mainItem = items.find((item) => item.id === initialItemID) ?? items[0];
+        setMainItem(mainItem);
+        setOtherItems(items.filter((item) => item.id !== mainItem.id));
+    }, [items]);
 
     return (
         <div className={classNames}>

@@ -41,7 +41,7 @@ export default function AboutPage({errorMessage, aboutUsData }:Props) {
             <p className={styles.text}><strong>Phone:</strong> {aboutUsData.contactInfo.phone}</p>
             {
               aboutUsData.contactInfo.additionalInfos && (
-                aboutUsData.contactInfo.additionalInfos.map((info, index) => (
+                aboutUsData.contactInfo.additionalInfos.map((info) => (
                 <p key={info} className={styles.text}>{info}</p>
               )))
             }

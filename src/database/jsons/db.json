@@ -137,6 +137,35 @@
         "lastUpdated": "2023-04-08T13:13:06.641Z",
         "description": "Your order is being prepared for shipment"
       }
+    },
+    {
+      "id": "29899018914306577907",
+      "shippingAddress": {
+        "name": "Minh Le",
+        "address1": "313",
+        "city": "Bristol",
+        "state": "CT",
+        "zip": "29650",
+        "email": "di@minh.com"
+      },
+      "orderedProducts": [
+        {
+          "id": "prd06_gel_topcoat",
+          "name": "Gel Nail Top Coat",
+          "price": 8.99,
+          "quantity": 4,
+          "image": {
+            "id": "img06_gel_topcoat",
+            "src": "/images/placeholder_6.png",
+            "alt": "Gel Nail Top Coat"
+          }
+        }
+      ],
+      "status": {
+        "value": "processing",
+        "lastUpdated": "2023-04-08T13:42:03.679Z",
+        "description": "Your order is being prepared for shipment"
+      }
     }
   ],
   "ORDER_TEMPS": [

@@ -1,7 +1,7 @@
 import { GetServerSideProps } from 'next';
 
 import { Product } from '@/types/product';
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import PageLayout from '@/components/layouts/PageLayout'
 import { ContactInfo } from '@/types/others';
@@ -74,8 +74,10 @@ export default function ProductPage({errorMessage, productID, contactInfo, about
                   intro = {intro}
                   groupName = {groupName}
                   otherProducts = {otherProducts}
-                  router = {router}
                   className = {styles.text}
+                  onChange={(selectedProduct) => {
+                    router.push(`/product/${selectedProduct.id}`);
+                }}
               />
               <div className={styles.footer}>
                   <h3 className={styles.price}>{price}</h3>
