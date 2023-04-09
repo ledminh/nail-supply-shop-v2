@@ -49,7 +49,7 @@ export const getServerSideProps = async () => {
   
 
   try {
-    const [aboutUsRes, categoriesRes] = await Promise.all([getAboutUsData(), getCategories({})]);
+    const [aboutUsRes, categoriesRes] = await Promise.all([getAboutUsData(), getCategories()]);
 
     if(!aboutUsRes.success) {
       return {

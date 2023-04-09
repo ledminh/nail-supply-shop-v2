@@ -19,6 +19,10 @@
 
 }
 
+.link.detailed {
+    height:100%;
+}
+
 .ul.vertical {
     grid-template-columns: 1fr;
 
@@ -30,6 +34,8 @@
 .li {
     transform: scale(1);
     transition: transform 0.2s ease-in-out;
+
+
     
     &:hover {
         transform: scale(1.05);

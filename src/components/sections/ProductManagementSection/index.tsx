@@ -146,7 +146,12 @@ ProductManagementSection.displayName = "ProductManagementSection";
 async function loadCategories() {
     try {
         const res = await axios.get("/api/categories");
-        return res.data;
+
+        if (!res.data.success) {
+            throw new Error(res.data.message);
+        }
+
+        return res.data.categories;
     } catch (err) {
         throw err;
     }

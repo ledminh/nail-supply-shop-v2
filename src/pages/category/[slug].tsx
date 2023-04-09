@@ -190,7 +190,7 @@ export const getServerSideProps:GetServerSideProps = async (context) => {
 
 
   try {
-    const [aboutUsRes, categoriesRes, productsRes] = await Promise.all([getAboutUsData(), getCategories({}), getProducts({catSlug: slug, type:'origin', limit: categoryConfig.productsPerPage})]);
+    const [aboutUsRes, categoriesRes, productsRes] = await Promise.all([getAboutUsData(), getCategories(), getProducts({catSlug: slug, type:'origin', limit: categoryConfig.productsPerPage})]);
 
 
 
@@ -223,7 +223,7 @@ export const getServerSideProps:GetServerSideProps = async (context) => {
     const contactInfo = aboutUsRes.data!.contactInfo;
     const categories = categoriesRes.data;
 
-    const initCategory = categories.find(cat => cat.slug === slug);
+    const initCategory = (categories as Category[]).find(cat => cat.slug === slug);
 
 
     if(!initCategory) {

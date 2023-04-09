@@ -765,40 +765,6 @@
         "sellCount": 75
     },
     {
-        "id": "prd28_gel_polish_blue",
-        "name": "Blue Gel Polish",
-        "price": 7.99,
-        "images": [
-            {
-            "id": "img28_gel_polish_blue",
-            "src": "/images/placeholder_14.png",
-            "alt": "Blue Gel Polish"
-            }
-        ],
-        "intro": "A stunning blue gel polish for a long-lasting, vibrant manicure.",
-        "details": "Our Blue Gel Polish offers a chip-resistant, high-gloss finish that lasts for weeks. The rich color provides full coverage and easy application.",
-        "categoryID": "cat_nail02_gel_polish",
-        "dateCreated": "2023-04-08",
-        "sellCount": 67
-    },
-    {
-        "id": "prd29_gel_polish_black",
-        "name": "Black Gel Polish",
-        "price": 7.99,
-        "images": [
-            {
-                "id": "img29_gel_polish_black",
-                "src": "/images/placeholder_1.png",
-                "alt": "Black Gel Polish"
-            }
-        ],
-        "intro": "A bold black gel polish for a dramatic and long-lasting manicure.",
-        "details": "Our Black Gel Polish features a chip-resistant, high-gloss formula that lasts for weeks. The intense color provides full coverage and easy application.",
-        "categoryID": "cat_nail02_gel_polish",
-        "dateCreated": "2023-04-11",
-        "sellCount": 70
-    },
-    {
         "id": "prd30_stamping_kit",
         "name": "Nail Stamping Kit",
         "price": 14.99,

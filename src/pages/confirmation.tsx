@@ -112,28 +112,24 @@ export const getServerSideProps:GetServerSideProps = async (context) => {
     }
 
  
-    const newOrder = {
-      ...orderRes.data!,
-      id: randomId(20)
-    }
     
 
-    const resSave = await saveOrder(newOrder);
-    const resDelete = await deleteTempOrder(temp_id);
+    const saveRes = await saveOrder(orderRes.data);
+    const deleteRes = await deleteTempOrder(temp_id);
 
 
-    if(!resSave.success) {
+    if(!saveRes.success) {
       return {
         props: {
-          errorMessage: resSave.message
+          errorMessage: saveRes.message
         }
       }
     }
 
-    if(!resDelete.success) {
+    if(!deleteRes.success) {
       return {
         props: {
-          errorMessage: resDelete.message
+          errorMessage: deleteRes.message
         }
       }
     }
@@ -141,6 +137,7 @@ export const getServerSideProps:GetServerSideProps = async (context) => {
 
     const aboutUsFooter = aboutUsRes.data!.aboutUsFooter;
     const contactInfo = aboutUsRes.data!.contactInfo;
+    const newOrder = saveRes.data;
  
 
     return {
@@ -167,16 +164,7 @@ export const getServerSideProps:GetServerSideProps = async (context) => {
  * Helper functions
  */
 
-// random id generator with params for length and prefix, only numbers
-export function randomId(length = 10, prefix = '') {
-  let result = prefix;
-  const characters = '0123456789';
-  const charactersLength = characters.length;
-  for (let i = 0; i < length; i++) {
-    result += characters.charAt(Math.floor(Math.random() * charactersLength));
-  }
-  return result;
-}
+
 
 // delete shipping address from local storage
 export function deleteShippingAddressFromLocalStorage() {

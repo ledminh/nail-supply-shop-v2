@@ -1,7 +1,6 @@
 import type { Category } from '@/types/category';
 import { getDB }  from '../jsons';
-
-
+import randomId from '@/utils/randomId';
 
 
 type Response<T> = {
@@ -71,6 +70,59 @@ export function find({id}:FindProps): Promise<CategoryResponse> {
     });
 }
 
+export type CreateCategoryProps = {
+    name: string;
+    description: string;
+    imageFileName: string;
+}
+
+export function createCategory({name, description, imageFileName}: CreateCategoryProps): Promise<CategoryResponse> {
+    return new Promise((resolve, reject) => {
+        getDB().then((db) => {
+            const {data} = db;
+
+            if(!data) {
+                return reject({
+                    success: false,
+                    message: 'No database found'
+                });
+            }
+
+            const {CATEGORIES} = data;
+
+            const category = {
+                id: randomId(10, 'cat-'),
+                name,
+                slug: name.toLowerCase().replace(/ /g, '-'),
+                description,
+                image: {
+                    src: `/images/category/${imageFileName}`,
+                    alt: name
+                },
+                numProducts: 0
+            };
+
+            CATEGORIES.push(category);
+
+            db.write().then(() => db.read()).then(() => {
+                if(!db.data)
+                    return reject({
+                        success: false,
+                        message: 'No database found'
+                    });
+
+                resolve({
+                    success: true,
+                    data: category
+                });
+            });
+        });
+    });
+}
+
+
+
+
 export function deleteCategory(id: string): Promise<CategoryResponse> {
     return new Promise((resolve, reject) => {
         getDB().then((db) => {
@@ -107,7 +159,7 @@ export function deleteCategory(id: string): Promise<CategoryResponse> {
 
                 resolve({
                     success: true,
-                    data: db.data.CATEGORIES
+                    data: category
                 });            
             });
         });

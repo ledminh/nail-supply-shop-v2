@@ -2,6 +2,7 @@ import { orderStatus } from '@/config';
 import { getDB }  from '../jsons';
 
 import type { FilterOrder, Order, StatusValue } from '@/types/order';
+import randomId from '@/utils/randomId';
 
 
 
@@ -134,7 +135,13 @@ export function add(order: Order):OrderResponse {
 
         const { ORDERS } = db.data;
 
-        ORDERS.push(order);
+        const newOrder = {
+            ...order,
+            id: randomId()
+        };
+
+
+        ORDERS.push(newOrder);
 
         db.write()
             .then(() => db.read())
@@ -148,7 +155,7 @@ export function add(order: Order):OrderResponse {
 
                 resolve({
                     success: true,
-                    data: order,
+                    data: newOrder,
                 });
             });
 

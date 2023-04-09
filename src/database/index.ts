@@ -20,6 +20,11 @@ export function getCategories() {
     return categories;
 }
 
+export function createCategory(props: CategoryModel.CreateCategoryProps) {
+    const category = CategoryModel.createCategory(props);
+    return category;
+}
+
 export function deleteCategory(id: string) {
     const category = CategoryModel.deleteCategory(id);
     return category;

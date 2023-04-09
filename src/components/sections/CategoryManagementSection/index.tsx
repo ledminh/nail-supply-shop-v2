@@ -72,13 +72,14 @@ export default function CategoryManagementSection({  }: Props) {
 
     const deleteCategory = (catID: string) => {
         axios
-            .post(`/api/categories/?type=delete&id=${catID}`)
+            .post(`/api/admin/categories/?type=delete&id=${catID}`)
             .then(({ data }) => {
                 if(!data.success) {
                     throw new Error('Failed to delete category');
                 }
 
-                setCategories(data.categories);
+                setCategories((prevCats) => prevCats.filter((cat) => cat.id !== catID));
+                
                 setToBeDeletedCategoryID(null);
             })
             .catch((err) => {
@@ -104,7 +105,7 @@ export default function CategoryManagementSection({  }: Props) {
             formData.append('description', description);
             formData.append('imageFileName', imageData.filename);
 
-            return axios.post('/api/categories?type=create', formData);
+            return axios.post('/api/admin/categories?type=create', formData);
         }).then((res) => res.data)
         .then((data) => {
 
