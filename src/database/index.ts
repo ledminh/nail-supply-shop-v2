@@ -51,7 +51,7 @@ type getProductProps = {
 };
 
 export const getProduct = ({ id, name }: getProductProps) =>
-  ProductModel.find({ id, name });
+  ProductModel.find({ id, name, type: "product" });
 
 /**************************
  * deleteProduct

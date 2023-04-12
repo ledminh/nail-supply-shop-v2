@@ -101,5 +101,790 @@
       },
       "numProducts": 0
     }
+  ],
+  "PRODUCTS": [
+    {
+      "id": "grp01_nailpolish_combo",
+      "name": "Nail Polish Combo",
+      "categoryID": "cat_nail01_polishes",
+      "dateCreated": "2023-04-05",
+      "products": [
+        {
+          "id": "grp01_prd01_nailpolish_red",
+          "name": "Classic Red Nail Polish",
+          "price": 5.99,
+          "images": [
+            {
+              "id": "img01_nailpolish_red",
+              "src": "/images/placeholder_1.png",
+              "alt": "Classic Red Nail Polish"
+            },
+            {
+              "id": "img02_nailpolish_red",
+              "src": "/images/placeholder_3.png",
+              "alt": "Classic Red Nail Polish"
+            },
+            {
+              "id": "img03_nailpolish_red",
+              "src": "/images/placeholder_10.png",
+              "alt": "Classic Red Nail Polish"
+            },
+            {
+              "id": "img04_nailpolish_red",
+              "src": "/images/placeholder_2.png",
+              "alt": "Classic Red Nail Polish"
+            }
+          ],
+          "intro": "A classic red nail polish for a bold and elegant look.",
+          "details": "Our Classic Red Nail Polish offers long-lasting wear and a glossy finish. The quick-drying formula ensures a flawless application every time.",
+          "categoryID": "cat_nail01_polishes",
+          "dateCreated": "2023-01-02",
+          "sellCount": 125,
+          "groupID": "grp01_nailpolish_combo"
+        },
+        {
+          "id": "grp01_prd02_nailpolish_blue",
+          "name": "Ocean Blue Nail Polish",
+          "price": 5.99,
+          "images": [
+            {
+              "id": "img03_nailpolish_blue",
+              "src": "/images/placeholder_2.png",
+              "alt": "Ocean Blue Nail Polish"
+            },
+            {
+              "id": "img04_nailpolish_blue",
+              "src": "/images/placeholder_5.png",
+              "alt": "Ocean Blue Nail Polish"
+            },
+            {
+              "id": "img06_nailpolish_blue",
+              "src": "/images/placeholder_6.png",
+              "alt": "Ocean Blue Nail Polish"
+            },
+            {
+              "id": "img07_nailpolish_blue",
+              "src": "/images/placeholder_7.png",
+              "alt": "Ocean Blue Nail Polish"
+            },
+            {
+              "id": "img08_nailpolish_blue",
+              "src": "/images/placeholder_8.png",
+              "alt": "Ocean Blue Nail Polish"
+            }
+          ],
+          "intro": "A vibrant ocean blue nail polish for a refreshing look.",
+          "details": "Our Ocean Blue Nail Polish provides a long-lasting, chip-resistant finish. The fast-drying formula allows for easy and smooth application.",
+          "categoryID": "cat_nail01_polishes",
+          "dateCreated": "2123-01-10",
+          "groupID": "grp01_nailpolish_combo",
+          "sellCount": 98
+        },
+        {
+          "id": "grp01_prd03_nailpolish_black",
+          "name": "Midnight Black Nail Polish",
+          "price": 5.99,
+          "images": [
+            {
+              "id": "img05_nailpolish_black",
+              "src": "/images/placeholder_3.png",
+              "alt": "Midnight Black Nail Polish"
+            },
+            {
+              "id": "img6_nailpolish_black",
+              "src": "/images/placeholder_3.png",
+              "alt": "Midnight Black Nail Polish"
+            },
+            {
+              "id": "img09_nailpolish_black",
+              "src": "/images/placeholder_3.png",
+              "alt": "Midnight Black Nail Polish"
+            }
+          ],
+          "intro": "A deep black nail polish for a sophisticated and mysterious look.",
+          "details": "Our Midnight Black Nail Polish features a long-lasting, glossy finish. The high-quality formula ensures even coverage and easy application.",
+          "categoryID": "cat_nail01_polishes",
+          "dateCreated": "4023-01-15",
+          "sellCount": 110,
+          "groupID": "grp01_nailpolish_combo"
+        },
+        {
+          "id": "grp01_prd04_nailpolish_nude",
+          "name": "Elegant Nude Nail Polish",
+          "price": 5.99,
+          "images": [
+            {
+              "id": "img04_nailpolish_nude",
+              "src": "/images/placeholder_4.png",
+              "alt": "Elegant Nude Nail Polish"
+            }
+          ],
+          "intro": "A chic nude nail polish for a timeless and natural look.",
+          "details": "Our Elegant Nude Nail Polish offers a durable, glossy finish. The smooth formula allows for easy application and long-lasting wear.",
+          "categoryID": "cat_nail01_polishes",
+          "dateCreated": "2023-01-18",
+          "sellCount": 10500,
+          "groupID": "grp01_nailpolish_combo"
+        }
+      ]
+    },
+    {
+      "id": "prd01_nailpolish_red",
+      "name": "Classic Red Nail Polish",
+      "price": 5.99,
+      "images": [
+        {
+          "id": "img01_nailpolish_red",
+          "src": "/images/placeholder_1.png",
+          "alt": "Classic Red Nail Polish"
+        },
+        {
+          "id": "img02_nailpolish_red",
+          "src": "/images/placeholder_3.png",
+          "alt": "Classic Red Nail Polish"
+        },
+        {
+          "id": "img03_nailpolish_red",
+          "src": "/images/placeholder_10.png",
+          "alt": "Classic Red Nail Polish"
+        },
+        {
+          "id": "img04_nailpolish_red",
+          "src": "/images/placeholder_2.png",
+          "alt": "Classic Red Nail Polish"
+        }
+      ],
+      "intro": "A classic red nail polish for a bold and elegant look.",
+      "details": "Our Classic Red Nail Polish offers long-lasting wear and a glossy finish. The quick-drying formula ensures a flawless application every time.",
+      "categoryID": "cat_nail01_polishes",
+      "dateCreated": "2030-01-02",
+      "sellCount": 125
+    },
+    {
+      "id": "prd02_nailpolish_blue",
+      "name": "Ocean Blue Nail Polish",
+      "price": 5.99,
+      "images": [
+        {
+          "id": "img03_nailpolish_blue",
+          "src": "/images/placeholder_2.png",
+          "alt": "Ocean Blue Nail Polish"
+        },
+        {
+          "id": "img04_nailpolish_blue",
+          "src": "/images/placeholder_5.png",
+          "alt": "Ocean Blue Nail Polish"
+        },
+        {
+          "id": "img06_nailpolish_blue",
+          "src": "/images/placeholder_6.png",
+          "alt": "Ocean Blue Nail Polish"
+        },
+        {
+          "id": "img07_nailpolish_blue",
+          "src": "/images/placeholder_7.png",
+          "alt": "Ocean Blue Nail Polish"
+        },
+        {
+          "id": "img08_nailpolish_blue",
+          "src": "/images/placeholder_8.png",
+          "alt": "Ocean Blue Nail Polish"
+        }
+      ],
+      "intro": "A vibrant ocean blue nail polish for a refreshing look.",
+      "details": "Our Ocean Blue Nail Polish provides a long-lasting, chip-resistant finish. The fast-drying formula allows for easy and smooth application.",
+      "categoryID": "cat_nail01_polishes",
+      "dateCreated": "2023-01-10",
+      "sellCount": 98
+    },
+    {
+      "id": "prd03_nailpolish_black",
+      "name": "Midnight Black Nail Polish",
+      "price": 5.99,
+      "images": [
+        {
+          "id": "img05_nailpolish_black",
+          "src": "/images/placeholder_3.png",
+          "alt": "Midnight Black Nail Polish"
+        },
+        {
+          "id": "img6_nailpolish_black",
+          "src": "/images/placeholder_3.png",
+          "alt": "Midnight Black Nail Polish"
+        },
+        {
+          "id": "img09_nailpolish_black",
+          "src": "/images/placeholder_3.png",
+          "alt": "Midnight Black Nail Polish"
+        }
+      ],
+      "intro": "A deep black nail polish for a sophisticated and mysterious look.",
+      "details": "Our Midnight Black Nail Polish features a long-lasting, glossy finish. The high-quality formula ensures even coverage and easy application.",
+      "categoryID": "cat_nail01_polishes",
+      "dateCreated": "2023-01-15",
+      "sellCount": 110
+    },
+    {
+      "id": "prd04_nailpolish_nude",
+      "name": "Elegant Nude Nail Polish",
+      "price": 5.99,
+      "images": [
+        {
+          "id": "img04_nailpolish_nude",
+          "src": "/images/placeholder_4.png",
+          "alt": "Elegant Nude Nail Polish"
+        }
+      ],
+      "intro": "A chic nude nail polish for a timeless and natural look.",
+      "details": "Our Elegant Nude Nail Polish offers a durable, glossy finish. The smooth formula allows for easy application and long-lasting wear.",
+      "categoryID": "cat_nail01_polishes",
+      "dateCreated": "2023-01-18",
+      "sellCount": 105
+    },
+    {
+      "id": "prd05_nailpolish_pink",
+      "name": "Sweet Pink Nail Polish",
+      "price": 5.99,
+      "images": [
+        {
+          "id": "img05_nailpolish_pink",
+          "src": "/images/placeholder_5.png",
+          "alt": "Sweet Pink Nail Polish"
+        },
+        {
+          "id": "img06_nailpolish_pink",
+          "src": "/images/placeholder_6.png",
+          "alt": "Sweet Pink Nail Polish"
+        },
+        {
+          "id": "img07_nailpolish_pink",
+          "src": "/images/placeholder_7.png",
+          "alt": "Sweet Pink Nail Polish"
+        }
+      ],
+      "intro": "A charming pink nail polish for a cute and playful look.",
+      "details": "Our Sweet Pink Nail Polish provides a long-lasting, glossy finish. The high-quality formula ensures even coverage and easy application.",
+      "categoryID": "cat_nail01_polishes",
+      "dateCreated": "2023-01-20",
+      "sellCount": 95
+    },
+    {
+      "id": "prd06_nailpolish_purple",
+      "name": "Royal Purple Nail Polish",
+      "price": 5.99,
+      "images": [
+        {
+          "id": "img08_nailpolish_purple",
+          "src": "/images/placeholder_8.png",
+          "alt": "Royal Purple Nail Polish"
+        },
+        {
+          "id": "img09_nailpolish_purple",
+          "src": "/images/placeholder_9.png",
+          "alt": "Royal Purple Nail Polish"
+        },
+        {
+          "id": "img10_nailpolish_purple",
+          "src": "/images/placeholder_10.png",
+          "alt": "Royal Purple Nail Polish"
+        }
+      ],
+      "intro": "A luxurious purple nail polish for a regal and sophisticated look.",
+      "details": "Our Royal Purple Nail Polish offers a long-lasting, glossy finish. The quick-drying formula ensures a flawless application every time.",
+      "categoryID": "cat_nail01_polishes",
+      "dateCreated": "2023-01-22",
+      "sellCount": 85
+    },
+    {
+      "id": "prd07_nailpolish_gold",
+      "name": "Glamorous Gold Nail Polish",
+      "price": 5.99,
+      "images": [
+        {
+          "id": "img01_nailpolish_gold",
+          "src": "/images/placeholder_1.png",
+          "alt": "Glamorous Gold Nail Polish"
+        },
+        {
+          "id": "img02_nailpolish_gold",
+          "src": "/images/placeholder_2.png",
+          "alt": "Glamorous Gold Nail Polish"
+        },
+        {
+          "id": "img03_nailpolish_gold",
+          "src": "/images/placeholder_3.png",
+          "alt": "Glamorous Gold Nail Polish"
+        }
+      ],
+      "intro": "A dazzling gold nail polish for a glitzy and glamorous look.",
+      "details": "Our Glamorous Gold Nail Polish provides a long-lasting, chip-resistant finish. The fast-drying formula allows for easy and smooth application.",
+      "categoryID": "cat_nail01_polishes",
+      "dateCreated": "2023-01-24",
+      "sellCount": 120
+    },
+    {
+      "id": "prd08_nailpolish_green",
+      "name": "Mint Green Nail Polish",
+      "price": 5.99,
+      "images": [
+        {
+          "id": "img01_nailpolish_green",
+          "src": "/images/placeholder_1.png",
+          "alt": "Mint Green Nail Polish"
+        },
+        {
+          "id": "img02_nailpolish_green",
+          "src": "/images/placeholder_2.png",
+          "alt": "Mint Green Nail Polish"
+        },
+        {
+          "id": "img03_nailpolish_green",
+          "src": "/images/placeholder_3.png",
+          "alt": "Mint Green Nail Polish"
+        }
+      ],
+  
+      "intro": "A refreshing mint green nail polish for a cool and unique look.",
+      "details": "Our Mint Green Nail Polish offers a long-lasting, glossy finish. The high-quality formula ensures even coverage and easy application.",
+      "categoryID": "cat_nail01_polishes",
+      "dateCreated": "2023-01-28",
+      "sellCount": 90
+    },
+    {
+      "id": "prd09_nailpolish_orange",
+      "name": "Tangerine Orange Nail Polish",
+      "price": 5.99,
+      "images": [
+        {
+          "id": "img01_nailpolish_orange",
+          "src": "/images/placeholder_1.png",
+          "alt": "Tangerine Orange Nail Polish"
+        },
+        {
+          "id": "img02_nailpolish_orange",
+          "src": "/images/placeholder_2.png",
+          "alt": "Tangerine Orange Nail Polish"
+        },
+        {
+          "id": "img03_nailpolish_orange",
+          "src": "/images/placeholder_3.png",
+          "alt": "Tangerine Orange Nail Polish"
+        }
+      ],
+      "intro": "A bright tangerine orange nail polish for a fun and lively look.",
+      "details": "Our Tangerine Orange Nail Polish provides a long-lasting, chip-resistant finish. The fast-drying formula allows for easy and smooth application.",
+      "categoryID": "cat_nail01_polishes",
+      "dateCreated": "2023-02-03",
+      "sellCount": 70
+    },
+    {
+      "id": "prd05_gel_basecoat",
+      "name": "Gel Nail Base Coat",
+      "price": 7.99,
+      "images": [
+        {
+          "id": "img05_gel_basecoat",
+          "src": "/images/placeholder_5.png",
+          "alt": "Gel Nail Base Coat"
+        }
+      ],
+      "intro": "A high-quality gel base coat for a strong foundation.",
+      "details": "Our Gel Nail Base Coat provides a strong foundation for your gel manicure, ensuring long-lasting wear and preventing chipping or peeling.",
+      "categoryID": "cat_nail02_gel",
+      "dateCreated": "2023-02-15",
+      "sellCount": 92
+    },
+    {
+      "id": "prd06_gel_topcoat",
+      "name": "Gel Nail Top Coat",
+      "price": 8.99,
+      "images": [
+        {
+          "id": "img06_gel_topcoat",
+          "src": "/images/placeholder_6.png",
+          "alt": "Gel Nail Top Coat"
+        }
+      ],
+      "intro": "A high-performance gel top coat for a long-lasting shine.",
+      "details": "Our Gel Nail Top Coat seals your gel manicure and adds a high-gloss finish. The durable formula provides chip-resistant protection for up to two weeks.",
+      "categoryID": "cat_nail02_gel",
+      "dateCreated": "2023-02-17",
+      "sellCount": 88
+    },
+    {
+      "id": "prd07_gel_polish_pink",
+      "name": "Soft Pink Gel Polish",
+      "price": 9.99,
+      "images": [
+        {
+          "id": "img07_gel_polish_pink",
+          "src": "/images/placeholder_7.png",
+          "alt": "Soft Pink Gel Polish"
+        }
+      ],
+      "intro": "A delicate soft pink gel polish for a sophisticated and feminine look.",
+      "details": "Our Soft Pink Gel Polish offers up to two weeks of chip-free wear. The high-pigment formula ensures full coverage and easy application.",
+      "categoryID": "cat_nail02_gel",
+      "dateCreated": "2023-02-20",
+      "sellCount": 115
+    },
+    {
+      "id": "prd08_gel_polish_gray",
+      "name": "Modern Gray Gel Polish",
+      "price": 9.99,
+      "images": [
+        {
+          "id": "img08_gel_polish_gray",
+          "src": "/images/placeholder_8.png",
+          "alt": "Modern Gray Gel Polish"
+        }
+      ],
+      "intro": "A contemporary gray gel polish for a chic and versatile look.",
+      "details": "Our Modern Gray Gel Polish features a long-lasting, chip-resistant formula. The rich color provides full coverage and smooth application.",
+      "categoryID": "cat_nail02_gel",
+      "dateCreated": "2023-02-25",
+      "sellCount": 80
+    },
+    {
+      "id": "prd09_acrylic_powder",
+      "name": "Acrylic Nail Powder",
+      "price": 9.99,
+      "images": [
+        {
+          "id": "img09_acrylic_powder",
+          "src": "/images/placeholder_9.png",
+          "alt": "Acrylic Nail Powder"
+        }
+      ],
+      "intro": "A professional-grade acrylic nail powder for strong nail extensions.",
+      "details": "Our Acrylic Nail Powder creates durable and natural-looking nail extensions. The smooth, easy-to-apply formula ensures a flawless finish.",
+      "categoryID": "cat_nail03_acrylics",
+      "dateCreated": "2023-01-22",
+      "sellCount": 75
+    },
+    {
+      "id": "prd10_acrylic_liquid",
+      "name": "Acrylic Nail Liquid",
+      "price": 12.99,
+      "images": [
+        {
+          "id": "mg10_acrylic_liquid",
+          "src": "/images/placeholder_10.png",
+          "alt": "Acrylic Nail Liquid"
+        }
+      ],
+      "intro": "A premium acrylic nail liquid for flawless acrylic nail application.",
+      "details": "Our Acrylic Nail Liquid is formulated for superior adhesion and a smooth finish. The non-yellowing formula ensures long-lasting, natural-looking results.",
+      "categoryID": "cat_nail03_acrylics",
+      "dateCreated": "2023-01-28",
+      "sellCount": 60
+    },
+    {
+      "id": "prd11_acrylic_brush",
+      "name": "Acrylic Nail Brush",
+      "price": 14.99,
+      "images": [
+        {
+          "id": "img11_acrylic_brush",
+          "src": "/images/placeholder_11.png",
+          "alt": "Acrylic Nail Brush"
+        }
+      ],
+      "intro": "A professional-quality acrylic nail brush for precise application.",
+      "details": "Our Acrylic Nail Brush is designed for optimal control and precision during acrylic nail application. The high-quality bristles ensure smooth and even product distribution.",
+      "categoryID": "cat_nail03_acrylics",
+      "dateCreated": "2023-02-03",
+      "sellCount": 45
+    },
+    {
+      "id": "prd12_nailart_rhinestones",
+      "name": "Nail Art Rhinestones",
+      "price": 4.99,
+      "images": [
+        {
+          "id": "img12_nailart_rhinestones",
+          "src": "/images/placeholder_12.png",
+          "alt": "Nail Art Rhinestones"
+        }
+      ],
+      "intro": "A collection of sparkly rhinestones for stunning nail art.",
+      "details": "Our Nail Art Rhinestones come in various colors, shapes, and sizes, allowing you to create endless designs and add a touch of glam to your manicure.",
+      "categoryID": "cat_nail04_nailart",
+      "dateCreated": "2023-02-01",
+      "sellCount": 109
+    },
+    {
+      "id": "prd13_nailart_stickers",
+      "name": "Nail Art Stickers",
+      "price": 3.99,
+      "images": [
+        {
+          "id": "img13_nailart_stickers",
+          "src": "/images/placeholder_13.png",
+          "alt": "Nail Art Stickers"
+        }
+      ],
+      "intro": "A variety of nail art stickers for creative and unique nail designs.",
+      "details": "Our Nail Art Stickers feature a wide range of designs, including floral, geometric, and abstract patterns. Easily enhance your manicure with these self-adhesive stickers.",
+      "categoryID": "cat_nail04_nailart",
+      "dateCreated": "2023-02-07",
+      "sellCount": 95
+    },
+    {
+      "id": "prd14_nailart_glitter",
+      "name": "Nail Art Glitter",
+      "price": 4.49,
+      "images": [
+        {
+          "id": "img14_nailart_glitter",
+          "src": "/images/placeholder_14.png",
+          "alt": "Nail Art Glitter"
+        }
+      ],
+      "intro": "A set of dazzling nail art glitter for a touch of sparkle.",
+      "details": "Our Nail Art Glitter comes in various colors and sizes, allowing you to create eye-catching and shimmery nail designs. Easily apply the glitter using your favorite top coat or nail glue.",
+      "categoryID": "cat_nail04_nailart",
+      "dateCreated": "2023-02-10",
+      "sellCount": 120
+    },
+    {
+      "id": "prd15_nail_file",
+      "name": "Professional Nail File",
+      "price": 2.99,
+      "images": [
+        {
+          "id": "img15_nail_file",
+          "src": "/images/placeholder_1.png",
+          "alt": "Professional Nail File"
+        }
+      ],
+      "intro": "A dual-sided nail file for precise shaping and smoothing.",
+      "details": "Our Professional Nail File features a medium grit side for shaping and a fine grit side for smoothing. The ergonomic design ensures comfortable and easy use.",
+      "categoryID": "cat_nail05_tools",
+      "dateCreated": "2023-01-30",
+      "sellCount": 135
+    },
+    {
+      "id": "prd16_cuticle_pusher",
+      "name": "Stainless Steel Cuticle Pusher",
+      "price": 7.49,
+      "images": [
+        {
+          "id": "img16_cuticle_pusher",
+          "src": "/images/placeholder_2.png",
+          "alt": "Stainless Steel Cuticle Pusher"
+        }
+      ],
+      "intro": "A durable stainless steel cuticle pusher for professional results.",
+      "details": "Our Stainless Steel Cuticle Pusher features a dual-ended design with a curved pusher for shaping and a pointed tip for cleaning under nails. The non-slip grip ensures precise control.",
+      "categoryID": "cat_nail05_tools",
+      "dateCreated": "2023-02-13",
+      "sellCount": 62
+    },
+    {
+      "id": "prd17_nail_clipper",
+      "name": "Precision Nail Clipper",
+      "price": 3.99,
+      "images": [
+        {
+          "id": "img17_nail_clipper",
+          "src": "/images/placeholder_3.png",
+          "alt": "Precision Nail Clipper"
+        }
+      ],
+      "intro": "A high-quality nail clipper for clean and precise cuts.",
+      "details": "Our Precision Nail Clipper features sharp blades and a comfortable grip for easy trimming. The built-in nail file allows for on-the-go touch-ups.",
+      "categoryID": "cat_nail05_tools",
+      "dateCreated": "2023-01-25",
+      "sellCount": 85
+    },
+    {
+      "id": "prd18_cuticle_oil",
+      "name": "Nourishing Cuticle Oil",
+      "price": 6.49,
+      "images": [
+        {
+          "id": "img18_cuticle_oil",
+          "src": "/images/placeholder_4.png",
+          "alt": "Nourishing Cuticle Oil"
+        }
+      ],
+      "intro": "A hydrating cuticle oil for healthy and strong nails.",
+      "details": "Our Nourishing Cuticle Oil is formulated with natural oils and vitamins to moisturize and nourish cuticles, promoting healthy nail growth.",
+      "categoryID": "cat_nail06_treatments",
+      "dateCreated": "2023-03-01",
+      "sellCount": 56
+    },
+    {
+      "id": "prd19_nail_strengthener",
+      "name": "Nail Strengthener",
+      "price": 7.99,
+      "images": [
+        {
+          "id": "img19_nail_strengthener",
+          "src": "/images/placeholder_5.png",
+          "alt": "Nail Strengthener"
+        }
+      ],
+      "intro": "A fortifying nail strengthener for stronger, healthier nails.",
+      "details": "Our Nail Strengthener is formulated with nourishing ingredients to help strengthen weak, brittle nails and improve overall nail health.",
+      "categoryID": "cat_nail06_treatments",
+      "dateCreated": "2023-03-05",
+      "sellCount": 65
+    },
+    {
+      "id": "prd20_nail_polish_remover",
+      "name": "Gentle Nail Polish Remover",
+      "price": 4.99,
+      "images": [
+        {
+          "id": "img20_nail_polish_remover",
+          "src": "/images/placeholder_6.png",
+          "alt": "Gentle Nail Polish Remover"
+        }
+      ],
+      "intro": "A gentle yet effective nail polish remover for quick and easy removal.",
+      "details": "Our Gentle Nail Polish Remover is formulated to quickly remove even the most stubborn nail polish without damaging your nails.",
+      "categoryID": "cat_nail06_treatments",
+      "dateCreated": "2023-03-08",
+      "sellCount": 80
+    },
+    {
+      "id": "prd21_nail_polish_mauve",
+      "name": "Mauve Nail Polish",
+      "price": 5.99,
+      "images": [
+        {
+          "id": "img21_nail_polish_mauve",
+          "src": "/images/placeholder_7.png",
+          "alt": "Mauve Nail Polish"
+        }
+      ],
+      "intro": "A stylish mauve nail polish for a sophisticated, trendy look.",
+      "details": "Our Mauve Nail Polish features a long-lasting, chip-resistant formula. The rich color provides full coverage and smooth application.",
+      "categoryID": "cat_nail01_polish",
+      "dateCreated": "2023-03-12",
+      "sellCount": 110
+    },
+    {
+      "id": "prd22_nail_polish_teal",
+      "name": "Teal Nail Polish",
+      "price": 5.99,
+      "images": [
+        {
+          "id": "img22_nail_polish_teal",
+          "src": "/images/placeholder_8.png",
+          "alt": "Teal Nail Polish"
+        }
+      ],
+      "intro": "A vibrant teal nail polish for a bold and eye-catching look.",
+      "details": "Our Teal Nail Polish offers a long-lasting, chip-resistant finish. The high-pigment formula ensures full coverage and easy application.",
+      "categoryID": "cat_nail01_polish",
+      "dateCreated": "2023-03-16",
+      "sellCount": 90
+    },
+    {
+      "id": "prd23_nail_polish_nude",
+      "name": "Nude Nail Polish",
+      "price": 5.99,
+      "images": [
+        {
+          "id": "img23_nail_polish_nude",
+          "src": "/images/placeholder_9.png",
+          "alt": "Nude Nail Polish"
+        }
+      ],
+      "intro": "A classic nude nail polish for a chic, everyday look.",
+      "details": "Our Nude Nail Polish features a long-lasting, chip-resistant formula. The versatile color provides full coverage and smooth application.",
+      "categoryID": "cat_nail01_polish",
+      "dateCreated": "2023-03-20",
+      "sellCount": 140
+    },
+    {
+      "id": "prd24_nail_polish_red",
+      "name": "Red Nail Polish",
+      "price": 5.99,
+      "images": [
+        {
+          "id": "img24_nail_polish_red",
+          "src": "/images/placeholder_10.png",
+          "alt": "Red Nail Polish"
+        }
+      ],
+      "intro": "A bold red nail polish for a classic and glamorous look.",
+      "details": "Our Red Nail Polish offers a long-lasting, chip-resistant finish. The rich, high-pigment formula ensures full coverage and easy application.",
+      "categoryID": "cat_nail01_polish",
+      "dateCreated": "2023-03-25",
+      "sellCount": 130
+    },
+    {
+      "id": "prd25_topcoat",
+      "name": "Quick Dry Top Coat",
+      "price": 6.49,
+      "images": [
+        {
+          "id": "img25_topcoat",
+          "src": "/images/placeholder_11.png",
+          "alt": "Quick Dry Top Coat"
+        }
+      ],
+      "intro": "A fast-drying top coat for a glossy, long-lasting finish.",
+      "details": "Our Quick Dry Top Coat seals in color and adds a high-gloss finish to your nails. The formula dries quickly to prevent smudges and prolong the life of your manicure.",
+      "categoryID": "cat_nail02_gel_polish",
+      "dateCreated": "2023-03-29",
+      "sellCount": 100
+    },
+    {
+      "id": "prd26_gel_basecoat",
+      "name": "Gel Base Coat",
+      "price": 6.99,
+      "images": [
+        {
+          "id": "img26_gel_basecoat",
+          "src": "/images/placeholder_12.png",
+          "alt": "Gel Base Coat"
+        }
+      ],
+      "intro": "A high-quality gel base coat for a long-lasting gel manicure.",
+      "details": "Our Gel Base Coat provides a strong foundation for your gel polish, ensuring a smooth application and long-lasting wear.",
+      "categoryID": "cat_nail02_gel_polish",
+      "dateCreated": "2023-04-01",
+      "sellCount": 88
+    },
+    {
+      "id": "prd27_gel_polish_pink",
+      "name": "Pink Gel Polish",
+      "price": 7.99,
+      "images": [
+        {
+          "id": "img27_gel_polish_pink",
+          "src": "/images/placeholder_13.png",
+          "alt": "Pink Gel Polish"
+        }
+      ],
+      "intro": "A beautiful pink gel polish for a long-lasting, shiny manicure.",
+      "details": "Our Pink Gel Polish features a chip-resistant, high-gloss formula that lasts for weeks. The vibrant color provides full coverage and easy application.",
+      "categoryID": "cat_nail02_gel_polish",
+      "dateCreated": "2023-04-05",
+      "sellCount": 75
+    },
+    {
+      "id": "prd30_stamping_kit",
+      "name": "Nail Stamping Kit",
+      "price": 14.99,
+      "images": [
+        {
+          "id": "img30_stamping_kit",
+          "src": "/images/placeholder_2.png",
+          "alt": "Nail Stamping Kit"
+        }
+      ],
+      "intro": "A complete nail stamping kit for creating unique and intricate nail art.",
+      "details": "Our Nail Stamping Kit includes a variety of stamping plates, a stamper, and a scraper. The plates feature intricate designs to help you create stunning nail art with ease.",
+      "categoryID": "cat_nail04_nailart",
+      "dateCreated": "2023-04-15",
+      "sellCount": 55
+    }
   ]
+  
 }

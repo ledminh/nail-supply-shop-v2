@@ -62,7 +62,7 @@ export default function CategoryPage({
       sort: condition.sort!.value,
       sortedOrder: condition.sortedOrder!.value,
       limit: productsPerPage,
-      type: "origin",
+      type: "all",
     };
 
     axios.post("/api/products", loadOptions).then(({ data }) => {
@@ -113,7 +113,7 @@ export default function CategoryPage({
       sortedOrder: condition.sortedOrder!.value,
       limit: productsPerPage,
       offset: _products.length,
-      type: "origin",
+      type: "all",
     };
 
     axios.post("/api/products", loadOptions).then(({ data }) => {
@@ -197,7 +197,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       getCategories(),
       getProducts({
         catSlug: slug,
-        type: "origin",
+        type: "all",
         limit: categoryConfig.productsPerPage,
       }),
     ]);
