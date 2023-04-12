@@ -102,8 +102,11 @@ section.wrapper {
 }
 
 @media (min-width: $first-breakpoint) {
-   
+ 
   
+  .sortAndOrder__field {
+    border: none;
+  } 
   .ul {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -124,7 +127,7 @@ section.wrapper {
   .controls_select {
     flex-basis: 24%;
   }
-  
+ 
   
   .sortAndOrder {
     padding: 10px;
