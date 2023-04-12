@@ -100,6 +100,17 @@
         "alt": "Oh my god"
       },
       "numProducts": 0
+    },
+    {
+      "id": "cat-4902944605",
+      "name": "Another thing to consider is",
+      "slug": "another-thing-to-consider-is",
+      "description": "What is it?",
+      "image": {
+        "src": "/images/category/cat-image-1681309383242-796780555.jpeg",
+        "alt": "Another thing to consider is"
+      },
+      "numProducts": 0
     }
   ],
   "PRODUCTS": [

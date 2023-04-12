@@ -48,8 +48,11 @@
   position: initial;
 
   height: 100%;
+  min-height: 300px;
   overflow: initial;
 
+  
+  
   .image {
     position: relative;
     border-top-right-radius: $border-radius;
@@ -71,10 +74,14 @@
     background-color: inherit;
 
     text-align: left;
+
+
   }
 
   .description {
     font-size: 0.9rem;
+    width: 100%;
+
   }
 }
 
