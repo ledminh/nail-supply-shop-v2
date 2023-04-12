@@ -1,95 +1,89 @@
 {
-    "usesTypeScript": true,
-    "usesCssModule": true,
-    "cssPreprocessor": "scss",
-    "component": {
-        "default": {
-            "path": "src/components/basics/",
-            "withLazy": false,
-            "withStory": true,
-            "withStyle": false,
-            "withTest": false,
-            "withHook": false,
+  "usesTypeScript": true,
+  "usesCssModule": true,
+  "cssPreprocessor": "scss",
+  "component": {
+    "default": {
+      "path": "src/components/basics/",
+      "withLazy": false,
+      "withStory": true,
+      "withStyle": false,
+      "withTest": false,
+      "withHook": false,
 
-            "customTemplates": {
-                "component": "templates/component/index.tsx",
-                "story": "templates/component/TemplateNameCPN.stories.tsx"            
-            }
-        
-        },
-
-        "composite": {
-            "path": "src/components/composites/",
-            "withLazy": false,
-            "withStory": true,
-            "withStyle": false,
-            "withTest": false,
-            "withHook": false,
-
-            "customTemplates": {
-                "component": "templates/composite/index.tsx",
-                "story": "templates/composite/TemplateName.stories.tsx"            
-            }
-        
-        },
-        "section": {
-            "path": "src/components/sections/",
-            "withLazy": false,
-            "withStory": true,
-            "withStyle": false,
-            "withTest": false,
-            "withHook": false,
-
-            "customTemplates": {
-                "component": "templates/section/index.tsx",
-                "story": "templates/section/TemplateNameSection.stories.tsx"            
-            }
-        
-        },
-        "generic": {
-            "path": "src/components/generics/",
-            "withLazy": false,
-            "withStory": true,
-            "withStyle": false,
-            "withTest": false,
-            "withHook": false,
-
-            "customTemplates": {
-                "component": "templates/generic/index.tsx",
-                "story": "templates/generic/TemplateName.stories.tsx"            
-            }
-        
-        },
-
-        "layout": {
-            "path": "src/components/layouts/",
-            "withLazy": false,
-            "withStory": true,
-            "withStyle": false,
-            "withTest": false,
-            "withHook": false,
-
-            "customTemplates": {
-                "component": "templates/layout/index.tsx",
-                "story": "templates/layout/TemplateNameLayout.stories.tsx"            
-            }
-        },
-
-        "page": {
-            "path": "src/pages/",
-            "withLazy": false,
-            "withStory": false,
-            "withStyle": false,
-            "withTest": false,
-            "withHook": false,
-
-            "customTemplates": {
-                "component": "templates/page/templatename.tsx"
-            }
-        
-        }
+      "customTemplates": {
+        "component": "templates/component/index.tsx",
+        "story": "templates/component/TemplateNameCPN.stories.tsx"
+      }
     },
-    
-    
-    "testLibrary": "None"
-}  
+
+    "composite": {
+      "path": "src/components/composites/",
+      "withLazy": false,
+      "withStory": true,
+      "withStyle": false,
+      "withTest": false,
+      "withHook": false,
+
+      "customTemplates": {
+        "component": "templates/composite/index.tsx",
+        "story": "templates/composite/TemplateName.stories.tsx"
+      }
+    },
+    "section": {
+      "path": "src/components/sections/",
+      "withLazy": false,
+      "withStory": true,
+      "withStyle": false,
+      "withTest": false,
+      "withHook": false,
+
+      "customTemplates": {
+        "component": "templates/section/index.tsx",
+        "story": "templates/section/TemplateNameSection.stories.tsx"
+      }
+    },
+    "generic": {
+      "path": "src/components/generics/",
+      "withLazy": false,
+      "withStory": true,
+      "withStyle": false,
+      "withTest": false,
+      "withHook": false,
+
+      "customTemplates": {
+        "component": "templates/generic/index.tsx",
+        "story": "templates/generic/TemplateName.stories.tsx"
+      }
+    },
+
+    "layout": {
+      "path": "src/components/layouts/",
+      "withLazy": false,
+      "withStory": true,
+      "withStyle": false,
+      "withTest": false,
+      "withHook": false,
+
+      "customTemplates": {
+        "component": "templates/layout/index.tsx",
+        "story": "templates/layout/TemplateNameLayout.stories.tsx"
+      }
+    },
+
+    "page": {
+      "path": "src/pages/",
+      "withLazy": false,
+      "withStory": false,
+      "withStyle": false,
+      "withTest": false,
+      "withHook": false,
+
+      "customTemplates": {
+        "component": "templates/page/templatename.tsx"
+      }
+    }
+  },
+
+  "testLibrary": "None"
+}

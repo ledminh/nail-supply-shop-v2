@@ -1,13 +1,10 @@
-import { RemoteImage } from '@/types/image';
-
+import { RemoteImage } from "@/types/image";
 
 export interface Category {
-    id: string;
-    slug: string;
-    name: string;
-    description: string;
-    image: RemoteImage;
-    numProducts: number;
+  id: string;
+  slug: string;
+  name: string;
+  description: string;
+  image: RemoteImage;
+  numProducts: number;
 }
-
-

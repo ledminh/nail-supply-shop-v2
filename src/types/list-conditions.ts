@@ -1,21 +1,20 @@
-export type SortType = 'name' | 'price' | 'dateCreated' | 'sellCount';
-type SortLabel = 'Name' | 'Price';
+export type SortType = "name" | "price" | "dateCreated" | "sellCount";
+type SortLabel = "Name" | "Price";
 
-export type SortedOrderType = 'asc' | 'desc'; 
-type SortedOrderLabel = 'Ascending' | 'Descending';
+export type SortedOrderType = "asc" | "desc";
+type SortedOrderLabel = "Ascending" | "Descending";
 
 export type SortItem = {
-    label: SortLabel;
-    value: SortType;
-}
+  label: SortLabel;
+  value: SortType;
+};
 
 export type SortedOrderItem = {
-    label: SortedOrderLabel;
-    value: SortedOrderType;
-}
-
+  label: SortedOrderLabel;
+  value: SortedOrderType;
+};
 
 export type ListCondition = {
-    sort?: SortItem;
-    sortedOrder?: SortedOrderItem
-}
+  sort?: SortItem;
+  sortedOrder?: SortedOrderItem;
+};

@@ -7,37 +7,31 @@ import Link from "next/link";
 import type { Category } from "@/types/category";
 
 export interface Props {
-    categoryIntro: string;
-    categories: Category[];
+  categoryIntro: string;
+  categories: Category[];
 }
 
-
-export default function CategoryIntroSection({ categoryIntro, categories }: Props) {
-
-
-    return (
-        <section className={styles.wrapper}>
-            <div className={styles.banner}>
-                <BannerCPN 
-                    text={categoryIntro}
-                />
-            </div>
-            <div className={styles.body}>
-                <div className={styles.list}>
-                    <CategoryList 
-                        categories={categories}
-                    />
-                </div>
-                <div className={styles.footer}>
-                    <Link
-                        className={styles.link}
-                        href="/shop">
-                        View All
-                    </Link>
-                </div>
-            </div>
-        </section>
-    );
+export default function CategoryIntroSection({
+  categoryIntro,
+  categories,
+}: Props) {
+  return (
+    <section className={styles.wrapper}>
+      <div className={styles.banner}>
+        <BannerCPN text={categoryIntro} />
+      </div>
+      <div className={styles.body}>
+        <div className={styles.list}>
+          <CategoryList categories={categories} />
+        </div>
+        <div className={styles.footer}>
+          <Link className={styles.link} href="/shop">
+            View All
+          </Link>
+        </div>
+      </div>
+    </section>
+  );
 }
 
 CategoryIntroSection.displayName = "CategoryIntroSection";

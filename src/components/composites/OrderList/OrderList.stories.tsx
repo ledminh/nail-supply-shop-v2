@@ -1,11 +1,11 @@
-import {  Meta, StoryObj } from "@storybook/react";
+import { Meta, StoryObj } from "@storybook/react";
 
-import OrderList from '.';
-import type { Props } from '.';
+import OrderList from ".";
+import type { Props } from ".";
 import { Order, StatusValue } from "@/types/order";
 import { orderStatus } from "@/config";
 
-const order:Order = {
+const order: Order = {
   id: "1",
   orderedProducts: [
     {
@@ -15,8 +15,8 @@ const order:Order = {
       quantity: 1,
       image: {
         src: "https://picsum.photos/300/300",
-        alt: "Product 1"
-      }
+        alt: "Product 1",
+      },
     },
     {
       id: "2",
@@ -25,9 +25,9 @@ const order:Order = {
       quantity: 2,
       image: {
         src: "https://picsum.photos/300/300",
-        alt: "Product 2"
-      }
-    }
+        alt: "Product 2",
+      },
+    },
   ],
   shippingAddress: {
     name: "John Doe",
@@ -36,18 +36,16 @@ const order:Order = {
     city: "New York",
     state: "NY",
     zip: "10001",
-    email: "johndoe@example.com"
+    email: "johndoe@example.com",
   },
   status: {
     value: "processing",
     lastUpdated: "2021-01-01",
-    description: orderStatus["processing"]
-  }
-} 
+    description: orderStatus["processing"],
+  },
+};
 
-
-
-const orders:Order[] = [
+const orders: Order[] = [
   {
     ...order,
     id: "1",
@@ -61,7 +59,7 @@ const orders:Order[] = [
       city: "New York",
       state: "NY",
       zip: "10001",
-      email: "n@yahoo.com"
+      email: "n@yahoo.com",
     },
   },
   {
@@ -72,15 +70,13 @@ const orders:Order[] = [
     ...order,
     id: "4",
   },
-]
+];
 
-
-const defaultArgs:Props = {
+const defaultArgs: Props = {
   orders: orders,
-  onStatusChange: (id:string, status:StatusValue) => {},
-  onOrderDelete: (id:string) => {}
-}
-
+  onStatusChange: (id: string, status: StatusValue) => {},
+  onOrderDelete: (id: string) => {},
+};
 
 export default {
   title: "Composites/OrderList",
@@ -88,10 +84,6 @@ export default {
   args: defaultArgs,
 } as Meta;
 
-
-
-
 type Story = StoryObj<typeof OrderList>;
-
 
 export const Default: Story = {};

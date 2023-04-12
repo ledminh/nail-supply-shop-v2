@@ -1,60 +1,55 @@
 import { FC } from "react";
 
-import {MouseEventHandler} from "react";
+import { MouseEventHandler } from "react";
 
 import axios from "axios";
 import styles from "@styles/basics/StripeCheckoutButtonCPN.module.scss";
 import getStripe from "@/utils/getStripejs";
 import { OrderedProduct } from "@/types/product";
-import {ShippingAddress} from "@/types/order";
+import { ShippingAddress } from "@/types/order";
 
-
-export interface Props  {
-    orderedProducts: OrderedProduct[],
-    shippingAddress: ShippingAddress,
-    disabled?: boolean,
-};
+export interface Props {
+  orderedProducts: OrderedProduct[];
+  shippingAddress: ShippingAddress;
+  disabled?: boolean;
+}
 
 type StripeCheckoutButton = FC<Props>;
 
+const StripeCheckoutButtonCPN: StripeCheckoutButton = ({
+  orderedProducts,
+  shippingAddress,
+  disabled,
+}) => {
+  const onClick: MouseEventHandler<HTMLButtonElement> = async (e) => {
+    e.preventDefault();
 
-const StripeCheckoutButtonCPN:StripeCheckoutButton = ({orderedProducts, shippingAddress, disabled}) => {
+    try {
+      // Create a Checkout Session.
+      const { data } = await axios.post("/api/checkout_sessions", {
+        orderedProducts,
+        shippingAddress,
+      });
 
-    
-    const onClick:MouseEventHandler<HTMLButtonElement> = async (e) => {
-        e.preventDefault();
-        
-        try {
-            // Create a Checkout Session.
-            const {data} = await axios.post('/api/checkout_sessions', { orderedProducts, shippingAddress });
+      // Redirect to Checkout.
+      const stripe = await getStripe();
 
-            // Redirect to Checkout.
-            const stripe = await getStripe();
-            
+      const res = await stripe!.redirectToCheckout({ sessionId: data.id });
 
-            const res = await stripe!.redirectToCheckout({sessionId: data.id});
-            
-            if (res.error) {
-                throw new Error(res.error?.message);
-            }
+      if (res.error) {
+        throw new Error(res.error?.message);
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
-        }
-        catch (error) {
-            console.error(error);
-        }
-        
-    };
-    
-    
-    return (
-        <button className={styles.wrapper}
-            onClick={onClick}
-            disabled={disabled}
-        >
-            CHECK OUT (with Stripe)
-        </button>
-    );
-}
+  return (
+    <button className={styles.wrapper} onClick={onClick} disabled={disabled}>
+      CHECK OUT (with Stripe)
+    </button>
+  );
+};
 
 export default StripeCheckoutButtonCPN;
 

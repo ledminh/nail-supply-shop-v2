@@ -1,16 +1,11 @@
-import {  Meta, StoryObj } from "@storybook/react";
+import { Meta, StoryObj } from "@storybook/react";
 
-import NavigationBar from '.';
-
+import NavigationBar from ".";
 
 export default {
   title: "Composites/NavigationBar",
   component: NavigationBar,
-
 } as Meta;
-
-
-
 
 type Story = StoryObj<typeof NavigationBar>;
 
@@ -18,6 +13,5 @@ type Story = StoryObj<typeof NavigationBar>;
 export const Default: Story = {
   args: {
     currentPage: "/shop",
-  }
+  },
 };
-

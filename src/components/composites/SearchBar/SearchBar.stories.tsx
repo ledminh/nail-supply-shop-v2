@@ -1,4 +1,4 @@
-import {  Meta, StoryObj } from "@storybook/react";
+import { Meta, StoryObj } from "@storybook/react";
 
 import SearchBar from ".";
 
@@ -9,14 +9,12 @@ import SearchBar from ".";
 // };
 
 export default {
-    title: "Composites/SearchBar",
-    component: SearchBar,
-    // args: defaultArgs,
+  title: "Composites/SearchBar",
+  component: SearchBar,
+  // args: defaultArgs,
 } as Meta;
 
 type Story = StoryObj<typeof SearchBar>;
 
 // More on writing stories with args: https://storybook.js.org/docs/7.0/react/writing-stories/args
-export const Default: Story = {
-};
-
+export const Default: Story = {};

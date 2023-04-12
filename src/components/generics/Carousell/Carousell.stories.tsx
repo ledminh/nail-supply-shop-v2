@@ -1,16 +1,17 @@
 import React from "react";
-import {  Meta, StoryObj } from "@storybook/react";
+import { Meta, StoryObj } from "@storybook/react";
 
-import Carousell from '.';
-import type { Props } from '.';
+import Carousell from ".";
+import type { Props } from ".";
 
 type ItemProps = {
   id: string;
   name: string;
 };
 
-const ItemCPN = ({id, name}:ItemProps) => (
-  <div style={{
+const ItemCPN = ({ id, name }: ItemProps) => (
+  <div
+    style={{
       backgroundColor: "gray",
       height: "100%",
       display: "flex",
@@ -18,10 +19,12 @@ const ItemCPN = ({id, name}:ItemProps) => (
       alignItems: "center",
       color: "white",
       fontSize: "1rem",
-    }}>
+    }}
+  >
     {name}
-  </div>);
- 
+  </div>
+);
+
 const items = [
   {
     id: "1",
@@ -47,15 +50,13 @@ const items = [
     id: "6",
     name: "Item 6",
   },
-]
+];
 
-
-const defaultArgs:Props<ItemProps> = {
+const defaultArgs: Props<ItemProps> = {
   items: items,
   initialItemID: "1",
   ItemCPN: ItemCPN,
-}
-
+};
 
 export default {
   title: "Generics/Carousell",
@@ -63,12 +64,7 @@ export default {
   args: defaultArgs,
 } as Meta;
 
-
-
-
 type Story = StoryObj<typeof Carousell>;
 
 // More on writing stories with args: https://storybook.js.org/docs/7.0/react/writing-stories/args
-export const Default: Story = {
-};
-
+export const Default: Story = {};

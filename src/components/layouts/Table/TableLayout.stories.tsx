@@ -1,31 +1,36 @@
-import {  Meta, StoryObj } from "@storybook/react";
+import { Meta, StoryObj } from "@storybook/react";
 
-import TableLayout from '.';
-import type { Props } from '.';
+import TableLayout from ".";
+import type { Props } from ".";
 
 const header = {
   key: "header",
   cells: [
     {
-        key: "empty",
-        value: "",
+      key: "empty",
+      value: "",
     },
     {
-        key: 'price',
-        value: 'Price',
+      key: "price",
+      value: "Price",
     },
     {
-        key: 'quantity',
-        value: 'Quantity',
+      key: "quantity",
+      value: "Quantity",
     },
     {
-        key: "total",
-        value: "Total",
+      key: "total",
+      value: "Total",
     },
-  ]
+  ],
 };
 
-const getRow = (name:string, price:number, quantity:number, total:number) => {
+const getRow = (
+  name: string,
+  price: number,
+  quantity: number,
+  total: number
+) => {
   return {
     key: name,
     cells: [
@@ -55,7 +60,6 @@ const rows = [
   getRow("Peter", 300, 4, 1200),
 ];
 
-
 const footer = {
   key: "footer",
   cells: [
@@ -78,33 +82,27 @@ const footer = {
   ],
 };
 
-
-const defaultArgs:Props = {
+const defaultArgs: Props = {
   header,
   rows,
-  footer
+  footer,
 };
 
 // const Wrapper = (args:Props) => (
 //   <div style={{
-    
+
 //   }}>
 //     <TableLayout {...args} />
 //   </div>
 // );
 
-
 export default {
   title: "Layouts/TableLayout",
   component: TableLayout,
-  args: defaultArgs
+  args: defaultArgs,
 } as Meta;
-
-
-
 
 type Story = StoryObj<typeof TableLayout>;
 
 // More on writing stories with args: https://storybook.js.org/docs/7.0/react/writing-stories/args
 export const Default: Story = {};
-

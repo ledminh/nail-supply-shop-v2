@@ -1,6 +1,4 @@
-@use '../base' as *;
-
-
+@use "../base" as *;
 
 $table-padding: 10px;
 $table-cell-padding: 10px;
@@ -39,18 +37,18 @@ $table-cell-padding: 10px;
 }
 
 .footer {
-    display: flex;
-    flex-direction: row;
-    color: $heading-color;
-    font-weight: bold;
-    padding: $table-padding;
-    justify-content: flex-end; 
-    color: $button-color;
-    font-size: 1.2rem;
+  display: flex;
+  flex-direction: row;
+  color: $heading-color;
+  font-weight: bold;
+  padding: $table-padding;
+  justify-content: flex-end;
+  color: $button-color;
+  font-size: 1.2rem;
 
-    border-top: 2px solid $separator-color;
-    .cell {
-        flex: 1;
-        padding: $table-cell-padding;
-    }
+  border-top: 2px solid $separator-color;
+  .cell {
+    flex: 1;
+    padding: $table-cell-padding;
+  }
 }

@@ -1,129 +1,118 @@
-@use '../base' as *;
-
+@use "../base" as *;
 
 .form {
-    padding: 7px 4px; 
+  padding: 7px 4px;
 }
 
 .fieldset {
-    border: 1px solid $button-color;
-    border-radius: $border-radius;
-    padding: 4px 7px;
+  border: 1px solid $button-color;
+  border-radius: $border-radius;
+  padding: 4px 7px;
 
-    margin-bottom: 20px;
+  margin-bottom: 20px;
 
-   legend {
-       padding: 0 5px;
-       font-size: 1rem;
-       font-weight: bold;
-       color: $button-color;
-   }
+  legend {
+    padding: 0 5px;
+    font-size: 1rem;
+    font-weight: bold;
+    color: $button-color;
+  }
 }
 
-
 .formGroup {
-    display: flex;
-    flex-direction: column;
-    margin-bottom: 3px;
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 3px;
 
-    label {
-        font-weight: bold;
-        color: $heading-color;
-    }
+  label {
+    font-weight: bold;
+    color: $heading-color;
+  }
 
-    input {
-        padding: 5px;
-        border: 1px solid $button-color;
-        border-radius: $border-radius;
-        
-    }
+  input {
+    padding: 5px;
+    border: 1px solid $button-color;
+    border-radius: $border-radius;
+  }
 
-    textarea {
-        padding: 5px;
-        border: 1px solid $button-color;
-        border-radius: $border-radius;
+  textarea {
+    padding: 5px;
+    border: 1px solid $button-color;
+    border-radius: $border-radius;
 
-        resize: none;
-        height: 100px;
-    }
+    resize: none;
+    height: 100px;
+  }
 }
 
 .groupName {
-    display: flex;
-    justify-content: left;
-    align-items: center;
+  display: flex;
+  justify-content: left;
+  align-items: center;
 
-    gap: 10px;
+  gap: 10px;
 
-    margin: 10px 0;
+  margin: 10px 0;
 
-    .label {
-        font-weight: bold;
-        color: $heading-color;
-    }
+  .label {
+    font-weight: bold;
+    color: $heading-color;
+  }
 
-    .value {
-        font-style: italic;
-    }
-
+  .value {
+    font-style: italic;
+  }
 }
 
 .productsHeader {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
 
-    border-bottom: 2px solid $separator-color;
-    padding-bottom: 5px;
-
-
+  border-bottom: 2px solid $separator-color;
+  padding-bottom: 5px;
 }
 
 .noProduct {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 
-    height: 100px;
-    font-weight: bold;
-    color: $heading-color;
+  height: 100px;
+  font-weight: bold;
+  color: $heading-color;
 
-    border: 1px solid $separator-color;
-    border-radius: $border-radius;
-
-    
+  border: 1px solid $separator-color;
+  border-radius: $border-radius;
 }
 
 .productItem {
-    display: grid;
-    grid-template-columns: auto 70px;
-    grid-template-rows: 70px;
-    gap: 10px;
+  display: grid;
+  grid-template-columns: auto 70px;
+  grid-template-rows: 70px;
+  gap: 10px;
 
-    margin-bottom: 10px;
+  margin-bottom: 10px;
 
-    border: 1px solid $separator-color;
-    border-radius: $border-radius;
-    padding: 5px;
+  border: 1px solid $separator-color;
+  border-radius: $border-radius;
+  padding: 5px;
 
-    cursor: pointer;
+  cursor: pointer;
 
-    &:hover {
-        background-color: darken($background-color,15%);
-    }
-
+  &:hover {
+    background-color: darken($background-color, 15%);
+  }
 }
 
-
 fieldset.footer {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    
-    padding-top: 10px;
-    gap: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 
-    border: none;
+  padding-top: 10px;
+  gap: 20px;
 
+  border: none;
 }

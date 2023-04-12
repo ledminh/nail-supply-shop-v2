@@ -1,11 +1,11 @@
-import {  Meta, StoryObj } from "@storybook/react";
+import { Meta, StoryObj } from "@storybook/react";
 
 import { orderStatus } from "@/config";
 
-import OrderBlock from '.';
-import type { Props } from '.';
+import OrderBlock from ".";
+import type { Props } from ".";
 
-const defaultArgs:Props = {
+const defaultArgs: Props = {
   order: {
     id: "112222233456",
     orderedProducts: [
@@ -15,9 +15,9 @@ const defaultArgs:Props = {
         price: 10,
         quantity: 1,
         image: {
-          src: 'https://picsum.photos/300/300',
-          alt: 'Product 1'
-        }
+          src: "https://picsum.photos/300/300",
+          alt: "Product 1",
+        },
       },
       {
         id: "2",
@@ -25,9 +25,9 @@ const defaultArgs:Props = {
         price: 20,
         quantity: 2,
         image: {
-          src: 'https://picsum.photos/300/300',
-          alt: 'Product 2'
-        }
+          src: "https://picsum.photos/300/300",
+          alt: "Product 2",
+        },
       },
       {
         id: "3",
@@ -35,10 +35,10 @@ const defaultArgs:Props = {
         price: 30,
         quantity: 3,
         image: {
-          src: 'https://picsum.photos/300/300',
-          alt: 'Product 3'
-        }
-      }
+          src: "https://picsum.photos/300/300",
+          alt: "Product 3",
+        },
+      },
     ],
     shippingAddress: {
       name: "John",
@@ -47,35 +47,26 @@ const defaultArgs:Props = {
       city: "New York",
       state: "NY",
       zip: "10001",
-      email: "something@example.com"
+      email: "something@example.com",
     },
     status: {
       lastUpdated: "2021-01-01",
       value: "processing",
-      description: orderStatus.processing 
+      description: orderStatus.processing,
     },
   },
   onStatusChange: () => {},
-  onOrderDelete: () => {}
-}
-
-
+  onOrderDelete: () => {},
+};
 
 export default {
   title: "Composites/OrderBlock",
   component: OrderBlock,
-  args: defaultArgs
+  args: defaultArgs,
 } as Meta;
-
-
-
 
 type Story = StoryObj<typeof OrderBlock>;
 
-
 export const Default: Story = {
-  args: {
-
-  }
+  args: {},
 };
-

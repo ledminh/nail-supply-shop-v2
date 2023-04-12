@@ -1,23 +1,16 @@
-import {  Meta, StoryObj } from "@storybook/react";
+import { Meta, StoryObj } from "@storybook/react";
 
-import OrderManagementSection from '.';
-import type { Props } from '.';
+import OrderManagementSection from ".";
+import type { Props } from ".";
 
 export default {
   title: "Sections/OrderManagementSection",
   component: OrderManagementSection,
-  args: {}
+  args: {},
 } as Meta;
-
-
-
 
 type Story = StoryObj<typeof OrderManagementSection>;
 
-
 export const Default: Story = {
-  args: {
-
-  }
+  args: {},
 };
-

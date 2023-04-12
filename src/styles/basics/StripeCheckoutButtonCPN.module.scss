@@ -1,29 +1,29 @@
-@use '../base' as *;
+@use "../base" as *;
 
 .wrapper {
-    display: flex;
-    flex-flow: column;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-    width: 100%;
-    padding: 10px;
-    border-radius: $border-radius;
+  display: flex;
+  flex-flow: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+  padding: 10px;
+  border-radius: $border-radius;
 
-    border: none;
+  border: none;
 
-    background-color: $button-color;
-    color: white;
+  background-color: $button-color;
+  color: white;
 
-    font-weight: 700;
-    cursor: pointer;
+  font-weight: 700;
+  cursor: pointer;
 
-    &:hover {
-        background-color: darken($button-color, 10%);
-    }
+  &:hover {
+    background-color: darken($button-color, 10%);
+  }
 
-    &:disabled {
-        background-color: opacify($color: gray, $amount: .3);
-        cursor: not-allowed;
-    }
+  &:disabled {
+    background-color: opacify($color: gray, $amount: 0.3);
+    cursor: not-allowed;
+  }
 }

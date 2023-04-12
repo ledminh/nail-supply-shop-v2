@@ -1,80 +1,78 @@
-@use '../base' as *;
+@use "../base" as *;
 
 .displayBlock {
-    display: flex;
-    flex-flow: column;
-    
-    gap: 5px;
+  display: flex;
+  flex-flow: column;
 
-    .value {
-        background-color: $secondary-background-color;
-        padding: 5px;
-        font-weight: 500;
-        text-transform: capitalize;
-    }
+  gap: 5px;
 
-    .changeButton {
-        align-self: flex-start;
-    
-        border: none;
-        background-color: transparent;
-        font-weight: 700;
-        color: $button-color;
+  .value {
+    background-color: $secondary-background-color;
+    padding: 5px;
+    font-weight: 500;
+    text-transform: capitalize;
+  }
 
-        border-bottom: 1px solid $button-color;
-        cursor: pointer;
-    }
+  .changeButton {
+    align-self: flex-start;
+
+    border: none;
+    background-color: transparent;
+    font-weight: 700;
+    color: $button-color;
+
+    border-bottom: 1px solid $button-color;
+    cursor: pointer;
+  }
 }
 
 .selectBlock {
-    display: flex;
-    flex-flow: row wrap;
-    justify-content: space-between;
-    
-    gap: 5px;
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-between;
 
-    .select {
-        flex-basis: 100%;
-        background-color: $secondary-background-color;
-        padding: 5px;
-        font-weight: 500;
-        text-transform: capitalize;
-        border: none;
+  gap: 5px;
+
+  .select {
+    flex-basis: 100%;
+    background-color: $secondary-background-color;
+    padding: 5px;
+    font-weight: 500;
+    text-transform: capitalize;
+    border: none;
+  }
+
+  button {
+    flex-basis: 47%;
+    padding: 3px;
+    border: none;
+
+    cursor: pointer;
+  }
+
+  button.save {
+    background-color: $button-color;
+    color: white;
+
+    &:hover {
+      background-color: darken($button-color, 10%);
     }
+  }
 
-    button {
-        flex-basis: 47%;
-        padding: 3px;
-        border: none;
+  button.cancel {
+    background-color: $secondary-background-color;
+    color: black;
 
-        cursor: pointer;
+    &:hover {
+      background-color: darken($secondary-background-color, 10%);
     }
-
-    button.save {
-        background-color: $button-color;
-        color: white;
-
-        &:hover {
-            background-color: darken($button-color, 10%);
-        }
-    }
-
-    button.cancel {
-        background-color: $secondary-background-color;
-        color: black;
-
-        &:hover {
-            background-color: darken($secondary-background-color, 10%);
-        }
-    }
+  }
 }
 
 @media (min-width: $first-breakpoint) {
-    
-    .selectBlock {
-        
-        button {
-            flex-basis: 45%;
-        }
+  .selectBlock {
+    button {
+      flex-basis: 45%;
     }
+  }
 }

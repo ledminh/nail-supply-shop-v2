@@ -1,15 +1,9 @@
-import styles from '@styles/basics/NavItemCPN.module.scss';
+import styles from "@styles/basics/NavItemCPN.module.scss";
 
 export interface Props {
-    label: string;
-};
+  label: string;
+}
 
-export default function NavigationItemCPN({
-    label
-}: Props) {
-    return (
-        <span className={styles.item}>
-            {label}
-        </span>
-    );
+export default function NavigationItemCPN({ label }: Props) {
+  return <span className={styles.item}>{label}</span>;
 }

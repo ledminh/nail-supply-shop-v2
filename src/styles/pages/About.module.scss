@@ -1,41 +1,40 @@
-@use '../base' as *;
+@use "../base" as *;
 
 .wrapper {
-    width: 95%;
-    margin: 0 auto;
+  width: 95%;
+  margin: 0 auto;
 
-    section {
-        background-color: $secondary-background-color;
-        padding: 10px;
-        border-radius: $border-radius;
-        margin-bottom: 50px;
+  section {
+    background-color: $secondary-background-color;
+    padding: 10px;
+    border-radius: $border-radius;
+    margin-bottom: 50px;
 
-        .title {
-            border-bottom: 2px solid $separator-color;
-            margin-bottom: 20px;
-        }
-
+    .title {
+      border-bottom: 2px solid $separator-color;
+      margin-bottom: 20px;
     }
+  }
 }
 
 .history .text {
-    p {
-        margin-bottom: 20px;
-    }
+  p {
+    margin-bottom: 20px;
+  }
 }
 
 .contactInfo {
-    margin: 20px 0 0 15px;
+  margin: 20px 0 0 15px;
 
-    display: flex;
-    flex-direction: column;
+  display: flex;
+  flex-direction: column;
 }
 
 @media (min-width: $second-breakpoint) {
-    .wrapper {
-        width: 90%;
-        section {
-            padding: 25px 70px;
-        }
+  .wrapper {
+    width: 90%;
+    section {
+      padding: 25px 70px;
     }
+  }
 }

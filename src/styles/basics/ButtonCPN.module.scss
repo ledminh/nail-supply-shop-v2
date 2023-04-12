@@ -1,61 +1,57 @@
-@use '../base' as *;
+@use "../base" as *;
 
 .button {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.5rem;
-    padding: 0.5rem 1rem;
-    border-radius: $border-radius;
-    border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  border-radius: $border-radius;
+  border: none;
 
-    cursor: pointer;
-
-
+  cursor: pointer;
 }
-
 
 %disabled {
-    cursor: not-allowed;
-    opacity: 0.5;
-    background-color: gray;
+  cursor: not-allowed;
+  opacity: 0.5;
+  background-color: gray;
 }
 
-
 .button.normal {
-    background-color: $button-color;
-    color: $background-color;
-    font-weight: 600;
+  background-color: $button-color;
+  color: $background-color;
+  font-weight: 600;
 
-    &:disabled {
-        @extend %disabled;
-    }
+  &:disabled {
+    @extend %disabled;
+  }
 }
 
 .button.attention {
-    background-color: $attention-color;
-    color: rgb(68, 43, 43);
-    font-weight: 600;
+  background-color: $attention-color;
+  color: rgb(68, 43, 43);
+  font-weight: 600;
 
-    &:disabled {
-        @extend %disabled;
-    }
+  &:disabled {
+    @extend %disabled;
+  }
 }
 
 .button.danger {
-    background-color: $danger-color;
-    color: $text-color-on-danger-color;
-    font-weight: 600;
+  background-color: $danger-color;
+  color: $text-color-on-danger-color;
+  font-weight: 600;
 
-    &:disabled {
-        @extend %disabled;
-    }
+  &:disabled {
+    @extend %disabled;
+  }
 }
 
 .button:hover {
-    box-shadow: $box-shadow-hover;
+  box-shadow: $box-shadow-hover;
 
-    &:disabled {
-        box-shadow: none;
-    }
+  &:disabled {
+    box-shadow: none;
+  }
 }

@@ -1,37 +1,35 @@
-@use '../base' as *;
+@use "../base" as *;
 
 .wrapper {
-    border: 2px solid $separator-color;
-    border-radius: $border-radius;
+  border: 2px solid $separator-color;
+  border-radius: $border-radius;
 
-    padding: 10px;
-    
+  padding: 10px;
 }
 
 .title {
-    transform: translateY(-30px);
-    background-color: $secondary-background-color;
-    display: inline-block;
+  transform: translateY(-30px);
+  background-color: $secondary-background-color;
+  display: inline-block;
 
-    padding: 0 10px;
+  padding: 0 10px;
 
-    border-radius: $border-radius;
+  border-radius: $border-radius;
 }
 
 .mainProduct {
-    height: 200px;
-    transform: translateY(-20px);
-
+  height: 200px;
+  transform: translateY(-20px);
 }
 
 .otherProducts {
-    .title {
-        transform: none;
-        background-color: transparent;
-        padding: 0;
-    }
+  .title {
+    transform: none;
+    background-color: transparent;
+    padding: 0;
+  }
 
-    .productList {
-        margin-top: 20px;
-    }
+  .productList {
+    margin-top: 20px;
+  }
 }

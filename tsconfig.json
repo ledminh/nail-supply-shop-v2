@@ -24,10 +24,16 @@
       "@hooks/*": ["hooks/*"],
       "@types/*": ["types/*"],
       "@images/*": ["images/*"],
-      "@contexts/*": ["contexts/*"],
+      "@contexts/*": ["contexts/*"]
     },
     "types": ["jest"]
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "src/stories/_pageTemplate.stories.tsx_", "generateOrders.js"],
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    "src/stories/_pageTemplate.stories.tsx_",
+    "generateOrders.js"
+  ],
   "exclude": ["node_modules"]
 }

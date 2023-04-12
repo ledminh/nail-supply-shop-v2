@@ -1,8 +1,7 @@
-import {  Meta, StoryObj } from "@storybook/react";
+import { Meta, StoryObj } from "@storybook/react";
 
-import ContactInfoManagement from '.';
-import type { Props } from '.';
-
+import ContactInfoManagement from ".";
+import type { Props } from ".";
 
 const defaultArgs = {
   initialEmail: "customer.service@gmail.com",
@@ -12,24 +11,17 @@ const defaultArgs = {
     console.log("email: ", email);
     console.log("phone: ", phone);
     console.log("additionalInfos: ", additionalInfos);
-  }
+  },
 } as Props;
 
 export default {
   title: "Composites/ContactInfoManagement",
   component: ContactInfoManagement,
-  args: defaultArgs
+  args: defaultArgs,
 } as Meta;
-
-
-
 
 type Story = StoryObj<typeof ContactInfoManagement>;
 
-
 export const Default: Story = {
-  args: {
-
-  }
+  args: {},
 };
-

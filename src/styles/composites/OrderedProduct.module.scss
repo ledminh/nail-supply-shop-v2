@@ -1,145 +1,137 @@
-@use '../base' as *;
+@use "../base" as *;
 
 .wrapper {
-    display: grid;
+  display: grid;
 
-    grid-template-columns: 37px auto 40px 35px;
+  grid-template-columns: 37px auto 40px 35px;
 
-    border: 2px solid $separator-color;
-    padding: 10px;
+  border: 2px solid $separator-color;
+  padding: 10px;
 
-    border-radius: $border-radius;
+  border-radius: $border-radius;
 }
 
 .quantityPicker {
-    display: flex;
-    flex-direction: column-reverse;
+  display: flex;
+  flex-direction: column-reverse;
 
+  justify-self: center;
+  align-self: center;
 
-    justify-self: center;
-    align-self: center;
-
-
-
-    width: 30px;
-    height: 90px;
-    border-radius: $border-radius;
-    overflow: hidden;
+  width: 30px;
+  height: 90px;
+  border-radius: $border-radius;
+  overflow: hidden;
 }
 
 .quantityButton {
-    background-color: $button-color;
-    border: none;
-    color: white;
+  background-color: $button-color;
+  border: none;
+  color: white;
 
-    font-weight: 900;
-    font-size: 1.2rem;
+  font-weight: 900;
+  font-size: 1.2rem;
 
-    cursor: pointer;
+  cursor: pointer;
 
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    
-    width: 30px;
-    height: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  width: 30px;
+  height: 30px;
 }
 
 .quantityButton:hover {
-    background-color: darken($button-color,20%);
+  background-color: darken($button-color, 20%);
 }
 
 .quantityValue {
-    border: 3px solid $button-color;
+  border: 3px solid $button-color;
 
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .productImage {
-    display: none;
+  display: none;
 }
 
 .info {
-    display: flex;
-    flex-flow: column;
-    align-items: flex-start;
-    justify-content: center;
+  display: flex;
+  flex-flow: column;
+  align-items: flex-start;
+  justify-content: center;
 
-    gap: 10px;
-    padding: 0 10px;
+  gap: 10px;
+  padding: 0 10px;
 
-    .price {
-        font-style: italic;
-        &::before {
-            content: '$';
-        }
+  .price {
+    font-style: italic;
+    &::before {
+      content: "$";
     }
+  }
 }
 
 .totalPrice {
-    display: flex;
-    flex-flow: row;
-    align-items: center;
-    justify-content: flex-end;
+  display: flex;
+  flex-flow: row;
+  align-items: center;
+  justify-content: flex-end;
 
-    font-weight: 700;
-    font-size: 1.1rem;
-    
-    &::before {
-        content: '$';
-    
-    }
+  font-weight: 700;
+  font-size: 1.1rem;
+
+  &::before {
+    content: "$";
+  }
 }
 
 .removeButton {
-    justify-self: center;
-    align-self: center;
+  justify-self: center;
+  align-self: center;
 
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 
-    border: none;
-    background-color: transparent;
+  border: none;
+  background-color: transparent;
 
-    cursor: pointer;
-    margin-left: 10px;
+  cursor: pointer;
+  margin-left: 10px;
 
-    border-radius: 50%;
+  border-radius: 50%;
 
-    width: 25px;
-    height: 25px;
+  width: 25px;
+  height: 25px;
 
-    overflow: hidden;
+  overflow: hidden;
 
-    &:hover {
-        box-shadow: 0 0 5px 0 black;
-    }
+  &:hover {
+    box-shadow: 0 0 5px 0 black;
+  }
 
-
-
-    .removeIcon {
-        width: 30px;
-        height: 30px;
-
-
-    }
+  .removeIcon {
+    width: 30px;
+    height: 30px;
+  }
 }
 
 @media (min-width: $first-breakpoint) {
-    .wrapper {
-        grid-template-columns: 37px 100px auto 40px 35px;
+  .wrapper {
+    grid-template-columns: 37px 100px auto 40px 35px;
 
-        gap: 10px;
-    }
+    gap: 10px;
+  }
 
-    .productImage {
-        display: block;
-        width: 100px;
-        height: 100px;
+  .productImage {
+    display: block;
+    width: 100px;
+    height: 100px;
 
-        border-radius: $border-radius;
-    }
+    border-radius: $border-radius;
+  }
 }

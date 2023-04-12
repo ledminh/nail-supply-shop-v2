@@ -1,29 +1,23 @@
-@use '../base' as *;
-
+@use "../base" as *;
 
 .title {
-
-    line-height: 3.2rem;
+  line-height: 3.2rem;
 }
-  
-  
 
 .subtitle {
-    color: $secondary-heading-color;
-    
-    display: none;
+  color: $secondary-heading-color;
+
+  display: none;
 }
 
 @media (min-width: $first-breakpoint) {
-    
-    .subtitle {
-        display: block;
-    }
+  .subtitle {
+    display: block;
+  }
 }
 
 @media (min-width: $second-breakpoint) {
-    .title {
-
-        line-height: 3.8rem;
-    }
+  .title {
+    line-height: 3.8rem;
+  }
 }

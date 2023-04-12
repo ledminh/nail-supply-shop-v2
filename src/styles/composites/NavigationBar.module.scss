@@ -1,67 +1,62 @@
-@use '../base' as *;
+@use "../base" as *;
 
 .ul {
-
-    color: $navigation-color;
-    gap: 30px;
+  color: $navigation-color;
+  gap: 30px;
 }
 
 .li {
-    margin-right: .5rem;   
+  margin-right: 0.5rem;
 
-    border-radius: $border-radius;
+  border-radius: $border-radius;
 
-    
-    &:last-child {
-        margin-right: 0;
-    }
+  &:last-child {
+    margin-right: 0;
+  }
 
-    &:hover {
-        background-color: adjust-color($color: $navigation-color, $lightness: 15%);
-        color: $background-color;
-    }
-
+  &:hover {
+    background-color: adjust-color($color: $navigation-color, $lightness: 15%);
+    color: $background-color;
+  }
 }
 
 .li.current {
-    background-color: $navigation-color;
-    color: $background-color;
+  background-color: $navigation-color;
+  color: $background-color;
 }
 
 .link {
-    padding: .5rem;
+  padding: 0.5rem;
 
-    transition: .2s ease-in-out;
+  transition: 0.2s ease-in-out;
 
-    cursor: pointer;
-   
+  cursor: pointer;
 
-    &:active {
-        transform: scale(.95);
-        
-    }
+  &:active {
+    transform: scale(0.95);
+  }
 }
 
 .hamburgerMenu {
-    display: block;
+  display: block;
 }
 
 .linksList {
-    display: none;
+  display: none;
 }
 
 @media (min-width: $first-breakpoint) {
-    .hamburgerMenu {
-        display: none;
-    }
+  .hamburgerMenu {
+    display: none;
+  }
 
-    .linksList {
-        display: block;
-    }
+  .linksList {
+    display: block;
+  }
 }
 
 @media (min-width: $second-breakpoint) {
-    .ul {
-        gap: 10px;
-    }
+  .ul {
+    gap: 10px;
+  }
 }

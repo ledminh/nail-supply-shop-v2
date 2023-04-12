@@ -1,44 +1,49 @@
-import { GetServerSideProps } from 'next';
-import { Dispatch, SetStateAction } from 'react';
+import { GetServerSideProps } from "next";
+import { Dispatch, SetStateAction } from "react";
 
-import { useState, useEffect } from 'react';
-import PageLayout from '@/components/layouts/PageLayout'
-import { ContactInfo } from '@/types/others';
-import { Category } from '@/types/category';
+import { useState, useEffect } from "react";
+import PageLayout from "@/components/layouts/PageLayout";
+import { ContactInfo } from "@/types/others";
+import { Category } from "@/types/category";
 
-import { useRouter } from 'next/router';
-import styles from '@/styles/pages/Category.module.scss'
-import CategoryInfo from '@/components/composites/CategoryInfo';
-import SortAndOrder from '@/components/composites/SortAndOrder';
-import ProductList from '@/components/composites/ProductList';
+import { useRouter } from "next/router";
+import styles from "@/styles/pages/Category.module.scss";
+import CategoryInfo from "@/components/composites/CategoryInfo";
+import SortAndOrder from "@/components/composites/SortAndOrder";
+import ProductList from "@/components/composites/ProductList";
 
-import { categoryConfig } from '@/config';
-import { ProductGroup, Product } from '@/types/product';
-import { ListCondition } from '@/types/list-conditions';
-import ButtonCPN from '@/components/basics/ButtonCPN';
-import Select, { convertToOptionItem } from '@/components/generics/Select';
+import { categoryConfig } from "@/config";
+import { ProductGroup, Product } from "@/types/product";
+import { ListCondition } from "@/types/list-conditions";
+import ButtonCPN from "@/components/basics/ButtonCPN";
+import Select, { convertToOptionItem } from "@/components/generics/Select";
 
-import { getAboutUsData, getCategories, getProducts } from '@/database';
+import { getAboutUsData, getCategories, getProducts } from "@/database";
 
-import axios from 'axios';
-import { FindProductOptions } from '@/database/models/product';
-
+import axios from "axios";
+import { FindProductOptions } from "@/database/models/product";
 
 export interface Props {
-  errorMessage?: string,
+  errorMessage?: string;
 
-  contactInfo: ContactInfo,
-  aboutUsFooter: string,
-  initCategory: Category,
-  categories: Category[],
-  products: (Product|ProductGroup)[],
-  initCondition: ListCondition,
+  contactInfo: ContactInfo;
+  aboutUsFooter: string;
+  initCategory: Category;
+  categories: Category[];
+  products: (Product | ProductGroup)[];
+  initCondition: ListCondition;
+}
 
-};
-
-export default function CategoryPage({errorMessage, contactInfo, aboutUsFooter, initCategory, categories, products, initCondition }:Props) {
-
-  if(errorMessage) {
+export default function CategoryPage({
+  errorMessage,
+  contactInfo,
+  aboutUsFooter,
+  initCategory,
+  categories,
+  products,
+  initCondition,
+}: Props) {
+  if (errorMessage) {
     throw new Error(errorMessage);
   }
 
@@ -47,191 +52,193 @@ export default function CategoryPage({errorMessage, contactInfo, aboutUsFooter, 
   const { sortItems, sortedOrderItems, productsPerPage } = categoryConfig;
 
   const [curCategory, setCurCategory] = useState(initCategory);
-  const [_products, setProducts] = useState<(Product|ProductGroup)[]>(products);
+  const [_products, setProducts] =
+    useState<(Product | ProductGroup)[]>(products);
   const [condition, setCondition] = useState<ListCondition>(initCondition);
 
-
-
   useEffect(() => {
-
-    const loadOptions:FindProductOptions = {
+    const loadOptions: FindProductOptions = {
       catSlug: curCategory.slug,
       sort: condition.sort!.value,
       sortedOrder: condition.sortedOrder!.value,
       limit: productsPerPage,
-      type: 'origin'
-    }
-    
-    axios.post("/api/products", loadOptions)
-      .then(({data}) => {
-        setProducts(data.products);
-      });
+      type: "origin",
+    };
 
+    axios.post("/api/products", loadOptions).then(({ data }) => {
+      setProducts(data.products);
+    });
   }, [curCategory, condition]);
 
+  const sortAndOrderOnChange = ({ sort, sortedOrder }: ListCondition) => {
+    setCondition({ sort, sortedOrder });
 
+    router.push(
+      `/category/${curCategory.slug}?sort=${sort!.value}&sortedOrder=${
+        sortedOrder!.value
+      }`,
+      undefined,
+      { shallow: true }
+    );
+  };
 
-  const sortAndOrderOnChange = ({sort, sortedOrder}:ListCondition) => {
-  
-    setCondition({sort, sortedOrder});
+  const onCategoryChange = (
+    optionItem: ReturnType<typeof convertToOptionItem>
+  ) => {
+    const cat = categories.find((cat) => cat.slug === optionItem.value);
 
-    router.push(`/category/${curCategory.slug}?sort=${sort!.value}&sortedOrder=${sortedOrder!.value}`, undefined, {shallow: true});
-
-  }
-
-  const onCategoryChange = (optionItem: ReturnType<typeof convertToOptionItem>) => {
-    const cat = categories.find(cat => cat.slug === optionItem.value);
-
-    if(!cat) {
+    if (!cat) {
       throw new Error("Category not found");
     }
 
     setCurCategory(cat);
 
-    router.push(`/category/${cat.slug}?sort=${condition.sort!.value}&sortedOrder=${condition.sortedOrder!.value}`, undefined, {shallow: true});
-  }
+    router.push(
+      `/category/${cat.slug}?sort=${condition.sort!.value}&sortedOrder=${
+        condition.sortedOrder!.value
+      }`,
+      undefined,
+      { shallow: true }
+    );
+  };
 
   const loadMore = () => {
-    if(_products.length === curCategory.numProducts) {
+    if (_products.length === curCategory.numProducts) {
       return;
     }
 
-    const loadOptions:FindProductOptions = {
+    const loadOptions: FindProductOptions = {
       catSlug: curCategory.slug,
       sort: condition.sort!.value,
       sortedOrder: condition.sortedOrder!.value,
       limit: productsPerPage,
       offset: _products.length,
-      type: 'origin'
-    }
+      type: "origin",
+    };
 
-    
-    axios.post("/api/products", loadOptions)
-      .then(({data}) => {
-        setProducts([..._products, ...data.products]);
-      });
-    
-  }
-
-
-
-
+    axios.post("/api/products", loadOptions).then(({ data }) => {
+      setProducts([..._products, ...data.products]);
+    });
+  };
 
   return (
-    <PageLayout
-      contactInfo = {contactInfo}
-      aboutText = {aboutUsFooter}
-    >
+    <PageLayout contactInfo={contactInfo} aboutText={aboutUsFooter}>
       <div className={styles.wrapper}>
         <aside className={styles.aside}>
           <CategoryInfo
-            name = {curCategory.name}
-            image = {curCategory.image}
-            description = {curCategory.description}
+            name={curCategory.name}
+            image={curCategory.image}
+            description={curCategory.description}
           />
           <SortAndOrder
-            sortItems = {sortItems}
-            sortedOrderItems = {sortedOrderItems} 
-            initCondition = {initCondition}
-            onChange = {sortAndOrderOnChange}
+            sortItems={sortItems}
+            sortedOrderItems={sortedOrderItems}
+            initCondition={initCondition}
+            onChange={sortAndOrderOnChange}
           />
           <Select
-              selectClass = {styles.categorySelect}
-              optionClass = {styles.categoryOption}
-              optionItems = {categories.map(convertCategoryToOptionItem)}
-              initOptionItem = {convertCategoryToOptionItem(curCategory)}
-              onChange = {onCategoryChange}
-            />
+            selectClass={styles.categorySelect}
+            optionClass={styles.categoryOption}
+            optionItems={categories.map(convertCategoryToOptionItem)}
+            initOptionItem={convertCategoryToOptionItem(curCategory)}
+            onChange={onCategoryChange}
+          />
         </aside>
         <div className={styles.main}>
           <div className={styles.productList}>
-            <ProductList
-              products = {_products}
-              type = "grid"
-            />
+            <ProductList products={_products} type="grid" />
           </div>
           <div className={styles.button}>
-            {
-              _products.length < curCategory.numProducts  && (
-                <ButtonCPN
-                  label = "Load More"
-                  type="normal"
-                  onClick = {loadMore}
-                  className={styles.loadMoreButton}
-                />
-              )
-            }
-          </div>        
+            {_products.length < curCategory.numProducts && (
+              <ButtonCPN
+                label="Load More"
+                type="normal"
+                onClick={loadMore}
+                className={styles.loadMoreButton}
+              />
+            )}
+          </div>
         </div>
       </div>
-      
     </PageLayout>
-  )
+  );
 }
 
 CategoryPage.displayName = "Category";
 
-export const getServerSideProps:GetServerSideProps = async (context) => {
-  
+export const getServerSideProps: GetServerSideProps = async (context) => {
   const { sort, sortedOrder } = context.query;
-  const params = context.params as {slug: string};
+  const params = context.params as { slug: string };
   const { slug } = params;
 
-  if(!sort || !sortedOrder) {
+  if (!sort || !sortedOrder) {
     return redirectToSortedPage(sort, sortedOrder, slug);
   }
 
+  const sortItemIndex = categoryConfig.sortItems.findIndex(
+    (item) => item.value === sort
+  );
+  const sortedOrderItemIndex = categoryConfig.sortedOrderItems.findIndex(
+    (item) => item.value === sortedOrder
+  );
 
-  const sortItemIndex = categoryConfig.sortItems.findIndex(item => item.value === sort);
-  const sortedOrderItemIndex = categoryConfig.sortedOrderItems.findIndex(item => item.value === sortedOrder);
-
-  const sortItem = sortItemIndex !== -1? categoryConfig.sortItems[sortItemIndex]: categoryConfig.sortItems[0];
-  const sortedOrderItem = sortedOrderItemIndex !== -1? categoryConfig.sortedOrderItems[sortedOrderItemIndex]: categoryConfig.sortedOrderItems[0];
-
+  const sortItem =
+    sortItemIndex !== -1
+      ? categoryConfig.sortItems[sortItemIndex]
+      : categoryConfig.sortItems[0];
+  const sortedOrderItem =
+    sortedOrderItemIndex !== -1
+      ? categoryConfig.sortedOrderItems[sortedOrderItemIndex]
+      : categoryConfig.sortedOrderItems[0];
 
   try {
-    const [aboutUsRes, categoriesRes, productsRes] = await Promise.all([getAboutUsData(), getCategories(), getProducts({catSlug: slug, type:'origin', limit: categoryConfig.productsPerPage})]);
+    const [aboutUsRes, categoriesRes, productsRes] = await Promise.all([
+      getAboutUsData(),
+      getCategories(),
+      getProducts({
+        catSlug: slug,
+        type: "origin",
+        limit: categoryConfig.productsPerPage,
+      }),
+    ]);
 
-
-
-    if(!aboutUsRes.success) {
+    if (!aboutUsRes.success) {
       return {
         props: {
-          errorMessage: aboutUsRes.message
-        }
-      }
+          errorMessage: aboutUsRes.message,
+        },
+      };
     }
 
-    if(!categoriesRes.success) {
+    if (!categoriesRes.success) {
       return {
         props: {
-          errorMessage: categoriesRes.message
-        }
-      }
+          errorMessage: categoriesRes.message,
+        },
+      };
     }
 
-    if(!productsRes.success) {
+    if (!productsRes.success) {
       return {
         props: {
-          errorMessage: productsRes.message
-        }
-      }
+          errorMessage: productsRes.message,
+        },
+      };
     }
-
 
     const aboutUsFooter = aboutUsRes.data!.aboutUsFooter;
     const contactInfo = aboutUsRes.data!.contactInfo;
     const categories = categoriesRes.data;
 
-    const initCategory = (categories as Category[]).find(cat => cat.slug === slug);
+    const initCategory = (categories as Category[]).find(
+      (cat) => cat.slug === slug
+    );
 
-
-    if(!initCategory) {
+    if (!initCategory) {
       throw new Error("Category not found");
     }
-    
-    const products = productsRes.data;
 
+    const products = productsRes.data;
 
     return {
       props: {
@@ -244,41 +251,46 @@ export const getServerSideProps:GetServerSideProps = async (context) => {
           sort: sortItem,
           sortedOrder: sortedOrderItem,
         },
-
-      }
-    }
-  }
-  catch (err:any) {
+      },
+    };
+  } catch (err: any) {
     return {
       props: {
-        errorMessage: err.message
-      }
-    }
-  }  
-
-
-
-}
-
+        errorMessage: err.message,
+      },
+    };
+  }
+};
 
 /****************************
  * Helper Functions
  */
 
-const redirectToSortedPage = (sort:string | string[] | undefined, sortedOrder:string | string[] | undefined, slug: string) => {
+const redirectToSortedPage = (
+  sort: string | string[] | undefined,
+  sortedOrder: string | string[] | undefined,
+  slug: string
+) => {
+  let sortItemIndex = sort
+    ? categoryConfig.sortItems.findIndex((item) => item.value === sort)
+    : 0;
+  let sortedOrderItemIndex = sortedOrder
+    ? categoryConfig.sortedOrderItems.findIndex(
+        (item) => item.value === sortedOrder
+      )
+    : 0;
 
-  let sortItemIndex = sort? categoryConfig.sortItems.findIndex(item => item.value === sort) : 0;
-  let sortedOrderItemIndex = sortedOrder? categoryConfig.sortedOrderItems.findIndex(item => item.value === sortedOrder) : 0;
+  const sortItem =
+    categoryConfig.sortItems[sortItemIndex === -1 ? 0 : sortItemIndex];
+  const sortedOrderItem =
+    categoryConfig.sortedOrderItems[
+      sortedOrderItemIndex === -1 ? 0 : sortedOrderItemIndex
+    ];
 
-
-  const sortItem = categoryConfig.sortItems[sortItemIndex === -1? 0 : sortItemIndex];
-  const sortedOrderItem = categoryConfig.sortedOrderItems[sortedOrderItemIndex === -1? 0 : sortedOrderItemIndex];
-  
   const queryParams = {
     sort: sortItem.value,
     sortedOrder: sortedOrderItem.value,
   };
-
 
   return {
     redirect: {
@@ -286,14 +298,11 @@ const redirectToSortedPage = (sort:string | string[] | undefined, sortedOrder:st
       permanent: true,
     },
   };
-
-}
+};
 
 const convertCategoryToOptionItem = (category: Category) => {
-
   const getValue = (category: Category) => category.slug;
   const getLabel = (category: Category) => category.name;
 
-  return convertToOptionItem({item:category, getValue, getLabel});
-
-}
+  return convertToOptionItem({ item: category, getValue, getLabel });
+};

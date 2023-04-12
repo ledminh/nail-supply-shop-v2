@@ -1,5 +1,5 @@
 import React from "react";
-import {  Meta, StoryObj } from "@storybook/react";
+import { Meta, StoryObj } from "@storybook/react";
 
 import LinksList, { Props } from ".";
 import { LinkItem } from "@/types/item";
@@ -35,12 +35,7 @@ export default {
   args: defaultArgs,
 } as Meta;
 
-
-
-
 type Story = StoryObj<typeof LinksList>;
 
 // More on writing stories with args: https://storybook.js.org/docs/7.0/react/writing-stories/args
-export const Default: Story = {
-};
-
+export const Default: Story = {};

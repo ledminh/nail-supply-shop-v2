@@ -1,91 +1,87 @@
-import { ContactInfo } from '@/types/others';
-import { Category } from '@/types/category';
+import { ContactInfo } from "@/types/others";
+import { Category } from "@/types/category";
 
-import PageLayout from '@/components/layouts/PageLayout'
-import CategoryList from '@components/composites/CategoryList';
+import PageLayout from "@/components/layouts/PageLayout";
+import CategoryList from "@components/composites/CategoryList";
 
-import styles from '@/styles/pages/Shop.module.scss'
+import styles from "@/styles/pages/Shop.module.scss";
 
-import { shopConfig } from '@/config';
-import HeroImageSection from '@/components/sections/HeroImageSection';
+import { shopConfig } from "@/config";
+import HeroImageSection from "@/components/sections/HeroImageSection";
 
-import { getAboutUsData, getCategories } from '@/database';
+import { getAboutUsData, getCategories } from "@/database";
 
 export interface Props {
-  errorMessage?: string,
-  contactInfo: ContactInfo,
-  aboutUsFooter: string,
-  categories: Category[]
-};
+  errorMessage?: string;
+  contactInfo: ContactInfo;
+  aboutUsFooter: string;
+  categories: Category[];
+}
 
-export default function Shop({errorMessage, contactInfo, aboutUsFooter, categories }:Props) {
-
-  if(errorMessage) {
+export default function Shop({
+  errorMessage,
+  contactInfo,
+  aboutUsFooter,
+  categories,
+}: Props) {
+  if (errorMessage) {
     throw new Error(errorMessage);
   }
-  
+
   const { heroImageSectionProps } = shopConfig;
 
   return (
-    <PageLayout
-      contactInfo = {contactInfo}
-      aboutText = {aboutUsFooter}
-    >
+    <PageLayout contactInfo={contactInfo} aboutText={aboutUsFooter}>
       <HeroImageSection {...heroImageSectionProps} />
-      
+
       <section className={styles.categoryList}>
-        <CategoryList 
-          categories={categories}
-          detailed={true}
-          />
+        <CategoryList categories={categories} detailed={true} />
       </section>
     </PageLayout>
-  )
+  );
 }
 
 Shop.displayName = "Shop";
 
 export const getServerSideProps = async () => {
-  
-
   try {
-    const [aboutUsRes, categoriesRes] = await Promise.all([getAboutUsData(), getCategories()]);
+    const [aboutUsRes, categoriesRes] = await Promise.all([
+      getAboutUsData(),
+      getCategories(),
+    ]);
 
-    if(!aboutUsRes.success) {
+    if (!aboutUsRes.success) {
       return {
         props: {
-          errorMessage: aboutUsRes.message
-        }
-      }
+          errorMessage: aboutUsRes.message,
+        },
+      };
     }
 
-    if(!categoriesRes.success) {
+    if (!categoriesRes.success) {
       return {
         props: {
-          errorMessage: categoriesRes.message
-        }
-      }
+          errorMessage: categoriesRes.message,
+        },
+      };
     }
 
     const aboutUsFooter = aboutUsRes.data!.aboutUsFooter;
     const contactInfo = aboutUsRes.data!.contactInfo;
     const categories = categoriesRes.data;
-    
+
     return {
       props: {
         contactInfo,
         aboutUsFooter,
-        categories
-      }
-    }
-  }
-  catch (err:any) {
+        categories,
+      },
+    };
+  } catch (err: any) {
     return {
       props: {
-        errorMessage: err.message
-      }
-    }
+        errorMessage: err.message,
+      },
+    };
   }
-
-  
-}
+};

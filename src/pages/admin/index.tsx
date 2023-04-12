@@ -1,22 +1,21 @@
-import { useEffect } from 'react';
+import { useEffect } from "react";
 
-import { useRouter } from 'next/router';
-import { adminConfig } from '@/config';
+import { useRouter } from "next/router";
+import { adminConfig } from "@/config";
 
 const AdminIndexPage = () => {
-    const router = useRouter();
+  const router = useRouter();
 
-    const { sections } = adminConfig;
-    
-    const firstSectionSlug = sections[0].slug;
-    const firstSectionUrl = `/admin/${firstSectionSlug}`;
+  const { sections } = adminConfig;
 
-    useEffect(() => {
-        router.push(firstSectionUrl);
-    }, []);
+  const firstSectionSlug = sections[0].slug;
+  const firstSectionUrl = `/admin/${firstSectionSlug}`;
 
-    return null;
+  useEffect(() => {
+    router.push(firstSectionUrl);
+  }, []);
 
+  return null;
 };
 
 export default AdminIndexPage;

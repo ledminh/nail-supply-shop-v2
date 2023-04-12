@@ -1,23 +1,21 @@
 .message {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    
-    gap: 20px;
-    padding: 20px;
-    border: none;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  gap: 20px;
+  padding: 20px;
+  border: none;
 }
 
-
 fieldset.footer {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    
-    padding-top: 10px;
-    gap: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 
-    border: none;
+  padding-top: 10px;
+  gap: 20px;
 
+  border: none;
 }

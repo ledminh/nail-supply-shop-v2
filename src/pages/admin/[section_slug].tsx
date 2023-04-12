@@ -1,14 +1,14 @@
-import { GetServerSideProps } from 'next';
-import { useRouter } from 'next/router';
-import { ContactInfo } from '@/types/others';
-import PageLayout from '@/components/layouts/PageLayout';
-import TabLayout from '@/components/layouts/TabLayout';
+import { GetServerSideProps } from "next";
+import { useRouter } from "next/router";
+import { ContactInfo } from "@/types/others";
+import PageLayout from "@/components/layouts/PageLayout";
+import TabLayout from "@/components/layouts/TabLayout";
 
-import { adminConfig } from '@/config';
-import { getAboutUsData } from '@/database';
+import { adminConfig } from "@/config";
+import { getAboutUsData } from "@/database";
 
 export interface Props {
-  errorMessage?: string,
+  errorMessage?: string;
 
   contactInfo: ContactInfo;
   aboutUsFooter: string;
@@ -21,20 +21,16 @@ export default function AdminPage(props: Props) {
     throw new Error(errorMessage);
   }
 
-
   const router = useRouter();
   let { section_slug } = router.query;
 
-
-  if (typeof section_slug !== 'string') {
+  if (typeof section_slug !== "string") {
     return <div>Invalid section</div>;
   }
 
   const { sections } = adminConfig;
-  
-  
-  const section = sections.find((s) => s.slug === section_slug);
 
+  const section = sections.find((s) => s.slug === section_slug);
 
   if (!section) {
     return <div>Invalid section</div>;
@@ -51,39 +47,34 @@ export default function AdminPage(props: Props) {
   );
 }
 
-AdminPage.displayName = 'AdminPage';
+AdminPage.displayName = "AdminPage";
 
-export const getServerSideProps = async () => {  
-
-
+export const getServerSideProps = async () => {
   try {
     const aboutUsRes = await getAboutUsData();
 
-    if(!aboutUsRes.success) {
+    if (!aboutUsRes.success) {
       return {
         props: {
-          errorMessage: aboutUsRes.message
-        }
-      }
+          errorMessage: aboutUsRes.message,
+        },
+      };
     }
 
     const aboutUsFooter = aboutUsRes.data!.aboutUsFooter;
     const contactInfo = aboutUsRes.data!.contactInfo;
-    
+
     return {
       props: {
         contactInfo,
         aboutUsFooter,
-        
-      }
-    }
-  }
-  catch (err:any) {
+      },
+    };
+  } catch (err: any) {
     return {
       props: {
-        errorMessage: err.message
-      }
-    }
+        errorMessage: err.message,
+      },
+    };
   }
-
-}
+};

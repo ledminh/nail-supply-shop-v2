@@ -1,7 +1,7 @@
-import {  Meta, StoryObj } from "@storybook/react";
+import { Meta, StoryObj } from "@storybook/react";
 
-import CategoryModal from '.';
-import type { Props } from '.';
+import CategoryModal from ".";
+import type { Props } from ".";
 
 // {
 //   onSave: ({ name, description, image }:onSaveProps) => void;
@@ -10,7 +10,7 @@ import type { Props } from '.';
 //   type: "create";
 //   initName?: undefined;
 //   initDescription?: undefined;
-//   initImage?: undefined 
+//   initImage?: undefined
 
 // } | {
 //   type: "edit";
@@ -19,13 +19,11 @@ import type { Props } from '.';
 //   initImage: RemoteImage;
 // })
 
-
 const defaultArgs: Props = {
   type: "create",
   onSave: () => {},
-  onCancel: () => {}
+  onCancel: () => {},
 };
-
 
 export default {
   title: "Composites/CategoryModal",
@@ -33,10 +31,6 @@ export default {
   args: defaultArgs,
 } as Meta;
 
-
-
-
 type Story = StoryObj<typeof CategoryModal>;
-
 
 export const Default: Story = {};

@@ -1,90 +1,90 @@
 [
-    {
-        "id": "cat_nail01_polishes",
-        "slug": "nail-polishes",
-        "name": "Nail Polishes",
-        "description": "Discover our wide range of nail polishes, available in various colors and finishes. Choose from glossy, matte, metallic, or glittery options to create your perfect manicure.",
-        "image": {
-            "src": "/images/placeholder_1.png",
-            "alt": "Nail Polishes"
-        },
-        "numProducts": "10"
+  {
+    "id": "cat_nail01_polishes",
+    "slug": "nail-polishes",
+    "name": "Nail Polishes",
+    "description": "Discover our wide range of nail polishes, available in various colors and finishes. Choose from glossy, matte, metallic, or glittery options to create your perfect manicure.",
+    "image": {
+      "src": "/images/placeholder_1.png",
+      "alt": "Nail Polishes"
     },
-    {
-        "id": "cat_nail02_gel",
-        "slug": "gel-nails",
-        "name": "Gel Nails",
-        "description": "Explore our collection of high-quality gel nail products, including base coats, top coats, and gel polishes in various colors for a long-lasting, chip-free manicure.",
-        "image": {
-            "src": "/images/placeholder_2.png",
-            "alt": "Gel Nails"
-        },
-        "numProducts": "20"
+    "numProducts": "10"
+  },
+  {
+    "id": "cat_nail02_gel",
+    "slug": "gel-nails",
+    "name": "Gel Nails",
+    "description": "Explore our collection of high-quality gel nail products, including base coats, top coats, and gel polishes in various colors for a long-lasting, chip-free manicure.",
+    "image": {
+      "src": "/images/placeholder_2.png",
+      "alt": "Gel Nails"
     },
-    {
-        "id": "cat_nail03_acrylics",
-        "slug": "acrylic-nails",
-        "name": "Acrylic Nails",
-        "description": "Find everything you need for stunning acrylic nails, including acrylic powders, liquids, and tools. Create beautiful and durable nail extensions with ease.",
-        "image": {
-            "src": "/images/placeholder_3.png",
-            "alt": "Acrylic Nails"
-        },
-        "numProducts": "20"
+    "numProducts": "20"
+  },
+  {
+    "id": "cat_nail03_acrylics",
+    "slug": "acrylic-nails",
+    "name": "Acrylic Nails",
+    "description": "Find everything you need for stunning acrylic nails, including acrylic powders, liquids, and tools. Create beautiful and durable nail extensions with ease.",
+    "image": {
+      "src": "/images/placeholder_3.png",
+      "alt": "Acrylic Nails"
     },
-    {
-        "id": "cat_nail04_nailart",
-        "slug": "nail-art",
-        "name": "Nail Art",
-        "description": "Get creative with our nail art supplies, including decals, stickers, rhinestones, and more. Add intricate designs and unique touches to your manicure for a truly personalized look.",
-        "image": {
-            "src": "/images/placeholder_4.png",
-            "alt": "Nail Art"
-        },
-        "numProducts": "20"
+    "numProducts": "20"
+  },
+  {
+    "id": "cat_nail04_nailart",
+    "slug": "nail-art",
+    "name": "Nail Art",
+    "description": "Get creative with our nail art supplies, including decals, stickers, rhinestones, and more. Add intricate designs and unique touches to your manicure for a truly personalized look.",
+    "image": {
+      "src": "/images/placeholder_4.png",
+      "alt": "Nail Art"
     },
-    {
-        "id": "cat_nail05_tools",
-        "slug": "nail-tools",
-        "name": "Nail Tools",
-        "description": "Browse our selection of professional nail tools, such as files, brushes, clippers, and cuticle pushers. Equip yourself with high-quality tools for the perfect manicure or pedicure.",
-        "image": {
-            "src": "/images/placeholder_5.png",
-            "alt": "Nail Tools"
-        },
-        "numProducts": "20"
+    "numProducts": "20"
+  },
+  {
+    "id": "cat_nail05_tools",
+    "slug": "nail-tools",
+    "name": "Nail Tools",
+    "description": "Browse our selection of professional nail tools, such as files, brushes, clippers, and cuticle pushers. Equip yourself with high-quality tools for the perfect manicure or pedicure.",
+    "image": {
+      "src": "/images/placeholder_5.png",
+      "alt": "Nail Tools"
     },
-    {
-        "id": "cat_nail06_treatments",
-        "slug": "nail-treatments",
-        "name": "Nail Treatments",
-        "description": "Choose from our range of nail treatments to help strengthen, repair, and protect your nails. Maintain healthy nails and cuticles with our selection of nourishing products.",
-        "image": {
-            "src": "/images/placeholder_6.png",
-            "alt": "Nail Treatments"
-        },
-        "numProducts": "20"
+    "numProducts": "20"
+  },
+  {
+    "id": "cat_nail06_treatments",
+    "slug": "nail-treatments",
+    "name": "Nail Treatments",
+    "description": "Choose from our range of nail treatments to help strengthen, repair, and protect your nails. Maintain healthy nails and cuticles with our selection of nourishing products.",
+    "image": {
+      "src": "/images/placeholder_6.png",
+      "alt": "Nail Treatments"
     },
-    {
-        "id": "cat_nail07_removal",
-        "slug": "nail-removal",
-        "name": "Nail Removal",
-        "description": "Find all the essentials for safe and effective nail removal, including nail polish removers, acetone, and soak-off solutions. Remove nail enhancements with ease and minimal damage.",
-        "image": {
-            "src": "/images/placeholder_7.png",
-            "alt": "Nail Removal"
-        },
-        "numProducts": "20"
+    "numProducts": "20"
+  },
+  {
+    "id": "cat_nail07_removal",
+    "slug": "nail-removal",
+    "name": "Nail Removal",
+    "description": "Find all the essentials for safe and effective nail removal, including nail polish removers, acetone, and soak-off solutions. Remove nail enhancements with ease and minimal damage.",
+    "image": {
+      "src": "/images/placeholder_7.png",
+      "alt": "Nail Removal"
     },
-    {
-        "id": "cat_nail08_manipedi",
-        "slug": "manicure-pedicure",
-        "name": "Manicure & Pedicure",
-        "description": "Discover our assortment of manicure and pedicure products, including creams, scrubs, and lotions. Pamper and nourish your hands and feet for a luxurious at-home spa experience.",
-        "image": {
-            "src": "/images/placeholder_8.png",
-            "alt": "Manicure & Pedicure"
-        },
-        "numProducts": "20"
-    }
+    "numProducts": "20"
+  },
+  {
+    "id": "cat_nail08_manipedi",
+    "slug": "manicure-pedicure",
+    "name": "Manicure & Pedicure",
+    "description": "Discover our assortment of manicure and pedicure products, including creams, scrubs, and lotions. Pamper and nourish your hands and feet for a luxurious at-home spa experience.",
+    "image": {
+      "src": "/images/placeholder_8.png",
+      "alt": "Manicure & Pedicure"
+    },
+    "numProducts": "20"
+  }
 ]

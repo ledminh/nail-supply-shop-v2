@@ -1,129 +1,123 @@
-@import '../base';
+@import "../base";
 
 .wrapper {
-    border: none;
-    width: 100%;
-    height: 100%;
+  border: none;
+  width: 100%;
+  height: 100%;
 
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 
-    padding: 4px;
+  padding: 4px;
 
-    background-color: transparent;
+  background-color: transparent;
 
-    cursor: pointer;
-
-
+  cursor: pointer;
 }
 
 .image {
-    display: none;
+  display: none;
 }
 
 .text {
-    padding: 20px;
-
+  padding: 20px;
 }
 
 h3.name,
 h3.price {
-    display: none;
+  display: none;
 }
 
 h4.name,
 h4.price {
-    display: block;
+  display: block;
 }
 h3.price,
 h4.price {
-    &:before {
-        content: "$";
-    }
+  &:before {
+    content: "$";
+  }
 }
 
 .productSelector {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 10px;
+}
+
+.editProductButton {
+  padding: 5px 8px;
+}
+
+.description {
+  display: none;
+}
+
+.deleteButton {
+  &:hover {
+    box-shadow: 0 0 5px 0 $danger-color;
+    color: white;
+  }
+}
+
+@media (min-width: $first-breakpoint) {
+  .wrapper {
+    height: 100%;
+
     display: flex;
+    flex-direction: column;
+
+    gap: 16px;
+  }
+
+  .text {
+    padding: 10px;
+    display: flex;
+
+    flex-direction: column;
     align-items: center;
     justify-content: center;
 
     gap: 10px;
-}
+  }
 
-.editProductButton {
-    padding: 5px 8px;
-}
+  h3.name,
+  h3.price {
+    display: block;
+  }
 
-.description {
+  h4.name,
+  h4.price {
     display: none;
-}
+  }
 
-.deleteButton {
-    
-    &:hover {
-        box-shadow: 0 0 5px 0 $danger-color;
-        color: white;
-    }
-}
+  .select {
+    padding: 5px 10px;
+  }
+  .editProductButton {
+    padding: auto;
+  }
 
-@media (min-width: $first-breakpoint) {
-    .wrapper {
-        height: 100%;
+  .description {
+    display: block;
 
-        display: flex;
-        flex-direction: column;
-        
-        gap: 16px;
-    }
-
-    .text {
-        padding: 10px;
-        display: flex;
-
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-
-        gap: 10px;
-    }   
-    
-    
-    h3.name,
-    h3.price {
-        display: block;
-        
-    }
-    
-    h4.name,
-    h4.price {
-        display: none;
-    }
-
-    .select {
-        padding: 5px 10px;
-    }
-    .editProductButton {
-        padding: auto;
-    }
-    
-    .description {
-        display: block;
-
-        font-size: 0.7rem;
-    }
+    font-size: 0.7rem;
+  }
 }
 
 @media (min-width: $second-breakpoint) {
-    .wrapper{
-        gap: 5px;
-    }
+  .wrapper {
+    gap: 5px;
+  }
 
-    .image {
-        display: block;
-        width: 200px;
-        height: 200px;
+  .image {
+    display: block;
+    width: 200px;
+    height: 200px;
 
-        border-radius: $border-radius;
-    }
+    border-radius: $border-radius;
+  }
 }

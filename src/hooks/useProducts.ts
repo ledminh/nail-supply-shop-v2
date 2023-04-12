@@ -1,14 +1,10 @@
-import { Product, ProductGroup } from '@/types/product';
-import { ListCondition } from '@/types/list-conditions';
+import { Product, ProductGroup } from "@/types/product";
+import { ListCondition } from "@/types/list-conditions";
 
-import axios from 'axios';
+import axios from "axios";
 
-type Props = {
+type Props = {};
 
-}
-
-const useProducts = ({}:Props) => {
-
-}
+const useProducts = ({}: Props) => {};
 
 export default useProducts;

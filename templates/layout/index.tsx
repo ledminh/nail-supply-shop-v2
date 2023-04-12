@@ -1,17 +1,7 @@
-import styles from '@styles/layouts/templatenameLayout.module.scss';
+import styles from "@styles/layouts/templatenameLayout.module.scss";
 
-
-export interface Props {
-};
+export interface Props {}
 
 export default function templatenameLayout({}: Props) {
-
-    
-
-    return (
-        <div className={styles.placeholder}>
-            templatenameLayout
-        </div>
-
-    );
+  return <div className={styles.placeholder}>templatenameLayout</div>;
 }

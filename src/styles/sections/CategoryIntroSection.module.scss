@@ -1,66 +1,59 @@
-@use '../base' as *;
+@use "../base" as *;
 .banner {
-    margin-bottom: 20px;
+  margin-bottom: 20px;
 }
 
 .footer {
-    margin-top: 1rem;
+  margin-top: 1rem;
 
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .link {
-    background-color: $attention-color;
-    color:black;
+  background-color: $attention-color;
+  color: black;
 
-    padding: 1rem;
+  padding: 1rem;
 
-    border-radius: $border-radius;
+  border-radius: $border-radius;
 
-
-    &:hover {
-        background-color: adjust-color($color: $attention-color, $lightness: -30%);
-        color: white;
-    }
+  &:hover {
+    background-color: adjust-color($color: $attention-color, $lightness: -30%);
+    color: white;
+  }
 }
 
 @media (min-width: $first-breakpoint) {
-    .list {
-        width: 80%;
-        margin: 0 auto;
-    }
+  .list {
+    width: 80%;
+    margin: 0 auto;
+  }
 }
 
 @media (min-width: $second-breakpoint) {
-    .wrapper {
-        border: 4px solid $secondary-background-color;
-        border-top: 0;
+  .wrapper {
+    border: 4px solid $secondary-background-color;
+    border-top: 0;
 
-        border-radius: $border-radius;
-        }
-    .banner {
-        margin-bottom: 0px; 
-        
-            
-    }
+    border-radius: $border-radius;
+  }
+  .banner {
+    margin-bottom: 0px;
+  }
 
-    .body {
-        
-        
-        border-bottom-left-radius: $border-radius;
-        border-bottom-right-radius: $border-radius;
-        padding: 20px;
-        padding-top: 50px;
+  .body {
+    border-bottom-left-radius: $border-radius;
+    border-bottom-right-radius: $border-radius;
+    padding: 20px;
+    padding-top: 50px;
 
-        
-        transform: translateY(-10px);
+    transform: translateY(-10px);
+  }
 
-    }
-
-    .list {
-        width: 80%;
-        margin: 0 auto;
-    }
+  .list {
+    width: 80%;
+    margin: 0 auto;
+  }
 }

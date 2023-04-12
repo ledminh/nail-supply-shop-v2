@@ -1,62 +1,56 @@
-@import '../base';
+@import "../base";
 
 .wrapper {
-
-    padding: 0 3%;
-    border: 2px solid $secondary-background-color;
-    border-radius: $border-radius;
+  padding: 0 3%;
+  border: 2px solid $secondary-background-color;
+  border-radius: $border-radius;
 }
 
-
 .name {
-    margin-bottom: 10px;
+  margin-bottom: 10px;
 }
 
 .groupName {
-    font-style: italic;
-    font-weight: 500;
+  font-style: italic;
+  font-weight: 500;
 
-    margin-bottom: 30px;
+  margin-bottom: 30px;
 
-    &::before{
-        content: "Group: ";
-        font-weight: 700;
-        font-style: normal;
-    }
+  &::before {
+    content: "Group: ";
+    font-weight: 700;
+    font-style: normal;
+  }
 }
 
 .otherProducts {
-    display: flex;
+  display: flex;
 
-    flex-flow: row wrap;
-    justify-content: flex-start;
-    align-items: center;
+  flex-flow: row wrap;
+  justify-content: flex-start;
+  align-items: center;
 
-    gap: 10px;
+  gap: 10px;
 
+  margin-bottom: 50px;
 
-    margin-bottom: 50px;
-    
-    
-    span {
-        display: inline-block;
-        font-size: .9rem;
-        font-style: italic;
+  span {
+    display: inline-block;
+    font-size: 0.9rem;
+    font-style: italic;
 
-        min-width: 180px;
-        flex-basis: 25%;
+    min-width: 180px;
+    flex-basis: 25%;
+  }
 
-    }
-
-    .select {
-        padding: 5px;
-        flex-basis: 25%;
-    }
+  .select {
+    padding: 5px;
+    flex-basis: 25%;
+  }
 }
 
-
 @media (min-width: $second-breakpoint) {
-    .otherProducts {
-        margin-bottom: 20px;
-    }
+  .otherProducts {
+    margin-bottom: 20px;
+  }
 }

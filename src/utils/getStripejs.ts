@@ -1,5 +1,5 @@
 // ./utils/get-stripejs.ts
-import { Stripe, loadStripe } from '@stripe/stripe-js';
+import { Stripe, loadStripe } from "@stripe/stripe-js";
 
 let stripePromise: Promise<Stripe | null>;
 const getStripe = () => {

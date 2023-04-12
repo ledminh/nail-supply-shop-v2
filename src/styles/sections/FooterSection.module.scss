@@ -1,56 +1,43 @@
-@use '../base' as *;
-
+@use "../base" as *;
 
 .wrapper {
+  font-size: 0.7rem;
+  background-color: #1d1d1d;
 
-    font-size: .7rem;
-    background-color: #1D1D1D;
-
-    margin-bottom: 0px;
-    
+  margin-bottom: 0px;
 }
 
-
 .block {
+  padding: 10px;
 
-    padding: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    
-    align-items: center;
-
-
+  align-items: center;
 }
 
 .logo {
-    width: 150px;
-    height: 150px;
+  width: 150px;
+  height: 150px;
 
-    border-radius: 30%;
+  border-radius: 30%;
 }
 
-
 @media (min-width: $first-breakpoint) {
-    .wrapper {
-        display: grid;
-        grid-template-columns: 1fr 1fr 1fr;
-    
-        gap: 1rem;
-    
-        justify-items: stretch;
-    
-    }
-    
-    
-    
-    
+  .wrapper {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+
+    gap: 1rem;
+
+    justify-items: stretch;
+  }
 }
 
 @media (min-width: $second-breakpoint) {
-    .wrapper {
-        font-size: .9rem;
-        border-radius: $border-radius;
-    }
+  .wrapper {
+    font-size: 0.9rem;
+    border-radius: $border-radius;
+  }
 }

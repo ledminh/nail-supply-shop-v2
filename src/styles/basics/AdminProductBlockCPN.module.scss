@@ -1,112 +1,104 @@
-@import '../base';
+@import "../base";
 
 .wrapper {
-    border: none;
-    width: 100%;
-    height: 100%;
+  border: none;
+  width: 100%;
+  height: 100%;
 
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 
-    padding: 4px;
+  padding: 4px;
 
-    background-color: transparent;
+  background-color: transparent;
 
-    cursor: pointer;
-
-
+  cursor: pointer;
 }
 
 .image {
-    display: none;
+  display: none;
 }
 
 .text {
-    padding: 20px;
-
+  padding: 20px;
 }
 
 h3.name,
 h3.price {
-    display: none;
+  display: none;
 }
 
 h4.name,
 h4.price {
-    display: block;
+  display: block;
 }
 h3.price,
 h4.price {
-    &:before {
-        content: "$";
-    }
+  &:before {
+    content: "$";
+  }
 }
 
 .description {
-    display: none;
+  display: none;
 }
 
 .deleteButton {
-    
-    &:hover {
-        box-shadow: 0 0 5px 0 $danger-color;
-        color: white;
-    }
+  &:hover {
+    box-shadow: 0 0 5px 0 $danger-color;
+    color: white;
+  }
 }
 
 @media (min-width: $first-breakpoint) {
-    .wrapper {
-        height: 100%;
+  .wrapper {
+    height: 100%;
 
-        display: flex;
-        flex-direction: column;
-        
-        gap: 16px;
-    }
+    display: flex;
+    flex-direction: column;
 
-    .text {
-        padding: 10px;
-        display: flex;
+    gap: 16px;
+  }
 
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
+  .text {
+    padding: 10px;
+    display: flex;
 
-        gap: 10px;
-    }   
-    
-    
-    h3.name,
-    h3.price {
-        display: block;
-        
-    }
-    
-    h4.name,
-    h4.price {
-        display: none;
-    }
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 
-    
-    
-    .description {
-        display: block;
+    gap: 10px;
+  }
 
-        font-size: 0.7rem;
-    }
+  h3.name,
+  h3.price {
+    display: block;
+  }
+
+  h4.name,
+  h4.price {
+    display: none;
+  }
+
+  .description {
+    display: block;
+
+    font-size: 0.7rem;
+  }
 }
 
 @media (min-width: $second-breakpoint) {
-    .wrapper{
-        gap: 5px;
-    }
+  .wrapper {
+    gap: 5px;
+  }
 
-    .image {
-        display: block;
-        width: 200px;
-        height: 200px;
+  .image {
+    display: block;
+    width: 200px;
+    height: 200px;
 
-        border-radius: $border-radius;
-    }
+    border-radius: $border-radius;
+  }
 }

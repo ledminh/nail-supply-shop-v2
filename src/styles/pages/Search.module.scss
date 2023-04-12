@@ -1,79 +1,72 @@
-@use '../base' as *;
+@use "../base" as *;
 
 .aside {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 
-    gap: 20px;
+  gap: 20px;
 
-    margin-bottom: 20px;
-    padding-bottom: 20px;
+  margin-bottom: 20px;
+  padding-bottom: 20px;
 
-    border-bottom: 1px solid $separator-color;
-
-
+  border-bottom: 1px solid $separator-color;
 }
 
-
 .categorySelect {
-    display: block;
-    padding: 5px;
-    font-size: 1rem;
+  display: block;
+  padding: 5px;
+  font-size: 1rem;
 
-    width: 90%;
+  width: 90%;
 
-    text-align: center;
+  text-align: center;
 }
 
 .categoryList {
-    display: none;
+  display: none;
 }
 
 .productList {
-    width: 90%;
-    margin: 0 auto;
-    margin-bottom: 20px;
+  width: 90%;
+  margin: 0 auto;
+  margin-bottom: 20px;
 }
 
 .button {
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 @media (min-width: $first-breakpoint) {
-    .loadMoreButton {
-        padding: 15px;
-        font-size: 1rem;
-    }
+  .loadMoreButton {
+    padding: 15px;
+    font-size: 1rem;
+  }
 }
 
 @media (min-width: $second-breakpoint) {
-    .wrapper {
-        position: relative;
-        display: grid;
-        grid-template-columns: 1fr 3fr;
+  .wrapper {
+    position: relative;
+    display: grid;
+    grid-template-columns: 1fr 3fr;
 
-        align-items: flex-start;
-        gap: 30px;
-    }
+    align-items: flex-start;
+    gap: 30px;
+  }
 
-    .aside {
-        position: sticky;
-        top: 10px;
-        background-color: $secondary-background-color;
-        gap: 15px;
+  .aside {
+    position: sticky;
+    top: 10px;
+    background-color: $secondary-background-color;
+    gap: 15px;
 
-        border-radius: $border-radius;
-    }
+    border-radius: $border-radius;
+  }
 
-
-    .productList {
-        width: 100%;
-    }
-
+  .productList {
+    width: 100%;
+  }
 }

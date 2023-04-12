@@ -1,10 +1,10 @@
-import  * as CategoryModel  from './models/category';
-import * as ProductModel  from './models/product';
-import * as AboutUsModel  from './models/aboutUs';
-import * as OrderModel  from './models/order';
+import * as CategoryModel from "./models/category";
+import * as ProductModel from "./models/product";
+import * as AboutUsModel from "./models/aboutUs";
+import * as OrderModel from "./models/order";
 
-import type { DBProduct, DBProductGroup } from '@/types/product';
-import type { Order, FilterOrder, StatusValue } from '@/types/order';
+import type { DBProduct, DBProductGroup } from "@/types/product";
+import type { Order, FilterOrder, StatusValue } from "@/types/order";
 
 /********************************************************
  * CATEGORY
@@ -14,37 +14,31 @@ import type { Order, FilterOrder, StatusValue } from '@/types/order';
  * getCategories
  */
 
-
 export function getCategories() {
-    const categories = CategoryModel.find({});
-    return categories;
+  const categories = CategoryModel.find({});
+  return categories;
 }
 
 export function createCategory(props: CategoryModel.CreateCategoryProps) {
-    const category = CategoryModel.createCategory(props);
-    return category;
+  const category = CategoryModel.createCategory(props);
+  return category;
 }
 
 export function deleteCategory(id: string) {
-    const category = CategoryModel.deleteCategory(id);
-    return category;
+  const category = CategoryModel.deleteCategory(id);
+  return category;
 }
-
-
 
 /***********************************************************
  * PRODUCT
- */ 
+ */
 
 /**************************
  * getProducts
  */
 
-
-export function getProducts(options:ProductModel.FindProductOptions) {
-
-    return ProductModel.find(options);
-    
+export function getProducts(options: ProductModel.FindProductOptions) {
+  return ProductModel.find(options);
 }
 
 /**************************
@@ -52,51 +46,47 @@ export function getProducts(options:ProductModel.FindProductOptions) {
  */
 
 type getProductProps = {
-    id?: string;
-    name?: string;
-}
+  id?: string;
+  name?: string;
+};
 
-export const getProduct = ({id, name}:getProductProps) => ProductModel.find({id, name});
-
-
+export const getProduct = ({ id, name }: getProductProps) =>
+  ProductModel.find({ id, name });
 
 /**************************
  * deleteProduct
  */
 
 type deleteProductProps = {
-    id: string;
+  id: string;
+};
+
+export function deleteProduct({ id }: deleteProductProps) {
+  return ProductModel.deleteProduct({ id });
 }
-
-export function deleteProduct({id}:deleteProductProps) {
-    return ProductModel.deleteProduct({id});
-}
-
-
 
 /*****************************
  * addProduct
  */
 
 type addProductProps = {
-    product: DBProduct;
-}
+  product: DBProduct;
+};
 
-export function addProduct({product}:addProductProps) {
-    return ProductModel.addProduct({product});
+export function addProduct({ product }: addProductProps) {
+  return ProductModel.addProduct({ product });
 }
-
 
 /*****************************
  * addGroup
  */
 
 type addGroupProps = {
-    group: DBProductGroup;
-}
+  group: DBProductGroup;
+};
 
-export function addGroup({group}:addGroupProps) {
-    return ProductModel.addGroup({group});
+export function addGroup({ group }: addGroupProps) {
+  return ProductModel.addGroup({ group });
 }
 
 /*****************************
@@ -104,11 +94,11 @@ export function addGroup({group}:addGroupProps) {
  *****************************/
 
 type updateProductProps = {
-    product: DBProduct;
-}
+  product: DBProduct;
+};
 
-export function updateProduct({product}:updateProductProps) {
-    return ProductModel.updateProduct({product});
+export function updateProduct({ product }: updateProductProps) {
+  return ProductModel.updateProduct({ product });
 }
 
 /*****************************
@@ -116,11 +106,11 @@ export function updateProduct({product}:updateProductProps) {
  ******************************/
 
 type updateGroupProps = {
-    group: DBProductGroup;
-}
+  group: DBProductGroup;
+};
 
-export function updateGroup({group}:updateGroupProps) {
-    return ProductModel.updateGroup({group});
+export function updateGroup({ group }: updateGroupProps) {
+  return ProductModel.updateGroup({ group });
 }
 
 /*****************************
@@ -128,96 +118,98 @@ export function updateGroup({group}:updateGroupProps) {
  ******************************/
 
 type updateGroupProductProps = {
-    groupID: string;
-    product: DBProduct;
-}
+  groupID: string;
+  product: DBProduct;
+};
 
-export function updateGroupProduct({groupID, product}:updateGroupProductProps) {
-    return ProductModel.updateGroupProduct({groupID, product});
+export function updateGroupProduct({
+  groupID,
+  product,
+}: updateGroupProductProps) {
+  return ProductModel.updateGroupProduct({ groupID, product });
 }
-
 
 /***********************************************************
  * ABOUT US
- */ 
+ */
 
 export function getAboutUsData() {
-    return AboutUsModel.getAboutUsData();
+  return AboutUsModel.getAboutUsData();
 }
 
 export function setAboutUsFooter(footer: string) {
-    return AboutUsModel.setAboutUsFooter(footer);
+  return AboutUsModel.setAboutUsFooter(footer);
 }
 
 export function setAboutUsMissionStatement(missionStatement: string) {
-    return AboutUsModel.setAboutUsMissionStatement(missionStatement);
+  return AboutUsModel.setAboutUsMissionStatement(missionStatement);
 }
 
 export function setAboutUsHistoryHTML(history: string) {
-    return AboutUsModel.setAboutUsHistoryHTML(history);
+  return AboutUsModel.setAboutUsHistoryHTML(history);
 }
 
-export function setAboutUsContactInfo(email: string, phone: string, additionalInfos?: string[]) {
-    return AboutUsModel.setAboutUsContactInfo(email, phone, additionalInfos);
+export function setAboutUsContactInfo(
+  email: string,
+  phone: string,
+  additionalInfos?: string[]
+) {
+  return AboutUsModel.setAboutUsContactInfo(email, phone, additionalInfos);
 }
-
 
 /***********************************************************
  * ORDERS
- */ 
+ */
 export const getOrders = async () => {
-    const orders = OrderModel.find({});    
+  const orders = OrderModel.find({});
 
-    return orders;
-}
+  return orders;
+};
 
 export const getOrder = async (id: string) => {
-    const order = OrderModel.find({id});
+  const order = OrderModel.find({ id });
 
-    return order;
-}
+  return order;
+};
 
-export const saveOrder = async (order:Order) => {
-    const savedOrder = OrderModel.add(order);
+export const saveOrder = async (order: Order) => {
+  const savedOrder = OrderModel.add(order);
 
-    return savedOrder;
-}
+  return savedOrder;
+};
 
 export const deleteOrder = async (id: string) => {
-    const order = OrderModel.deleteOrder(id);
+  const order = OrderModel.deleteOrder(id);
 
-    return order;
-}
+  return order;
+};
 
-export const filterOrders = async (filter:FilterOrder) => {
-    const orders = OrderModel.filter(filter);
+export const filterOrders = async (filter: FilterOrder) => {
+  const orders = OrderModel.filter(filter);
 
-    return orders;
-}
+  return orders;
+};
 
 export const updateOrderStatus = async (id: string, status: StatusValue) => {
-    const order = OrderModel.updateStatus(id, status);
+  const order = OrderModel.updateStatus(id, status);
 
-    return order;
-}
+  return order;
+};
 
+export const saveTempOrder = async (order: Order) => {
+  const savedOrder = OrderModel.saveTemp(order);
 
+  return savedOrder;
+};
 
-export const saveTempOrder = async (order:Order) => {
-    const savedOrder = OrderModel.saveTemp(order);
+export const getTempOrder = async (id: string) => {
+  const order = OrderModel.findTemp(id);
 
-    return savedOrder;
-}
+  return order;
+};
 
-export const getTempOrder = async (id:string) => {
-    const order = OrderModel.findTemp(id);
+export const deleteTempOrder = async (id: string) => {
+  const order = OrderModel.deleteTemp(id);
 
-    return order;
-}
-
-export const deleteTempOrder = async (id:string) => {
-    const order = OrderModel.deleteTemp(id);
-
-    return order;
-}
-
+  return order;
+};

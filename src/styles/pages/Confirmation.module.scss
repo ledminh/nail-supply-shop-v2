@@ -1,76 +1,67 @@
-@use '../base' as *;
+@use "../base" as *;
 
 .wrapper {
-    width: 95%;
-    margin: 0 auto;
+  width: 95%;
+  margin: 0 auto;
 }
 
 .header {
-    display: flex;
-    flex-flow: column;
-    align-items: center;
-    gap: 10px;
+  display: flex;
+  flex-flow: column;
+  align-items: center;
+  gap: 10px;
 
-    padding-bottom: 10px;
-    
-    text-align: center;
+  padding-bottom: 10px;
+
+  text-align: center;
 }
 
 .orderNumber {
-    .value {
-        color: $button-color;
-    }
+  .value {
+    color: $button-color;
+  }
 }
 
-
 .text {
-    display: flex;
-    flex-direction: column;
+  display: flex;
+  flex-direction: column;
 
-    gap: 10px;
+  gap: 10px;
 
-    font-style: italic;
+  font-style: italic;
 }
 
 .email {
-    text-transform: none;
+  text-transform: none;
 }
 
 .linkToOrderPage {
-    color: $button-color;
-    text-decoration: underline;
-    font-weight: 700;
+  color: $button-color;
+  text-decoration: underline;
+  font-weight: 700;
 }
 
 @media (min-width: $first-breakpoint) {
-    .wrapper {
-        display: flex;
+  .wrapper {
+    display: flex;
 
-        flex-direction: row;
-        flex-wrap: wrap;
-        justify-content: space-between;
-        
-        
-        
-        section {
-            flex-basis: 48%;
-            
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-between;
 
-        
-        }
-        
-        section.header,
-        section.text {
-            flex-basis: 100%;
-        }
-
+    section {
+      flex-basis: 48%;
     }
 
-    
+    section.header,
+    section.text {
+      flex-basis: 100%;
+    }
+  }
 }
 
 @media (min-width: $second-breakpoint) {
-    .header {
-        align-items: flex-start;
-    }
+  .header {
+    align-items: flex-start;
+  }
 }

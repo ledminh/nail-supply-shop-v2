@@ -1,12 +1,12 @@
-import {  Meta, StoryObj } from "@storybook/react";
+import { Meta, StoryObj } from "@storybook/react";
 
-import WarningModal from '.';
-import type { Props } from '.';
+import WarningModal from ".";
+import type { Props } from ".";
 
 const defaultArgs = {
   message: "Are you sure you want to delete this category?",
   onOK: () => {},
-  onCancel: () => {}
+  onCancel: () => {},
 } as Props;
 
 export default {
@@ -15,15 +15,8 @@ export default {
   args: defaultArgs,
 } as Meta;
 
-
-
-
 type Story = StoryObj<typeof WarningModal>;
 
-
 export const Default: Story = {
-  args: {
-
-  }
+  args: {},
 };
-

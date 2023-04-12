@@ -1,25 +1,19 @@
-import {  Meta, StoryObj } from "@storybook/react";
+import { Meta, StoryObj } from "@storybook/react";
 
-import StatusSelectCPN from '.';
+import StatusSelectCPN from ".";
 
-import type { Props } from '.';
+import type { Props } from ".";
 
-const defaultArgs:Props = {
-  onSave: (status) => console.log(status)
+const defaultArgs: Props = {
+  onSave: (status) => console.log(status),
 };
-
 
 export default {
   title: "Basics/StatusSelectCPN",
   component: StatusSelectCPN,
-  args: defaultArgs
+  args: defaultArgs,
 } as Meta;
-
-
-
 
 type Story = StoryObj<typeof StatusSelectCPN>;
 
-
 export const Default: Story = {};
-

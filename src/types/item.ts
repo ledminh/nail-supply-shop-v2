@@ -1,11 +1,11 @@
 export interface Item {
-    id: string;
+  id: string;
 }
 
 export interface LinkItem extends Item {
-    path: string;
+  path: string;
 }
 
-export interface NavigationItem extends LinkItem  {
-    label: string;
-};
+export interface NavigationItem extends LinkItem {
+  label: string;
+}

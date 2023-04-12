@@ -1,60 +1,52 @@
-@use '../base' as *;
+@use "../base" as *;
 
 .carousell {
-    display: grid;
+  display: grid;
 
-    grid-template-rows: 300px 80px;
-    
+  grid-template-rows: 300px 80px;
 }
 
 .mainItem {
-    height: 300px;
+  height: 300px;
 
-    .image {
-        height: 100%;
-        width: 100%;
-    }
+  .image {
+    height: 100%;
+    width: 100%;
+  }
 }
 
 .ul {
+  padding: 5px;
 
-    padding: 5px;
+  .image {
+    height: 100%;
 
-    .image {
-        height: 100%;
-
-        &:hover {
-            box-shadow: 0 0 10px 0 rgb(59, 44, 44);
-
-        }
+    &:hover {
+      box-shadow: 0 0 10px 0 rgb(59, 44, 44);
     }
+  }
 }
 
 .image {
-    
-
-    border-radius: $border-radius;
-
-
+  border-radius: $border-radius;
 }
 
-
 @media (min-width: $first-breakpoint) {
-    .carousell {
-        grid-template-rows: 370px 80px;
-    }
+  .carousell {
+    grid-template-rows: 370px 80px;
+  }
 
-    .mainItem {
-        height: 370px;
-    }
+  .mainItem {
+    height: 370px;
+  }
 }
 
 @media (min-width: $second-breakpoint) {
-    .carousell {
-        grid-template-rows: 420px 80px;
-    }
+  .carousell {
+    grid-template-rows: 420px 80px;
+  }
 
-    .mainItem {
-        height: 420px;
-    }
+  .mainItem {
+    height: 420px;
+  }
 }

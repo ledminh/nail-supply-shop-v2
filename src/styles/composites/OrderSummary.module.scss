@@ -1,32 +1,27 @@
-@use '../base' as *;
+@use "../base" as *;
 
 .wrapper {
-    display: grid;
-    grid-template-rows: 50px auto;
-    gap: 5px;
-    
-    
-    height: 100%;
+  display: grid;
+  grid-template-rows: 50px auto;
+  gap: 5px;
 
-    background-color: $secondary-background-color;
-    padding: 10px;
-    border-radius: $border-radius;
+  height: 100%;
 
+  background-color: $secondary-background-color;
+  padding: 10px;
+  border-radius: $border-radius;
 }
 
 .title {
-    border-bottom: 1px solid $separator-color;
-    padding-bottom: 5px;
+  border-bottom: 1px solid $separator-color;
+  padding-bottom: 5px;
 }
-
-
 
 .cell {
-    &:first-child {
-        font-weight: bold;
-        font-size: .8rem;
+  &:first-child {
+    font-weight: bold;
+    font-size: 0.8rem;
 
-        text-align: left;
-    }
+    text-align: left;
+  }
 }
-

@@ -1,62 +1,63 @@
-import {  Meta, StoryObj } from "@storybook/react";
+import { Meta, StoryObj } from "@storybook/react";
 
-import ProductList from '.';
-import type { Props } from '.';
-
+import ProductList from ".";
+import type { Props } from ".";
 
 const productSample = {
   id: "1",
   name: "Product Name",
   price: 100,
-  intro: "This is some intro text. I'm trying to make it longer to see if it fit on the frame",
-  details: "This is some details text. I'm trying to make it longer to see if it fit on the frame. Something more to say here to make it longer, and even longer, longer, longer",
+  intro:
+    "This is some intro text. I'm trying to make it longer to see if it fit on the frame",
+  details:
+    "This is some details text. I'm trying to make it longer to see if it fit on the frame. Something more to say here to make it longer, and even longer, longer, longer",
   categoryID: "1",
   images: [
     {
       id: "img-1",
       src: "https://picsum.photos/seed/picsum/200/200",
-      alt: "Product Image 1"
+      alt: "Product Image 1",
     },
     {
       id: "img-2",
       src: "https://picsum.photos/seed/picsum/200/200",
-      alt: "Product Image 2"
+      alt: "Product Image 2",
     },
     {
       id: "img-3",
       src: "https://picsum.photos/seed/picsum/200/200",
-      alt: "Product Image 3"
-    }
-  ]
-}
+      alt: "Product Image 3",
+    },
+  ],
+};
 
 const productSamples = [
   {
     ...productSample,
-    id: "1"
+    id: "1",
   },
   {
     ...productSample,
-    id: "2"
+    id: "2",
   },
   {
     ...productSample,
-    id: "3"
+    id: "3",
   },
   {
     ...productSample,
-    id: "4"
+    id: "4",
   },
   {
     ...productSample,
-    id: "5"
-  }
-]
+    id: "5",
+  },
+];
 
 const productWithGroupSamples = [
   {
     ...productSample,
-    id: "1"
+    id: "1",
   },
   {
     name: "Product Group Name",
@@ -81,50 +82,43 @@ const productWithGroupSamples = [
         price: 300,
       },
     ],
-    id: "2"
+    id: "2",
   },
   {
     ...productSample,
-    id: "3"
+    id: "3",
   },
   {
     ...productSample,
-    id: "4"
+    id: "4",
   },
   {
     ...productSample,
-    id: "5"
-  }
-]
+    id: "5",
+  },
+];
 
-
-const defaultArgs:Props = {
+const defaultArgs: Props = {
   products: productSamples,
-  type: 'list'
+  type: "list",
 };
-
-
 
 export default {
   title: "Composites/ProductList",
   component: ProductList,
-  args: defaultArgs 
+  args: defaultArgs,
 } as Meta;
-
-
-
 
 type Story = StoryObj<typeof ProductList>;
 
-
-export const List: Story = {
-};
+export const List: Story = {};
 
 export const Grid: Story = {
   args: {
-    type: 'grid',
+    type: "grid",
     products: productWithGroupSamples,
-    addToCart: (product) => {console.log(product)}
-  }
+    addToCart: (product) => {
+      console.log(product);
+    },
+  },
 };
-

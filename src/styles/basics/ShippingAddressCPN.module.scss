@@ -1,32 +1,32 @@
-@use '../base' as *;
+@use "../base" as *;
 
 .wrapper {
-    display: flex;
-    flex-flow: column;
+  display: flex;
+  flex-flow: column;
 
-    gap: 5px;
+  gap: 5px;
 
-    margin-top: 15px;
+  margin-top: 15px;
 
-    background-color: $secondary-background-color;
-    padding: 10px;
+  background-color: $secondary-background-color;
+  padding: 10px;
 
-    border-radius: $border-radius;
+  border-radius: $border-radius;
 }
 
 .item {
-    display: flex;
-    flex-flow: row;
-    justify-content: flex-start;
+  display: flex;
+  flex-flow: row;
+  justify-content: flex-start;
 
-    gap: 10px;
+  gap: 10px;
 
-    .label {
-        font-weight: bold;
-        text-transform: uppercase;
-    }
+  .label {
+    font-weight: bold;
+    text-transform: uppercase;
+  }
 
-    .value {
-        font-style: italic;
-    }
+  .value {
+    font-style: italic;
+  }
 }
