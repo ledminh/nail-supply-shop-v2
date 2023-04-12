@@ -1,5 +1,4 @@
 import { GetServerSideProps } from "next";
-import { Dispatch, SetStateAction } from "react";
 
 import { useState, useEffect } from "react";
 import PageLayout from "@/components/layouts/PageLayout";
@@ -56,6 +55,8 @@ export default function CategoryPage({
     useState<(Product | ProductGroup)[]>(products);
   const [condition, setCondition] = useState<ListCondition>(initCondition);
 
+
+
   useEffect(() => {
     const loadOptions: FindProductOptions = {
       catSlug: curCategory.slug,
@@ -66,6 +67,7 @@ export default function CategoryPage({
     };
 
     axios.post("/api/products", loadOptions).then(({ data }) => {
+      
       setProducts(data.products);
     });
   }, [curCategory, condition]);

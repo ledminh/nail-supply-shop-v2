@@ -20,6 +20,9 @@ export interface Props {}
 
 export default function CategoryManagementSection({}: Props) {
   const [categories, setCategories] = useState<Category[]>([]);
+  
+  const [items, setItems] = useState<ItemCPNProps[]>([]);
+
 
   const [isCategoryModalOpen, setIsCategoryModalOpen] = useState(false);
   const [isWarningModalOpen, setIsWarningModalOpen] = useState(false);
@@ -40,6 +43,10 @@ export default function CategoryManagementSection({}: Props) {
         .name || ""
     );
   };
+
+  useEffect(() => {
+    setItems(toItems(categories, onDelete, onEdit, onCreate));
+  }, [categories]);
 
   useEffect(() => {
     axios
@@ -117,7 +124,11 @@ export default function CategoryManagementSection({}: Props) {
       })
       .then((res) => res.data)
       .then((data) => {
-        setCategories([data, ...categories]);
+        if(!data.success) {
+          throw new Error("Failed to create new category");
+        }
+
+        setCategories([data.category, ...categories]);
       })
       .catch((err) => {
         console.error(err);
@@ -180,14 +191,7 @@ export default function CategoryManagementSection({}: Props) {
     <>
       <section className={styles.wrapper}>
         <List
-          items={[
-            { id: "add-button", onCreate },
-            ...categories.map((cat) => ({
-              ...cat,
-              onDelete,
-              onClick: onEdit,
-            })),
-          ]}
+          items={items}
           ItemCPN={ItemCPN}
           liClass={styles.li}
           ulClass={styles.ul}
@@ -280,17 +284,36 @@ const ItemCPN = ({
           className={styles.categoryBlock}
         />
       )}
-      {onCreate && (
-        <button
-          className={styles.addButton}
-          onClick={(e) => {
-            e.preventDefault();
-            onCreate();
-          }}
-        >
-          ADD
-        </button>
-      )}
+      {
+        onCreate && (
+            <button className={styles.addButton}
+                onClick = {(e) => {
+                    e.preventDefault();
+                    onCreate();
+                }}
+                >
+                ADD
+            </button>
+        )
+      }
     </>
   );
 };
+
+
+/*************************
+ * Helpers
+ */
+// Category[] -> ItemCPNProps[]
+
+function toItems(categories: Category[], onDelete: (catID:string)=> void, onClick : (catID:string)=> void, onCreate: ()=> void) {
+  
+  return [
+    { id: "add-button", onCreate },
+    ...categories.map((cat) => ({
+      ...cat,
+      onDelete,
+      onClick,
+    })),
+  ];
+}

@@ -1,7 +1,9 @@
-import { FC } from "react";
+import { FC, useEffect } from "react";
 import { Item } from "@/types/item";
 
 import styles from "./List.module.scss";
+
+
 
 /******************************
  *  Types and Interfaces
@@ -28,6 +30,8 @@ export default function List<T>({
   horizontal,
 }: Props<T>) {
   if (horizontal) ulClass = `${ulClass} ${styles.horizontal}`.trim();
+
+
 
   return (
     <ul className={ulClass}>
