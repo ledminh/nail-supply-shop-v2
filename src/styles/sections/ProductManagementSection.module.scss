@@ -27,13 +27,13 @@ section.wrapper {
 }
 
 
-.sortAndOrder {
+div.sortAndOrder {
   padding: 10px;
   flex-basis: 100%;
 
 }
 
-.sortAndOrder__field {
+div.sortAndOrder__field {
   border: none;
   flex-basis: 48%;
 
@@ -102,11 +102,11 @@ section.wrapper {
 }
 
 @media (min-width: $first-breakpoint) {
- 
-  
-  .sortAndOrder__field {
+  div.sortAndOrder__field {
     border: none;
   } 
+
+
   .ul {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -129,7 +129,7 @@ section.wrapper {
   }
  
   
-  .sortAndOrder {
+  div.sortAndOrder {
     padding: 10px;
     flex-basis: 48%;
   

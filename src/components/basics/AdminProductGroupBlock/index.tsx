@@ -63,10 +63,6 @@ const AdminProductGroupBlockCPN: AdminProductGroupBlock = ({
         <h4 className={styles.name}>{name}</h4>
         <div
           className={styles.productSelector}
-          // onClick={(e) => {
-          //   e.preventDefault();
-          //   e.stopPropagation();
-          // }}
         >
           <Select
             optionItems={productOptions}
