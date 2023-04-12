@@ -28,6 +28,8 @@ import { OptionItem, convertToOptionItem } from "@/components/generics/Select";
 import { ProductApiResponse } from "@/pages/api/products";
 import { FindProductOptions } from "@/database/models/product";
 import { productManagementConfig } from "@/config";
+import SortAndOrder from "@/components/composites/SortAndOrder";
+import { ListCondition, SortType, SortedOrderType } from "@/types/list-conditions";
 
 export interface Props {}
 
@@ -104,6 +106,11 @@ export default function ProductManagementSection({}: Props) {
     
   };
 
+  const {sortItems, sortedOrderItems} = productManagementConfig;
+
+  const sortAndOrderChange = (sortingCondition:ListCondition) => {
+    loadProducts(currentCategory!.id, setProducts, 0, sortingCondition.sort?.value, sortingCondition.sortedOrder?.value);
+  };
 
   return (
     <>
@@ -111,7 +118,7 @@ export default function ProductManagementSection({}: Props) {
         <div className={styles.controls}>
           {categories.length !== 0 && currentCategory && (
             <Select
-              selectClass={styles.select}
+              selectClass={styles.controls_select}
               optionClass={styles.option}
               optionItems={categories.map(convertCategoryToOptionItem)}
               initOptionItem={convertCategoryToOptionItem(currentCategory)}
@@ -123,7 +130,18 @@ export default function ProductManagementSection({}: Props) {
               }}
             />
           )}
-
+          <SortAndOrder
+            sortItems={sortItems}
+            sortedOrderItems={sortedOrderItems}
+            onChange={sortAndOrderChange}
+            className={styles.sortAndOrder}
+            fieldClassName={styles.sortAndOrder__field}
+            initCondition={{
+              sort: sortItems[0],
+              sortedOrder: sortedOrderItems[0]
+            }}
+          />
+            
           <div className={styles.buttons}>
             <ButtonCPN
               type="normal"
@@ -189,15 +207,17 @@ const convertCategoryToOptionItem = (
 async function loadProducts(
   catID: string,
   setProducts: Dispatch<SetStateAction<(Product | ProductGroup)[]>>,
-  offset: number = 0
+  offset: number = 0,
+  sort: SortType = "name",
+  sortedOrder: SortedOrderType = "asc"
 ) {
   const {productsPerPage} = productManagementConfig;
 
   const loadOptions:FindProductOptions = {
     type: 'all',
     catID,
-    sort: "name",
-    sortedOrder: "asc",
+    sort,
+    sortedOrder,
     limit: productsPerPage,
     offset
   };

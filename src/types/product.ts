@@ -17,6 +17,7 @@ export interface Product {
 export interface DBProduct extends Product {
   dateCreated: string;
   sellCount: number;
+  lastUpdated?: string;
 }
 
 export interface ProductGroup {
@@ -29,6 +30,7 @@ export interface ProductGroup {
 export interface DBProductGroup extends ProductGroup {
   products: DBProduct[];
   dateCreated: string;
+  lastUpdated?: string;
 }
 
 export interface OrderedProduct {

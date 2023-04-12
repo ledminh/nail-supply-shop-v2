@@ -14,12 +14,16 @@ export interface Props {
   sortedOrderItems: SortedOrderItem[];
   initCondition: ListCondition;
   onChange: (condition: ListCondition) => void;
+  className?: string;
+  fieldClassName?: string;
 }
 
 export default function SortAndOrder({
   sortItems,
   sortedOrderItems,
   initCondition,
+  className,
+  fieldClassName,
   onChange,
 }: Props) {
   const [condition, setCondition] = useState<ListCondition>(initCondition);
@@ -28,9 +32,14 @@ export default function SortAndOrder({
     if (condition !== initCondition) onChange(condition);
   }, [condition]);
 
+  const classNames = [styles.wrapper, className].join(" ") ;
+  const fieldClassNames = [styles.field, fieldClassName].join(" ") ;
+
+
+
   return (
-    <div className={styles.wrapper}>
-      <div className={styles.field}>
+    <div className={classNames}>
+      <div className={fieldClassNames}>
         <label htmlFor="sort">SORT BY</label>
         <SelectCPN
           optionItems={sortItems}
@@ -44,7 +53,7 @@ export default function SortAndOrder({
           }}
         />
       </div>
-      <div className={styles.field}>
+      <div className={fieldClassNames}>
         <label htmlFor="order">ORDER</label>
         <SelectCPN
           optionItems={sortedOrderItems}

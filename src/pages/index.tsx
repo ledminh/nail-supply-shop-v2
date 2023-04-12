@@ -65,7 +65,7 @@ export const getServerSideProps = async () => {
     const [aboutUsRes, categoriesRes, resNewArrivals, resCustomerFavorites] =
       await Promise.all([
         getAboutUsData(),
-        getCategories({}),
+        getCategories(),
         getProducts(newArrivalOptions),
         getProducts(customerFavoritesOptions),
       ]);

@@ -1,5 +1,5 @@
-export type SortType = "name" | "price" | "dateCreated" | "sellCount";
-type SortLabel = "Name" | "Price";
+export type SortType = "name" | "price" | "dateCreated" | "sellCount" | 'lastUpdated';
+type SortLabel = "Name" | "Price" | "Date Created" | "Sell Count" | 'Last Updated';
 
 export type SortedOrderType = "asc" | "desc";
 type SortedOrderLabel = "Ascending" | "Descending";

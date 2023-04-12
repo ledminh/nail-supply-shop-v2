@@ -7,6 +7,7 @@ section.wrapper {
 .controls {
   display: flex;
   flex-direction: row;
+  flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
 
@@ -15,22 +16,52 @@ section.wrapper {
   gap: 10px;
 
   margin-bottom: 20px;
+
+
+
 }
 
-.select {
+.controls_select {
   padding: 10px;
-  flex-basis: 40%;
+  flex-basis: 100%;
 }
+
+
+.sortAndOrder {
+  padding: 10px;
+  flex-basis: 100%;
+
+}
+
+.sortAndOrder__field {
+  border: none;
+  flex-basis: 48%;
+
+  grid-template-columns: 1fr 2fr;
+
+  align-items: center;
+
+  select {
+    padding: 10px;
+
+  }
+}
+
+
 
 .buttons {
   display: flex;
   flex-direction: row;
   align-items: center;
-  justify-content: flex-end;
+  justify-content: space-between;
 
-  flex-basis: 60%;
+  flex-basis: 100%;
 
   gap: 10px;
+
+  button {
+    flex-basis: 48%;
+  }
 }
 
 .ul {
@@ -71,6 +102,8 @@ section.wrapper {
 }
 
 @media (min-width: $first-breakpoint) {
+   
+  
   .ul {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -85,4 +118,28 @@ section.wrapper {
     font-size: 2.5rem;
     font-weight: 700;
   }
+}
+
+@media (min-width: $second-breakpoint) {
+  .controls_select {
+    flex-basis: 24%;
+  }
+  
+  
+  .sortAndOrder {
+    padding: 10px;
+    flex-basis: 48%;
+  
+  }
+
+  .buttons {
+    flex-basis: 24%;
+  }
+
+  .ul {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  
 }

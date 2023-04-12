@@ -212,7 +212,22 @@ function sortProducts(products: (DBProduct | DBProductGroup)[], sort: SortType) 
                 return 1;
             }
             return 0;
-        } else {
+        } else if (sort === 'lastUpdated') {
+            // if lasUpdated is undefined, then it has never been updated
+            const aLastUpdated = a.lastUpdated ? new Date(a.lastUpdated) : new Date(a.dateCreated);
+            const bLastUpdated = b.lastUpdated ? new Date(b.lastUpdated) : new Date(b.dateCreated);
+
+            if (aLastUpdated < bLastUpdated) {
+                return -1;
+            }
+            if (aLastUpdated > bLastUpdated) {
+                return 1;
+            }
+            return 0;
+            
+        }
+        
+        else {
             return 0;
         }
     });

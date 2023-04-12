@@ -190,7 +190,19 @@ export const categoryManagementConfig = {
 /*****************************
  * /admin/product
  */
-export const productManagementConfig = {
+
+type ProductManagementConfig = {
+  warningMessages: {
+    deleteProduct: (productName: string) => string;
+    deleteGroup: (groupName: string) => string;
+  };
+  productsPerPage: number;
+  sortItems: SortItem[];
+  sortedOrderItems: SortedOrderItem[];
+};
+
+
+export const productManagementConfig:ProductManagementConfig = {
   warningMessages: {
     deleteProduct: (productName: string): string =>
       `Are you sure you want to delete ${productName} product?`,
@@ -198,6 +210,36 @@ export const productManagementConfig = {
       `Are you sure you want to delete ${groupName} product group? All of its associated products will also be deleted.`,
   },
   productsPerPage: 4,
+
+  sortItems: [
+    {
+      label: "Name",
+      value: "name",
+    },
+    {
+      label: "Price",
+      value: "price",
+    },
+    {
+      label: "Last Updated",
+      value: "lastUpdated",
+    },
+    {
+      label: "Date Created",
+      value: "dateCreated",
+    }
+  ],
+
+  sortedOrderItems: [
+    {
+      label: "Ascending",
+      value: "asc",
+    },
+    {
+      label: "Descending",
+      value: "desc",
+    },
+  ],
 };
 
 
