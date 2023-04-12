@@ -34,11 +34,17 @@ import { ListCondition, SortType, SortedOrderType } from "@/types/list-condition
 export interface Props {}
 
 export default function ProductManagementSection({}: Props) {
+  const {sortItems, sortedOrderItems} = productManagementConfig;
+
   const [reloadProducts, setReloadProducts] = useState<boolean>(false);
 
   const [products, setProducts] = useState<(Product | ProductGroup)[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
   const [currentCategory, setCurrentCategory] = useState<Category | null>(null);
+  const [sortingCondition, setSortingCondition] = useState<ListCondition>({
+    sort: sortItems[0],
+    sortedOrder: sortedOrderItems[0]
+  });
 
   const { showWarning, WarningModalComponent } = useWarningModal();
   const { openEditProduct, openCreateProduct, ProductModalComponent } =
@@ -83,7 +89,7 @@ export default function ProductManagementSection({}: Props) {
 
   useEffect(() => {
     if (currentCategory) {
-      loadProducts(currentCategory.id, setProducts);
+      loadProducts(currentCategory.id, setProducts, 0, sortingCondition.sort!.value, sortingCondition.sortedOrder!.value);
     }
   }, [currentCategory]);
 
@@ -92,24 +98,30 @@ export default function ProductManagementSection({}: Props) {
       setReloadProducts(false);
 
       if (currentCategory) {
-        loadProducts(currentCategory.id, setProducts);
+        loadProducts(currentCategory.id, setProducts, 0, sortingCondition.sort!.value, sortingCondition.sortedOrder!.value);
       }
     }
   }, [reloadProducts]);
+
+  useEffect(() => {
+    if (currentCategory) {
+      loadProducts(currentCategory.id, setProducts, 0, sortingCondition.sort!.value, sortingCondition.sortedOrder!.value);
+    }
+
+  }, [sortingCondition]);
 
 
   const loadMore = () => {
     if(products.length === currentCategory?.numProducts)
       return;
 
-    loadProducts(currentCategory!.id, setProducts, products.length);
+    loadProducts(currentCategory!.id, setProducts, products.length, sortingCondition.sort!.value, sortingCondition.sortedOrder!.value);
     
   };
 
-  const {sortItems, sortedOrderItems} = productManagementConfig;
 
   const sortAndOrderChange = (sortingCondition:ListCondition) => {
-    loadProducts(currentCategory!.id, setProducts, 0, sortingCondition.sort?.value, sortingCondition.sortedOrder?.value);
+    setSortingCondition(sortingCondition);
   };
 
   return (
