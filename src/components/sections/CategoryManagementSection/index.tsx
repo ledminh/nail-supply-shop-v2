@@ -161,23 +161,33 @@ export default function CategoryManagementSection({}: Props) {
         .then((res) => res.data)
         .then((imageData) => {
           formData.append("imageFileName", imageData.filename);
-          return axios.post("/api/categories?type=update", formData);
+          return axios.post("/api/admin/categories?type=update", formData);
         })
-        .then((res) => res.data)
-        .then((categories) => {
-          setCategories(categories);
+        .then(({data}) => {
+          if(!data.success) {
+            throw new Error("Failed to update category");
+          }
+
+          setCategories([
+            data.category,
+            ...categories.filter((cat) => cat.id !== catID),
+          ]);
         })
+        
         .catch((err) => {
           console.error(err);
         });
     } else {
       // User did not change the image
       axios
-        .post("/api/categories?type=update", formData)
-        .then((res) => res.data)
-        .then((newCateogry) => {
+        .post("/api/admin/categories?type=update", formData)
+        .then(({data}) => {
+          if(!data.success) {
+            throw new Error("Failed to update category");
+          }
+
           setCategories([
-            newCateogry,
+            data.category,
             ...categories.filter((cat) => cat.id !== catID),
           ]);
         })

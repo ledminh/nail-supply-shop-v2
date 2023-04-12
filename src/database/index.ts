@@ -24,6 +24,12 @@ export function createCategory(props: CategoryModel.CreateCategoryProps) {
   return category;
 }
 
+export function updateCategory(props: CategoryModel.UpdateCategoryProps) {
+  const category = CategoryModel.updateCategory(props);
+  return category;
+}
+
+
 export function deleteCategory(id: string) {
   const category = CategoryModel.deleteCategory(id);
   return category;

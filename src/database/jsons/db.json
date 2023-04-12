@@ -91,90 +91,13 @@
       "numProducts": 20
     },
     {
-      "id": "cat-1274630369",
-      "name": "New Cat",
-      "slug": "new-cat",
-      "description": "This is a new cat",
+      "id": "cat-3444793570",
+      "name": "Oh my god",
+      "slug": "oh-my-god",
+      "description": "2222",
       "image": {
-        "src": "/images/category/cat-image-1681049514408-508378228.jpeg",
-        "alt": "New Cat"
-      },
-      "numProducts": 0
-    },
-    {
-      "id": "cat-8979202843",
-      "name": "This is a another category",
-      "slug": "this-is-a-another-category",
-      "description": "Don't sweat it",
-      "image": {
-        "src": "/images/category/cat-image-1681297947533-358096638.jpeg",
-        "alt": "This is a another category"
-      },
-      "numProducts": 0
-    },
-    {
-      "id": "cat-5968549549",
-      "name": "Another one",
-      "slug": "another-one",
-      "description": "1111",
-      "image": {
-        "src": "/images/category/cat-image-1681299272075-587279403.jpeg",
-        "alt": "Another one"
-      },
-      "numProducts": 0
-    },
-    {
-      "id": "cat-2482091703",
-      "name": "Test",
-      "slug": "test",
-      "description": "1111",
-      "image": {
-        "src": "/images/category/cat-image-1681300701627-355617140.jpeg",
-        "alt": "Test"
-      },
-      "numProducts": 0
-    },
-    {
-      "id": "cat-6839038639",
-      "name": "Another tttt",
-      "slug": "another-tttt",
-      "description": "qqqqqqqqq",
-      "image": {
-        "src": "/images/category/cat-image-1681300813402-313120849.jpeg",
-        "alt": "Another tttt"
-      },
-      "numProducts": 0
-    },
-    {
-      "id": "cat-5963688604",
-      "name": "Test another thing",
-      "slug": "test-another-thing",
-      "description": "11111221212",
-      "image": {
-        "src": "/images/category/cat-image-1681300969153-656829005.jpeg",
-        "alt": "Test another thing"
-      },
-      "numProducts": 0
-    },
-    {
-      "id": "cat-7251069955",
-      "name": "another time",
-      "slug": "another-time",
-      "description": "ooooooooooooooooooo",
-      "image": {
-        "src": "/images/category/cat-image-1681300988738-725866540.jpeg",
-        "alt": "another time"
-      },
-      "numProducts": 0
-    },
-    {
-      "id": "cat-0042885397",
-      "name": "Test ",
-      "slug": "test-",
-      "description": "This is a test",
-      "image": {
-        "src": "/images/category/cat-image-1681302319354-18287793.jpeg",
-        "alt": "Test "
+        "src": "/images/category/cat-image-1681309313125-311062376.jpeg",
+        "alt": "Oh my god"
       },
       "numProducts": 0
     }

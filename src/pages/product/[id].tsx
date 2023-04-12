@@ -25,6 +25,7 @@ import {
   getAboutUsData,
 } from "@/database";
 
+
 export interface Props {
   errorMessage?: string;
 
@@ -74,6 +75,7 @@ export default function ProductPage({
     props: ["name", "slug"],
   });
 
+  
   return (
     <PageLayout contactInfo={contactInfo} aboutText={aboutUsFooter}>
       <div className={styles.wrapper}>
@@ -150,7 +152,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     const [aboutUsRes, productRes, categoriesRes] = await Promise.all([
       getAboutUsData(),
       getProduct({ id }),
-      getCategories({}),
+      getCategories(),
     ]);
 
     if (!aboutUsRes.success) {
@@ -200,7 +202,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       };
     }
 
-    const otherProductsRes = await getProducts({ groupID: product.groupID });
+    const otherProductsRes = await getProducts({ groupID: product.groupID, type:"product" });
 
     if (!otherProductsRes.success) {
       return {
