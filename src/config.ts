@@ -197,4 +197,7 @@ export const productManagementConfig = {
     deleteGroup: (groupName: string): string =>
       `Are you sure you want to delete ${groupName} product group? All of its associated products will also be deleted.`,
   },
+  productsPerPage: 4,
 };
+
+

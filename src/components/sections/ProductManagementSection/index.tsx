@@ -26,6 +26,8 @@ import useCreate from "@hooks/ProductManagementSection/useCreate";
 
 import { OptionItem, convertToOptionItem } from "@/components/generics/Select";
 import { ProductApiResponse } from "@/pages/api/products";
+import { FindProductOptions } from "@/database/models/product";
+import { productManagementConfig } from "@/config";
 
 export interface Props {}
 
@@ -93,6 +95,16 @@ export default function ProductManagementSection({}: Props) {
     }
   }, [reloadProducts]);
 
+
+  const loadMore = () => {
+    if(products.length === currentCategory?.numProducts)
+      return;
+
+    loadProducts(currentCategory!.id, setProducts, products.length);
+    
+  };
+
+
   return (
     <>
       <section className={styles.wrapper}>
@@ -127,6 +139,16 @@ export default function ProductManagementSection({}: Props) {
           liClass={styles.li}
           ulClass={styles.ul}
         />
+        <div className={styles.loadMore}>
+          {
+            currentCategory && products.length < currentCategory?.numProducts && (
+              <ButtonCPN
+                type="normal"
+                label="Load More"
+                onClick={loadMore}
+              />)
+          }
+        </div>
       </section>
       <WarningModalComponent />
       <ProductModalComponent />
@@ -166,18 +188,42 @@ const convertCategoryToOptionItem = (
 
 async function loadProducts(
   catID: string,
-  setProducts: Dispatch<SetStateAction<(Product | ProductGroup)[]>>
+  setProducts: Dispatch<SetStateAction<(Product | ProductGroup)[]>>,
+  offset: number = 0
 ) {
+  const {productsPerPage} = productManagementConfig;
+
+  const loadOptions:FindProductOptions = {
+    type: 'all',
+    catID,
+    sort: "name",
+    sortedOrder: "asc",
+    limit: productsPerPage,
+    offset
+  };
+
+
   axios
-    .get(`/api/products/?catID=${catID}`)
+    .post(`/api/products`, loadOptions)
     .then(({ data }: AxiosResponse<ProductApiResponse>) => {
+      
       if (!data.success) {
         throw new Error(data.message);
-      } else if (!data.products) {
+      } 
+
+      if(!data.products) {
         throw new Error("No products found");
       }
 
-      setProducts(data.products);
+      if(offset === 0) {
+        setProducts(data.products);
+        return;
+      }
+      else {
+        setProducts((prevProducts) => [...prevProducts, ...data.products]);
+        return;
+      }
+
     })
     .catch((err) => {
       throw err;

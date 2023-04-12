@@ -19,8 +19,9 @@ import Select, { convertToOptionItem } from "@/components/generics/Select";
 
 import { getAboutUsData, getCategories, getProducts } from "@/database";
 
-import axios from "axios";
+import axios, { AxiosResponse } from "axios";
 import { FindProductOptions } from "@/database/models/product";
+import { ProductApiResponse } from "../api/products";
 
 export interface Props {
   errorMessage?: string;
@@ -59,15 +60,24 @@ export default function CategoryPage({
 
   useEffect(() => {
     const loadOptions: FindProductOptions = {
+      type: "all",
       catSlug: curCategory.slug,
       sort: condition.sort!.value,
       sortedOrder: condition.sortedOrder!.value,
       limit: productsPerPage,
-      type: "all",
     };
 
-    axios.post("/api/products", loadOptions).then(({ data }) => {
+    axios.post("/api/products", loadOptions).then(({ data }:AxiosResponse<ProductApiResponse>) => {
       
+      if(!data.success) {
+        throw new Error(data.message);
+      }
+
+      if(!data.products) {
+        throw new Error("Products not found");
+      }
+
+
       setProducts(data.products);
     });
   }, [curCategory, condition]);

@@ -59,6 +59,17 @@ section.wrapper {
   }
 }
 
+.loadMore {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+
+  margin-top: 25px;
+
+
+}
+
 @media (min-width: $first-breakpoint) {
   .ul {
     display: grid;
