@@ -166,6 +166,17 @@
         "alt": "another time"
       },
       "numProducts": 0
+    },
+    {
+      "id": "cat-0042885397",
+      "name": "Test ",
+      "slug": "test-",
+      "description": "This is a test",
+      "image": {
+        "src": "/images/category/cat-image-1681302319354-18287793.jpeg",
+        "alt": "Test "
+      },
+      "numProducts": 0
     }
   ],
   "PRODUCTS": [
