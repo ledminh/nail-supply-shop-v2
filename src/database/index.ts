@@ -6,6 +6,7 @@ import * as OrderModel from "./models/order";
 import type { DBProduct, DBProductGroup } from "@/types/product";
 import type { Order, FilterOrder, StatusValue } from "@/types/order";
 
+
 /********************************************************
  * CATEGORY
  */
@@ -63,32 +64,24 @@ export const getProduct = ({ id, name }: getProductProps) =>
  * deleteProduct
  */
 
-type deleteProductProps = {
-  id: string;
-};
 
-export function deleteProduct({ id }: deleteProductProps) {
+
+export function deleteProduct({ id }: ProductModel.DeleteProductProps):Promise<ProductModel.DeleteProductResponse> {
   return ProductModel.deleteProduct({ id });
+}
+
+export function deleteGroup({ id }: ProductModel.DeleteGroupProps):Promise<ProductModel.DeleteGroupResponse> {
+  return ProductModel.deleteGroup({ id });
 }
 
 /*****************************
  * addProduct
  */
 
-export type AddProductProps = {
-  product: DBProduct;
-};
-
-export type AddProductResponse = {
-  success: true;
-  data: DBProduct;
-} | {
-  success: false;
-  message: string;
-};
 
 
-export function addProduct({ product }: AddProductProps):Promise<AddProductResponse> {
+
+export function addProduct({ product }: ProductModel.AddProductProps):Promise<ProductModel.AddProductResponse> {
   return ProductModel.addProduct({ product });
 }
 
@@ -96,20 +89,9 @@ export function addProduct({ product }: AddProductProps):Promise<AddProductRespo
  * addGroup
  */
 
-export type AddGroupProps = {
-  group: DBProductGroup;
-};
 
 
-export type AddGroupResponse = {
-  success: true;
-  data: DBProductGroup;
-} | {
-  success: false;
-  message: string;
-};
-
-export function addGroup({ group }: AddGroupProps):Promise<AddGroupResponse> {
+export function addGroup({ group }: ProductModel.AddGroupProps):Promise<ProductModel.AddGroupResponse> {
   return ProductModel.addGroup({ group });
 }
 
@@ -118,7 +100,7 @@ export function addGroup({ group }: AddGroupProps):Promise<AddGroupResponse> {
  *****************************/
 
 
-export function updateProduct({ product }: ProductModel.UpdateProductProps) {
+export function updateProduct({ product }: ProductModel.UpdateProductProps):Promise<ProductModel.UpdateProductResponse> {
   return ProductModel.updateProduct({ product });
 }
 
@@ -126,11 +108,8 @@ export function updateProduct({ product }: ProductModel.UpdateProductProps) {
  * updateGroup
  ******************************/
 
-type updateGroupProps = {
-  group: DBProductGroup;
-};
 
-export function updateGroup({ group }: updateGroupProps) {
+export function updateGroup({ group }: ProductModel.UpdateGroupProps):Promise<ProductModel.UpdateGroupResponse> {
   return ProductModel.updateGroup({ group });
 }
 
@@ -138,15 +117,8 @@ export function updateGroup({ group }: updateGroupProps) {
  * updateGroupProduct
  ******************************/
 
-type updateGroupProductProps = {
-  groupID: string;
-  product: DBProduct;
-};
 
-export function updateGroupProduct({
-  groupID,
-  product,
-}: updateGroupProductProps) {
+export function updateGroupProduct({ groupID, product }: ProductModel.UpdateGroupProductProps):Promise<ProductModel.UpdateGroupProductResponse> {
   return ProductModel.updateGroupProduct({ groupID, product });
 }
 

@@ -1,5 +1,6 @@
 import axios from "axios";
 import type { ProductImage } from "@/types/product";
+import randomId from "./randomId";
 
 const processImages = async (
   images: (File | ProductImage)[]
@@ -20,7 +21,7 @@ const processImages = async (
     const filenames = res.data.filenames as string[];
     const newProductImages = filenames.map((filename) => ({
       // generate a unique id string for each image with Date.now() and Math.random()
-      id: `${Date.now()}-${Math.random()}`,
+      id: randomId(10, 'image-'),
       src: `/images/product/${filename}`,
       alt: filename,
     }));

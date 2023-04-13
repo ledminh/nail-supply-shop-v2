@@ -7,7 +7,7 @@ import * as DB from "@/database";
 import { FindProductOptions } from "@/database/models/product";
 
 export type ProductApiResponse =
-  | {
+    {
       success: true;
       products?: undefined;
       product?: undefined;

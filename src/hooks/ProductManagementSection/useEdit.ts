@@ -88,27 +88,27 @@ function useEdit({  products, currentCategory, setProducts, openEditProduct, ope
               throw new Error(data.message);
             }
 
-            if (groupID) {
-              const group = products.find((product) => product.id === groupID);
+            // if (groupID) {
+            //   const group = products.find((product) => product.id === groupID);
 
-              if (!group) {
-                throw new Error("Group not found");
-              }
+            //   if (!group) {
+            //     throw new Error("Group not found");
+            //   }
 
-              if (isProduct(group)) {
-                throw new Error("Group is a product");
-              }
+            //   if (isProduct(group)) {
+            //     throw new Error("Group is a product");
+            //   }
 
-              group.products = group.products.map((prod) =>
-                prod.id === data.product.id ? data.product : prod
-              );
+            //   group.products = group.products.map((prod) =>
+            //     prod.id === data.product.id ? data.product : prod
+            //   );
 
-              setProducts(
-                products.map((prod) => (prod.id === groupID ? group : prod))
-              );
+            //   setProducts(
+            //     products.map((prod) => (prod.id === groupID ? group : prod))
+            //   );
 
-              return;
-            }
+            //   return;
+            // }
 
             setReloadProducts(true);
           });

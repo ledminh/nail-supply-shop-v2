@@ -87,6 +87,11 @@ export const config = {
   },
 };
 
+
+/*********************************
+ * Helper functions
+ *********************************/
+
 function deleteImages(imagePaths: string[]) {
   for (const imagePath of imagePaths) {
     try {
@@ -107,6 +112,9 @@ function deleteImages(imagePaths: string[]) {
   }
 }
 
+
+
+
 const deleteSingleProduct = (id: string, res: NextApiProductResponse) => {
   DB.getProduct({ id })
     .then((dBRes) => {
@@ -116,25 +124,28 @@ const deleteSingleProduct = (id: string, res: NextApiProductResponse) => {
 
       const product = dBRes.data;
 
-      if (product) {
-        if (Array.isArray(product) || !isProduct(product)) {
-          return res
-            .status(404)
-            .json({ success: false, message: "Product not found" });
-        }
-
-        deleteImages(product.images.map((image) => image.src));
-
-        DB.deleteProduct({ id })
-          .then(() => {
-            res.status(200).json({ success: true, message: "Product deleted" });
-          })
-          .catch((err) => {
-            res.status(500).json({ success: false, message: err.message });
-          });
-      } else {
-        res.status(404).json({ success: false, message: "Product not found" });
+      if (Array.isArray(product) || !isProduct(product)) {
+        return res
+          .status(404)
+          .json({ success: false, message: "Incorrect type" });
       }
+
+      deleteImages(product.images.map((image) => image.src));
+
+      DB.deleteProduct({ id })
+        .then((dbRes) => {
+          if (!dbRes.success) {
+            return res
+              .status(500)
+              .json({ success: false, message: dbRes.message });
+          }
+
+          res.status(200).json({ success: true, message: "Product deleted" });
+        })
+        .catch((err) => {
+          res.status(500).json({ success: false, message: err.message });
+        });
+
     })
     .catch((err) => {
       res.status(500).json({ success: false, message: err.message });
@@ -150,27 +161,33 @@ const deleteGroup = (id: string, res: NextApiProductResponse) => {
 
       const group = dBRes.data;
 
-      if (group) {
-        if (Array.isArray(group) || isProduct(group)) return;
+      if (Array.isArray(group) || isProduct(group)) 
+        return res
+          .status(404)
+          .json({ success: false, message: "Incorrect type" });
 
-        const images = group.products.reduce((acc: ProductImage[], product) => {
-          acc.push(...product.images);
+      const images = group.products.reduce((acc: ProductImage[], product) => {
+        acc.push(...product.images);
 
-          return acc;
-        }, []);
+        return acc;
+      }, []);
 
-        deleteImages(images.map((image) => image.src));
+      deleteImages(images.map((image) => image.src));
 
-        DB.deleteProduct({ id })
-          .then(() => {
-            res.status(200).json({ success: true, message: "Product deleted" });
-          })
-          .catch((err) => {
-            res.status(500).json({ success: false, message: err.message });
-          });
-      } else {
-        res.status(404).json({ success: false, message: "Product not found" });
-      }
+      DB.deleteGroup({ id })
+        .then((dbRes) => {
+          if (!dbRes.success) {
+            return res
+              .status(500)
+              .json({ success: false, message: dbRes.message });
+          }
+
+          res.status(200).json({ success: true, message: "Product deleted" });
+        })
+        .catch((err) => {
+          res.status(500).json({ success: false, message: err.message });
+        });
+
     })
     .catch((err) => {
       res.status(500).json({ success: false, message: err.message });
@@ -215,8 +232,14 @@ const addProduct = (req: NextApiRequest, res: NextApiProductResponse) => {
     };
 
     DB.addProduct({ product })
-      .then(() => {
-        return res.status(200).json({ success: true, product });
+      .then((dbRes) => {
+        if (!dbRes.success) {
+          return res
+            .status(500)
+            .json({ success: false, message: dbRes.message });
+        }
+        
+        return res.status(200).json({ success: true, product: dbRes.data });
       })
       .catch((err) => {
         return res.status(500).json({ success: false, message: err.message });
@@ -227,7 +250,7 @@ const addProduct = (req: NextApiRequest, res: NextApiProductResponse) => {
 const addGroup = (req: NextApiRequest, res: NextApiProductResponse) => {
   const form = new formidable.IncomingForm();
 
-  form.parse(req, (err, fields, files) => {
+  form.parse(req, (err, fields) => {
     if (err) {
       return res.status(500).json({ success: false, message: err.message });
     }
@@ -301,6 +324,7 @@ const updateProduct = (req: NextApiRequest, res: NextApiProductResponse) => {
 
     const newImages: ProductImage[] = JSON.parse(images);
 
+    // Product is in a group
     if (typeof groupID === "string") {
       DB.getProduct({ id: groupID })
         .then((dBRes) => {
@@ -350,10 +374,17 @@ const updateProduct = (req: NextApiRequest, res: NextApiProductResponse) => {
           };
 
           DB.updateGroupProduct({ groupID, product: newProduct })
-            .then(() => {
+            .then((dbRes) => {
+              if (!dbRes.success) {
+                return res
+                  .status(500)
+                  .json({ success: false, message: dbRes.message });
+              }
+
+              
               return res
                 .status(200)
-                .json({ success: true, product: newProduct });
+                .json({ success: true, product: dbRes.data });
             })
             .catch((err) => {
               return res
@@ -366,6 +397,9 @@ const updateProduct = (req: NextApiRequest, res: NextApiProductResponse) => {
         });
     }
 
+
+    // Product is not in a group
+    
     DB.getProduct({ id: serialNumber }).then((dBRes) => {
       if (!dBRes.success) {
         return res.status(500).json({ success: false, message: dBRes.message });
@@ -395,13 +429,20 @@ const updateProduct = (req: NextApiRequest, res: NextApiProductResponse) => {
         details,
         price: Number(price),
         images: newImages,
+        lastUpdated: new Date().toISOString(),
         dateCreated: product.dateCreated,
         sellCount: product.sellCount,
       };
 
       DB.updateProduct({ product: newProduct })
-        .then(() => {
-          return res.status(200).json({ success: true, product: newProduct });
+        .then((dbRes) => {
+          if (!dbRes.success) {
+            return res
+              .status(500)
+              .json({ success: false, message: dbRes.message });
+          }
+
+          return res.status(200).json({ success: true, product: dbRes.data });
         })
         .catch((err) => {
           return res.status(500).json({ success: false, message: err.message });
@@ -413,7 +454,7 @@ const updateProduct = (req: NextApiRequest, res: NextApiProductResponse) => {
 const updateGroup = (req: NextApiRequest, res: NextApiProductResponse) => {
   const form = new formidable.IncomingForm();
 
-  form.parse(req, (err, fields, files) => {
+  form.parse(req, (err, fields) => {
     if (err) {
       return res.status(500).json({ success: false, message: err.message });
     }
@@ -478,12 +519,19 @@ const updateGroup = (req: NextApiRequest, res: NextApiProductResponse) => {
           name,
           categoryID,
           products: newProducts,
+          lastUpdated: new Date().toISOString(),
           dateCreated: group.dateCreated,
         };
 
         DB.updateGroup({ group: newGroup })
-          .then(() => {
-            return res.status(200).json({ success: true, product: newGroup });
+          .then((dbRes) => {
+            if (!dbRes.success) {
+              return res
+                .status(500)
+                .json({ success: false, message: dbRes.message });
+            }
+
+            return res.status(200).json({ success: true, product: dbRes.data });
           })
           .catch((err) => {
             return res
@@ -497,6 +545,3 @@ const updateGroup = (req: NextApiRequest, res: NextApiProductResponse) => {
   });
 };
 
-const generateID = () => {
-  return Math.random().toString(36).substring(2, 13);
-};

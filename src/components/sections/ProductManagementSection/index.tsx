@@ -73,6 +73,7 @@ export default function ProductManagementSection({}: Props) {
     setReloadProducts,
   });
 
+
   const ItemWrapper = getItemWrapper({
     onDeleteProduct,
     onDeleteGroup,
