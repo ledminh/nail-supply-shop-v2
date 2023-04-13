@@ -97,7 +97,7 @@ export default function useCreate({
             products: JSON.stringify(processedProducts),
           });
 
-          post("/api/products?type=add-group", formData);
+          post("/api/admin/products?type=add-group", formData);
         }
 
         createGroup();

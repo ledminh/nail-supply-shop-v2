@@ -6,6 +6,7 @@ import type { DBProduct, DBProductGroup } from "@/types/product";
 import find, {FindProductOptions} from "./find";
 
 import { getDB } from "@/database/jsons";
+import { AddGroupProps, AddGroupResponse, AddProductProps, AddProductResponse } from "@/database";
 
 const PRODUCTS = productsJSON as (DBProduct | DBProductGroup)[];
 
@@ -87,19 +88,7 @@ export function deleteProduct({ id }: deleteProductProps):Promise<DeleteProductR
  *  ADD PRODUCT
  ******************************/
 
-type addProductProps = {
-  product: DBProduct;
-};
-
-type AddProductResponse = {
-  success: true;
-  data: DBProduct;
-} | {
-  success: false;
-  message: string;
-};
-
-export function addProduct({ product }: addProductProps):Promise<AddProductResponse> {
+export function addProduct({ product }: AddProductProps):Promise<AddProductResponse> {
   return new Promise((resolve, reject) => {
     getDB().then((db) => {
       const { data } = db;
@@ -156,13 +145,58 @@ export function addProduct({ product }: addProductProps):Promise<AddProductRespo
  *  ADD GROUP
  ******************************/
 
-type addGroupProps = {
-  group: DBProductGroup;
-};
 
-export function addGroup({ group }: addGroupProps) {
-  PRODUCTS.push(group);
-  return Promise.resolve(group);
+export function addGroup({ group }: AddGroupProps):Promise<AddGroupResponse> {
+  return new Promise((resolve, reject) => {
+    getDB().then((db) => {
+      const { data } = db;
+
+      if (!data) {
+        return reject({
+          success: false,
+          message: "No database found",
+        });
+      }
+
+      const { PRODUCTS, CATEGORIES } = data;
+
+      const category = CATEGORIES.find((category) => category.id === group.categoryID);
+
+      if (!category) {
+        return reject({
+          success: false,
+          message: "Category not found",
+        });
+      }
+
+      PRODUCTS.push(group);
+
+      db.write()
+        .then(() => db.read())
+        .then(() => {
+          if (!db.data) {
+            return reject({
+              success: false,
+              message: "No database found",
+            });
+          }
+
+          const { PRODUCTS } = db.data;
+
+          const _group = PRODUCTS.find((p) => p.id === group.id);
+
+          if (!_group) {
+            return reject({
+              success: false,
+              message: "Group not found",
+            });
+          }
+
+          
+          return resolve({ success: true, data: _group as DBProductGroup });
+        })
+    });
+  });
 }
 
 /********************************

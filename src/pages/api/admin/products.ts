@@ -12,6 +12,7 @@ import {
 import formidable from "formidable";
 
 import fs from "fs";
+import randomId from "@/utils/randomId";
 
 export type ProductApiResponse =
   | {
@@ -244,7 +245,7 @@ const addGroup = (req: NextApiRequest, res: NextApiProductResponse) => {
     }
 
     const group: DBProductGroup = {
-      id: "prod-" + generateID(),
+      id: randomId(10, 'product-group-'),
       name,
       categoryID,
       products: JSON.parse(products),
@@ -252,8 +253,12 @@ const addGroup = (req: NextApiRequest, res: NextApiProductResponse) => {
     };
 
     DB.addGroup({ group })
-      .then((group) => {
-        return res.status(200).json({ success: true, product: group });
+      .then((dbRes) => {
+        if (!dbRes.success) {
+          return res.status(500).json({ success: false, message: dbRes.message });
+        }
+
+        return res.status(200).json({ success: true, product: dbRes.data });
       })
       .catch((err) => {
         return res.status(500).json({ success: false, message: err.message });
@@ -340,6 +345,7 @@ const updateProduct = (req: NextApiRequest, res: NextApiProductResponse) => {
             price: Number(price),
             images: newImages,
             dateCreated: oldProduct.dateCreated,
+            lastUpdated: new Date().toISOString(),
             sellCount: oldProduct.sellCount,
           };
 

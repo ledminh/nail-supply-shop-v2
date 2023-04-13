@@ -75,11 +75,20 @@ export function deleteProduct({ id }: deleteProductProps) {
  * addProduct
  */
 
-type addProductProps = {
+export type AddProductProps = {
   product: DBProduct;
 };
 
-export function addProduct({ product }: addProductProps) {
+export type AddProductResponse = {
+  success: true;
+  data: DBProduct;
+} | {
+  success: false;
+  message: string;
+};
+
+
+export function addProduct({ product }: AddProductProps):Promise<AddProductResponse> {
   return ProductModel.addProduct({ product });
 }
 
@@ -87,11 +96,20 @@ export function addProduct({ product }: addProductProps) {
  * addGroup
  */
 
-type addGroupProps = {
+export type AddGroupProps = {
   group: DBProductGroup;
 };
 
-export function addGroup({ group }: addGroupProps) {
+
+export type AddGroupResponse = {
+  success: true;
+  data: DBProductGroup;
+} | {
+  success: false;
+  message: string;
+};
+
+export function addGroup({ group }: AddGroupProps):Promise<AddGroupResponse> {
   return ProductModel.addGroup({ group });
 }
 

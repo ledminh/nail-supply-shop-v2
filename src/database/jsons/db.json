@@ -288,7 +288,7 @@
       "categoryID": "cat_nail01_polishes",
       "name": "Elegant Nude Nail Polish",
       "intro": "A chic nude nail polish for a timeless and natural look.",
-      "details": "Our Elegant Nude Nail Polish offers a durable, glossy finish. The smooth formula allows for easy application and long-lasting wear.",
+      "details": "Updated detail",
       "price": 5.99,
       "images": [
         {
@@ -338,9 +338,9 @@
       "id": "prd07_nailpolish_gold",
       "categoryID": "cat_nail01_polishes",
       "name": "Glamorous Gold Nail Polish",
-      "intro": "A dazzling gold nail polish for a glitzy and glamorous look.",
+      "intro": "A dazzling gold nail polish for a glitzy and rous look.",
       "details": "Our Glamorous Gold Nail Polish provides a long-lasting, chip-resistant finish. The fast-drying formula allows for easy and smooth application.",
-      "price": 1212,
+      "price": 12,
       "images": [
         {
           "id": "img01_nailpolish_gold",
@@ -363,8 +363,11 @@
     },
     {
       "id": "prd08_nailpolish_green",
+      "categoryID": "cat_nail01_polishes",
       "name": "Mint Green Nail Polish",
-      "price": 5.99,
+      "intro": "A refreshing mint green nail polish for a cool and unique look.",
+      "details": "Our Mint Green Nail Polish offers a long-lasting, glossy finish. The high-quality formula ensures even coverage and easy application.",
+      "price": 111,
       "images": [
         {
           "id": "img01_nailpolish_green",
@@ -382,17 +385,16 @@
           "alt": "Mint Green Nail Polish"
         }
       ],
-      "intro": "A refreshing mint green nail polish for a cool and unique look.",
-      "details": "Our Mint Green Nail Polish offers a long-lasting, glossy finish. The high-quality formula ensures even coverage and easy application.",
-      "categoryID": "cat_nail01_polishes",
       "dateCreated": "2023-04-10",
-      "lastUpdated": "2023-04-10",
       "sellCount": 90
     },
     {
       "id": "prd09_nailpolish_orange",
+      "categoryID": "cat_nail01_polishes",
       "name": "Tangerine Orange Nail Polish",
-      "price": 5.99,
+      "intro": "A bright tangerine orange nail polish for a fun and lively look.",
+      "details": "Our Tangerine Orange Nail Polish provides a long-lasting, chip-resistant finish. The fast-drying formula allows for easy and smooth application.",
+      "price": 44444,
       "images": [
         {
           "id": "img01_nailpolish_orange",
@@ -410,11 +412,7 @@
           "alt": "Tangerine Orange Nail Polish"
         }
       ],
-      "intro": "A bright tangerine orange nail polish for a fun and lively look.",
-      "details": "Our Tangerine Orange Nail Polish provides a long-lasting, chip-resistant finish. The fast-drying formula allows for easy and smooth application.",
-      "categoryID": "cat_nail01_polishes",
       "dateCreated": "2023-04-11",
-      "lastUpdated": "2023-04-09",
       "sellCount": 70
     },
     {
