@@ -5,7 +5,7 @@ import type { DBProduct, DBProductGroup } from "@/types/product";
 
 import find, {FindProductOptions} from "./find";
 
-
+import { getDB } from "@/database/jsons";
 
 const PRODUCTS = productsJSON as (DBProduct | DBProductGroup)[];
 
@@ -45,9 +45,65 @@ type addProductProps = {
   product: DBProduct;
 };
 
-export function addProduct({ product }: addProductProps) {
-  productsJSON.push(product);
-  return Promise.resolve();
+type AddProductResponse = {
+  success: true;
+  data: DBProduct;
+} | {
+  success: false;
+  message: string;
+};
+
+export function addProduct({ product }: addProductProps):Promise<AddProductResponse> {
+  return new Promise((resolve, reject) => {
+    getDB().then((db) => {
+      const { data } = db;
+
+      if (!data) {
+        return reject({
+          success: false,
+          message: "No database found",
+        });
+      }
+
+      const { PRODUCTS, CATEGORIES } = data;
+
+      const category = CATEGORIES.find((category) => category.id === product.categoryID);
+
+      if (!category) {
+        return reject({
+          success: false,
+          message: "Category not found",
+        });
+      }
+
+      PRODUCTS.push(product);
+
+      db.write()
+        .then(() => db.read())
+        .then(() => {
+          if (!db.data) {
+            return reject({
+              success: false,
+              message: "No database found",
+            });
+          }
+
+          const { PRODUCTS } = db.data;
+
+          const _product = PRODUCTS.find((p) => p.id === product.id);
+
+          if (!_product) {
+            return reject({
+              success: false,
+              message: "Product not found",
+            });
+          }
+
+          
+          return resolve({ success: true, data: _product as DBProduct });
+        })
+    });
+  });
 }
 
 /******************************

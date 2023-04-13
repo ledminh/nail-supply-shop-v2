@@ -49,7 +49,7 @@ function useDelete({
     showWarning({
       message: warningMessages.deleteProduct(productName),
       onOK: () => {
-        post(`/api/products/?type=delete-single-product&id=${productID}`);
+        post(`/api/admin/products/?type=delete-single-product&id=${productID}`);
       },
     });
   };

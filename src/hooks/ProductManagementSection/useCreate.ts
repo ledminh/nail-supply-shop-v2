@@ -64,7 +64,7 @@ export default function useCreate({
             images: JSON.stringify(processedImages),
           });
 
-          post("/api/products?type=add-product", formData);
+          post("/api/admin/products?type=add-product", formData);
         }
 
         createProduct();

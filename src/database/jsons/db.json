@@ -897,6 +897,38 @@
       "categoryID": "cat_nail04_nailart",
       "dateCreated": "2023-04-15",
       "sellCount": 55
+    },
+    {
+      "id": "112222222",
+      "categoryID": "cat_nail01_polishes",
+      "name": "This is a new one",
+      "intro": "This is ssssssssssssssssssssssss",
+      "details": "dddd ddsdadasd adasd ad asdas asd asd ad asdads ddsdadasd adasd ad asdas asd asd ad asdads  ddsdadasd adasd ad asdas asd asd ad asdads  ddsdadasd adasd ad asdas asd asd ad asdads ",
+      "price": 5,
+      "images": [
+        {
+          "id": "1681344642077-0.2625494702503258",
+          "src": "/images/product/product-image-1681344642051-41325252.jpeg",
+          "alt": "product-image-1681344642051-41325252.jpeg"
+        },
+        {
+          "id": "1681344642077-0.8451958545066272",
+          "src": "/images/product/product-image-1681344642052-638242964.jpeg",
+          "alt": "product-image-1681344642052-638242964.jpeg"
+        },
+        {
+          "id": "1681344642077-0.42327161655167445",
+          "src": "/images/product/product-image-1681344642055-115600074.jpeg",
+          "alt": "product-image-1681344642055-115600074.jpeg"
+        },
+        {
+          "id": "1681344642077-0.4131682401884471",
+          "src": "/images/product/product-image-1681344642065-632756128.jpeg",
+          "alt": "product-image-1681344642065-632756128.jpeg"
+        }
+      ],
+      "dateCreated": "2023-04-13T00:10:42.206Z",
+      "sellCount": 0
     }
   ]
 }
