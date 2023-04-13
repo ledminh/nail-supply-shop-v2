@@ -98,7 +98,7 @@ export default function ProductManagementSection({}: Props) {
       setReloadProducts(false);
 
       if (currentCategory) {
-        loadProducts(currentCategory.id, setProducts, 0, sortingCondition.sort!.value, sortingCondition.sortedOrder!.value);
+        loadProducts(currentCategory.id, setProducts, 0, sortingCondition.sort!.value, sortingCondition.sortedOrder!.value, products.length);
       }
     }
   }, [reloadProducts]);
@@ -221,16 +221,16 @@ async function loadProducts(
   setProducts: Dispatch<SetStateAction<(Product | ProductGroup)[]>>,
   offset: number = 0,
   sort: SortType = "name",
-  sortedOrder: SortedOrderType = "asc"
+  sortedOrder: SortedOrderType = "asc",
+  limit: number = productManagementConfig.productsPerPage
 ) {
-  const {productsPerPage} = productManagementConfig;
 
   const loadOptions:FindProductOptions = {
     type: 'all',
     catID,
     sort,
     sortedOrder,
-    limit: productsPerPage,
+    limit,
     offset
   };
 

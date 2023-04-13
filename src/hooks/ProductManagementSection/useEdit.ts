@@ -20,21 +20,10 @@ type Props = {
   setReloadProducts: Dispatch<SetStateAction<boolean>>;
 };
 
-function useEdit({
-  products,
-  currentCategory,
-  setProducts,
-  openEditProduct,
-  openEditGroup,
-  setReloadProducts,
-}: Props) {
-  const onEditProduct = ({
-    productID,
-    groupID,
-  }: {
-    productID: string;
-    groupID?: string;
-  }) => {
+function useEdit({  products, currentCategory, setProducts, openEditProduct, openEditGroup, setReloadProducts}: Props) {
+  
+  const onEditProduct = ({ productID, groupID  }: {productID: string; groupID?: string; }) => {
+
     let product: Product;
 
     if (groupID) {
@@ -73,6 +62,7 @@ function useEdit({
 
     openEditProduct({
       product,
+      groupName: groupID ? products.find((product) => product.id === groupID)?.name : undefined,
       onSave: ({ serialNumber, name, intro, details, price, images }) => {
         const categoryID = currentCategory!.id;
         const formData = createFormData({
@@ -91,7 +81,7 @@ function useEdit({
         processImages(images)
           .then((images) => {
             formData.append("images", JSON.stringify(images));
-            return axios.post("/api/products?type=update-product", formData);
+            return axios.post("/api/admin/products?type=update-product", formData);
           })
           .then(({ data }) => {
             if (!data.success) {

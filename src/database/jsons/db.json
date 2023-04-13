@@ -240,71 +240,19 @@
       ]
     },
     {
-      "id": "prd01_nailpolish_red",
-      "name": "Classic Red Nail Polish",
-      "price": 5.99,
-      "images": [
-        {
-          "id": "img01_nailpolish_red",
-          "src": "/images/placeholder_1.png",
-          "alt": "Classic Red Nail Polish"
-        },
-        {
-          "id": "img02_nailpolish_red",
-          "src": "/images/placeholder_3.png",
-          "alt": "Classic Red Nail Polish"
-        },
-        {
-          "id": "img03_nailpolish_red",
-          "src": "/images/placeholder_10.png",
-          "alt": "Classic Red Nail Polish"
-        },
-        {
-          "id": "img04_nailpolish_red",
-          "src": "/images/placeholder_2.png",
-          "alt": "Classic Red Nail Polish"
-        }
-      ],
-      "intro": "A classic red nail polish for a bold and elegant look.",
-      "details": "Our Classic Red Nail Polish offers long-lasting wear and a glossy finish. The quick-drying formula ensures a flawless application every time.",
-      "categoryID": "cat_nail01_polishes",
-      "dateCreated": "2030-01-02",
-      "sellCount": 125
-    },
-    {
       "id": "prd02_nailpolish_blue",
+      "categoryID": "cat_nail01_polishes",
       "name": "Ocean Blue Nail Polish",
-      "price": 5.99,
+      "intro": "A vibrant ocean blue nail polish for a refreshing look.",
+      "details": "Our Ocean Blue Nail Polish provides a long-lasting, chip-resistant finish. The fast-drying formula allows for easy and smooth application.",
+      "price": 9.99,
       "images": [
-        {
-          "id": "img03_nailpolish_blue",
-          "src": "/images/placeholder_2.png",
-          "alt": "Ocean Blue Nail Polish"
-        },
-        {
-          "id": "img04_nailpolish_blue",
-          "src": "/images/placeholder_5.png",
-          "alt": "Ocean Blue Nail Polish"
-        },
-        {
-          "id": "img06_nailpolish_blue",
-          "src": "/images/placeholder_6.png",
-          "alt": "Ocean Blue Nail Polish"
-        },
-        {
-          "id": "img07_nailpolish_blue",
-          "src": "/images/placeholder_7.png",
-          "alt": "Ocean Blue Nail Polish"
-        },
         {
           "id": "img08_nailpolish_blue",
           "src": "/images/placeholder_8.png",
           "alt": "Ocean Blue Nail Polish"
         }
       ],
-      "intro": "A vibrant ocean blue nail polish for a refreshing look.",
-      "details": "Our Ocean Blue Nail Polish provides a long-lasting, chip-resistant finish. The fast-drying formula allows for easy and smooth application.",
-      "categoryID": "cat_nail01_polishes",
       "dateCreated": "2023-01-10",
       "sellCount": 98
     },
@@ -337,79 +285,62 @@
     },
     {
       "id": "prd04_nailpolish_nude",
+      "categoryID": "cat_nail01_polishes",
       "name": "Elegant Nude Nail Polish",
+      "intro": "A chic nude nail polish for a timeless and natural look.",
+      "details": "Our Elegant Nude Nail Polish offers a durable, glossy finish. The smooth formula allows for easy application and long-lasting wear.",
       "price": 5.99,
       "images": [
         {
-          "id": "img04_nailpolish_nude",
-          "src": "/images/placeholder_4.png",
-          "alt": "Elegant Nude Nail Polish"
+          "id": "1681352700710-0.7738553324731595",
+          "src": "/images/product/product-image-1681352700681-239126764.jpeg",
+          "alt": "product-image-1681352700681-239126764.jpeg"
         }
       ],
-      "intro": "A chic nude nail polish for a timeless and natural look.",
-      "details": "Our Elegant Nude Nail Polish offers a durable, glossy finish. The smooth formula allows for easy application and long-lasting wear.",
-      "categoryID": "cat_nail01_polishes",
       "dateCreated": "2023-01-18",
       "sellCount": 105
     },
     {
       "id": "prd05_nailpolish_pink",
+      "categoryID": "cat_nail01_polishes",
       "name": "Sweet Pink Nail Polish",
+      "intro": "A charming pink nail polish for a cute and playful look.",
+      "details": "Our Sweet Pink Nail Polish provides a long-lasting, glossy finish. The high-quality formula ensures even coverage and easy application.",
       "price": 5.99,
       "images": [
         {
-          "id": "img05_nailpolish_pink",
-          "src": "/images/placeholder_5.png",
-          "alt": "Sweet Pink Nail Polish"
-        },
-        {
-          "id": "img06_nailpolish_pink",
-          "src": "/images/placeholder_6.png",
-          "alt": "Sweet Pink Nail Polish"
-        },
-        {
-          "id": "img07_nailpolish_pink",
-          "src": "/images/placeholder_7.png",
-          "alt": "Sweet Pink Nail Polish"
+          "id": "1681353415185-0.573334232398184",
+          "src": "/images/product/product-image-1681353415160-787562181.jpeg",
+          "alt": "product-image-1681353415160-787562181.jpeg"
         }
       ],
-      "intro": "A charming pink nail polish for a cute and playful look.",
-      "details": "Our Sweet Pink Nail Polish provides a long-lasting, glossy finish. The high-quality formula ensures even coverage and easy application.",
-      "categoryID": "cat_nail01_polishes",
       "dateCreated": "2023-01-20",
       "sellCount": 95
     },
     {
       "id": "prd06_nailpolish_purple",
+      "categoryID": "cat_nail01_polishes",
       "name": "Royal Purple Nail Polish",
-      "price": 5.99,
+      "intro": "A luxurious purple nail polish for a regal and sophisticated look.",
+      "details": "Our Royal Purple Nail Polish offers a long-lasting, glossy finish. The quick-drying formula ensures a flawless application every time.",
+      "price": 11.99,
       "images": [
-        {
-          "id": "img08_nailpolish_purple",
-          "src": "/images/placeholder_8.png",
-          "alt": "Royal Purple Nail Polish"
-        },
-        {
-          "id": "img09_nailpolish_purple",
-          "src": "/images/placeholder_9.png",
-          "alt": "Royal Purple Nail Polish"
-        },
         {
           "id": "img10_nailpolish_purple",
           "src": "/images/placeholder_10.png",
           "alt": "Royal Purple Nail Polish"
         }
       ],
-      "intro": "A luxurious purple nail polish for a regal and sophisticated look.",
-      "details": "Our Royal Purple Nail Polish offers a long-lasting, glossy finish. The quick-drying formula ensures a flawless application every time.",
-      "categoryID": "cat_nail01_polishes",
       "dateCreated": "2023-01-22",
       "sellCount": 85
     },
     {
       "id": "prd07_nailpolish_gold",
+      "categoryID": "cat_nail01_polishes",
       "name": "Glamorous Gold Nail Polish",
-      "price": 5.99,
+      "intro": "A dazzling gold nail polish for a glitzy and glamorous look.",
+      "details": "Our Glamorous Gold Nail Polish provides a long-lasting, chip-resistant finish. The fast-drying formula allows for easy and smooth application.",
+      "price": 1212,
       "images": [
         {
           "id": "img01_nailpolish_gold",
@@ -427,11 +358,7 @@
           "alt": "Glamorous Gold Nail Polish"
         }
       ],
-      "intro": "A dazzling gold nail polish for a glitzy and glamorous look.",
-      "details": "Our Glamorous Gold Nail Polish provides a long-lasting, chip-resistant finish. The fast-drying formula allows for easy and smooth application.",
-      "categoryID": "cat_nail01_polishes",
       "dateCreated": "2023-04-09",
-      "lastUpdated": "2023-04-11",
       "sellCount": 120
     },
     {

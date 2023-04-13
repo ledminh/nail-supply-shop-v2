@@ -171,9 +171,14 @@ export default function ProductModal({
               id="price"
               value={price}
               onChange={(e) => {
-                const value = parseFloat(e.target.value);
-                if (isNaN(value) || value < 0) return;
+                
+                if(e.target.value === "")
+                  return setPrice(0);
 
+                const value = parseFloat(e.target.value);
+                
+                if (isNaN(value) || value < 0) return;
+                console.log(value);
                 setPrice(value);
               }}
             />
@@ -241,6 +246,7 @@ export type OpenEditProductProps = {
   product: Product;
   onSave: (props: onSaveProps) => void;
   onCancel?: () => void;
+  groupName?: string;
 };
 
 export type OpenCreateProductProps = {
@@ -281,9 +287,10 @@ export function useProductModal() {
     product,
     onSave,
     onCancel,
+    groupName,
   }: OpenEditProductProps) => {
     setType("edit");
-    product.groupName && setGroupName(product.groupName);
+    groupName && setGroupName(groupName);
     setInitSerialNumber(product.id);
     setInitName(product.name);
     setInitIntro(product.intro);

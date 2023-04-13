@@ -169,21 +169,68 @@ export function addGroup({ group }: addGroupProps) {
  * UPDATE PRODUCT
  ********************************/
 
-type updateProductProps = {
+export type UpdateProductProps = {
   product: DBProduct;
 };
 
-export function updateProduct({ product }: updateProductProps) {
-  const _product = PRODUCTS.find((product) => product.id === product.id);
+type UpdateProductResponse = {
+  success: true;
+  data: DBProduct;
+} | {
+  success: false;
+  message: string;
+};
 
-  if (_product) {
-    const index = PRODUCTS.indexOf(_product);
-    PRODUCTS[index] = product;
+export function updateProduct({ product }: UpdateProductProps):Promise<UpdateProductResponse> {
+  return new Promise((resolve, reject) => {
+    getDB().then((db) => {
+      const { data } = db;
 
-    return Promise.resolve(product);
-  }
+      if (!data) {
+        return reject({
+          success: false,
+          message: "No database found",
+        });
+      }
 
-  return Promise.reject(new Error("Product not found"));
+      const { PRODUCTS } = data;
+
+      const index = PRODUCTS.findIndex((p) => p.id === product.id);
+
+      if (index === -1) {
+        return reject({
+          success: false,
+          message: "Product not found",
+        });
+      }
+
+      PRODUCTS[index] = product;
+
+      db.write()
+        .then(() => db.read())
+        .then(() => {
+          if (!db.data) {
+            return reject({
+              success: false,
+              message: "No database found",
+            });
+          }
+
+          const { PRODUCTS } = db.data;
+
+          const _product = PRODUCTS.find((p) => p.id === product.id);
+
+          if (!_product) {
+            return reject({
+              success: false,
+              message: "Product not found",
+            });
+          }
+
+          return resolve({ success: true, data: _product as DBProduct });
+        });
+    });
+  });
 }
 
 /********************************

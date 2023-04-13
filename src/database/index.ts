@@ -99,11 +99,8 @@ export function addGroup({ group }: addGroupProps) {
  * updateProduct
  *****************************/
 
-type updateProductProps = {
-  product: DBProduct;
-};
 
-export function updateProduct({ product }: updateProductProps) {
+export function updateProduct({ product }: ProductModel.UpdateProductProps) {
   return ProductModel.updateProduct({ product });
 }
 
