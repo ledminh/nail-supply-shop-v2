@@ -24,17 +24,63 @@ type deleteProductProps = {
   id: string;
 };
 
-export function deleteProduct({ id }: deleteProductProps) {
-  const product = productsJSON.find((product) => product.id === id);
+type DeleteProductResponse = {
+  success: true;
+} | {
+  success: false;
+  message: string;
+};
 
-  if (product) {
-    const index = productsJSON.indexOf(product);
-    productsJSON.splice(index, 1);
+export function deleteProduct({ id }: deleteProductProps):Promise<DeleteProductResponse> {
+  return new Promise((resolve, reject) => {
+    getDB().then((db) => {
+      const { data } = db;
 
-    return Promise.resolve();
-  }
+      if (!data) {
+        return reject({
+          success: false,
+          message: "No database found",
+        });
+      }
 
-  return Promise.reject(new Error("Product not found"));
+      const { PRODUCTS } = data;
+
+      const index = PRODUCTS.findIndex((product) => product.id === id);
+
+      if (index === -1) {
+        return reject({
+          success: false,
+          message: "Product not found",
+        });
+      }
+
+      PRODUCTS.splice(index, 1);
+
+      db.write()
+        .then(() => db.read())
+        .then(() => {
+          if (!db.data) {
+            return reject({
+              success: false,
+              message: "No database found",
+            });
+          }
+
+          const { PRODUCTS } = db.data;
+
+          const index = PRODUCTS.findIndex((product) => product.id === id);
+
+          if (index === -1) {
+            return resolve({ success: true });
+          }
+
+          return reject({
+            success: false,
+            message: "Product not deleted",
+          });
+        });
+    });
+  });
 }
 
 /******************************

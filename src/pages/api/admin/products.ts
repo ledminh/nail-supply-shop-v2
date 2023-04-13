@@ -116,7 +116,11 @@ const deleteSingleProduct = (id: string, res: NextApiProductResponse) => {
       const product = dBRes.data;
 
       if (product) {
-        if (Array.isArray(product) || !isProduct(product)) return;
+        if (Array.isArray(product) || !isProduct(product)) {
+          return res
+            .status(404)
+            .json({ success: false, message: "Product not found" });
+        }
 
         deleteImages(product.images.map((image) => image.src));
 
