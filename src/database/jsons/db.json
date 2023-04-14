@@ -11,7 +11,7 @@
         "src": "/images/placeholder_1.png",
         "alt": "Nail Polishes"
       },
-      "numProducts": 2
+      "numProducts": 18
     },
     {
       "id": "cat_nail02_gel",
@@ -22,7 +22,7 @@
         "src": "/images/placeholder_2.png",
         "alt": "Gel Nails"
       },
-      "numProducts": 0
+      "numProducts": 1
     },
     {
       "id": "cat_nail03_acrylics",
@@ -93,65 +93,532 @@
   ],
   "PRODUCTS": [
     {
-      "id": "12334444",
+      "id": "1222222222",
       "categoryID": "cat_nail01_polishes",
-      "name": "Polish 1",
-      "intro": "This is a product",
-      "details": "11111",
-      "price": 12212,
+      "name": "Product Sample",
+      "intro": "This is a product sample intro",
+      "details": "This is the detail",
+      "price": 1111,
       "images": [
         {
-          "id": "image-5701996409",
-          "src": "/images/product/product-image-1681386018257-494567451.jpeg",
-          "alt": "product-image-1681386018257-494567451.jpeg"
+          "id": "image-7262042285",
+          "src": "/images/product/product-image-1681388095705-566749189.jpeg",
+          "alt": "product-image-1681388095705-566749189.jpeg"
         },
         {
-          "id": "image-4697527034",
-          "src": "/images/product/product-image-1681386018262-17267907.jpeg",
-          "alt": "product-image-1681386018262-17267907.jpeg"
+          "id": "image-0790408580",
+          "src": "/images/product/product-image-1681388095709-890126214.jpeg",
+          "alt": "product-image-1681388095709-890126214.jpeg"
         },
         {
-          "id": "image-7260497917",
-          "src": "/images/product/product-image-1681386018262-930110882.jpeg",
-          "alt": "product-image-1681386018262-930110882.jpeg"
+          "id": "image-0395336218",
+          "src": "/images/product/product-image-1681388095715-299564033.jpeg",
+          "alt": "product-image-1681388095715-299564033.jpeg"
         }
       ],
-      "dateCreated": "2023-04-13T11:40:18.429Z",
+      "dateCreated": "2023-04-13T12:14:55.753Z",
       "sellCount": 0
     },
     {
-      "id": "product-group-5784470252",
-      "name": "A group here",
+      "id": "2222222222",
       "categoryID": "cat_nail01_polishes",
+      "name": "I am updated first",
+      "intro": "This is a product sample intro",
+      "details": "This is the detail",
+      "price": 1121,
+      "images": [
+        {
+          "id": "image-7262042285",
+          "src": "/images/product/product-image-1681388095705-566749189.jpeg",
+          "alt": "product-image-1681388095705-566749189.jpeg"
+        },
+        {
+          "id": "image-0790408580",
+          "src": "/images/product/product-image-1681388095709-890126214.jpeg",
+          "alt": "product-image-1681388095709-890126214.jpeg"
+        }
+      ],
+      "lastUpdated": "2023-04-13T12:33:40.200Z",
+      "dateCreated": "2023-04-13T12:14:55.753Z",
+      "sellCount": 0
+    },
+    {
+      "id": "3333333333",
+      "categoryID": "cat_nail01_polishes",
+      "name": "Product Sample 3",
+      "intro": "This is a product sample intro",
+      "details": "This is the detail",
+      "price": 113,
+      "images": [
+        {
+          "id": "image-7262042285",
+          "src": "/images/product/product-image-1681388095705-566749189.jpeg",
+          "alt": "product-image-1681388095705-566749189.jpeg"
+        },
+        {
+          "id": "image-0790408580",
+          "src": "/images/product/product-image-1681388095709-890126214.jpeg",
+          "alt": "product-image-1681388095709-890126214.jpeg"
+        },
+        {
+          "id": "image-0395336218",
+          "src": "/images/product/product-image-1681388095715-299564033.jpeg",
+          "alt": "product-image-1681388095715-299564033.jpeg"
+        }
+      ],
+      "dateCreated": "2023-04-13T12:14:55.753Z",
+      "sellCount": 0
+    },
+    {
+      "id": "4444444444",
+      "categoryID": "cat_nail01_polishes",
+      "name": "Changed product",
+      "intro": "An updated product",
+      "details": "This is the update product",
+      "price": 114,
+      "images": [
+        {
+          "id": "image-0395336218",
+          "src": "/images/product/product-image-1681388095715-299564033.jpeg",
+          "alt": "product-image-1681388095715-299564033.jpeg"
+        }
+      ],
+      "lastUpdated": "2023-04-13T12:23:42.821Z",
+      "dateCreated": "2023-04-13T12:14:55.753Z",
+      "sellCount": 0
+    },
+    {
+      "id": "5555555555",
+      "categoryID": "cat_nail01_polishes",
+      "name": "Product Sample 5",
+      "intro": "This is a product sample intro",
+      "details": "This is the detail",
+      "price": 115,
+      "images": [
+        {
+          "id": "image-7262042285",
+          "src": "/images/product/product-image-1681388095705-566749189.jpeg",
+          "alt": "product-image-1681388095705-566749189.jpeg"
+        },
+        {
+          "id": "image-0790408580",
+          "src": "/images/product/product-image-1681388095709-890126214.jpeg",
+          "alt": "product-image-1681388095709-890126214.jpeg"
+        },
+        {
+          "id": "image-0395336218",
+          "src": "/images/product/product-image-1681388095715-299564033.jpeg",
+          "alt": "product-image-1681388095715-299564033.jpeg"
+        }
+      ],
+      "dateCreated": "2023-04-13T12:14:55.753Z",
+      "sellCount": 0
+    },
+    {
+      "id": "6666666666",
+      "categoryID": "cat_nail01_polishes",
+      "name": "Product Sample 6",
+      "intro": "This is a product sample intro",
+      "details": "This is the detail",
+      "price": 116,
+      "images": [
+        {
+          "id": "image-7262042285",
+          "src": "/images/product/product-image-1681388095705-566749189.jpeg",
+          "alt": "product-image-1681388095705-566749189.jpeg"
+        },
+        {
+          "id": "image-0790408580",
+          "src": "/images/product/product-image-1681388095709-890126214.jpeg",
+          "alt": "product-image-1681388095709-890126214.jpeg"
+        },
+        {
+          "id": "image-0395336218",
+          "src": "/images/product/product-image-1681388095715-299564033.jpeg",
+          "alt": "product-image-1681388095715-299564033.jpeg"
+        }
+      ],
+      "dateCreated": "2023-04-13T12:14:55.753Z",
+      "sellCount": 0
+    },
+    {
+      "id": "7777777777",
+      "categoryID": "cat_nail01_polishes",
+      "name": "1 created product",
+      "intro": "This is a product sample intro",
+      "details": "This is the detail",
+      "price": 117,
+      "images": [
+        {
+          "id": "image-7262042285",
+          "src": "/images/product/product-image-1681388095705-566749189.jpeg",
+          "alt": "product-image-1681388095705-566749189.jpeg"
+        },
+        {
+          "id": "image-0790408580",
+          "src": "/images/product/product-image-1681388095709-890126214.jpeg",
+          "alt": "product-image-1681388095709-890126214.jpeg"
+        },
+        {
+          "id": "image-0395336218",
+          "src": "/images/product/product-image-1681388095715-299564033.jpeg",
+          "alt": "product-image-1681388095715-299564033.jpeg"
+        }
+      ],
+      "dateCreated": "2023-04-13T12:15:55.753Z",
+      "sellCount": 0
+    },
+    {
+      "id": "8888888888",
+      "categoryID": "cat_nail01_polishes",
+      "name": "2 created product",
+      "intro": "This is a product sample intro",
+      "details": "This is the detail",
+      "price": 118,
+      "images": [
+        {
+          "id": "image-7262042285",
+          "src": "/images/product/product-image-1681388095705-566749189.jpeg",
+          "alt": "product-image-1681388095705-566749189.jpeg"
+        },
+        {
+          "id": "image-0790408580",
+          "src": "/images/product/product-image-1681388095709-890126214.jpeg",
+          "alt": "product-image-1681388095709-890126214.jpeg"
+        },
+        {
+          "id": "image-0395336218",
+          "src": "/images/product/product-image-1681388095715-299564033.jpeg",
+          "alt": "product-image-168138809571-299564033.jpeg"
+        }
+      ],
+      "dateCreated": "2023-04-13T12:15:50.753Z",
+      "sellCount": 0
+    },
+    {
+      "id": "9999999999",
+      "categoryID": "cat_nail01_polishes",
+      "name": "3 created product",
+      "intro": "This is a product sample intro",
+      "details": "This is the detail",
+      "price": 112,
+      "images": [
+        {
+          "id": "image-7262042285",
+          "src": "/images/product/product-image-1681388095705-566749189.jpeg",
+          "alt": "product-image-1681388095705-566749189.jpeg"
+        },
+        {
+          "id": "image-0790408580",
+          "src": "/images/product/product-image-1681388095709-890126214.jpeg",
+          "alt": "product-image-1681388095709-890126214.jpeg"
+        },
+        {
+          "id": "image-0395336218",
+          "src": "/images/product/product-image-1681388095715-299564033.jpeg",
+          "alt": "product-image-1681388095715-299564033.jpeg"
+        }
+      ],
+      "dateCreated": "2023-04-13T12:15:45.753Z",
+      "sellCount": 0
+    },
+    {
+      "id": "0000000000",
+      "categoryID": "cat_nail01_polishes",
+      "name": "I am updated 4",
+      "intro": "This is a product sample intro",
+      "details": "This is the detail",
+      "price": 113,
+      "images": [
+        {
+          "id": "image-7262042285",
+          "src": "/images/product/product-image-1681388095705-566749189.jpeg",
+          "alt": "product-image-1681388095705-566749189.jpeg"
+        },
+        {
+          "id": "image-0790408580",
+          "src": "/images/product/product-image-1681388095709-890126214.jpeg",
+          "alt": "product-image-1681388095709-890126214.jpeg"
+        },
+        {
+          "id": "image-0395336218",
+          "src": "/images/product/product-image-1681388095715-299564033.jpeg",
+          "alt": "product-image-1681388095715-299564033.jpeg"
+        }
+      ],
+      "lastUpdated": "2023-04-13T12:36:19.826Z",
+      "dateCreated": "2023-04-13T12:14:55.753Z",
+      "sellCount": 0
+    },
+    {
+      "id": "1111111111",
+      "categoryID": "cat_nail01_polishes",
+      "name": "Product Sample 4",
+      "intro": "This is a product sample intro",
+      "details": "This is the detail",
+      "price": 114,
+      "images": [
+        {
+          "id": "image-7262042285",
+          "src": "/images/product/product-image-1681388095705-566749189.jpeg",
+          "alt": "product-image-1681388095705-566749189.jpeg"
+        },
+        {
+          "id": "image-0790408580",
+          "src": "/images/product/product-image-1681388095709-890126214.jpeg",
+          "alt": "product-image-1681388095709-890126214.jpeg"
+        },
+        {
+          "id": "image-0395336218",
+          "src": "/images/product/product-image-1681388095715-299564033.jpeg",
+          "alt": "product-image-1681388095715-299564033.jpeg"
+        }
+      ],
+      "dateCreated": "2023-04-13T12:14:55.753Z",
+      "sellCount": 0
+    },
+    {
+      "id": "4222222222",
+      "categoryID": "cat_nail01_polishes",
+      "name": "Product Sample 5",
+      "intro": "This is a product sample intro",
+      "details": "This is the detail",
+      "price": 115,
+      "images": [
+        {
+          "id": "image-7262042285",
+          "src": "/images/product/product-image-1681388095705-566749189.jpeg",
+          "alt": "product-image-1681388095705-566749189.jpeg"
+        },
+        {
+          "id": "image-0790408580",
+          "src": "/images/product/product-image-1681388095709-890126214.jpeg",
+          "alt": "product-image-1681388095709-890126214.jpeg"
+        },
+        {
+          "id": "image-0395336218",
+          "src": "/images/product/product-image-1681388095715-299564033.jpeg",
+          "alt": "product-image-1681388095715-299564033.jpeg"
+        }
+      ],
+      "dateCreated": "2023-04-13T12:14:55.753Z",
+      "sellCount": 0
+    },
+    {
+      "id": "4422222222",
+      "categoryID": "cat_nail01_polishes",
+      "name": "I am updated 3",
+      "intro": "This is a product sample intro",
+      "details": "This is the detail",
+      "price": 116,
+      "images": [
+        {
+          "id": "image-7262042285",
+          "src": "/images/product/product-image-1681388095705-566749189.jpeg",
+          "alt": "product-image-1681388095705-566749189.jpeg"
+        },
+        {
+          "id": "image-0790408580",
+          "src": "/images/product/product-image-1681388095709-890126214.jpeg",
+          "alt": "product-image-1681388095709-890126214.jpeg"
+        },
+        {
+          "id": "image-0395336218",
+          "src": "/images/product/product-image-1681388095715-299564033.jpeg",
+          "alt": "product-image-1681388095715-299564033.jpeg"
+        }
+      ],
+      "lastUpdated": "2023-04-13T12:36:05.455Z",
+      "dateCreated": "2023-04-13T12:14:55.753Z",
+      "sellCount": 0
+    },
+    {
+      "id": "422331222",
+      "categoryID": "cat_nail01_polishes",
+      "name": "I am updated second",
+      "intro": "This is a product sample intro",
+      "details": "This is the detail",
+      "price": 118,
+      "images": [
+        {
+          "id": "image-7262042285",
+          "src": "/images/product/product-image-1681388095705-566749189.jpeg",
+          "alt": "product-image-1681388095705-566749189.jpeg"
+        },
+        {
+          "id": "image-0790408580",
+          "src": "/images/product/product-image-1681388095709-890126214.jpeg",
+          "alt": "product-image-1681388095709-890126214.jpeg"
+        },
+        {
+          "id": "image-0395336218",
+          "src": "/images/product/product-image-1681388095715-299564033.jpeg",
+          "alt": "product-image-168138809571-299564033.jpeg"
+        }
+      ],
+      "lastUpdated": "2023-04-13T12:35:51.930Z",
+      "dateCreated": "2023-04-13T12:14:55.753Z",
+      "sellCount": 0
+    },
+    {
+      "id": "33331",
+      "categoryID": "cat_nail01_polishes",
+      "name": "Hello",
+      "intro": "Hello product",
+      "details": "Another product for you",
+      "price": 22.2,
+      "images": [
+        {
+          "id": "image-1981679692",
+          "src": "/images/product/product-image-1681388669163-230556557.jpeg",
+          "alt": "product-image-1681388669163-230556557.jpeg"
+        }
+      ],
+      "lastUpdated": "2023-04-13T12:10:38.548Z",
+      "dateCreated": "2023-04-13T12:10:29.338Z",
+      "sellCount": 0
+    },
+    {
+      "id": "1998766666",
+      "categoryID": "cat_nail01_polishes",
+      "name": "I am added first",
+      "intro": "This is a product",
+      "details": "This is a product hello",
+      "price": 1111,
+      "images": [
+        {
+          "id": "image-7650741359",
+          "src": "/images/product/product-image-1681390014380-20657474.jpeg",
+          "alt": "product-image-1681390014380-20657474.jpeg"
+        },
+        {
+          "id": "image-8583151085",
+          "src": "/images/product/product-image-1681390014383-262287079.jpeg",
+          "alt": "product-image-1681390014383-262287079.jpeg"
+        },
+        {
+          "id": "image-7361139808",
+          "src": "/images/product/product-image-1681390014387-246022877.jpeg",
+          "alt": "product-image-1681390014387-246022877.jpeg"
+        }
+      ],
+      "dateCreated": "2023-04-13T12:46:54.551Z",
+      "sellCount": 0
+    },
+    {
+      "id": "5567444333",
+      "categoryID": "cat_nail01_polishes",
+      "name": "I am added second",
+      "intro": "This is the intro",
+      "details": "This is the detail of the product I am following",
+      "price": 12222,
+      "images": [
+        {
+          "id": "image-9632958008",
+          "src": "/images/product/product-image-1681390063401-150976939.jpeg",
+          "alt": "product-image-1681390063401-150976939.jpeg"
+        },
+        {
+          "id": "image-5508298664",
+          "src": "/images/product/product-image-1681390063406-205578825.jpeg",
+          "alt": "product-image-1681390063406-205578825.jpeg"
+        },
+        {
+          "id": "image-3335816093",
+          "src": "/images/product/product-image-1681390063415-977741946.jpeg",
+          "alt": "product-image-1681390063415-977741946.jpeg"
+        }
+      ],
+      "dateCreated": "2023-04-13T12:47:43.911Z",
+      "sellCount": 0
+    },
+    {
+      "id": "444334442",
+      "categoryID": "cat_nail01_polishes",
+      "name": "I am added third",
+      "intro": "This is another product for youq",
+      "details": "You don't know it yet, right?",
+      "price": 12222,
+      "images": [
+        {
+          "id": "image-9767933098",
+          "src": "/images/product/product-image-1681390113462-215701220.jpeg",
+          "alt": "product-image-1681390113462-215701220.jpeg"
+        },
+        {
+          "id": "image-0299557144",
+          "src": "/images/product/product-image-1681390113465-587273402.jpeg",
+          "alt": "product-image-1681390113465-587273402.jpeg"
+        },
+        {
+          "id": "image-4518159565",
+          "src": "/images/product/product-image-1681390113475-969527525.jpeg",
+          "alt": "product-image-1681390113475-969527525.jpeg"
+        }
+      ],
+      "dateCreated": "2023-04-13T12:48:33.646Z",
+      "sellCount": 0
+    },
+    {
+      "id": "product-group-2956809645",
+      "name": "Group 1",
+      "categoryID": "cat_nail02_gel",
       "products": [
         {
-          "id": "1111112122",
-          "groupName": "A group here",
-          "categoryID": "cat_nail01_polishes",
-          "name": "New Product",
-          "intro": "Product here",
-          "details": "111111",
+          "id": "3332223223",
+          "categoryID": "cat_nail02_gel",
+          "name": "Another one of wwww",
+          "intro": "Intro to another one",
+          "details": "Another one of 1111",
+          "price": 6,
+          "images": [
+            {
+              "id": "image-4614218661",
+              "src": "/images/product/product-image-1681435808530-297935632.jpeg",
+              "alt": "product-image-1681435808530-297935632.jpeg"
+            },
+            {
+              "id": "image-9873372734",
+              "src": "/images/product/product-image-1681435808532-246764716.jpeg",
+              "alt": "product-image-1681435808532-246764716.jpeg"
+            },
+            {
+              "id": "image-9543911816",
+              "src": "/images/product/product-image-1681435808536-481659.jpeg",
+              "alt": "product-image-1681435808536-481659.jpeg"
+            }
+          ],
+          "lastUpdated": "2023-04-14T01:31:21.863Z"
+        },
+        {
+          "id": "1235533",
+          "categoryID": "cat_nail02_gel",
+          "name": "This is another one of you",
+          "intro": "Intro to another one",
+          "details": "This is another one of you",
           "price": 5,
           "images": [
             {
-              "id": "image-3906332746",
-              "src": "/images/product/product-image-1681386079509-949194562.jpeg",
-              "alt": "product-image-1681386079509-949194562.jpeg"
+              "id": "image-2792624280",
+              "src": "/images/product/product-image-1681435744231-624620665.jpeg",
+              "alt": "product-image-1681435744231-624620665.jpeg"
             },
             {
-              "id": "image-2673033126",
-              "src": "/images/product/product-image-1681386079509-608201567.jpeg",
-              "alt": "product-image-1681386079509-608201567.jpeg"
+              "id": "image-9145121419",
+              "src": "/images/product/product-image-1681435744232-493255835.jpeg",
+              "alt": "product-image-1681435744232-493255835.jpeg"
             },
             {
-              "id": "image-2896391889",
-              "src": "/images/product/product-image-1681386079512-297416824.jpeg",
-              "alt": "product-image-1681386079512-297416824.jpeg"
+              "id": "image-1692106377",
+              "src": "/images/product/product-image-1681435744235-42575588.jpeg",
+              "alt": "product-image-1681435744235-42575588.jpeg"
             }
-          ]
+          ],
+          "lastUpdated": "2023-04-14T01:31:14.174Z"
         }
       ],
-      "dateCreated": "2023-04-13T11:41:19.550Z"
+      "lastUpdated": "2023-04-14T01:30:08.579Z",
+      "dateCreated": "2023-04-14T01:27:15.096Z"
     }
   ]
 }

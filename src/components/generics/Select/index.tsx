@@ -23,6 +23,7 @@ function Select<T>({
   headerLabel,
   onChange,
 }: Props<T>) {
+  
   const HeadOption: OptionItem = {
     value: "head",
     label: headerLabel || "Select",
@@ -31,6 +32,9 @@ function Select<T>({
   const _initOptionItem = initOptionItem || HeadOption;
 
   const [selectedOption, setSelectedOption] = useState(_initOptionItem);
+
+
+
 
   const selectClasses = [styles.wrapper, selectClass].join(" ");
   const optionClasses = [styles.option, optionClass].join(" ");

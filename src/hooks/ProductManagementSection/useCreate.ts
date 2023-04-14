@@ -18,13 +18,7 @@ type Props = {
   openCreateGroup: (props: OpenCreateGroupProps) => void;
 };
 
-export default function useCreate({
-  products,
-  currentCategory,
-  setProducts,
-  openCreateProduct,
-  openCreateGroup,
-}: Props) {
+export default function useCreate({ products, currentCategory, setProducts, openCreateProduct, openCreateGroup }: Props) {
   const post = (url: string, formData: FormData) => {
     axios
       .post(url, formData, {
@@ -77,6 +71,7 @@ export default function useCreate({
       categoryID: currentCategory!.id,
 
       onSave({ name, products }) {
+        // definition
         async function createGroup() {
           const uploadPromises = products.map((product) =>
             processImages(product.images)
@@ -100,6 +95,7 @@ export default function useCreate({
           post("/api/admin/products?type=add-group", formData);
         }
 
+        // execution
         createGroup();
       },
     });

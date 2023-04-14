@@ -52,13 +52,49 @@ export function getProducts(options: ProductModel.FindProductOptions) {
  * getProduct
  */
 
-type getProductProps = {
+type GetProductProps = {
   id?: string;
   name?: string;
 };
 
-export const getProduct = ({ id, name }: getProductProps) =>
-  ProductModel.find({ id, name, type: "product" });
+type GetProductResponse =
+  | {
+      success: true;
+      data: DBProduct;
+    }
+  | {
+      success: false;
+      message: string;
+    };
+
+
+export const getProduct = ({ id, name }: GetProductProps):Promise<GetProductResponse> =>
+  ProductModel.find({ id, name, type: "product" }) as Promise<GetProductResponse>;
+
+
+/**************************
+ * getGroup
+ */
+
+type GetGroupProps = {
+  id?: string;
+  name?: string;
+};
+
+type GetGroupResponse =
+  | {
+      success: true;
+      data: DBProductGroup;
+    }
+  | {
+      success: false;
+      message: string;
+    };
+
+
+export const getGroup = ({ id, name }: GetGroupProps):Promise<GetGroupResponse> =>
+  ProductModel.find({ id, name, type: "group" }) as Promise<GetGroupResponse>;
+
 
 /**************************
  * deleteProduct

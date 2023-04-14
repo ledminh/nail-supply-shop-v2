@@ -88,27 +88,28 @@ function useEdit({  products, currentCategory, setProducts, openEditProduct, ope
               throw new Error(data.message);
             }
 
-            // if (groupID) {
-            //   const group = products.find((product) => product.id === groupID);
 
-            //   if (!group) {
-            //     throw new Error("Group not found");
-            //   }
+            if (groupID) {
+              const group = products.find((product) => product.id === groupID);
 
-            //   if (isProduct(group)) {
-            //     throw new Error("Group is a product");
-            //   }
+              if (!group) {
+                throw new Error("Group not found");
+              }
 
-            //   group.products = group.products.map((prod) =>
-            //     prod.id === data.product.id ? data.product : prod
-            //   );
+              if (isProduct(group)) {
+                throw new Error("Group is a product");
+              }
 
-            //   setProducts(
-            //     products.map((prod) => (prod.id === groupID ? group : prod))
-            //   );
+              group.products = group.products.map((prod) =>
+                prod.id === data.product.id ? data.product : prod
+              );
 
-            //   return;
-            // }
+              setProducts(
+                products.map((prod) => (prod.id === groupID ? group : prod))
+              );
+
+              return;
+            }
 
             setReloadProducts(true);
           });
@@ -152,10 +153,7 @@ function useEdit({  products, currentCategory, setProducts, openEditProduct, ope
             products: JSON.stringify(processedProducts),
           });
 
-          const { data } = await axios.post(
-            "/api/products?type=update-group",
-            formData
-          );
+          const { data } = await axios.post("/api/admin/products?type=update-group", formData);
 
           if (!data.success) {
             throw new Error(data.message);

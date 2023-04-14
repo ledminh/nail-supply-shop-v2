@@ -178,7 +178,6 @@ export default function ProductModal({
                 const value = parseFloat(e.target.value);
                 
                 if (isNaN(value) || value < 0) return;
-                console.log(value);
                 setPrice(value);
               }}
             />

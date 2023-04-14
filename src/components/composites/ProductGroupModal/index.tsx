@@ -81,7 +81,6 @@ export default function ProductGroupModal({
       onSave: ({ serialNumber, name, intro, details, price, images }) => {
         const newProduct: PreparedProduct = {
           id: serialNumber,
-          groupName: groupName,
           categoryID,
           name,
           intro,
@@ -183,7 +182,7 @@ export default function ProductGroupModal({
         <ButtonCPN
           type="normal"
           label={type === "edit" ? "Save" : "Add"}
-          disabled={!groupName}
+          disabled={!groupName || products.length === 0}
           onClick={_onSave}
         />
         <ButtonCPN type="attention" label="Cancel" onClick={onCancel} />
