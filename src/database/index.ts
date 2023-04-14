@@ -100,8 +100,6 @@ export const getGroup = ({ id, name }: GetGroupProps):Promise<GetGroupResponse> 
  * deleteProduct
  */
 
-
-
 export function deleteProduct({ id }: ProductModel.DeleteProductProps):Promise<ProductModel.DeleteProductResponse> {
   return ProductModel.deleteProduct({ id });
 }
@@ -109,6 +107,8 @@ export function deleteProduct({ id }: ProductModel.DeleteProductProps):Promise<P
 export function deleteGroup({ id }: ProductModel.DeleteGroupProps):Promise<ProductModel.DeleteGroupResponse> {
   return ProductModel.deleteGroup({ id });
 }
+
+
 
 /*****************************
  * addProduct

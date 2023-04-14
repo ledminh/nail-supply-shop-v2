@@ -20,6 +20,7 @@ export type FindProductResponse =
 };
 
 export type FindProductOptions = {
+    type: "product" | "group" | "all";
     catID?: string;
     catSlug?: string;
     sort?: SortType;
@@ -29,7 +30,6 @@ export type FindProductOptions = {
     id?: string;
     name?: string;
     groupID?: string;
-    type: "product" | "group" | "all";
 };
 
 export default function find(

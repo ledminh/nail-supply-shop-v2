@@ -208,7 +208,7 @@ export function deleteCategory(id: string): Promise<CategoryResponse> {
         });
       }
 
-      const { CATEGORIES } = data;
+      const { CATEGORIES, PRODUCTS } = data;
 
       const category = CATEGORIES.find((cat) => cat.id === id);
 
@@ -218,6 +218,17 @@ export function deleteCategory(id: string): Promise<CategoryResponse> {
           message: "Category not found",
         });
       }
+
+      const productIndexes = PRODUCTS.reduce((acc, product, index) => {
+        if (product.categoryID === id) {
+          acc.push(index);
+        }
+
+        return acc;
+      }, [] as number[]);
+
+      const newProducts = PRODUCTS.filter((_, index) => !productIndexes.includes(index));
+      data.PRODUCTS = newProducts;
 
       const index = CATEGORIES.indexOf(category);
 
