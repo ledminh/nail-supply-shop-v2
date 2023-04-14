@@ -262,19 +262,31 @@ const addGroup = (req: NextApiRequest, res: NextApiProductResponse) => {
         .json({ success: false, message: "Missing fields" });
     }
 
+    const groupID = randomId(10, "prdt-grp-");
+
+    const _products = JSON.parse(products).map((product: DBProduct) => {
+      return {
+        ...product,
+        groupID,
+      };
+    });
+
     const group: DBProductGroup = {
-      id: randomId(10, 'product-group-'),
+      id: groupID,
       name,
       categoryID,
-      products: JSON.parse(products),
+      products: _products,
       dateCreated: new Date().toISOString(),
     };
+
 
     DB.addGroup({ group })
       .then((dbRes) => {
         if (!dbRes.success) {
           return res.status(500).json({ success: false, message: dbRes.message });
         }
+
+        console.log('after', dbRes.data);
 
         return res.status(200).json({ success: true, product: dbRes.data });
       })
@@ -372,7 +384,6 @@ const updateProduct = (req: NextApiRequest, res: NextApiProductResponse) => {
                   .json({ success: false, message: dbRes.message });
               }
 
-              console.log('dbRes', dbRes);
 
               return res
                 .status(200)
