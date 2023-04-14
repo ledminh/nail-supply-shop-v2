@@ -29,6 +29,7 @@ export type FindProductOptions = {
   id?: string;
   name?: string;
   groupID?: string;
+  searchTerm?: string;
 };
 
 export default function find(
@@ -48,6 +49,15 @@ export default function find(
       const { PRODUCTS, CATEGORIES } = data;
 
       let products = filterProductsByType(PRODUCTS, options.type);
+
+      if (options.searchTerm) {
+        const searchTerm = options.searchTerm.toLowerCase();
+        products = products.filter((product) =>
+          product.name.toLowerCase().includes(searchTerm)
+        );
+      }
+
+
 
       if (options.name) {
         products = filterProductsByName(products, options.name);
