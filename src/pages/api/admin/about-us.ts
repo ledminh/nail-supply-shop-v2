@@ -46,7 +46,7 @@ async function setAboutUsMissionStatement(res: NextApiResponse, missionStatement
     const dbRes = await DB.setAboutUsMissionStatement({missionStatement});
 
     if (dbRes.success) {
-        res.status(200).json({success: true, aboutUsMission: dbRes.data });
+        res.status(200).json({success: true, missionStatement: dbRes.data });
     } else {
         res.status(500).json({ success: false, message: dbRes.message });
     }

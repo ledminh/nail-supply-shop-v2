@@ -32,7 +32,7 @@ export function getAboutUsData(): Promise<GetAboutUsDataResponse> {
           success: false,
           message: "No about us data found in database"
         });
-      }
+      } 
 
       resolve({
         success: true,
@@ -78,14 +78,37 @@ export function setAboutUsFooter({footer}: SetAboutUsFooterProps): Promise<SetAb
 
       ABOUT_US.aboutUsFooter = footer;
 
-      resolve({
-        success: true,
-        data: ABOUT_US.aboutUsFooter
-      });
+      db.write()
+        .then(() => db.read())
+        .then(() => {
+
+          if(!db.data) {
+            return reject({
+              success: false,
+              message: "No data found in database"
+            });
+          }
+
+          const {ABOUT_US} = db.data;
+
+          if(!ABOUT_US) {
+            reject({
+              success: false,
+              message: "No about us data found in database"
+            });
+          }
+
+          resolve({
+            success: true,
+            data: ABOUT_US.aboutUsFooter
+          });
+        });
 
     });
+
   });
 }
+
 
 
 export type SetAboutUsMissionStatementProps = {
@@ -123,10 +146,32 @@ export function setAboutUsMissionStatement({missionStatement}: SetAboutUsMission
 
       ABOUT_US.missionStatement = missionStatement;
 
-      resolve({
-        success: true,
-        data: ABOUT_US.missionStatement
-      });
+      db.write()
+        .then(() => db.read())
+        .then(() => {
+            
+            if(!db.data) {
+              return reject({
+                success: false,
+                message: "No data found in database"
+              });
+            }
+  
+            const {ABOUT_US} = db.data;
+  
+            if(!ABOUT_US) {
+              reject({
+                success: false,
+                message: "No about us data found in database"
+              });
+            }
+  
+            resolve({
+              success: true,
+              data: ABOUT_US.missionStatement
+            });
+          });
+
 
     });
   });
@@ -168,11 +213,31 @@ export function setAboutUsHistoryHTML({history}: SetAboutUsHistoryHTMLProps): Pr
 
       ABOUT_US.historyHTML = history;
 
-      resolve({
-        success: true,
-        data: ABOUT_US.historyHTML
-      });
-
+      db.write()
+        .then(() => db.read())
+        .then(() => {
+              
+              if(!db.data) {
+                return reject({
+                  success: false,
+                  message: "No data found in database"
+                });
+              }
+    
+              const {ABOUT_US} = db.data;
+    
+              if(!ABOUT_US) {
+                reject({
+                  success: false,
+                  message: "No about us data found in database"
+                });
+              }
+    
+              resolve({
+                success: true,
+                data: ABOUT_US.historyHTML
+              });
+            });
     });
   });
 }
@@ -213,11 +278,31 @@ export function setAboutUsContactInfo({contactInfo}: SetAboutUsContactInfoProps)
 
       ABOUT_US.contactInfo = contactInfo;
 
-      resolve({
-        success: true,
-        data: ABOUT_US.contactInfo
-      });
-
+      db.write()
+        .then(() => db.read())
+        .then(() => {
+                
+                if(!db.data) {
+                  return reject({
+                    success: false,
+                    message: "No data found in database"
+                  });
+                }
+      
+                const {ABOUT_US} = db.data;
+      
+                if(!ABOUT_US) {
+                  reject({
+                    success: false,
+                    message: "No about us data found in database"
+                  });
+                }
+      
+                resolve({
+                  success: true,
+                  data: ABOUT_US.contactInfo
+                });
+              });
     });
   });
 }

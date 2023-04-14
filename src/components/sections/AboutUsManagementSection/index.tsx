@@ -24,21 +24,31 @@ export default function AboutUsManagementSection({}: Props) {
   const [contactInfo, setContactInfo] = useState<ContactInfo | null>(null);
 
   useEffect(() => {
-    axios.get("/api/about-us").then((res) => {
-      const { aboutUsFooter, missionStatement, historyHTML, contactInfo } =
-        res.data;
+    axios.get("/api/about-us").then(({data}) => {
+      
+      if(!data.success)
+        throw new Error(data.message);
+
+
+      const { aboutUsFooter, missionStatement, historyHTML, contactInfo } =  data.aboutUs;
+
+      
       setAboutUsFooterContent(aboutUsFooter);
       setMissionStatementContent(missionStatement);
       setHistoryContentHTML(historyHTML);
       setContactInfo(contactInfo);
+    
     });
   }, []);
 
   const aboutUsFooterOnSave = (content: string) => {
     axios
-      .post("/api/about-us/?type=footer", { content })
-      .then((res) => {
-        setAboutUsFooterContent(content);
+      .post("/api/admin/about-us/?type=footer", { content })
+      .then(({data}) => {
+        if(!data.success)
+          throw new Error(data.message);
+        
+        setAboutUsFooterContent(data.footer);
       })
       .catch((err) => {
         throw err;
@@ -47,9 +57,12 @@ export default function AboutUsManagementSection({}: Props) {
 
   const missionStatementOnSave = (content: string) => {
     axios
-      .post("/api/about-us/?type=mission-statement", { content })
-      .then((res) => {
-        setMissionStatementContent(content);
+      .post("/api/admin/about-us/?type=mission-statement", { content })
+      .then(({data}) => {
+        if(!data.success)
+          throw new Error(data.message);
+
+        setMissionStatementContent(data.missionStatement);
       })
       .catch((err) => {
         throw err;
@@ -58,9 +71,13 @@ export default function AboutUsManagementSection({}: Props) {
 
   const historyOnSave = (content: string) => {
     axios
-      .post("/api/about-us/?type=history", { content })
-      .then((res) => {
-        setHistoryContentHTML(content);
+      .post("/api/admin/about-us/?type=history", { content })
+      .then(({data}) => {
+        if(!data.success)
+          throw new Error(data.message);
+
+        
+        setHistoryContentHTML(data.historyHTML);
       })
       .catch((err) => {
         throw err;
@@ -73,13 +90,16 @@ export default function AboutUsManagementSection({}: Props) {
     additionalInfos: string[]
   ) => {
     axios
-      .post("/api/about-us/?type=contact-info", {
+      .post("/api/admin/about-us/?type=contact-info", {
         email,
         phone,
         additionalInfos,
       })
-      .then((res) => {
-        setContactInfo({ email, phone, additionalInfos });
+      .then(({data}) => {
+        if(!data.success)
+          throw new Error(data.message);
+      
+        setContactInfo(data.contactInfo);
       })
       .catch((err) => {
         throw err;

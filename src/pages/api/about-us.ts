@@ -6,7 +6,7 @@ import * as DB from "@/database";
   
 type AboutUsResponse = {
   success: true;
-  data: AboutUsData;
+  aboutUs: AboutUsData;
 } | {
   success: false;
   message: string;
@@ -34,7 +34,7 @@ async function getAboutUsData(res: NextAboutUsApiResponse) {
   const dbRes = await DB.getAboutUsData();
 
   if (dbRes.success) {
-    res.status(200).json({ success: true, data: dbRes.data });
+    res.status(200).json({ success: true, aboutUs: dbRes.data });
   } else {
     res.status(500).json({ success: false, message: dbRes.message });
   }
