@@ -2,17 +2,16 @@ import styles from "@styles/composites/ProductGroupModal.module.scss";
 import ModalLayout from "@/components/layouts/ModalLayout";
 import ButtonCPN from "@/components/basics/ButtonCPN";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Product, ProductImage } from "@/types/product";
 import List from "@/components/generics/List";
 import ProductTabCPN from "@/components/basics/ProductTabCPN";
 
-import ProductModal, {
-  Props as ProductModalProps,
+import  {
   useProductModal,
 } from "@components/composites/ProductModal";
 
-import WarningModal, {
+import {
   useWarningModal,
 } from "@components/composites/WarningModal";
 

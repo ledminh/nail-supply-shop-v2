@@ -11,7 +11,7 @@
         "src": "/images/placeholder_1.png",
         "alt": "Nail Polishes"
       },
-      "numProducts": 2
+      "numProducts": 3
     },
     {
       "id": "cat_nail02_gel",
@@ -93,60 +93,54 @@
   ],
   "PRODUCTS": [
     {
-      "id": "prdt-grp-6662272784",
+      "id": "prdt-grp-1570831120",
       "name": "Group 1",
       "categoryID": "cat_nail01_polishes",
       "products": [
         {
-          "id": "191999",
-          "categoryID": "cat_nail01_polishes",
-          "name": "Prod 3",
-          "intro": "This is prod 3",
-          "details": "This is prod 3. This is prod 3. This is prod 3. This is prod 3.",
-          "price": 3,
-          "images": [
-            {
-              "id": "image-8703109620",
-              "src": "/images/product/product-image-1681445031594-351061398.jpeg",
-              "alt": "product-image-1681445031594-351061398.jpeg"
-            }
-          ],
-          "groupID": "prdt-grp-6662272784"
-        },
-        {
-          "id": "122222",
+          "id": "001001",
           "categoryID": "cat_nail01_polishes",
           "name": "Prod 2",
           "intro": "This is prod 2",
           "details": "This is prod 2. This is prod 2. This is prod 2. This is prod 2.",
-          "price": 2,
+          "price": 5,
           "images": [
             {
-              "id": "image-1941165910",
-              "src": "/images/product/product-image-1681445031595-5839387.jpeg",
-              "alt": "product-image-1681445031595-5839387.jpeg"
+              "id": "image-6210484522",
+              "src": "/images/product/product-image-1681447836768-914636959.jpeg",
+              "alt": "product-image-1681447836768-914636959.jpeg"
+            },
+            {
+              "id": "image-8369077514",
+              "src": "/images/product/product-image-1681447836919-944027185.jpeg",
+              "alt": "product-image-1681447836919-944027185.jpeg"
             }
           ],
-          "groupID": "prdt-grp-6662272784"
+          "groupID": "prdt-grp-1570831120"
         },
         {
-          "id": "111",
+          "id": "0001001",
           "categoryID": "cat_nail01_polishes",
           "name": "Prod 1",
-          "intro": "This is prod 1",
-          "details": "This is prod 1. This is prod 1. This is prod 1. This is prod 1. This is prod 1.",
-          "price": 1,
+          "intro": "Intro to prod 1",
+          "details": "Intro to prod 1. Intro to prod 1. Intro to prod 1. Intro to prod 1.",
+          "price": 111.3,
           "images": [
             {
-              "id": "image-3007327430",
-              "src": "/images/product/product-image-1681445031594-44674807.jpeg",
-              "alt": "product-image-1681445031594-44674807.jpeg"
+              "id": "image-5756228106",
+              "src": "/images/product/product-image-1681447836768-189812950.jpeg",
+              "alt": "product-image-1681447836768-189812950.jpeg"
+            },
+            {
+              "id": "image-9164200571",
+              "src": "/images/product/product-image-1681447836816-249867784.jpeg",
+              "alt": "product-image-1681447836816-249867784.jpeg"
             }
           ],
-          "groupID": "prdt-grp-6662272784"
+          "groupID": "prdt-grp-1570831120"
         }
       ],
-      "dateCreated": "2023-04-14T04:03:52.023Z"
+      "dateCreated": "2023-04-14T04:50:38.318Z"
     }
   ]
 }

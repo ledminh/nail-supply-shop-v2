@@ -92,15 +92,7 @@ export default function ProductModal({
         <ButtonCPN
           type="normal"
           label={type === "edit" ? "Save" : "Add"}
-          disabled={
-            !serialNumber ||
-            !name ||
-            !intro ||
-            !details ||
-            price === 0 ||
-            !images ||
-            images.length === 0
-          }
+          disabled={ !serialNumber || !name || !intro || !details || price === 0 || !images || images.length === 0 }
           onClick={_onSave}
         />
         <ButtonCPN type="attention" label="Cancel" onClick={onCancel} />
@@ -129,12 +121,17 @@ export default function ProductModal({
               value={serialNumber}
               onChange={(e) => {
                 const value = e.target.value;
-                if (value.length > 10) return;
+                if (value.length > 15) return;
+                
+                if(value === "")
+                  return setSerialNumber("");
+                
                 const intVal = parseInt(value);
 
                 if (isNaN(intVal) || intVal < 0) return;
 
                 setSerialNumber(value);
+
               }}
             />
           </div>
@@ -169,16 +166,20 @@ export default function ProductModal({
             <input
               type="number"
               id="price"
-              value={price}
+              value={price + ""}
               onChange={(e) => {
-                
-                if(e.target.value === "")
-                  return setPrice(0);
 
-                const value = parseFloat(e.target.value);
+                let value = e.target.value;
                 
-                if (isNaN(value) || value < 0) return;
-                setPrice(value);
+                if(value === "")
+                  return setPrice(0);
+                
+                const intVal = parseFloat(value);
+
+                if (isNaN(intVal) || intVal < 0) return;
+
+                setPrice(intVal);                
+                
               }}
             />
           </div>
@@ -215,6 +216,7 @@ export default function ProductModal({
                   );
                 }}
               >
+                <div className={styles.removeImage}>X</div>
                 <ImageCPN
                   key={createImageObj(image).alt}
                   image={createImageObj(image)}
