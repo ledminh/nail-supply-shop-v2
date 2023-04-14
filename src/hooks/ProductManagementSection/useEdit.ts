@@ -20,10 +20,21 @@ type Props = {
   setReloadProducts: Dispatch<SetStateAction<boolean>>;
 };
 
-function useEdit({  products, currentCategory, setProducts, openEditProduct, openEditGroup, setReloadProducts}: Props) {
-  
-  const onEditProduct = ({ productID, groupID  }: {productID: string; groupID?: string; }) => {
-
+function useEdit({
+  products,
+  currentCategory,
+  setProducts,
+  openEditProduct,
+  openEditGroup,
+  setReloadProducts,
+}: Props) {
+  const onEditProduct = ({
+    productID,
+    groupID,
+  }: {
+    productID: string;
+    groupID?: string;
+  }) => {
     let product: Product;
 
     if (groupID) {
@@ -62,7 +73,9 @@ function useEdit({  products, currentCategory, setProducts, openEditProduct, ope
 
     openEditProduct({
       product,
-      groupName: groupID ? products.find((product) => product.id === groupID)?.name : undefined,
+      groupName: groupID
+        ? products.find((product) => product.id === groupID)?.name
+        : undefined,
       onSave: ({ serialNumber, name, intro, details, price, images }) => {
         const categoryID = currentCategory!.id;
         const formData = createFormData({
@@ -81,13 +94,15 @@ function useEdit({  products, currentCategory, setProducts, openEditProduct, ope
         processImages(images)
           .then((images) => {
             formData.append("images", JSON.stringify(images));
-            return axios.post("/api/admin/products?type=update-product", formData);
+            return axios.post(
+              "/api/admin/products?type=update-product",
+              formData
+            );
           })
           .then(({ data }) => {
             if (!data.success) {
               throw new Error(data.message);
             }
-
 
             if (groupID) {
               const group = products.find((product) => product.id === groupID);
@@ -153,7 +168,10 @@ function useEdit({  products, currentCategory, setProducts, openEditProduct, ope
             products: JSON.stringify(processedProducts),
           });
 
-          const { data } = await axios.post("/api/admin/products?type=update-group", formData);
+          const { data } = await axios.post(
+            "/api/admin/products?type=update-group",
+            formData
+          );
 
           if (!data.success) {
             throw new Error(data.message);

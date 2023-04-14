@@ -92,7 +92,15 @@ export default function ProductModal({
         <ButtonCPN
           type="normal"
           label={type === "edit" ? "Save" : "Add"}
-          disabled={ !serialNumber || !name || !intro || !details || price === 0 || !images || images.length === 0 }
+          disabled={
+            !serialNumber ||
+            !name ||
+            !intro ||
+            !details ||
+            price === 0 ||
+            !images ||
+            images.length === 0
+          }
           onClick={_onSave}
         />
         <ButtonCPN type="attention" label="Cancel" onClick={onCancel} />
@@ -122,16 +130,14 @@ export default function ProductModal({
               onChange={(e) => {
                 const value = e.target.value;
                 if (value.length > 15) return;
-                
-                if(value === "")
-                  return setSerialNumber("");
-                
+
+                if (value === "") return setSerialNumber("");
+
                 const intVal = parseInt(value);
 
                 if (isNaN(intVal) || intVal < 0) return;
 
                 setSerialNumber(value);
-
               }}
             />
           </div>
@@ -168,18 +174,15 @@ export default function ProductModal({
               id="price"
               value={price + ""}
               onChange={(e) => {
-
                 let value = e.target.value;
-                
-                if(value === "")
-                  return setPrice(0);
-                
+
+                if (value === "") return setPrice(0);
+
                 const intVal = parseFloat(value);
 
                 if (isNaN(intVal) || intVal < 0) return;
 
-                setPrice(intVal);                
-                
+                setPrice(intVal);
               }}
             />
           </div>

@@ -20,9 +20,8 @@ export interface Props {}
 
 export default function CategoryManagementSection({}: Props) {
   const [categories, setCategories] = useState<Category[]>([]);
-  
-  const [items, setItems] = useState<ItemCPNProps[]>([]);
 
+  const [items, setItems] = useState<ItemCPNProps[]>([]);
 
   const [isCategoryModalOpen, setIsCategoryModalOpen] = useState(false);
   const [isWarningModalOpen, setIsWarningModalOpen] = useState(false);
@@ -124,7 +123,7 @@ export default function CategoryManagementSection({}: Props) {
       })
       .then((res) => res.data)
       .then((data) => {
-        if(!data.success) {
+        if (!data.success) {
           throw new Error("Failed to create new category");
         }
 
@@ -163,8 +162,8 @@ export default function CategoryManagementSection({}: Props) {
           formData.append("imageFileName", imageData.filename);
           return axios.post("/api/admin/categories?type=update", formData);
         })
-        .then(({data}) => {
-          if(!data.success) {
+        .then(({ data }) => {
+          if (!data.success) {
             throw new Error("Failed to update category");
           }
 
@@ -173,7 +172,7 @@ export default function CategoryManagementSection({}: Props) {
             ...categories.filter((cat) => cat.id !== catID),
           ]);
         })
-        
+
         .catch((err) => {
           console.error(err);
         });
@@ -181,8 +180,8 @@ export default function CategoryManagementSection({}: Props) {
       // User did not change the image
       axios
         .post("/api/admin/categories?type=update", formData)
-        .then(({data}) => {
-          if(!data.success) {
+        .then(({ data }) => {
+          if (!data.success) {
             throw new Error("Failed to update category");
           }
 
@@ -294,30 +293,32 @@ const ItemCPN = ({
           className={styles.categoryBlock}
         />
       )}
-      {
-        onCreate && (
-            <button className={styles.addButton}
-                onClick = {(e) => {
-                    e.preventDefault();
-                    onCreate();
-                }}
-                >
-                ADD
-            </button>
-        )
-      }
+      {onCreate && (
+        <button
+          className={styles.addButton}
+          onClick={(e) => {
+            e.preventDefault();
+            onCreate();
+          }}
+        >
+          ADD
+        </button>
+      )}
     </>
   );
 };
-
 
 /*************************
  * Helpers
  */
 // Category[] -> ItemCPNProps[]
 
-function toItems(categories: Category[], onDelete: (catID:string)=> void, onClick : (catID:string)=> void, onCreate: ()=> void) {
-  
+function toItems(
+  categories: Category[],
+  onDelete: (catID: string) => void,
+  onClick: (catID: string) => void,
+  onCreate: () => void
+) {
   return [
     { id: "add-button", onCreate },
     ...categories.map((cat) => ({

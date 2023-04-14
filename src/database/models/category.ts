@@ -125,7 +125,6 @@ export function createCategory({
   });
 }
 
-
 export type UpdateCategoryProps = {
   id: string;
   name: string;
@@ -133,7 +132,12 @@ export type UpdateCategoryProps = {
   imageFileName?: string;
 };
 
-export function updateCategory({ id, name, description, imageFileName }: UpdateCategoryProps): Promise<CategoryResponse> {
+export function updateCategory({
+  id,
+  name,
+  description,
+  imageFileName,
+}: UpdateCategoryProps): Promise<CategoryResponse> {
   return new Promise((resolve, reject) => {
     getDB().then((db) => {
       const { data } = db;
@@ -148,7 +152,6 @@ export function updateCategory({ id, name, description, imageFileName }: UpdateC
       const { CATEGORIES } = data;
 
       const index = CATEGORIES.findIndex((cat) => cat.id === id);
-      
 
       if (index === -1) {
         return reject({
@@ -193,9 +196,6 @@ export function updateCategory({ id, name, description, imageFileName }: UpdateC
   });
 }
 
-
-
-
 export function deleteCategory(id: string): Promise<CategoryResponse> {
   return new Promise((resolve, reject) => {
     getDB().then((db) => {
@@ -227,7 +227,9 @@ export function deleteCategory(id: string): Promise<CategoryResponse> {
         return acc;
       }, [] as number[]);
 
-      const newProducts = PRODUCTS.filter((_, index) => !productIndexes.includes(index));
+      const newProducts = PRODUCTS.filter(
+        (_, index) => !productIndexes.includes(index)
+      );
       data.PRODUCTS = newProducts;
 
       const index = CATEGORIES.indexOf(category);

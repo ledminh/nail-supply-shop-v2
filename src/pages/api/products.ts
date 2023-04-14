@@ -7,7 +7,7 @@ import * as DB from "@/database";
 import { FindProductOptions } from "@/database/models/product";
 
 export type ProductApiResponse =
-    {
+  | {
       success: true;
       products?: undefined;
       product?: undefined;
@@ -43,7 +43,7 @@ export default function handler(
   switch (req.method) {
     case "GET":
       if (typeof catID === "string") {
-        getProducts({ type: 'all', catID }, res);
+        getProducts({ type: "all", catID }, res);
       }
 
       break;
@@ -66,7 +66,6 @@ const getProducts = (
   options: FindProductOptions,
   res: NextApiCategoryResponse
 ) => {
-  
   DB.getProducts(options)
     .then((dBRes) => {
       if (!dBRes.success) {
@@ -74,7 +73,6 @@ const getProducts = (
       }
 
       const products = dBRes.data;
-      
 
       if (!Array.isArray(products)) {
         return res.status(500).json({

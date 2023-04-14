@@ -61,9 +61,7 @@ const AdminProductGroupBlockCPN: AdminProductGroupBlock = ({
       <div className={styles.text}>
         <h3 className={styles.name}>{name}</h3>
         <h4 className={styles.name}>{name}</h4>
-        <div
-          className={styles.productSelector}
-        >
+        <div className={styles.productSelector}>
           <Select
             optionItems={productOptions}
             onChange={onSelect}

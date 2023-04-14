@@ -12,7 +12,7 @@ type Data = {
   ORDERS: Order[];
   ORDER_TEMPS: Order[];
   CATEGORIES: Category[];
-  PRODUCTS: (DBProduct|DBProductGroup)[];
+  PRODUCTS: (DBProduct | DBProductGroup)[];
 };
 
 // File path
@@ -26,7 +26,12 @@ const db = new Low(adapter);
 // If db.json doesn't exist, db.data will be null
 // Use the code below to set default data
 // db.data = db.data || { posts: [] } // For Node < v15.x
-db.data = db.data || { ORDERS: [], ORDER_TEMPS: [], CATEGORIES: [], PRODUCTS: [] }; // For Node >= 15.x
+db.data = db.data || {
+  ORDERS: [],
+  ORDER_TEMPS: [],
+  CATEGORIES: [],
+  PRODUCTS: [],
+}; // For Node >= 15.x
 
 export const getDB = async () => {
   await db.read();

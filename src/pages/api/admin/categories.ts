@@ -5,7 +5,10 @@ import path from "path";
 
 import { Category } from "@/types/category";
 
-import { CreateCategoryProps, UpdateCategoryProps } from "@/database/models/category";
+import {
+  CreateCategoryProps,
+  UpdateCategoryProps,
+} from "@/database/models/category";
 
 import * as DB from "@/database";
 import { DBProductGroup, DBProduct } from "@/types/product";
@@ -75,16 +78,19 @@ export default function handler(
           if (
             typeof id !== "string" ||
             typeof name !== "string" ||
-            typeof description !== "string" 
+            typeof description !== "string"
           ) {
             return res
               .status(400)
               .json({ success: false, message: "Invalid category data" });
           }
 
-          const _imageFileName = imageFileName as string|undefined;
+          const _imageFileName = imageFileName as string | undefined;
 
-          updateCategory({ id, name, description, imageFileName: _imageFileName }, res);
+          updateCategory(
+            { id, name, description, imageFileName: _imageFileName },
+            res
+          );
         });
         break;
 
@@ -109,7 +115,6 @@ export default function handler(
       .status(405)
       .json({ success: false, message: `Method ${req.method} not allowed` });
   }
-
 }
 
 export const config = {
@@ -117,7 +122,6 @@ export const config = {
     bodyParser: false,
   },
 };
-
 
 function createCategory(
   { name, description, imageFileName }: CreateCategoryProps,
@@ -151,7 +155,7 @@ function updateCategory(
       const [oldCat, newCat] = dbRes.data as Category[];
 
       if (oldCat.image.src !== newCat.image.src) {
-        deleteImage(oldCat.image.src, 'category');
+        deleteImage(oldCat.image.src, "category");
       }
 
       res.status(200).json({ success: true, category: newCat });
@@ -161,65 +165,51 @@ function updateCategory(
     });
 }
 
-
-
-
 function deleteCategory(catID: string, res: NextApiCategoryResponse) {
-  DB.getProducts({ type: 'all', catID })
-    .then((dbRes) => {
-      if (!dbRes.success) {
-        return Promise.reject({ success: false, message: dbRes.message });
+  DB.getProducts({ type: "all", catID }).then((dbRes) => {
+    if (!dbRes.success) {
+      return Promise.reject({ success: false, message: dbRes.message });
+    }
+
+    const products = dbRes.data as (DBProduct | DBProductGroup)[];
+    const productImageNames = products.reduce((acc, product) => {
+      if (isProduct(product)) {
+        acc.push(...product.images.map((image) => image.src));
+      } else {
+        const images = product.products.reduce((acc, product) => {
+          acc.push(...product.images.map((image) => image.src));
+          return acc;
+        }, [] as string[]);
+
+        acc.push(...images);
       }
 
-      const products = dbRes.data as (DBProduct|DBProductGroup)[];
-      const productImageNames = products.reduce((acc, product) => {
-        if (isProduct(product)) {
-          acc.push(...(product.images.map((image) => image.src)));
-        }
-        else {
-          const images = product.products.reduce((acc, product) => {
-            acc.push(...(product.images.map((image) => image.src)));
-            return acc;
-          }
-          , [] as string[]);
+      return acc;
+    }, [] as string[]);
 
-          acc.push(...images);
-
-        }
-
-        return acc;
-      }
-      , [] as string[]);
-
-
-      productImageNames.forEach((imageName) => {
-        deleteImage(imageName, 'product');
-      });
-
-
-      DB.deleteCategory(catID)
-        .then((dbRes) => {
-          if (!dbRes.success) {
-            res.status(500).json({ success: false, message: dbRes.message });
-          }
-          else {
-            const category = dbRes.data as Category;
-
-            deleteImage(category.image.src, 'category');
-
-            res.status(200).json({ success: true, category });
-          }
-        }
-        )
-        .catch((err) => {
-          res.status(500).json({ success: false, message: err.message });
-        }
-        );    
+    productImageNames.forEach((imageName) => {
+      deleteImage(imageName, "product");
     });
+
+    DB.deleteCategory(catID)
+      .then((dbRes) => {
+        if (!dbRes.success) {
+          res.status(500).json({ success: false, message: dbRes.message });
+        } else {
+          const category = dbRes.data as Category;
+
+          deleteImage(category.image.src, "category");
+
+          res.status(200).json({ success: true, category });
+        }
+      })
+      .catch((err) => {
+        res.status(500).json({ success: false, message: err.message });
+      });
+  });
 }
 
-
-const deleteImage = (filename: string, type: 'category'| 'product') => {
+const deleteImage = (filename: string, type: "category" | "product") => {
   const baseFilename = path.basename(filename);
   const filePath = path.join(
     process.cwd(),
@@ -242,5 +232,3 @@ const deleteImage = (filename: string, type: 'category'| 'product') => {
     });
   });
 };
-
-

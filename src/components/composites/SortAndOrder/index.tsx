@@ -32,10 +32,8 @@ export default function SortAndOrder({
     if (condition !== initCondition) onChange(condition);
   }, [condition]);
 
-  const classNames = [styles.wrapper, className].join(" ") ;
-  const fieldClassNames = [styles.field, fieldClassName].join(" ") ;
-
-
+  const classNames = [styles.wrapper, className].join(" ");
+  const fieldClassNames = [styles.field, fieldClassName].join(" ");
 
   return (
     <div className={classNames}>

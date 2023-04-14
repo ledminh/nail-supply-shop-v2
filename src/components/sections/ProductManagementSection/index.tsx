@@ -29,12 +29,16 @@ import { ProductApiResponse } from "@/pages/api/products";
 import { FindProductOptions } from "@/database/models/product";
 import { productManagementConfig } from "@/config";
 import SortAndOrder from "@/components/composites/SortAndOrder";
-import { ListCondition, SortType, SortedOrderType } from "@/types/list-conditions";
+import {
+  ListCondition,
+  SortType,
+  SortedOrderType,
+} from "@/types/list-conditions";
 
 export interface Props {}
 
 export default function ProductManagementSection({}: Props) {
-  const {sortItems, sortedOrderItems} = productManagementConfig;
+  const { sortItems, sortedOrderItems } = productManagementConfig;
 
   const [reloadProducts, setReloadProducts] = useState<boolean>(false);
 
@@ -43,7 +47,7 @@ export default function ProductManagementSection({}: Props) {
   const [currentCategory, setCurrentCategory] = useState<Category | null>(null);
   const [sortingCondition, setSortingCondition] = useState<ListCondition>({
     sort: sortItems[0],
-    sortedOrder: sortedOrderItems[0]
+    sortedOrder: sortedOrderItems[0],
   });
 
   const { showWarning, WarningModalComponent } = useWarningModal();
@@ -73,7 +77,6 @@ export default function ProductManagementSection({}: Props) {
     setReloadProducts,
   });
 
-
   const ItemWrapper = getItemWrapper({
     onDeleteProduct,
     onDeleteGroup,
@@ -90,7 +93,13 @@ export default function ProductManagementSection({}: Props) {
 
   useEffect(() => {
     if (currentCategory) {
-      loadProducts(currentCategory.id, setProducts, 0, sortingCondition.sort!.value, sortingCondition.sortedOrder!.value);
+      loadProducts(
+        currentCategory.id,
+        setProducts,
+        0,
+        sortingCondition.sort!.value,
+        sortingCondition.sortedOrder!.value
+      );
     }
   }, [currentCategory]);
 
@@ -98,8 +107,10 @@ export default function ProductManagementSection({}: Props) {
     if (reloadProducts) {
       setReloadProducts(false);
 
-      loadCategories().then((categories:Category[]) => {
-        const oldCategory = categories.find((c) => c.id === currentCategory?.id);
+      loadCategories().then((categories: Category[]) => {
+        const oldCategory = categories.find(
+          (c) => c.id === currentCategory?.id
+        );
         setCategories(categories);
         if (oldCategory) {
           setCurrentCategory(oldCategory);
@@ -107,32 +118,44 @@ export default function ProductManagementSection({}: Props) {
           setCurrentCategory(categories[0]);
         }
 
-        if(currentCategory)
-          loadProducts(currentCategory.id, setProducts, 0, sortingCondition.sort!.value, sortingCondition.sortedOrder!.value, products.length);
-
+        if (currentCategory)
+          loadProducts(
+            currentCategory.id,
+            setProducts,
+            0,
+            sortingCondition.sort!.value,
+            sortingCondition.sortedOrder!.value,
+            products.length
+          );
       });
-
     }
   }, [reloadProducts]);
 
   useEffect(() => {
     if (currentCategory) {
-      loadProducts(currentCategory.id, setProducts, 0, sortingCondition.sort!.value, sortingCondition.sortedOrder!.value);
+      loadProducts(
+        currentCategory.id,
+        setProducts,
+        0,
+        sortingCondition.sort!.value,
+        sortingCondition.sortedOrder!.value
+      );
     }
-
   }, [sortingCondition]);
 
-
   const loadMore = () => {
-    if(products.length === currentCategory?.numProducts)
-      return;
+    if (products.length === currentCategory?.numProducts) return;
 
-    loadProducts(currentCategory!.id, setProducts, products.length, sortingCondition.sort!.value, sortingCondition.sortedOrder!.value);
-    
+    loadProducts(
+      currentCategory!.id,
+      setProducts,
+      products.length,
+      sortingCondition.sort!.value,
+      sortingCondition.sortedOrder!.value
+    );
   };
 
-
-  const sortAndOrderChange = (sortingCondition:ListCondition) => {
+  const sortAndOrderChange = (sortingCondition: ListCondition) => {
     setSortingCondition(sortingCondition);
   };
 
@@ -162,10 +185,10 @@ export default function ProductManagementSection({}: Props) {
             fieldClassName={styles.sortAndOrder__field}
             initCondition={{
               sort: sortItems[0],
-              sortedOrder: sortedOrderItems[0]
+              sortedOrder: sortedOrderItems[0],
             }}
           />
-            
+
           <div className={styles.buttons}>
             <ButtonCPN
               type="normal"
@@ -182,14 +205,10 @@ export default function ProductManagementSection({}: Props) {
           ulClass={styles.ul}
         />
         <div className={styles.loadMore}>
-          {
-            currentCategory && products.length < currentCategory?.numProducts && (
-              <ButtonCPN
-                type="normal"
-                label="Load More"
-                onClick={loadMore}
-              />)
-          }
+          {currentCategory &&
+            products.length < currentCategory?.numProducts && (
+              <ButtonCPN type="normal" label="Load More" onClick={loadMore} />
+            )}
         </div>
       </section>
       <WarningModalComponent />
@@ -236,38 +255,33 @@ async function loadProducts(
   sortedOrder: SortedOrderType = "asc",
   limit: number = productManagementConfig.productsPerPage
 ) {
-
-  const loadOptions:FindProductOptions = {
-    type: 'all',
+  const loadOptions: FindProductOptions = {
+    type: "all",
     catID,
     sort,
     sortedOrder,
     limit,
-    offset
+    offset,
   };
-
 
   axios
     .post(`/api/products`, loadOptions)
     .then(({ data }: AxiosResponse<ProductApiResponse>) => {
-      
       if (!data.success) {
         throw new Error(data.message);
-      } 
+      }
 
-      if(!data.products) {
+      if (!data.products) {
         throw new Error("No products found");
       }
 
-      if(offset === 0) {
+      if (offset === 0) {
         setProducts(data.products);
         return;
-      }
-      else {
+      } else {
         setProducts((prevProducts) => [...prevProducts, ...data.products]);
         return;
       }
-
     })
     .catch((err) => {
       throw err;

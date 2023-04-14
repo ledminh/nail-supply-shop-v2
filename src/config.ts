@@ -201,8 +201,7 @@ type ProductManagementConfig = {
   sortedOrderItems: SortedOrderItem[];
 };
 
-
-export const productManagementConfig:ProductManagementConfig = {
+export const productManagementConfig: ProductManagementConfig = {
   warningMessages: {
     deleteProduct: (productName: string): string =>
       `Are you sure you want to delete ${productName} product?`,
@@ -227,7 +226,7 @@ export const productManagementConfig:ProductManagementConfig = {
     {
       label: "Date Created",
       value: "dateCreated",
-    }
+    },
   ],
 
   sortedOrderItems: [
@@ -241,5 +240,3 @@ export const productManagementConfig:ProductManagementConfig = {
     },
   ],
 };
-
-

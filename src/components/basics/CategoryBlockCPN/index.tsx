@@ -27,7 +27,11 @@ const CategoryBlockCPN: CategoryBlock = ({
         <ImageCPN image={image} size="medium" className={styles.image} />
         <div className={styles.text}>
           <h3 className={styles.name}>{name}</h3>
-          <p className={styles.description}>{description.length > 90? description.substring(0, 90) + ' ...': description}</p>
+          <p className={styles.description}>
+            {description.length > 90
+              ? description.substring(0, 90) + " ..."
+              : description}
+          </p>
         </div>
       </div>
     );

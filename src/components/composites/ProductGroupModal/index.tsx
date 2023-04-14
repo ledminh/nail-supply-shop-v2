@@ -7,13 +7,9 @@ import { Product, ProductImage } from "@/types/product";
 import List from "@/components/generics/List";
 import ProductTabCPN from "@/components/basics/ProductTabCPN";
 
-import  {
-  useProductModal,
-} from "@components/composites/ProductModal";
+import { useProductModal } from "@components/composites/ProductModal";
 
-import {
-  useWarningModal,
-} from "@components/composites/WarningModal";
+import { useWarningModal } from "@components/composites/WarningModal";
 
 import type { ProductGroup } from "@/types/product";
 

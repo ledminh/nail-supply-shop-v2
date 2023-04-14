@@ -3,7 +3,7 @@ import categoryJSON from "@/database/jsons/categories.json";
 
 import type { DBProduct, DBProductGroup } from "@/types/product";
 
-import find, {FindProductOptions} from "./find";
+import find, { FindProductOptions } from "./find";
 
 import { getDB } from "@/database/jsons";
 
@@ -13,8 +13,8 @@ const PRODUCTS = productsJSON as (DBProduct | DBProductGroup)[];
  *  FIND PRODUCT/PRODUCT GROUP
  ******************************/
 
-export {find};
-export type {FindProductOptions};
+export { find };
+export type { FindProductOptions };
 
 /**********************************
  *  DELETE PRODUCT
@@ -23,14 +23,18 @@ export type DeleteProductProps = {
   id: string;
 };
 
-export type DeleteProductResponse = {
-  success: true;
-} | {
-  success: false;
-  message: string;
-};
+export type DeleteProductResponse =
+  | {
+      success: true;
+    }
+  | {
+      success: false;
+      message: string;
+    };
 
-export function deleteProduct({ id }: DeleteProductProps):Promise<DeleteProductResponse> {
+export function deleteProduct({
+  id,
+}: DeleteProductProps): Promise<DeleteProductResponse> {
   return new Promise((resolve, reject) => {
     getDB().then((db) => {
       const { data } = db;
@@ -44,9 +48,7 @@ export function deleteProduct({ id }: DeleteProductProps):Promise<DeleteProductR
 
       const { PRODUCTS, CATEGORIES } = data;
 
-
       const index = PRODUCTS.findIndex((product) => product.id === id);
-
 
       if (index === -1) {
         return reject({
@@ -55,8 +57,9 @@ export function deleteProduct({ id }: DeleteProductProps):Promise<DeleteProductR
         });
       }
 
-            
-      const category = CATEGORIES.find((category) => category.id === PRODUCTS[index].categoryID);
+      const category = CATEGORIES.find(
+        (category) => category.id === PRODUCTS[index].categoryID
+      );
 
       if (!category) {
         return reject({
@@ -68,7 +71,6 @@ export function deleteProduct({ id }: DeleteProductProps):Promise<DeleteProductR
       category.numProducts -= 1;
 
       PRODUCTS.splice(index, 1);
-
 
       db.write()
         .then(() => db.read())
@@ -96,7 +98,6 @@ export function deleteProduct({ id }: DeleteProductProps):Promise<DeleteProductR
     });
   });
 }
-
 
 /**********************************
  *  DELETE GROUP
@@ -105,14 +106,18 @@ export type DeleteGroupProps = {
   id: string;
 };
 
-export type DeleteGroupResponse = {
-  success: true;
-} | {
-  success: false;
-  message: string;
-};
+export type DeleteGroupResponse =
+  | {
+      success: true;
+    }
+  | {
+      success: false;
+      message: string;
+    };
 
-export function deleteGroup({ id }: DeleteGroupProps):Promise<DeleteGroupResponse> {
+export function deleteGroup({
+  id,
+}: DeleteGroupProps): Promise<DeleteGroupResponse> {
   return new Promise((resolve, reject) => {
     getDB().then((db) => {
       const { data } = db;
@@ -126,9 +131,7 @@ export function deleteGroup({ id }: DeleteGroupProps):Promise<DeleteGroupRespons
 
       const { PRODUCTS, CATEGORIES } = data;
 
-
       const index = PRODUCTS.findIndex((product) => product.id === id);
-
 
       if (index === -1) {
         return reject({
@@ -137,8 +140,9 @@ export function deleteGroup({ id }: DeleteGroupProps):Promise<DeleteGroupRespons
         });
       }
 
-            
-      const category = CATEGORIES.find((category) => category.id === PRODUCTS[index].categoryID);
+      const category = CATEGORIES.find(
+        (category) => category.id === PRODUCTS[index].categoryID
+      );
 
       if (!category) {
         return reject({
@@ -150,7 +154,6 @@ export function deleteGroup({ id }: DeleteGroupProps):Promise<DeleteGroupRespons
       category.numProducts -= 1;
 
       PRODUCTS.splice(index, 1);
-
 
       db.write()
         .then(() => db.read())
@@ -178,9 +181,6 @@ export function deleteGroup({ id }: DeleteGroupProps):Promise<DeleteGroupRespons
     });
   });
 }
-
-
-
 
 /******************************
  *  ADD PRODUCT
@@ -190,15 +190,19 @@ export type AddProductProps = {
   product: DBProduct;
 };
 
-export type AddProductResponse = {
-  success: true;
-  data: DBProduct;
-} | {
-  success: false;
-  message: string;
-};
+export type AddProductResponse =
+  | {
+      success: true;
+      data: DBProduct;
+    }
+  | {
+      success: false;
+      message: string;
+    };
 
-export function addProduct({ product }: AddProductProps):Promise<AddProductResponse> {
+export function addProduct({
+  product,
+}: AddProductProps): Promise<AddProductResponse> {
   return new Promise((resolve, reject) => {
     getDB().then((db) => {
       const { data } = db;
@@ -212,7 +216,9 @@ export function addProduct({ product }: AddProductProps):Promise<AddProductRespo
 
       const { PRODUCTS, CATEGORIES } = data;
 
-      const category = CATEGORIES.find((category) => category.id === product.categoryID);
+      const category = CATEGORIES.find(
+        (category) => category.id === product.categoryID
+      );
 
       if (!category) {
         return reject({
@@ -220,7 +226,6 @@ export function addProduct({ product }: AddProductProps):Promise<AddProductRespo
           message: "Category not found",
         });
       }
-
 
       PRODUCTS.push(product);
       category.numProducts += 1;
@@ -246,9 +251,8 @@ export function addProduct({ product }: AddProductProps):Promise<AddProductRespo
             });
           }
 
-          
           return resolve({ success: true, data: _product as DBProduct });
-        })
+        });
     });
   });
 }
@@ -261,16 +265,17 @@ export type AddGroupProps = {
   group: DBProductGroup;
 };
 
+export type AddGroupResponse =
+  | {
+      success: true;
+      data: DBProductGroup;
+    }
+  | {
+      success: false;
+      message: string;
+    };
 
-export type AddGroupResponse = {
-  success: true;
-  data: DBProductGroup;
-} | {
-  success: false;
-  message: string;
-};
-
-export function addGroup({ group }: AddGroupProps):Promise<AddGroupResponse> {
+export function addGroup({ group }: AddGroupProps): Promise<AddGroupResponse> {
   return new Promise((resolve, reject) => {
     getDB().then((db) => {
       const { data } = db;
@@ -284,7 +289,9 @@ export function addGroup({ group }: AddGroupProps):Promise<AddGroupResponse> {
 
       const { PRODUCTS, CATEGORIES } = data;
 
-      const category = CATEGORIES.find((category) => category.id === group.categoryID);
+      const category = CATEGORIES.find(
+        (category) => category.id === group.categoryID
+      );
 
       if (!category) {
         return reject({
@@ -317,9 +324,8 @@ export function addGroup({ group }: AddGroupProps):Promise<AddGroupResponse> {
             });
           }
 
-          
           return resolve({ success: true, data: _group as DBProductGroup });
-        })
+        });
     });
   });
 }
@@ -332,15 +338,19 @@ export type UpdateProductProps = {
   product: DBProduct;
 };
 
-export type UpdateProductResponse = {
-  success: true;
-  data: DBProduct;
-} | {
-  success: false;
-  message: string;
-};
+export type UpdateProductResponse =
+  | {
+      success: true;
+      data: DBProduct;
+    }
+  | {
+      success: false;
+      message: string;
+    };
 
-export function updateProduct({ product }: UpdateProductProps):Promise<UpdateProductResponse> {
+export function updateProduct({
+  product,
+}: UpdateProductProps): Promise<UpdateProductResponse> {
   return new Promise((resolve, reject) => {
     getDB().then((db) => {
       const { data } = db;
@@ -400,16 +410,19 @@ export type UpdateGroupProps = {
   group: DBProductGroup;
 };
 
-export type UpdateGroupResponse = {
-  success: true;
-  data: DBProductGroup;
-} | {
-  success: false;
-  message: string;
-};
+export type UpdateGroupResponse =
+  | {
+      success: true;
+      data: DBProductGroup;
+    }
+  | {
+      success: false;
+      message: string;
+    };
 
-
-export function updateGroup({ group }: UpdateGroupProps):Promise<UpdateGroupResponse> {
+export function updateGroup({
+  group,
+}: UpdateGroupProps): Promise<UpdateGroupResponse> {
   return new Promise((resolve, reject) => {
     getDB().then((db) => {
       const { data } = db;
@@ -432,10 +445,7 @@ export function updateGroup({ group }: UpdateGroupProps):Promise<UpdateGroupResp
         });
       }
 
-
-
       PRODUCTS[index] = group;
-
 
       db.write()
         .then(() => db.read())
@@ -473,15 +483,20 @@ export type UpdateGroupProductProps = {
   product: DBProduct;
 };
 
-export type UpdateGroupProductResponse = {
-  success: true;
-  data: DBProduct;
-} | {
-  success: false;
-  message: string;
-};
+export type UpdateGroupProductResponse =
+  | {
+      success: true;
+      data: DBProduct;
+    }
+  | {
+      success: false;
+      message: string;
+    };
 
-export function updateGroupProduct({ groupID, product}: UpdateGroupProductProps):Promise<UpdateGroupProductResponse>  {
+export function updateGroupProduct({
+  groupID,
+  product,
+}: UpdateGroupProductProps): Promise<UpdateGroupProductResponse> {
   return new Promise((resolve, reject) => {
     getDB().then((db) => {
       const { data } = db;

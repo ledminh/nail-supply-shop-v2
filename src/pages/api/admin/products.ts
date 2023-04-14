@@ -87,7 +87,6 @@ export const config = {
   },
 };
 
-
 /*********************************
  * Helper functions
  *********************************/
@@ -111,9 +110,6 @@ function deleteImages(imagePaths: string[]) {
     }
   }
 }
-
-
-
 
 const deleteSingleProduct = (id: string, res: NextApiProductResponse) => {
   DB.getProduct({ id })
@@ -145,7 +141,6 @@ const deleteSingleProduct = (id: string, res: NextApiProductResponse) => {
         .catch((err) => {
           res.status(500).json({ success: false, message: err.message });
         });
-
     })
     .catch((err) => {
       res.status(500).json({ success: false, message: err.message });
@@ -182,7 +177,6 @@ const deleteGroup = (id: string, res: NextApiProductResponse) => {
         .catch((err) => {
           res.status(500).json({ success: false, message: err.message });
         });
-
     })
     .catch((err) => {
       res.status(500).json({ success: false, message: err.message });
@@ -233,7 +227,7 @@ const addProduct = (req: NextApiRequest, res: NextApiProductResponse) => {
             .status(500)
             .json({ success: false, message: dbRes.message });
         }
-        
+
         return res.status(200).json({ success: true, product: dbRes.data });
       })
       .catch((err) => {
@@ -279,14 +273,15 @@ const addGroup = (req: NextApiRequest, res: NextApiProductResponse) => {
       dateCreated: new Date().toISOString(),
     };
 
-
     DB.addGroup({ group })
       .then((dbRes) => {
         if (!dbRes.success) {
-          return res.status(500).json({ success: false, message: dbRes.message });
+          return res
+            .status(500)
+            .json({ success: false, message: dbRes.message });
         }
 
-        console.log('after', dbRes.data);
+        console.log("after", dbRes.data);
 
         return res.status(200).json({ success: true, product: dbRes.data });
       })
@@ -343,11 +338,9 @@ const updateProduct = (req: NextApiRequest, res: NextApiProductResponse) => {
 
           const group = dBRes.data;
 
-          
           const oldProduct = group.products.find(
             (product) => product.id === serialNumber
           );
-
 
           if (!oldProduct) {
             return res
@@ -385,7 +378,6 @@ const updateProduct = (req: NextApiRequest, res: NextApiProductResponse) => {
                   .json({ success: false, message: dbRes.message });
               }
 
-
               return res
                 .status(200)
                 .json({ success: true, product: dbRes.data });
@@ -399,62 +391,62 @@ const updateProduct = (req: NextApiRequest, res: NextApiProductResponse) => {
         .catch((err) => {
           return res.status(500).json({ success: false, message: err.message });
         });
-    }
-    else {
-      
-          // Product is not in a group
-          
-          DB.getProduct({ id: serialNumber }).then((dBRes) => {
-            if (!dBRes.success) {
-              return res.status(500).json({ success: false, message: dBRes.message });
-            }
-      
-            const product = dBRes.data;
-      
-            if (Array.isArray(product) || !isProduct(product)) {
-              return res
-                .status(404)
-                .json({ success: false, message: "Product not found" });
-            }
-      
-            const oldImages = product.images;
-      
-            const imagesToDelete = oldImages.filter((oldImage) => {
-              return !newImages.find((newImage) => newImage.src === oldImage.src);
-            });
-      
-            deleteImages(imagesToDelete.map((image) => image.src));
-      
-            const newProduct: DBProduct = {
-              id: serialNumber,
-              categoryID,
-              name,
-              intro,
-              details,
-              price: Number(price),
-              images: newImages,
-              lastUpdated: new Date().toISOString(),
-              dateCreated: product.dateCreated,
-              sellCount: product.sellCount,
-            };
-      
-            DB.updateProduct({ product: newProduct })
-              .then((dbRes) => {
-                if (!dbRes.success) {
-                  return res
-                    .status(500)
-                    .json({ success: false, message: dbRes.message });
-                }
-      
-                return res.status(200).json({ success: true, product: dbRes.data });
-              })
-              .catch((err) => {
-                return res.status(500).json({ success: false, message: err.message });
-              });
-          });
-      
-    }
+    } else {
+      // Product is not in a group
 
+      DB.getProduct({ id: serialNumber }).then((dBRes) => {
+        if (!dBRes.success) {
+          return res
+            .status(500)
+            .json({ success: false, message: dBRes.message });
+        }
+
+        const product = dBRes.data;
+
+        if (Array.isArray(product) || !isProduct(product)) {
+          return res
+            .status(404)
+            .json({ success: false, message: "Product not found" });
+        }
+
+        const oldImages = product.images;
+
+        const imagesToDelete = oldImages.filter((oldImage) => {
+          return !newImages.find((newImage) => newImage.src === oldImage.src);
+        });
+
+        deleteImages(imagesToDelete.map((image) => image.src));
+
+        const newProduct: DBProduct = {
+          id: serialNumber,
+          categoryID,
+          name,
+          intro,
+          details,
+          price: Number(price),
+          images: newImages,
+          lastUpdated: new Date().toISOString(),
+          dateCreated: product.dateCreated,
+          sellCount: product.sellCount,
+        };
+
+        DB.updateProduct({ product: newProduct })
+          .then((dbRes) => {
+            if (!dbRes.success) {
+              return res
+                .status(500)
+                .json({ success: false, message: dbRes.message });
+            }
+
+            return res.status(200).json({ success: true, product: dbRes.data });
+          })
+          .catch((err) => {
+            return res
+              .status(500)
+              .json({ success: false, message: err.message });
+          });
+      });
+    }
   });
 };
 
@@ -491,7 +483,6 @@ const updateGroup = (req: NextApiRequest, res: NextApiProductResponse) => {
 
         const group = dBRes.data;
 
-        
         const oldProducts = group.products;
 
         const imagesToDelete = oldProducts.reduce((acc, product) => {

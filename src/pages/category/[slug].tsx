@@ -56,8 +56,6 @@ export default function CategoryPage({
     useState<(Product | ProductGroup)[]>(products);
   const [condition, setCondition] = useState<ListCondition>(initCondition);
 
-
-
   useEffect(() => {
     const loadOptions: FindProductOptions = {
       type: "all",
@@ -67,19 +65,19 @@ export default function CategoryPage({
       limit: productsPerPage,
     };
 
-    axios.post("/api/products", loadOptions).then(({ data }:AxiosResponse<ProductApiResponse>) => {
-      
-      if(!data.success) {
-        throw new Error(data.message);
-      }
+    axios
+      .post("/api/products", loadOptions)
+      .then(({ data }: AxiosResponse<ProductApiResponse>) => {
+        if (!data.success) {
+          throw new Error(data.message);
+        }
 
-      if(!data.products) {
-        throw new Error("Products not found");
-      }
+        if (!data.products) {
+          throw new Error("Products not found");
+        }
 
-
-      setProducts(data.products);
-    });
+        setProducts(data.products);
+      });
   }, [curCategory, condition]);
 
   const sortAndOrderOnChange = ({ sort, sortedOrder }: ListCondition) => {

@@ -18,7 +18,13 @@ type Props = {
   openCreateGroup: (props: OpenCreateGroupProps) => void;
 };
 
-export default function useCreate({ products, currentCategory, setProducts, openCreateProduct, openCreateGroup }: Props) {
+export default function useCreate({
+  products,
+  currentCategory,
+  setProducts,
+  openCreateProduct,
+  openCreateGroup,
+}: Props) {
   const post = (url: string, formData: FormData) => {
     axios
       .post(url, formData, {

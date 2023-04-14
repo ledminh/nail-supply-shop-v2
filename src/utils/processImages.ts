@@ -21,7 +21,7 @@ const processImages = async (
     const filenames = res.data.filenames as string[];
     const newProductImages = filenames.map((filename) => ({
       // generate a unique id string for each image with Date.now() and Math.random()
-      id: randomId(10, 'image-'),
+      id: randomId(10, "image-"),
       src: `/images/product/${filename}`,
       alt: filename,
     }));

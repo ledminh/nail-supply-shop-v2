@@ -6,7 +6,6 @@ import * as OrderModel from "./models/order";
 import type { DBProduct, DBProductGroup } from "@/types/product";
 import type { Order, FilterOrder, StatusValue } from "@/types/order";
 
-
 /********************************************************
  * CATEGORY
  */
@@ -29,7 +28,6 @@ export function updateCategory(props: CategoryModel.UpdateCategoryProps) {
   const category = CategoryModel.updateCategory(props);
   return category;
 }
-
 
 export function deleteCategory(id: string) {
   const category = CategoryModel.deleteCategory(id);
@@ -67,10 +65,15 @@ type GetProductResponse =
       message: string;
     };
 
-
-export const getProduct = ({ id, name }: GetProductProps):Promise<GetProductResponse> =>
-  ProductModel.find({ id, name, type: "product" }) as Promise<GetProductResponse>;
-
+export const getProduct = ({
+  id,
+  name,
+}: GetProductProps): Promise<GetProductResponse> =>
+  ProductModel.find({
+    id,
+    name,
+    type: "product",
+  }) as Promise<GetProductResponse>;
 
 /**************************
  * getGroup
@@ -91,33 +94,35 @@ type GetGroupResponse =
       message: string;
     };
 
-
-export const getGroup = ({ id, name }: GetGroupProps):Promise<GetGroupResponse> =>
+export const getGroup = ({
+  id,
+  name,
+}: GetGroupProps): Promise<GetGroupResponse> =>
   ProductModel.find({ id, name, type: "group" }) as Promise<GetGroupResponse>;
-
 
 /**************************
  * deleteProduct
  */
 
-export function deleteProduct({ id }: ProductModel.DeleteProductProps):Promise<ProductModel.DeleteProductResponse> {
+export function deleteProduct({
+  id,
+}: ProductModel.DeleteProductProps): Promise<ProductModel.DeleteProductResponse> {
   return ProductModel.deleteProduct({ id });
 }
 
-export function deleteGroup({ id }: ProductModel.DeleteGroupProps):Promise<ProductModel.DeleteGroupResponse> {
+export function deleteGroup({
+  id,
+}: ProductModel.DeleteGroupProps): Promise<ProductModel.DeleteGroupResponse> {
   return ProductModel.deleteGroup({ id });
 }
-
-
 
 /*****************************
  * addProduct
  */
 
-
-
-
-export function addProduct({ product }: ProductModel.AddProductProps):Promise<ProductModel.AddProductResponse> {
+export function addProduct({
+  product,
+}: ProductModel.AddProductProps): Promise<ProductModel.AddProductResponse> {
   return ProductModel.addProduct({ product });
 }
 
@@ -125,9 +130,9 @@ export function addProduct({ product }: ProductModel.AddProductProps):Promise<Pr
  * addGroup
  */
 
-
-
-export function addGroup({ group }: ProductModel.AddGroupProps):Promise<ProductModel.AddGroupResponse> {
+export function addGroup({
+  group,
+}: ProductModel.AddGroupProps): Promise<ProductModel.AddGroupResponse> {
   return ProductModel.addGroup({ group });
 }
 
@@ -135,8 +140,9 @@ export function addGroup({ group }: ProductModel.AddGroupProps):Promise<ProductM
  * updateProduct
  *****************************/
 
-
-export function updateProduct({ product }: ProductModel.UpdateProductProps):Promise<ProductModel.UpdateProductResponse> {
+export function updateProduct({
+  product,
+}: ProductModel.UpdateProductProps): Promise<ProductModel.UpdateProductResponse> {
   return ProductModel.updateProduct({ product });
 }
 
@@ -144,8 +150,9 @@ export function updateProduct({ product }: ProductModel.UpdateProductProps):Prom
  * updateGroup
  ******************************/
 
-
-export function updateGroup({ group }: ProductModel.UpdateGroupProps):Promise<ProductModel.UpdateGroupResponse> {
+export function updateGroup({
+  group,
+}: ProductModel.UpdateGroupProps): Promise<ProductModel.UpdateGroupResponse> {
   return ProductModel.updateGroup({ group });
 }
 
@@ -153,8 +160,10 @@ export function updateGroup({ group }: ProductModel.UpdateGroupProps):Promise<Pr
  * updateGroupProduct
  ******************************/
 
-
-export function updateGroupProduct({ groupID, product }: ProductModel.UpdateGroupProductProps):Promise<ProductModel.UpdateGroupProductResponse> {
+export function updateGroupProduct({
+  groupID,
+  product,
+}: ProductModel.UpdateGroupProductProps): Promise<ProductModel.UpdateGroupProductResponse> {
   return ProductModel.updateGroupProduct({ groupID, product });
 }
 
