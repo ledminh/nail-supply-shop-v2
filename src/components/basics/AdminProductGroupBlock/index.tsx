@@ -68,6 +68,9 @@ const AdminProductGroupBlockCPN: AdminProductGroupBlock = ({
             optionItems={productOptions}
             onChange={onSelect}
             selectClass={styles.select}
+            initOptionItem={productOptions.find(
+              (p) => p.id === selectedProduct.id
+            )}
           />
           <ButtonCPN
             type="normal"

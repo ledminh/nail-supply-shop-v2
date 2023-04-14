@@ -64,7 +64,7 @@ function useDelete({
     showWarning({
       message: warningMessages.deleteGroup(groupName),
       onOK: () => {
-        post(`/api/products/?type=delete-group&id=${groupID}`);
+        post(`/api/admin/products/?type=delete-group&id=${groupID}`);
       },
     });
   };

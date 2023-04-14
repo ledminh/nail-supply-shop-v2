@@ -98,9 +98,20 @@ export default function ProductManagementSection({}: Props) {
     if (reloadProducts) {
       setReloadProducts(false);
 
-      if (currentCategory) {
-        loadProducts(currentCategory.id, setProducts, 0, sortingCondition.sort!.value, sortingCondition.sortedOrder!.value, products.length);
-      }
+      loadCategories().then((categories:Category[]) => {
+        const oldCategory = categories.find((c) => c.id === currentCategory?.id);
+        setCategories(categories);
+        if (oldCategory) {
+          setCurrentCategory(oldCategory);
+        } else {
+          setCurrentCategory(categories[0]);
+        }
+
+        if(currentCategory)
+          loadProducts(currentCategory.id, setProducts, 0, sortingCondition.sort!.value, sortingCondition.sortedOrder!.value, products.length);
+
+      });
+
     }
   }, [reloadProducts]);
 

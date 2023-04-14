@@ -366,6 +366,7 @@ const updateProduct = (req: NextApiRequest, res: NextApiProductResponse) => {
           const newProduct: DBProduct = {
             id: serialNumber,
             categoryID,
+            groupID,
             name,
             intro,
             details,
@@ -545,4 +546,3 @@ const updateGroup = (req: NextApiRequest, res: NextApiProductResponse) => {
       });
   });
 };
-
