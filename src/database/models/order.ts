@@ -222,18 +222,15 @@ export function filter({
     }
 
     const { ORDERS } = db.data;
+    let filteredOrders = ORDERS;
+
 
     if (query !== "") {
-      const orders = ORDERS.filter((order) => {
+      filteredOrders = ORDERS.filter((order) => {
         return order.id.includes(query);
-      });
-      return resolve({
-        success: true,
-        data: orders,
       });
     }
 
-    let filteredOrders = ORDERS;
 
     if (status !== "all") {
       filteredOrders = filteredOrders.filter(

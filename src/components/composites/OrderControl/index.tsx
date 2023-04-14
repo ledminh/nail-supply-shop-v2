@@ -10,7 +10,6 @@ import {
   MONTH,
   YEAR,
   FilterChangeOptions,
-  StatusItem,
   NEWEST,
   OLDEST,
   STATUS_ITEMS,
@@ -22,12 +21,11 @@ export interface Props {
   onFilterChange: (option: FilterChangeOptions) => void;
 }
 
-export default function OrderControl({
-  monthItems,
-  yearItems,
-  onFilterChange,
-}: Props) {
+export default function OrderControl({ monthItems, yearItems, onFilterChange }: Props) {
+
   const [monthOrYear, setMonthOrYear] = useState(MONTH);
+
+  const [query, setQuery] = useState("");
 
   useEffect(() => {
     if (monthOrYear === MONTH) {
@@ -76,9 +74,29 @@ export default function OrderControl({
       </section>
       <section className={styles.searchBar}>
         <SearchBarCPN
-          onSearchSubmit={(query) => onFilterChange({ query })}
+          onSearchSubmit={(query) => {
+            onFilterChange({ query });
+            setQuery(query);
+          }}
           placeholder="Order number ..."
         />
+        {
+          query && (
+            <div className={styles.currentQuery}>
+              <span className={styles.label}>Current query:</span>
+              <span className={styles.query}>{query}</span>
+              <button className={styles.clear}
+                onClick={() => {
+                  onFilterChange({ query: "" });
+                  setQuery("");
+                }}
+              >
+                CLEAR
+              </button>
+            </div>
+          )
+        }
+
       </section>
       <section className={styles.sort}>
         <span className={styles.label}>Sort</span>

@@ -57,6 +57,35 @@ section.sort {
   gap: 10px;
 }
 
+.currentQuery {
+  background-color: $separator-color;
+  border-radius: $border-radius;
+  padding: 5px;
+  margin-top: 10px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+
+  button.clear {
+    background-color: $button-color;
+    color: white;
+    padding: 3px;
+    border: none;
+    border-radius: $border-radius;
+    
+    font-weight: 700;
+    cursor: pointer;
+
+    &:hover {
+      background-color: darken($button-color, 15%)
+    }
+  }
+}
+
+
+
 @media (min-width: $first-breakpoint) {
   .wrapper {
     flex-direction: row;

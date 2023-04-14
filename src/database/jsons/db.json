@@ -1,5 +1,142 @@
 {
-  "ORDERS": [],
+  "ORDERS": [
+    {
+      "id": "123456789",
+      "shippingAddress": {
+        "name": "Joe",
+        "address1": "123 Main St",
+        "city": "New York",
+        "state": "NY",
+        "zip": "10001",
+        "email": "joe.example.com"
+      },
+      "orderedProducts": [
+        {
+          "id": "prod_1",
+          "name": "Product prod_1",
+          "price": 92,
+          "quantity": 9,
+          "image": {
+            "src": "/images/placeholder_9.png",
+            "alt": "Placeholder 9"
+          }
+        },
+        {
+          "id": "prod_2",
+          "name": "Product prod_2",
+          "price": 98,
+          "quantity": 10,
+          "image": {
+            "src": "/images/placeholder_8.png",
+            "alt": "Placeholder 8"
+          }
+        },
+        {
+          "id": "prod_3",
+          "name": "Product prod_3",
+          "price": 45,
+          "quantity": 4,
+          "image": {
+            "src": "/images/placeholder_3.png",
+            "alt": "Placeholder 3"
+          }
+        },
+        {
+          "id": "prod_4",
+          "name": "Product prod_4",
+          "price": 31,
+          "quantity": 1,
+          "image": {
+            "src": "/images/placeholder_8.png",
+            "alt": "Placeholder 8"
+          }
+        },
+        {
+          "id": "prod_5",
+          "name": "Product prod_5",
+          "price": 40,
+          "quantity": 5,
+          "image": {
+            "src": "/images/placeholder_12.png",
+            "alt": "Placeholder 12"
+          }
+        }
+      ],
+      "status": {
+        "value": "shipped",
+        "lastUpdated": "2023-04-14T10:06:08.050Z",
+        "description": "Order Shipped - In Transit: Your order is on its way to you"
+      }
+    },
+    {
+      "id": "4444444444",
+      "shippingAddress": {
+        "name": "Jeffrey",
+        "address1": "123 Main St",
+        "city": "New York",
+        "state": "NY",
+        "zip": "10001",
+        "email": "jeffrey.example.com"
+      },
+      "orderedProducts": [
+        {
+          "id": "prod_1",
+          "name": "Product prod_1",
+          "price": 55,
+          "quantity": 7,
+          "image": {
+            "src": "/images/placeholder_14.png",
+            "alt": "Placeholder 14"
+          }
+        },
+        {
+          "id": "prod_2",
+          "name": "Product prod_2",
+          "price": 30,
+          "quantity": 10,
+          "image": {
+            "src": "/images/placeholder_11.png",
+            "alt": "Placeholder 11"
+          }
+        },
+        {
+          "id": "prod_3",
+          "name": "Product prod_3",
+          "price": 74,
+          "quantity": 2,
+          "image": {
+            "src": "/images/placeholder_5.png",
+            "alt": "Placeholder 5"
+          }
+        },
+        {
+          "id": "prod_4",
+          "name": "Product prod_4",
+          "price": 66,
+          "quantity": 7,
+          "image": {
+            "src": "/images/placeholder_14.png",
+            "alt": "Placeholder 14"
+          }
+        },
+        {
+          "id": "prod_5",
+          "name": "Product prod_5",
+          "price": 25,
+          "quantity": 9,
+          "image": {
+            "src": "/images/placeholder_1.png",
+            "alt": "Placeholder 1"
+          }
+        }
+      ],
+      "status": {
+        "value": "processing",
+        "lastUpdated": "2023-12-01T05:00:00.000Z",
+        "description": "Order is processing"
+      }
+    }
+  ],
   "ORDER_TEMPS": [],
   "ABOUT_US": {
     "aboutUsFooter": "Nail Essential is a family-owned business that has been providing high-quality nail care products to professionals and enthusiasts for over 20 years. Our mission is to make it easy for our customers to find the products they need to create beautiful and healthy nails. We take pride in offering a wide selection of top-quality products, competitive pricing, and exceptional customer service. Thank you for choosing Nail Essential for all of your nail care needs.",
