@@ -1,13 +1,27 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 
-import * as DB from "@/database";
+import { AboutUsData } from "@/types/others";
 
-export default function handler(req: NextApiRequest, res: NextApiResponse) {
+import * as DB from "@/database";
+  
+type AboutUsResponse = {
+  success: true;
+  data: AboutUsData;
+} | {
+  success: false;
+  message: string;
+}
+
+
+
+type NextAboutUsApiResponse = NextApiResponse<AboutUsResponse>;
+
+export default function handler(req: NextApiRequest, res: NextAboutUsApiResponse) {
   if(req.method === "GET") {
     getAboutUsData(res);
   }
   else {
-    res.status(400).json({ message: "Invalid request method" });
+    res.status(400).json({ success: false, message: "Invalid request method" });
   }
   
 }
@@ -16,12 +30,12 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
  *  Helper functions
  */
 
-async function getAboutUsData(res: NextApiResponse) {
+async function getAboutUsData(res: NextAboutUsApiResponse) {
   const dbRes = await DB.getAboutUsData();
 
   if (dbRes.success) {
-    res.status(200).json(dbRes.data);
+    res.status(200).json({ success: true, data: dbRes.data });
   } else {
-    res.status(500).json({ message: dbRes.message });
+    res.status(500).json({ success: false, message: dbRes.message });
   }
 }

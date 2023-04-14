@@ -171,28 +171,24 @@ export function updateGroupProduct({
  * ABOUT US
  */
 
-export function getAboutUsData() {
+export function getAboutUsData(): Promise<AboutUsModel.GetAboutUsDataResponse> {
   return AboutUsModel.getAboutUsData();
 }
 
-export function setAboutUsFooter(footer: string) {
-  return AboutUsModel.setAboutUsFooter(footer);
+export function setAboutUsFooter({ footer }: AboutUsModel.SetAboutUsFooterProps): Promise<AboutUsModel.SetAboutUsFooterResponse> {
+  return AboutUsModel.setAboutUsFooter({footer});
 }
 
-export function setAboutUsMissionStatement(missionStatement: string) {
-  return AboutUsModel.setAboutUsMissionStatement(missionStatement);
+export function setAboutUsMissionStatement({ missionStatement }: AboutUsModel.SetAboutUsMissionStatementProps): Promise<AboutUsModel.SetAboutUsMissionStatementResponse> {
+  return AboutUsModel.setAboutUsMissionStatement({missionStatement});
 }
 
-export function setAboutUsHistoryHTML(history: string) {
-  return AboutUsModel.setAboutUsHistoryHTML(history);
+export function setAboutUsHistoryHTML({history}: AboutUsModel.SetAboutUsHistoryHTMLProps): Promise<AboutUsModel.SetAboutUsHistoryHTMLResponse>  {
+  return AboutUsModel.setAboutUsHistoryHTML({history});
 }
 
-export function setAboutUsContactInfo(
-  email: string,
-  phone: string,
-  additionalInfos?: string[]
-) {
-  return AboutUsModel.setAboutUsContactInfo(email, phone, additionalInfos);
+export function setAboutUsContactInfo({contactInfo}: AboutUsModel.SetAboutUsContactInfoProps): Promise<AboutUsModel.SetAboutUsContactInfoResponse> {
+  return AboutUsModel.setAboutUsContactInfo({contactInfo});
 }
 
 /***********************************************************

@@ -7,12 +7,14 @@ import { JSONFile } from "lowdb/node";
 import { Order } from "@/types/order";
 import { Category } from "@/types/category";
 import { DBProduct, DBProductGroup } from "@/types/product";
+import { AboutUsData } from "@/types/others";
 
 type Data = {
   ORDERS: Order[];
   ORDER_TEMPS: Order[];
   CATEGORIES: Category[];
   PRODUCTS: (DBProduct | DBProductGroup)[];
+  ABOUT_US: AboutUsData
 };
 
 // File path
@@ -31,6 +33,16 @@ db.data = db.data || {
   ORDER_TEMPS: [],
   CATEGORIES: [],
   PRODUCTS: [],
+  ABOUT_US: {
+    aboutUsFooter: "",
+    missionStatement: "",
+    historyHTML: "",
+    contactInfo: {
+      email: "",
+      phone: "",
+      additionalInfos: [],
+    },
+  },
 }; // For Node >= 15.x
 
 export const getDB = async () => {

@@ -18,11 +18,11 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
         } else if (type === "contact-info") {
             setAboutUsContactInfo(res, email, phone, additionalInfos);
         } else {
-            res.status(400).json({ message: "Invalid request type" });
+            res.status(400).json({ success: false, message: "Invalid request type" });
         }
     }
     else {
-        res.status(400).json({ message: "Invalid request method" });
+        res.status(400).json({ success: false, message: "Invalid request method" });
     }
 }
 
@@ -32,35 +32,33 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
 
 
 async function setAboutUsFooter(res: NextApiResponse, footer: string) {
-    const dbRes = await DB.setAboutUsFooter(footer);
+    const dbRes = await DB.setAboutUsFooter({footer});
 
     if (dbRes.success) {
-        res.status(200).json({ message: "About us footer updated successfully" });
+        res.status(200).json({ success: true, footer: dbRes.data });
     } else {
-        res.status(500).json({ message: dbRes.message });
+        res.status(500).json({ success: false, message: dbRes.message });
     }
 }
 
-async function setAboutUsMissionStatement(
-    res: NextApiResponse,
-    missionStatement: string
+async function setAboutUsMissionStatement(res: NextApiResponse, missionStatement: string
 ) {
-    const dbRes = await DB.setAboutUsMissionStatement(missionStatement);
+    const dbRes = await DB.setAboutUsMissionStatement({missionStatement});
 
     if (dbRes.success) {
-        res.status(200).json({ message: "Mission statement updated successfully" });
+        res.status(200).json({success: true, aboutUsMission: dbRes.data });
     } else {
-        res.status(500).json({ message: dbRes.message });
+        res.status(500).json({ success: false, message: dbRes.message });
     }
 }
 
 async function setAboutUsHistoryHTML(res: NextApiResponse, history: string) {
-    const dbRes = await DB.setAboutUsHistoryHTML(history);
+    const dbRes = await DB.setAboutUsHistoryHTML({history});
 
     if (dbRes.success) {
-        res.status(200).json({ message: "History updated successfully" });
+        res.status(200).json({ success: true, historyHTML: dbRes.data });
     } else {
-        res.status(500).json({ message: dbRes.message });
+        res.status(500).json({ success: false, message: dbRes.message });
     }
 }
 
@@ -70,11 +68,12 @@ async function setAboutUsContactInfo(
     phone: string,
     additionalInfos?: string[]
 ) {
-    const dbRes = await DB.setAboutUsContactInfo(email, phone, additionalInfos);
+    const contactInfo = { email, phone, additionalInfos };
+    const dbRes = await DB.setAboutUsContactInfo({ contactInfo });
 
     if (dbRes.success) {
-        res.status(200).json({ message: "Contact info updated successfully" });
+        res.status(200).json({ success: true, contactInfo: dbRes.data });
     } else {
-        res.status(500).json({ message: dbRes.message });
+        res.status(500).json({ success: false, message: dbRes.message });
     }
 }
