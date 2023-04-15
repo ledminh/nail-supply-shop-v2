@@ -22,7 +22,7 @@ export function getAboutUsData(): Promise<GetAboutUsDataResponse> {
       if(!data) {
         return reject({
           success: false,
-          message: `No data found in database db is ${JSON.stringify(db)}`
+          message: `No data found in database db is (stringify) ${JSON.stringify(db)}`
         });
       }
 
