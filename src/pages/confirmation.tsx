@@ -20,7 +20,8 @@ import { useCart } from "@/contexts/CartContext";
 
 import { GetServerSideProps } from "next";
 
-import { getTempOrder } from "@/database";
+import { getTempOrder, updateProductQuantity } from "@/database";
+
 
 export interface Props {
   errorMessage?: string;
@@ -129,8 +130,27 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       };
     }
 
+    const quantityData = orderRes.data.orderedProducts.map((product) => {
+      return {
+        productID: product.id,
+        quantity: product.quantity,
+      };
+    });
+
     const saveRes = await saveOrder(orderRes.data);
     const deleteRes = await deleteTempOrder(temp_id);
+    const updateQuantityRes = await updateProductQuantity(quantityData);
+
+    
+    if (!updateQuantityRes.success) {
+      return {
+        props: {
+          errorMessage: updateQuantityRes.message,
+        },
+      };
+    }
+
+
 
     if (!saveRes.success) {
       return {

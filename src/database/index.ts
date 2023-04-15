@@ -167,6 +167,15 @@ export function updateGroupProduct({
   return ProductModel.updateGroupProduct({ groupID, product });
 }
 
+/*****************************
+ * updateQuantity
+ ******************************/
+
+export function updateProductQuantity(quantityData: ProductModel.UpdateQuantityProps): Promise<ProductModel.UpdateQuantityResponse> {
+  return ProductModel.updateQuantity(quantityData);
+}
+
+
 /***********************************************************
  * ABOUT US
  */

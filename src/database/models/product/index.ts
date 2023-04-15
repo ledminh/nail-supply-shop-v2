@@ -1,13 +1,11 @@
-import productsJSON from "@/database/jsons/products.json";
-import categoryJSON from "@/database/jsons/categories.json";
 
 import type { DBProduct, DBProductGroup } from "@/types/product";
 
 import find, { FindProductOptions } from "./find";
 
 import { getDB } from "@/database/jsons";
+import isProduct from "@/utils/isProduct";
 
-const PRODUCTS = productsJSON as (DBProduct | DBProductGroup)[];
 
 /******************************
  *  FIND PRODUCT/PRODUCT GROUP
@@ -579,6 +577,81 @@ export function updateGroupProduct({
     });
   });
 }
+
+/********************************
+ * UPDATE QUANTITY
+ * ******************************/
+
+export type UpdateQuantityProps = {
+  productID: string;
+  quantity: number;
+}[];
+
+export type UpdateQuantityResponse = {
+  success: true;
+} | {
+  success: false;
+  message: string;
+};
+
+export function updateQuantity(quantityData: UpdateQuantityProps): Promise<UpdateQuantityResponse> {
+  return new Promise((resolve, reject) => {
+    getDB().then((db) => {
+      const { data } = db;
+
+      if (!data) {
+        return reject({
+          success: false,
+          message: "No database found",
+        });
+      }
+
+      const { PRODUCTS } = data;
+
+      // flatten the PRODUCTS array
+      const products = PRODUCTS.reduce((acc, curr) => {
+        if (isDBGroupProduct(curr)) {
+          return [...acc, ...curr.products];
+        }
+
+        return [...acc, curr];
+      }, [] as DBProduct[]);
+
+
+      quantityData.forEach((data) => {
+        const product = products.find((p) => p.id === data.productID);
+
+        if (!product) {
+          return reject({
+            success: false,
+            message: "Product not found",
+          });
+        }
+
+        product.sellCount += data.quantity;
+      });
+
+      db.write()
+        .then(() => db.read())
+        .then(() => {
+          if (!db.data) {
+            return reject({
+              success: false,
+              message: "No database found",
+            });
+          }
+
+
+          return resolve({ success: true });
+        });
+    });
+  });
+}
+
+
+
+
+
 
 const isDBGroupProduct = (
   group: DBProductGroup | DBProduct

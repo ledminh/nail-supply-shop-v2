@@ -52,9 +52,33 @@ export default function find(
 
       if (options.searchTerm) {
         const searchTerm = options.searchTerm.toLowerCase();
-        products = products.filter((product) =>
-          product.name.toLowerCase().includes(searchTerm)
-        );
+
+        const _products = PRODUCTS.reduce((acc, product) => {
+          if (isProduct(product)) {
+            if (product.name.toLowerCase().includes(searchTerm)) {
+              acc.push(product);
+            }
+          } else {
+            const _products = product.products.filter((product) =>
+              product.name.toLowerCase().includes(searchTerm)
+            );
+
+            if (_products.length > 0) {
+              acc.push(..._products);
+            }
+
+            if(product.name.toLowerCase().includes(searchTerm)){
+              acc.push(product);
+            }
+
+          }
+          
+          return acc;
+        }, [] as (DBProduct|DBProductGroup)[]);
+
+
+
+        return resolve({ success: true, data: _products });
       }
 
 

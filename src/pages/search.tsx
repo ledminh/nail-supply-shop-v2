@@ -39,9 +39,20 @@ export default function SearchResultPage({
         <section className={styles.header}>
           <h2>SEARCH RESULT FOR <span className={styles.term}>{term}</span></h2>
         </section>
-        <section className={styles.productList}>
-          <ProductList products={products} type="grid" />
-        </section>
+        {
+          products.length === 0 && (
+            <section className={styles.noResult}>
+              <h3>No result found</h3>
+            </section>
+          )
+        }
+        {
+          products.length > 0 && (
+            <section className={styles.productList}>
+              <ProductList products={products} type="grid" />
+            </section>
+          )
+        }
       </div>
     </PageLayout>
   );
