@@ -6,7 +6,7 @@ import type { Props } from "@/pages/shop";
 import { ContactInfo } from "@/types/others";
 import { Category } from "@/types/category";
 
-const aboutTextFooter =
+const aboutUsFooter =
   "Nail Essential is a family-owned business that has been providing high-quality nail care products to professionals and enthusiasts for over 20 years. Our mission is to make it easy for our customers to find the products they need to create beautiful and healthy nails. We take pride in offering a wide selection of top-quality products, competitive pricing, and exceptional customer service. Thank you for choosing Nail Essential for all of your nail care needs.";
 
 const contactInfo: ContactInfo = {
@@ -24,6 +24,7 @@ const categorySample = {
     src: "https://loremflickr.com/400/400",
     alt: "Category Image",
   },
+  numProducts: 10,
   name: "Category Name",
   description:
     "lore ipsum dolor sit amet ronco aenean donec dolor lorem etiam kwon",
@@ -74,7 +75,7 @@ const categories: Category[] = [
 
 const defaultArgs: Props = {
   contactInfo: contactInfo,
-  aboutTextFooter: aboutTextFooter,
+  aboutUsFooter,
   categories: categories,
 };
 

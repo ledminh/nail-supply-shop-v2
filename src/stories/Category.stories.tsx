@@ -10,7 +10,7 @@ import { categoryConfig } from "@/config";
 import CartContext from "@/contexts/CartContext";
 import { useCartProviderValue } from "@/contexts/CartContext";
 
-const aboutTextFooter =
+const aboutUsFooter =
   "Nail Essential is a family-owned business that has been providing high-quality nail care products to professionals and enthusiasts for over 20 years. Our mission is to make it easy for our customers to find the products they need to create beautiful and healthy nails. We take pride in offering a wide selection of top-quality products, competitive pricing, and exceptional customer service. Thank you for choosing Nail Essential for all of your nail care needs.";
 
 const contactInfo: ContactInfo = {
@@ -29,6 +29,8 @@ const productSample = {
   price: 100,
   intro:
     "This is some intro text. I'm trying to make it longer to see if it fit on the frame",
+  details: 'This is some "details" text.',
+  categoryID: "1111",
   images: [
     {
       id: "img-1",
@@ -77,6 +79,7 @@ const categorySample = {
     alt: "Category Image",
   },
   name: "Category Name",
+  numProducts: 10,
   description:
     "Lore ipsum dolor sit amet ronco aenean donec dolor lorem etiam kwon. Lore ipsum dolor sit amet ronco aenean donec dolor lorem etiam kwon. Lore ipsum dolor sit amet ronco aenean donec dolor lorem etiam kwon.",
 };
@@ -152,6 +155,8 @@ const productWithGroupSamples = [
       },
     ],
     id: "2",
+    categoryID: "1111",
+
   },
   {
     ...productSample,
@@ -172,9 +177,8 @@ const sortedOrderItem = categoryConfig.sortedOrderItems[0];
 
 const defaultArgs: Props = {
   contactInfo: contactInfo,
-  aboutTextFooter: aboutTextFooter,
+  aboutUsFooter: aboutUsFooter,
   categories: categories,
-  currentCategory: categories[1],
 
   products: productWithGroupSamples,
   initCondition: {
@@ -182,7 +186,8 @@ const defaultArgs: Props = {
     sortedOrder: sortedOrderItem,
   },
 
-  numProducts: 20,
+  initCategory: categories[0],
+
 };
 
 const Wrapper = (props: Props) => {

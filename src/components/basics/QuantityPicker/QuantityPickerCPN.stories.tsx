@@ -7,11 +7,11 @@ import { useState } from "react";
 import type { Props } from ".";
 
 const defaultArgs: Props = {
-  initialValue: 0,
+  value: 1,
 };
 
 const Wrapper = (args: Props) => {
-  const [value, setValue] = useState(args.initialValue);
+  const [value, setValue] = useState(args.value);
 
   const onChange = (value: number) => {
     setValue(value);

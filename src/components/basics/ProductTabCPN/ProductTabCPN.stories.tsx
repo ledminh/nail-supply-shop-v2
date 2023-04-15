@@ -9,6 +9,8 @@ const sampleProduct = {
   price: 100,
   intro:
     "This is some intro text. I'm trying to make it longer to see if it fit on the frame",
+  details: 'This is some "details" text.',
+  categoryID: "1111",
   images: [
     {
       id: "img-1",

@@ -20,7 +20,7 @@ const sampleProduct: OrderedProductType = {
 const Wrapper = () => {
   const [product, setProduct] = useState<OrderedProductType>(sampleProduct);
 
-  function onChange({ id, quantity }: { id: string; quantity: number }) {
+  function onChange( id: string, quantity: number ) {
     setProduct({ ...product, quantity });
   }
 

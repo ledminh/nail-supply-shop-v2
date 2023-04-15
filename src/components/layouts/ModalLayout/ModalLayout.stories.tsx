@@ -10,13 +10,6 @@ const defaultArgs: Props = {
   type: "normal",
 };
 
-// const Wrapper = (args:Props) => (
-//   <div style={{
-
-//   }}>
-//     <ModalLayout {...args} />
-//   </div>
-// );
 
 export default {
   title: "Layouts/ModalLayout",

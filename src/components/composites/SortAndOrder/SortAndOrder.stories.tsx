@@ -42,7 +42,7 @@ const defaultArgs = {
 } as {
   sortItems: SortItem[];
   sortedOrderItems: SortedOrderItem[];
-  initCondition?: ListCondition;
+  initCondition: ListCondition;
 };
 
 const Wrapper = () => {

@@ -58,9 +58,7 @@ const defaultArgs: Props = {
   type: "create",
   onSave: () => {},
   onCancel: () => {},
-  onEditProduct: () => {},
-  onDeleteProduct: () => {},
-  onAddNewProduct: () => {},
+  categoryID: "1",
 };
 
 export default {

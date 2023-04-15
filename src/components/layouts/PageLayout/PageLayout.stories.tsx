@@ -17,8 +17,6 @@ const SampleContent = () => (
 );
 
 const defaultArgs: Props = {
-  currentPage: "/",
-  onSearchSubmit: (searchTerm: string) => {},
   contactInfo: {
     email: "customer.service@example.com",
     phone: "123456789",
@@ -29,10 +27,6 @@ const defaultArgs: Props = {
   },
   aboutText:
     "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod, nisl vitae ultricies lacinia, nunc nisl aliquam nisl, eget aliquam nunc nisl sit amet nisl. Sed euismod, nisl vitae ultricies lacinia, nunc nisl aliquam nisl, eget aliquam nunc nisl sit amet nisl.",
-  logoImg: {
-    src: Logo,
-    alt: "Logo",
-  },
   children: <SampleContent />,
 };
 

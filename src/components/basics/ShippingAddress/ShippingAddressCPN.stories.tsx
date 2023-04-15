@@ -4,7 +4,17 @@ import ShippingAddressCPN from ".";
 
 import type { Props } from ".";
 
-const defaultArgs: Props = {};
+const defaultArgs: Props = {
+  shippingAddress: {
+    name: 'Tester',
+    address1: '123 Main St',
+    address2: 'Apt 1',
+    city: 'Testville',
+    state: 'TX',
+    zip: '12345',
+    email: 'email@test.com'
+  }
+};
 
 export default {
   title: "Basics/ShippingAddressCPN",

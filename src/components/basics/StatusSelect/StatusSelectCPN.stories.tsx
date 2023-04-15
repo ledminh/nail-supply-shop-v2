@@ -6,6 +6,7 @@ import type { Props } from ".";
 
 const defaultArgs: Props = {
   onSave: (status) => console.log(status),
+  initStatusValue: "processing",
 };
 
 export default {

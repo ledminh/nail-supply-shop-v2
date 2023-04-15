@@ -84,6 +84,10 @@ const Wrapper = () => {
     addToCart: (orderedProduct: OrderedProduct) => {
       setCart([...cart, orderedProduct]);
     },
+    setInitQuantity: () => {},
+    initQuantities: {}, 
+    initSelectedProductID: "1",
+    setInitSelectedProductID: () => {},
   };
 
   return (

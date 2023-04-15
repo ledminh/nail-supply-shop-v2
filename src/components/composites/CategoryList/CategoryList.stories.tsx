@@ -11,6 +11,7 @@ const categorySample = {
   name: "Category Name",
   description:
     "lore ipsum dolor sit amet ronco aenean donec dolor lorem etiam kwon",
+  numProducts: 10,
 };
 
 const defaultArgs: Props = {
