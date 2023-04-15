@@ -6,6 +6,7 @@ import { Order, StatusValue } from "@/types/order";
 import { FilterOrder } from "@/types/order";
 
 import * as DB from "@/database";
+import { getAuth } from "@clerk/nextjs/server";
 
 export type ProductApiResponse =
   | {
@@ -27,12 +28,20 @@ export default function handler(
     query: { type, id, status },
   } = req;
 
+  const {userId} = getAuth(req);
+
+  
+
   switch (req.method) {
     case "GET":
       getOrders(res);
       break;
     case "POST":
       if (type === "delete") {
+        if (!userId || userId !== process.env.ADMIN_ID) {
+          return res.status(401).json({ success: false, message: "Unauthorized" });
+        }
+      
         if (typeof id !== "string") {
           return res
             .status(400)
@@ -42,6 +51,10 @@ export default function handler(
       }
 
       if (type === "status") {
+        if (!userId || userId !== process.env.ADMIN_ID) {
+          return res.status(401).json({ success: false, message: "Unauthorized" });
+        }
+      
         if (typeof id !== "string") {
           return res
             .status(400)

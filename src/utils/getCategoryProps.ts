@@ -11,7 +11,6 @@ const getCategoryProps = ({
 }) => {
   const category = categories.find((category) => category.id === categoryID);
 
-  console.log(categoryID);
 
   if (!category) {
     throw new Error(`Category not found categoryID: ${categoryID} ${JSON.stringify(categories)}`);

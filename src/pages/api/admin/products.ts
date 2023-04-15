@@ -13,6 +13,7 @@ import formidable from "formidable";
 
 import fs from "fs";
 import randomId from "@/utils/randomId";
+import { getAuth } from "@clerk/nextjs/server";
 
 export type ProductApiResponse =
   | {
@@ -31,6 +32,13 @@ export default function handler(
   req: NextApiRequest,
   res: NextApiProductResponse
 ) {
+
+  const {userId} = getAuth(req);
+
+  if (!userId || userId !== process.env.ADMIN_ID) {
+    return res.status(401).json({ success: false, message: "Unauthorized" });
+  }
+  
   const {
     query: { type, id },
   } = req;

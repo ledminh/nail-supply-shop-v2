@@ -1,8 +1,16 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 
 import * as DB from "@/database";
+import { getAuth } from "@clerk/nextjs/server";
 
 export default function handler(req: NextApiRequest, res: NextApiResponse) {
+    const {userId} = getAuth(req);
+
+    if (!userId || userId !== process.env.ADMIN_ID) {
+      return res.status(401).json({ success: false, message: "Unauthorized" });
+    }
+
+    
     if(req.method === "POST") {
         const {
             query: { type },

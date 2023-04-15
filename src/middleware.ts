@@ -2,7 +2,7 @@ import { withClerkMiddleware, getAuth } from '@clerk/nextjs/server'
 import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
 
-const privatePaths = ['/admin*'];
+const privatePaths = ['/admin*', '/api/admin*'];
 
 const isPublic = (path: string) => {
   return !privatePaths.find(x =>
@@ -28,4 +28,4 @@ const handler = (request: NextRequest) => {
 
 export default withClerkMiddleware(handler);
 
-export const config = { matcher:  ['/admin/:path*']};
+export const config = { matcher:  ['/admin/:path*', '/api/admin/:path*', '/api/orders']};
