@@ -65,6 +65,8 @@ export const getServerSideProps = async () => {
   try {
     const aboutUsRes = await getAboutUsData();
 
+    console.log(aboutUsRes);
+
     if (!aboutUsRes.success) {
       return {
         props: {

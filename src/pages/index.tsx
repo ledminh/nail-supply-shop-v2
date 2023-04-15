@@ -71,6 +71,7 @@ export const getServerSideProps = async () => {
       ]);
 
     if (!aboutUsRes.success) {
+      console.log("aboutUsRes");
       return {
         props: {
           errorMessage: aboutUsRes.message,
@@ -78,7 +79,10 @@ export const getServerSideProps = async () => {
       };
     }
 
+
+
     if (!categoriesRes.success) {
+      console.log("cateogoiresRes");
       return {
         props: {
           errorMessage: categoriesRes.message,
@@ -87,6 +91,7 @@ export const getServerSideProps = async () => {
     }
 
     if (!resNewArrivals.success) {
+      console.log('resNewArrivals');
       return {
         props: {
           errorMessage: resNewArrivals.message,
@@ -95,6 +100,7 @@ export const getServerSideProps = async () => {
     }
 
     if (!resCustomerFavorites.success) {
+      console.log('resCustomerFavorites');
       return {
         props: {
           errorMessage: resCustomerFavorites.message,

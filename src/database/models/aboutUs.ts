@@ -18,10 +18,11 @@ export function getAboutUsData(): Promise<GetAboutUsDataResponse> {
     getDB().then((db) => {
       const {data} = db;
 
+
       if(!data) {
         return reject({
           success: false,
-          message: "No data found in database"
+          message: `No data found in database db = ${db}`
         });
       }
 
