@@ -135,11 +135,71 @@
         "lastUpdated": "2023-12-01T05:00:00.000Z",
         "description": "Order is processing"
       }
+    },
+    {
+      "id": "7916309013",
+      "shippingAddress": {
+        "name": "Minh Le",
+        "address1": "445 Main Street",
+        "city": "Alamo",
+        "state": "GA",
+        "zip": "29650",
+        "email": "duyminh.le310@gmail.com"
+      },
+      "orderedProducts": [
+        {
+          "id": "grp01_prd01_nailpolish_red",
+          "name": "Classic Red Nail Polish",
+          "price": 5.99,
+          "quantity": 3,
+          "image": {
+            "id": "img01_nailpolish_red",
+            "src": "/images/placeholder_1.png",
+            "alt": "Classic Red Nail Polish"
+          }
+        },
+        {
+          "id": "grp01_prd03_nailpolish_black",
+          "name": "Midnight Black Nail Polish",
+          "price": 5.99,
+          "quantity": 6,
+          "image": {
+            "id": "img05_nailpolish_black",
+            "src": "/images/placeholder_3.png",
+            "alt": "Midnight Black Nail Polish"
+          }
+        },
+        {
+          "id": "prd30_stamping_kit",
+          "name": "Nail Stamping Kit",
+          "price": 14.99,
+          "quantity": 9,
+          "image": {
+            "id": "img30_stamping_kit",
+            "src": "/images/placeholder_2.png",
+            "alt": "Nail Stamping Kit"
+          }
+        },
+        {
+          "id": "prd26_gel_basecoat",
+          "name": "Gel Base Coat",
+          "price": 6.99,
+          "quantity": 12,
+          "image": {
+            "id": "img26_gel_basecoat",
+            "src": "/images/placeholder_12.png",
+            "alt": "Gel Base Coat"
+          }
+        }
+      ],
+      "status": {
+        "value": "processing",
+        "lastUpdated": "2023-04-15T09:15:30.742Z",
+        "description": "Your order is being prepared for shipment"
+      }
     }
   ],
-  "ORDER_TEMPS": [
-  ],
-
+  "ORDER_TEMPS": [],
   "ABOUT_US": {
     "aboutUsFooter": "Nail Essential is a family-owned business that has been providing high-quality nail care products to professionals and enthusiasts for over 20 years. Our mission is to make it easy for our customers to find the products they need to create beautiful and healthy nails. We take pride in offering a wide selection of top-quality products, competitive pricing, and exceptional customer service. Thank you for choosing Nail Essential for all of your nail care needs.",
     "missionStatement": " Our mission is to provide care products to professionals and enthusiasts, making it easy for our customers to find the products they need to create beautiful and healthy nails",
@@ -153,7 +213,6 @@
       ]
     }
   },
-  
   "CATEGORIES": [
     {
       "id": "cat_nail01_polishes",
@@ -244,7 +303,6 @@
       "numProducts": 20
     }
   ],
-
   "PRODUCTS": [
     {
       "id": "grp01_nailpolish_combo",
@@ -282,7 +340,7 @@
           "details": "Our Classic Red Nail Polish offers long-lasting wear and a glossy finish. The quick-drying formula ensures a flawless application every time.",
           "categoryID": "cat_nail01_polishes",
           "dateCreated": "2023-01-02",
-          "sellCount": 0,
+          "sellCount": 3,
           "groupID": "grp01_nailpolish_combo"
         },
         {
@@ -348,7 +406,7 @@
           "details": "Our Midnight Black Nail Polish features a long-lasting, glossy finish. The high-quality formula ensures even coverage and easy application.",
           "categoryID": "cat_nail01_polishes",
           "dateCreated": "4023-01-15",
-          "sellCount": 0,
+          "sellCount": 6,
           "groupID": "grp01_nailpolish_combo"
         },
         {
@@ -586,7 +644,6 @@
           "alt": "Mint Green Nail Polish"
         }
       ],
-  
       "intro": "A refreshing mint green nail polish for a cool and unique look.",
       "details": "Our Mint Green Nail Polish offers a long-lasting, glossy finish. The high-quality formula ensures even coverage and easy application.",
       "categoryID": "cat_nail01_polishes",
@@ -992,7 +1049,7 @@
       "details": "Our Gel Base Coat provides a strong foundation for your gel polish, ensuring a smooth application and long-lasting wear.",
       "categoryID": "cat_nail02_gel_polishes",
       "dateCreated": "2023-04-01",
-      "sellCount": 0
+      "sellCount": 12
     },
     {
       "id": "prd27_gel_polish_pink",
@@ -1026,8 +1083,7 @@
       "details": "Our Nail Stamping Kit includes a variety of stamping plates, a stamper, and a scraper. The plates feature intricate designs to help you create stunning nail art with ease.",
       "categoryID": "cat_nail04_nailart",
       "dateCreated": "2023-04-15",
-      "sellCount": 0
+      "sellCount": 9
     }
   ]
-  
 }
