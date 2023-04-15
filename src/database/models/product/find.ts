@@ -53,27 +53,33 @@ export default function find(
       if (options.searchTerm) {
         const searchTerm = options.searchTerm.toLowerCase();
 
+
         const _products = PRODUCTS.reduce((acc, product) => {
           if (isProduct(product)) {
-            if (product.name.toLowerCase().includes(searchTerm)) {
-              acc.push(product);
+            if(isProductMatch(product, searchTerm)){
+              return [...acc, product];
             }
+            else
+              return acc;
           } else {
+            let _acc = [...acc];
+
             const _products = product.products.filter((product) =>
-              product.name.toLowerCase().includes(searchTerm)
+              isProductMatch(product, searchTerm)
             );
 
             if (_products.length > 0) {
-              acc.push(..._products);
+              _acc = [..._acc, ..._products];
             }
 
-            if(product.name.toLowerCase().includes(searchTerm)){
-              acc.push(product);
+            if(isProductGroupMatch(product, searchTerm)){
+              _acc = [..._acc, product];
             }
 
+            return _acc;
+            
           }
-          
-          return acc;
+
         }, [] as (DBProduct|DBProductGroup)[]);
 
 
@@ -264,4 +270,47 @@ function sortProducts(
       return 0;
     }
   });
+}
+
+
+
+/***************************
+ * Helper function
+ */
+
+function isProductMatch(product: DBProduct, searchTerm: string) {
+  
+  const searchTermParts = searchTerm.split(" ");
+
+  const productName = product.name.toLowerCase();
+
+  const isProductNameMatch = searchTermParts.every((part) =>
+    productName.includes(part)
+  );
+
+  const isProductDetailsMatch = searchTermParts.every((part) =>
+    product.details.toLowerCase().includes(part)
+  );
+
+  const isProductIntroMatch = searchTermParts.every((part) =>
+    product.intro.toLowerCase().includes(part)
+  );
+
+  return isProductNameMatch || isProductDetailsMatch || isProductIntroMatch;
+
+}
+
+function isProductGroupMatch(
+  productGroup: DBProductGroup,
+  searchTerm: string
+) {
+  const searchTermParts = searchTerm.split(" ");
+
+  const productName = productGroup.name.toLowerCase();
+
+  const isProductNameMatch = searchTermParts.every((part) =>
+    productName.includes(part)
+  );
+
+  return isProductNameMatch;
 }
