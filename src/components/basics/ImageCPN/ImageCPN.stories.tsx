@@ -11,7 +11,7 @@ const defaultArgs = {
     src: "https://picsum.photos/id/237/200/300",
     alt: "Remote Image",
   },
-  sizes: "(max-width: 600px) 100vw, 1200px",
+  size: "medium",
 } as Props;
 
 export default {

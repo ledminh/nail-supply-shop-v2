@@ -51,6 +51,7 @@ export default function Carousell<T>({
       items.find((item) => item.id === initialItemID) ?? items[0];
     setMainItem(mainItem);
     setOtherItems(items.filter((item) => item.id !== mainItem.id));
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [items]);
 
   return (

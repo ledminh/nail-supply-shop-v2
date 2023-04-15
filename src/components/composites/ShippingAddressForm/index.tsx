@@ -62,6 +62,7 @@ export default function ShippingAddressForm({ onChange }: Props) {
       zip,
       email,
     });
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [name, address1, address2, city, state, zip, email]);
 
   return (

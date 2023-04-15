@@ -45,6 +45,7 @@ export default function CategoryManagementSection({}: Props) {
 
   useEffect(() => {
     setItems(toItems(categories, onDelete, onEdit, onCreate));
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [categories]);
 
   useEffect(() => {

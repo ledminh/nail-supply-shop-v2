@@ -102,6 +102,7 @@ export default function ProductManagementSection({}: Props) {
         sortingCondition.sortedOrder!.value
       );
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentCategory]);
 
   useEffect(() => {
@@ -130,6 +131,7 @@ export default function ProductManagementSection({}: Props) {
           );
       });
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [reloadProducts]);
 
   useEffect(() => {
@@ -142,6 +144,7 @@ export default function ProductManagementSection({}: Props) {
         sortingCondition.sortedOrder!.value
       );
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [sortingCondition]);
 
   const loadMore = () => {
