@@ -47,6 +47,7 @@ export default function ProductGroupBlock({
     }
 
     setQuantity(initQuantities[selectedProduct.id] || 0);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedProduct]);
 
   const onAdd: MouseEventHandler<HTMLButtonElement> = (e) => {

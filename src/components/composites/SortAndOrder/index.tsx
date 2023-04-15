@@ -30,6 +30,8 @@ export default function SortAndOrder({
 
   useEffect(() => {
     if (condition !== initCondition) onChange(condition);
+    
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [condition]);
 
   const classNames = [styles.wrapper, className].join(" ");

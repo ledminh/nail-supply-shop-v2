@@ -35,6 +35,7 @@ export default function OrderManagementSection({}: Props) {
         throw new Error(data.message);
       }
     });
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -45,6 +46,7 @@ export default function OrderManagementSection({}: Props) {
         throw new Error(data.message);
       }
     });
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [filter]);
 
   const onFilterChange = ({ status, month, year, sort, query }: FilterChangeOptions) => {

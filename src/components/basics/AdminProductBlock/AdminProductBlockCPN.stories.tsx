@@ -41,12 +41,12 @@ const Wrapper = () => {
 
   const args = defaultArgs;
 
-  args.onClick = (catID: string) => {
-    setOnClickText(`Clicked on ${catID}`);
+  args.onClick = ({productID}: {productID:string}) => {
+    setOnClickText(`Clicked on ${productID}`);
   };
 
-  args.onDelete = (catID: string) => {
-    setOnDeleteText(`Deleted ${catID}`);
+  args.onDelete = (productID: string) => {
+    setOnDeleteText(`Deleted ${productID}`);
   };
 
   return (

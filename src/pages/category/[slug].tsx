@@ -78,6 +78,7 @@ export default function CategoryPage({
 
         setProducts(data.products);
       });
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [curCategory, condition]);
 
   const sortAndOrderOnChange = ({ sort, sortedOrder }: ListCondition) => {

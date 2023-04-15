@@ -45,6 +45,8 @@ export default function Confirmation({
   useEffect(() => {
     clearCart();
     deleteShippingAddressFromLocalStorage();
+
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

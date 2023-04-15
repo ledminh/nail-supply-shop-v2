@@ -33,6 +33,7 @@ export default function OrderControl({ monthItems, yearItems, onFilterChange }: 
     } else {
       onFilterChange({ year: yearItems[0].value });
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [monthOrYear]);
 
   return (

@@ -40,6 +40,7 @@ export default function Checkout({
     } else {
       setIsCheckoutDisabled(true);
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [shippingAddress]);
 
   const onShippingAddressChange = (shippingAddress: ShippingAddress) => {

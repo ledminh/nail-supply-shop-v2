@@ -40,6 +40,7 @@ export default function OrderedProduct({
 
   useEffect(() => {
     setTotalPrice(price * quantity);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [quantity]);
 
   return (

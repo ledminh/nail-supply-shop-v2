@@ -21,7 +21,7 @@ export type CheckoutResponse =
 
 type NextApiCheckoutResponse = NextApiResponse<CheckoutResponse>;
 
-export default async (req: NextApiRequest, res: NextApiCheckoutResponse) => {
+async function checkout(req: NextApiRequest, res: NextApiCheckoutResponse) {
   if (req.method === "POST") {
     const { orderedProducts, shippingAddress, email } = req.body as {
       orderedProducts: OrderedProduct[];
@@ -60,6 +60,8 @@ export default async (req: NextApiRequest, res: NextApiCheckoutResponse) => {
     res.status(405).end("Method Not Allowed");
   }
 };
+
+export default checkout;
 
 function createStripeParams(
   orderedProducts: OrderedProduct[],

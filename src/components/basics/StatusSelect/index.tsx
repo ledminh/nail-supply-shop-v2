@@ -45,6 +45,7 @@ const StatusSelectCPN: StatusSelect = ({ onSave, initStatusValue }) => {
     setTempStatus(initStatusItem);
 
     setStatusItems(statusItems);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const SelectCPN =

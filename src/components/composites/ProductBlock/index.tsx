@@ -48,8 +48,8 @@ function ProductBlock({
       setQuantity(0);
       setInitQuantity(id, 0);
     },
-    [quantity]
-  );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [quantity]);
 
   return (
     <div

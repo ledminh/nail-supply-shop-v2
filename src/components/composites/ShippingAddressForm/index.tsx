@@ -32,6 +32,7 @@ export default function ShippingAddressForm({ onChange }: Props) {
       setZip(shippingAddress.zip);
       setEmail(shippingAddress.email);
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {

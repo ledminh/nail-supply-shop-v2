@@ -89,6 +89,7 @@ export default function ProductManagementSection({}: Props) {
       setCategories(categories);
       setCurrentCategory(categories[0]);
     });
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
