@@ -1,4 +1,5 @@
-import * as CategoryModel from "./models/category";
+// import * as CategoryModel from "./models/category";
+import * as CategoryModel from './prisma/category';
 import * as ProductModel from "./models/product";
 import * as AboutUsModel from "./models/aboutUs";
 import * as OrderModel from "./models/order";
