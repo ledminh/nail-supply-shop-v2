@@ -270,6 +270,7 @@ const addGroup = (req: NextApiRequest, res: NextApiProductResponse) => {
       return {
         ...product,
         groupID,
+        categoryID: product.categoryID || group.categoryID,
       };
     });
 
@@ -289,7 +290,6 @@ const addGroup = (req: NextApiRequest, res: NextApiProductResponse) => {
             .json({ success: false, message: dbRes.message });
         }
 
-        console.log("after", dbRes.data);
 
         return res.status(200).json({ success: true, product: dbRes.data });
       })

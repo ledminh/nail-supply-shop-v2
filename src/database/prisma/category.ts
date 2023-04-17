@@ -146,8 +146,21 @@ export function updateCategory({
 }: UpdateCategoryProps): Promise<CategoryResponse> {
 
   return new Promise((resolve, reject) => {
-    prismaClient.category
-      .update({
+    const _update = async () => {
+      const oldCategory = await prismaClient.category.findUnique({
+        where: {
+          id,
+        },
+      });
+
+      if (!oldCategory) {
+        return reject({
+          success: false,
+          message: "Category not found",
+        });
+      }
+
+      const newCategory =  await prismaClient.category.update({
         where: {
           id,
         },
@@ -159,28 +172,41 @@ export function updateCategory({
             image: `/images/category/${imageFileName}`,
           }),
         },
-      })
-      .then((category) => {
-        if (!category) {
-          return reject({
-            success: false,
-            message: "Category not found",
-          });
-        }
-
-        const _category = {
-          ...category,
-          image: {
-            src: category.image,
-            alt: category.name,
-          },
-        };
-
-        resolve({
-          success: true,
-          data: _category,
-        });
       });
+
+      if(!newCategory) {
+        return reject({
+          success: false,
+          message: "Category not found",
+        });
+      }
+
+      const _oldCategory = {
+        ...oldCategory,
+        image: {
+          src: oldCategory.image,
+          alt: oldCategory.name,
+        },
+      };
+
+      const _newCategory = {
+        ...newCategory,
+        image: {
+          src: newCategory.image,
+          alt: newCategory.name,
+        },
+      };
+
+      resolve({
+        success: true,
+        data: [_oldCategory, _newCategory],
+      });
+    };
+
+    _update();
+
+
+
   });
 
 }
@@ -188,32 +214,43 @@ export function updateCategory({
 export function deleteCategory(id: string): Promise<CategoryResponse> {
   
   return new Promise((resolve, reject) => {
-    prismaClient.category
-      .delete({
+    
+    const _delete = async () => {
+      const category  = await prismaClient.category.findUnique({
         where: {
           id,
         },
-      })
-      .then((category) => {
-        if (!category) {
-          return reject({
-            success: false,
-            message: "Category not found",
-          });
-        }
-
-        const _category = {
+      });
+  
+      if (!category) {
+        throw new Error("Category not found");
+      } 
+  
+      const numDel = await prismaClient.$executeRaw`DELETE FROM "Category" WHERE id = ${id}`;
+        
+      if (numDel === 0) {
+        throw new Error("Category not found");
+      }
+  
+      resolve({
+        success: true,
+        data: {
           ...category,
           image: {
             src: category.image,
             alt: category.name,
           },
-        };
-
-        resolve({
-          success: true,
-          data: _category,
-        });
+        }
       });
+    }
+
+    _delete().catch((err) => {
+      reject({
+        success: false,
+        message: err.message,
+      });
+    });
+    
+
   });
 }

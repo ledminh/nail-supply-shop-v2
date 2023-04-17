@@ -197,10 +197,7 @@ export default function find(
             ((select "id", "name", "dateCreated", "lastUpdated", "categoryID" from "Product" where "categoryID" = \'${options.catID}\'
               union
             select "id", "name",  "dateCreated", "lastUpdated", "categoryID" from "Group" where "categoryID" = \'${options.catID}\')
-            ) as products_and_groups 
-            order by "name" ${options.sortedOrder}
-            offset ${options.offset}
-            limit ${options.limit}) as products_and_groups
+            )  as products_and_groups
           ` as string[];
 
           const prismaProducts = await prismaClient.product.findMany({where: {id: {in: ids}}});

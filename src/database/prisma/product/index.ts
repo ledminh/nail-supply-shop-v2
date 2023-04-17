@@ -213,42 +213,54 @@ export type AddGroupResponse =
 
 export function addGroup({ group }: AddGroupProps): Promise<AddGroupResponse> {
   return new Promise((resolve, reject) => {
-    prismaClient.group.create({
+    const createGroup = prismaClient.group.create({
       data: {
-        ...group,
-        products: {
-          create: group.products.map(product => ({
-            ...product,
-            groupID: group.id,
-            images: product.images.map(image => image.src)
-          }))
+        id: group.id,
+        name: group.name,
+        categoryID: group.categoryID,
+      }
+    });
+
+    const createProducts = group.products.map(product => prismaClient.product.create({
+      data: {
+        ...product,
+        images: product.images.map(image => image.src)
+      }
+    }));
+
+    const updateCategory = prismaClient.category.update({
+      where: {
+        id: group.categoryID
+      },
+      data: {
+        numProducts: {
+          increment: 1
         }
       }
-    }).then((group) => { prismaClient.category.update({ 
-        where: { id: group.categoryID },
-        data: {
-          numProducts: {
-            increment: 1
-          }
-        }
-      }).then(() => { prismaClient.group.findUnique({
-          where: { id: group.id}
-        }).then((group) => {
+    });
 
-          if (!group) {
-            return reject({ success: false, message: "Group not found" });
-              
-          }
-          else{
-            prismaClient.product.findMany({ where: { groupID: group.id }})
-            .then(products => resolve({ success: true, data: toDBProductGroup(group, products)}))
-            .catch(err => reject({ success: false, message: err.message }));
-          }          
+    prismaClient.$transaction([createGroup, ...createProducts, updateCategory]).then(() => {
+      prismaClient.group.findUnique({
+        where: { id: group.id}
+      }).then((group) => {
+
+        if (!group) {
+          return reject({ success: false, message: "Group not found" });
+        }
+        else{
+          prismaClient.product.findMany({ where: { groupID: group.id }})
+          .then(products => resolve({ success: true, data: toDBProductGroup(group, products)}))
+          .catch(err => reject({ success: false, message: err.message }));
+        }
       }).catch(err => reject({ success: false, message: err.message }));
-    }).catch(err =>  reject({ success: false, message: err.message }));
-  });
+    }).catch(err => reject({ success: false, message: err.message }));
   });
 }
+
+
+
+
+
 
 /********************************
  * UPDATE PRODUCT
@@ -272,54 +284,6 @@ export function updateProduct({
   product,
 }: UpdateProductProps): Promise<UpdateProductResponse> {
   return new Promise((resolve, reject) => {
-    // getDB().then((db) => {
-    //   const { data } = db;
-
-    //   if (!data) {
-    //     return reject({
-    //       success: false,
-    //       message: "No database found",
-    //     });
-    //   }
-
-    //   const { PRODUCTS } = data;
-
-    //   const index = PRODUCTS.findIndex((p) => p.id === product.id);
-
-    //   if (index === -1) {
-    //     return reject({
-    //       success: false,
-    //       message: "Product not found",
-    //     });
-    //   }
-
-    //   PRODUCTS[index] = product;
-
-    //   db.write()
-    //     .then(() => db.read())
-    //     .then(() => {
-    //       if (!db.data) {
-    //         return reject({
-    //           success: false,
-    //           message: "No database found",
-    //         });
-    //       }
-
-    //       const { PRODUCTS } = db.data;
-
-    //       const _product = PRODUCTS.find((p) => p.id === product.id);
-
-    //       if (!_product) {
-    //         return reject({
-    //           success: false,
-    //           message: "Product not found",
-    //         });
-    //       }
-
-    //       return resolve({ success: true, data: _product as DBProduct });
-    //     });
-    // });
-    // rewrite with prisma
 
     prismaClient.product.update({
       where: {
