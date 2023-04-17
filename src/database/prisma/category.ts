@@ -1,8 +1,7 @@
 import type { Category } from "@/types/category";
-import { getDB } from "../jsons";
-import randomId from "@/utils/randomId";
 
-import prismaClient from "./prismaClient";
+
+import prismaClient from "./utils/prismaClient";
 
 type Response<T> =
   | {

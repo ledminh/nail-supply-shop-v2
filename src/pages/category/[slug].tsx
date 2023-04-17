@@ -250,6 +250,8 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
     const products = productsRes.data;
 
+
+
     return {
       props: {
         contactInfo,

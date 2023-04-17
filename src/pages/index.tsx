@@ -124,12 +124,12 @@ export const getServerSideProps = async () => {
     const featuredProductGroups = [
       {
         title: "New Arrivals",
-        mainProduct: resNewArrivals.data[0],
+        mainProduct: resNewArrivals.data.length > 0 && resNewArrivals.data[0],
         otherProducts: resNewArrivals.data.slice(1),
       },
       {
         title: "Customer Favorites",
-        mainProduct: resCustomerFavorites.data[0],
+        mainProduct: resCustomerFavorites.data.length > 0 && resCustomerFavorites.data[0],
         otherProducts: resCustomerFavorites.data.slice(1),
       },
     ];
