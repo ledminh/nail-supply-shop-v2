@@ -1,9 +1,9 @@
 import {DBProduct} from '@/types/product';
 import randomId from '@/utils/randomId';
 
+import {Product} from '@prisma/client';
 
-
-export default function toDBProduct(product: PrismaProduct): DBProduct {
+export default function toDBProduct(product: Product): DBProduct {
     const _product = {
         ...product,
         images: product.images.map((image) => ({

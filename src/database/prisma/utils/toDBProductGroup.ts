@@ -1,9 +1,11 @@
 import type { DBProductGroup } from "@/types/product";
 import toDBProduct from "./toDBProduct";
 
+import {Product, Group} from '@prisma/client';
+
 export default function toDBProductGroup(
-  productGroup: PrismaProductGroup,
-  products: PrismaProduct[]
+  productGroup: Group,
+  products: Product[]
 ): DBProductGroup {
   const _productGroup = {
     ...productGroup,

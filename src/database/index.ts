@@ -68,26 +68,16 @@ type GetProductResponse =
       message: string;
     };
 
-export const getProduct = ({
-  id,
-  name,
-}: GetProductProps): Promise<GetProductResponse> =>
-  ProductModel.find({
-    id,
-    name,
-    type: "product",
-  }) as Promise<GetProductResponse>;
+export const getProduct = ({ id, name }: GetProductProps): Promise<GetProductResponse> =>
+  ProductModel.find({ id, name,  type: "product", }) as Promise<GetProductResponse>;
 
 /**************************
  * getGroup
  */
 
-type GetGroupProps = {
-  id?: string;
-  name?: string;
-};
+type GetGroupProps = {  id?: string; name?: string; };
 
-type GetGroupResponse =
+type GetGroupResponse = 
   | {
       success: true;
       data: DBProductGroup;
