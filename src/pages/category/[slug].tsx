@@ -12,7 +12,7 @@ import SortAndOrder from "@/components/composites/SortAndOrder";
 import ProductList from "@/components/composites/ProductList";
 
 import { categoryConfig } from "@/config";
-import { ProductGroup, Product } from "@/types/product";
+import { ProductGroup, Product, DBProduct } from "@/types/product";
 import { ListCondition } from "@/types/list-conditions";
 import ButtonCPN from "@/components/basics/ButtonCPN";
 import Select, { convertToOptionItem } from "@/components/generics/Select";
@@ -22,6 +22,7 @@ import { getAboutUsData, getCategories, getProducts } from "@/database";
 import axios, { AxiosResponse } from "axios";
 import { FindProductOptions } from "@/database/models/product";
 import { ProductApiResponse } from "../api/products";
+import isProduct from "@/utils/isProduct";
 
 export interface Props {
   errorMessage?: string;
@@ -248,7 +249,32 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       throw new Error("Category not found");
     }
 
-    const products = productsRes.data;
+    let products = productsRes.data;
+
+    if(!Array.isArray(products)) {
+      throw new Error("Products not found");
+    }
+
+    products = products.map((product) => {
+      
+      if(isProduct(product)) {
+        return {
+          id: product.id,
+          name: product.name,
+          price: product.price,
+          images: product.images,
+          intro: product.intro,
+          details: product.details,
+          categoryID: product.categoryID,
+          dateCreated: product.dateCreated,
+          lastUpdated: product.lastUpdated,
+          sellCount: product.sellCount,          
+        }
+      }
+      else {
+        return product;
+      }
+    });
 
 
 

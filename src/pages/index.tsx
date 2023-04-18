@@ -10,6 +10,7 @@ import type { Category } from "@/types/category";
 
 import { getAboutUsData, getCategories, getProducts } from "@/database";
 import { FindProductOptions } from "@/database/models/product";
+import isProduct from "@/utils/isProduct";
 
 export interface Props {
   errorMessage?: string;
@@ -118,19 +119,47 @@ export const getServerSideProps = async () => {
       };
     }
 
+    const newArrivalProduct = resNewArrivals.data.map((product) => {
+
+      if(isProduct(product)) {
+          
+        return {
+          ...product,
+          groupID: product.groupID || null
+        }
+      }
+
+      return product;
+    });
+
+    const customerFavoritesProducts = resCustomerFavorites.data.map((product) => {
+
+      if(isProduct(product)) {
+
+        return {
+          ...product,
+          groupID: product.groupID || null
+        }
+      }
+
+      return product;
+    });
+
+
+
     const aboutUsFooter = aboutUsRes.data!.aboutUsFooter;
     const contactInfo = aboutUsRes.data!.contactInfo;
     const categories = categoriesRes.data;
     const featuredProductGroups = [
       {
         title: "New Arrivals",
-        mainProduct: resNewArrivals.data.length > 0 && resNewArrivals.data[0],
-        otherProducts: resNewArrivals.data.slice(1),
+        mainProduct: newArrivalProduct.length > 0 && newArrivalProduct[0],
+        otherProducts: newArrivalProduct.slice(1),
       },
       {
         title: "Customer Favorites",
-        mainProduct: resCustomerFavorites.data.length > 0 && resCustomerFavorites.data[0],
-        otherProducts: resCustomerFavorites.data.slice(1),
+        mainProduct: customerFavoritesProducts.length > 0 && customerFavoritesProducts[0],
+        otherProducts: customerFavoritesProducts.slice(1),
       },
     ];
 

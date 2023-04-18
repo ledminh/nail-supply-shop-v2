@@ -7,6 +7,7 @@ import {getDB} from "@/database/jsons";
 import prismaClient from "../utils/prismaClient";
 import toDBProduct from "../utils/toDBProduct";
 import toDBProductGroup from "../utils/toDBProductGroup";
+import { Prisma, Product } from "@prisma/client";
 
 
 
@@ -37,7 +38,6 @@ export type FindProductOptions = {
 export default function find(
   options: FindProductOptions
 ): Promise<FindProductResponse> {
-
   return new Promise((resolve, reject) => {
 
     if(options.searchTerm) {
@@ -76,7 +76,7 @@ export default function find(
     
     }
 
-    if(options.name) {
+    else if(options.name) {
 
       if(options.type === "group") {
         const _find = async () => {
@@ -125,7 +125,7 @@ export default function find(
       
     }
 
-    if(options.id) {
+    else if(options.id) {
       if(options.type === "group") {
 
         const _find = async () => {
@@ -177,7 +177,7 @@ export default function find(
       }
     }
 
-    if(options.groupID) {
+    else if(options.groupID) {
       const _find = async () => {
         const prismaProducts = await prismaClient.product.findMany({where: {groupID: options.groupID}});
         const dbProducts = prismaProducts.map((prismaProduct) => toDBProduct(prismaProduct));
@@ -187,28 +187,33 @@ export default function find(
       _find().catch((err) => reject({success: false, message: err.message}));
     }
 
-    if(options.catID) {
+    else if(options.catID) {
 
       const _findCatID = async () => {
         
         if(options.sort !== "price" && options.sort !== "sellCount") {
+          const sortedOrderQuery = options.sortedOrder === 'asc'? Prisma.sql`ASC` : Prisma.sql`DESC`;
+
           const ids = await prismaClient.$queryRaw`
           select "id" from 
-            ((select "id", "name", "dateCreated", "lastUpdated", "categoryID" from "Product" where "categoryID" = \'${options.catID}\'
+            ((select "id", "name", "dateCreated", "lastUpdated", "categoryID" from "Product" where "categoryID" = ${options.catID}
               union
-            select "id", "name",  "dateCreated", "lastUpdated", "categoryID" from "Group" where "categoryID" = \'${options.catID}\')
+            select "id", "name",  "dateCreated", "lastUpdated", "categoryID" from "Group" where "categoryID" = ${options.catID})
             )  as products_and_groups
-          ` as string[];
+            order by "name" ${sortedOrderQuery}
+            offset ${options.offset}
+            limit ${options.limit}
+          ` as {id: string}[];
 
-          const prismaProducts = await prismaClient.product.findMany({where: {id: {in: ids}}});
+          const prismaProducts = await prismaClient.product.findMany({where: {id: {in: ids.map((id) => id.id)}}});
 
-          const prismaGroups = await prismaClient.group.findMany({where: {id: {in: ids}}});
+          const prismaGroups = await prismaClient.group.findMany({where: {id: {in: ids.map((id) => id.id)}}});
 
           const prismaProductsInGroups = await prismaClient.product.findMany({ where: { groupID: { in: prismaGroups.map((group) => group.id)}}});
 
           const dbGroups = prismaGroups.map((prismaGroup) => toDBProductGroup(prismaGroup, prismaProductsInGroups));
 
-          const dbProducts = prismaProducts.map((prismaProduct) => toDBProduct(prismaProduct));
+          const dbProducts = prismaProducts.filter(p => !p.groupID).map((prismaProduct) => toDBProduct(prismaProduct));
 
           let products = [...dbProducts, ...dbGroups];
 
@@ -221,17 +226,32 @@ export default function find(
           resolve({success: true, data: products});
         }
         else {
-          const ids = await prismaClient.$queryRaw`
-          select * from  'Product'
-          where "categoryID" = ${options.catID}
-          order by ${options.sort} ${options.sortedOrder}
-          offset ${options.offset}
-          limit ${options.limit}
-          ` as string[];
+          const sortedOrderQuery = options.sortedOrder === 'asc'? Prisma.sql`ASC` : Prisma.sql`DESC`;
+          
+          const result = await prismaClient.$queryRaw`
+            SELECT * from  "Product"
+            WHERE "categoryID" = ${options.catID}
+            ORDER BY ${options.sort} ${sortedOrderQuery}
+            offset ${options.offset}
+            limit ${options.limit}
+          ` as Product[];
 
-          const prismaProducts = await prismaClient.product.findMany({where: {id: {in: ids}}});
+          const prismaProducts = result.filter((product) => !product.groupID);
+          const prismaProductsInGroups = result.filter((product) => product.groupID);
 
-          const products = prismaProducts.map((prismaProduct) => toDBProduct(prismaProduct));
+          const prismaGroups = await prismaClient.group.findMany({where: {id: {in: prismaProductsInGroups.map((product) => product.groupID) as string[]}}});
+
+
+          const dbProducts = prismaProducts.map((prismaProduct) => toDBProduct(prismaProduct));
+          const dbGroups = prismaGroups.map((prismaGroup) => toDBProductGroup(prismaGroup, prismaProductsInGroups));
+
+          let products = [...dbProducts, ...dbGroups];
+
+          if(options.sort)
+            products = sortProducts(products, options.sort);
+
+          if(options.sortedOrder === "desc")
+            products = products.reverse();
 
           resolve({success: true, data: products});
         }
@@ -243,23 +263,35 @@ export default function find(
     }
 
 
-    if(options.catSlug) {
+    else if(options.catSlug) {
       
       const _findCatSlug = async () => {
 
         if(options.sort !== "price" && options.sort !== "sellCount") {
-          console.log(options);
+          
+          const { offset = 0, limit = 1000, catSlug, sort = 'name', sortedOrder = 'asc' } = options;
 
+          const sortedOrderQuery = sortedOrder === 'asc'? Prisma.sql`ASC` : Prisma.sql`DESC`;
+        
           const ids = await prismaClient.$queryRaw`
-            select id from 
-              ((select "id", "name", "dateCreated", "lastUpdated", "categoryID" from "Product" where "categoryID" = (select "id" from "Category" where "slug" = \'${options.catSlug}\')
-                union
-              select "id", "name",  "dateCreated", "lastUpdated", "categoryID" from "Group" where "categoryID" = (select "id" from "Category" where "slug" = \'${options.catSlug}\')
-              ) 
-              offset ${options.offset? options.offset : 0}
-              limit ${options.limit? options.limit : 1000}) as products_and_groups
-          ` as {id: string}[];
+            SELECT "id" FROM (
+              SELECT "id", "name", "dateCreated", "lastUpdated", "categoryID"
+                FROM "Product" 
+                WHERE "categoryID" in (SELECT "id" FROM "Category" WHERE "slug" = ${catSlug}) 
+              
+              UNION
 
+              SELECT "id", "name", "dateCreated", "lastUpdated", "categoryID"
+                FROM "Group" 
+                WHERE "categoryID" in (SELECT "id" FROM "Category" WHERE "slug" = ${catSlug}) 
+                
+            ) AS products_and_groups
+            ORDER BY ${sort} ${sortedOrderQuery}
+            OFFSET ${offset}
+            LIMIT ${limit}
+          ` as {id: string}[];          
+
+ 
           const prismaProducts = await prismaClient.product.findMany({where: {id: {in: ids.map(id => id.id)}}});
 
           const prismaGroups = await prismaClient.group.findMany({where: {id: {in: ids.map(id => id.id)}}});
@@ -278,19 +310,35 @@ export default function find(
           if(options.sortedOrder === "desc")
             products = products.reverse();
 
+
           resolve({success: true, data: products});
         }
         else {
-          const ids = await prismaClient.$queryRaw`
-          select * from  'Product'
-          where "categoryID" = (select "id" from "Category" where "slug" = \'${options.catSlug}\')
-          offset ${options.offset? options.offset : 0}
-          limit ${options.limit? options.limit : 1000}
-          ` as {id: string}[];
+          const sortedOrderQuery = options.sortedOrder === 'asc'? Prisma.sql`ASC` : Prisma.sql`DESC`;
 
-          const prismaProducts = await prismaClient.product.findMany({where: {id: {in: ids.map(id => id.id)}}});
+          const results = await prismaClient.$queryRaw`
+            SELECT * FROM "Product"
+            WHERE "categoryID" IN (SELECT "id" FROM "Category" WHERE "slug" = ${options.catSlug})
+            ORDER BY ${options.sort} ${sortedOrderQuery}
+            OFFSET ${options.offset}
+            LIMIT ${options.limit}
+          ` as Product[];
 
-          const products = prismaProducts.map((prismaProduct) => toDBProduct(prismaProduct));
+          const prismaProducts = results.filter((product) => !product.groupID);
+          const prismaProductsInGroups = results.filter((product) => product.groupID);
+
+          const prismaGroups = await prismaClient.group.findMany({where: {id: {in: prismaProductsInGroups.map((product) => product.groupID) as string[]}}});
+          
+          const dbProducts = prismaProducts.map((prismaProduct) => toDBProduct(prismaProduct));
+          const dbGroups = prismaGroups.map((prismaGroup) => toDBProductGroup(prismaGroup, prismaProductsInGroups));
+
+          let products = [...dbProducts, ...dbGroups];
+
+          if(options.sort)
+            products = sortProducts(products, options.sort);
+
+          if(options.sortedOrder === "desc")
+            products = products.reverse();
 
           resolve({success: true, data: products});
         }
@@ -301,56 +349,28 @@ export default function find(
       
     }
 
-    // find  products base on options.sort, options.sortedOrder, options.type, options.limit with prisma
-    const _find = async () => {
-      if(options.sort !== 'price' && options.sort !== 'sellCount') {
-        const ids = await prismaClient.$queryRaw`
-        select "id" from
-          ((select "id", "name", "dateCreated", "lastUpdated", "categoryID" from "Product"
-            union
-          select "id", "name",  "dateCreated", "lastUpdated", "categoryID" from "Group")
-          ) as products_and_groups
-          offset ${options.offset? options.offset : 0}
-          limit ${options.limit? options.limit : 1000}
-        ` as {id: string}[];
+    else {
+      // find  products base on options.sort, options.sortedOrder, options.type, options.limit with prisma
+      const _find = async () => {
+        const { offset = 0, limit = 1000, catSlug, sort = 'name', sortedOrder = 'asc' } = options;
 
-        const prismaProducts = await prismaClient.product.findMany({where: {id: {in: ids.map(id => id.id)}}});
+          const sortedOrderQuery = sortedOrder === 'asc'? Prisma.sql`ASC` : Prisma.sql`DESC`;
+        
+          const productsPrisma = await prismaClient.$queryRaw`
+            SELECT * FROM "Product"
+            ORDER BY ${sort} ${sortedOrderQuery}
+            OFFSET ${offset}
+            LIMIT ${limit}
+          ` as Product[];
 
-        const prismaGroups = await prismaClient.group.findMany({where: {id: {in: ids.map(id => id.id)}}});
+          const products = productsPrisma.map((prismaProduct) => toDBProduct(prismaProduct));          
 
-        const prismaProductsInGroups = await prismaClient.product.findMany({ where: { groupID: { in: prismaGroups.map((group) => group.id)}}});
-
-        const dbGroups = prismaGroups.map((prismaGroup) => toDBProductGroup(prismaGroup, prismaProductsInGroups));
-
-        const dbProducts = prismaProducts.map((prismaProduct) => toDBProduct(prismaProduct));
-
-        let products = [...dbProducts, ...dbGroups];
-
-        if(options.sort)
-          products = sortProducts(products, options.sort);
-
-        if(options.sortedOrder === "desc")
-          products = products.reverse();
-
-        resolve({success: true, data: products});
-
+          resolve({success: true, data: products});
       }
-      else {
-        const ids = await prismaClient.$queryRaw`
-        select * from  "Product"
-        offset ${options.offset? options.offset : 0}
-        limit ${options.limit? options.limit : 1000}
-        ` as {id:string}[];
 
-        const prismaProducts = await prismaClient.product.findMany({where: {id: {in: ids.map(id => id.id)}}});
-
-        const products = prismaProducts.map((prismaProduct) => toDBProduct(prismaProduct));
-
-        resolve({success: true, data: products});
-      }
+      _find().catch((err) => reject({success: false, message: err.message}));
     }
-
-    _find().catch((err) => reject({success: false, message: err.message}));
+    
 
 
 
