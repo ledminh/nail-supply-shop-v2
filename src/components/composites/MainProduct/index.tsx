@@ -10,7 +10,7 @@ export interface Props {
 }
 
 export default function MainProduct({ product }: Props) {
-  if(!product) return null;
+  if (!product) return null;
 
   if (!isProduct(product)) {
     product = product.products[0];

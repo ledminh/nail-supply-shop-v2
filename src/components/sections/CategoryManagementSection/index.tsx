@@ -180,8 +180,7 @@ export default function CategoryManagementSection({}: Props) {
       // User did not change the image
       axios
         .post("/api/admin/categories?type=update", formData)
-        .then(({data}) => {
-          
+        .then(({ data }) => {
           if (!data.success) {
             throw new Error("Failed to update category");
           }

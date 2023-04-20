@@ -32,13 +32,12 @@ export default function handler(
   req: NextApiRequest,
   res: NextApiProductResponse
 ) {
-
-  const {userId} = getAuth(req);
+  const { userId } = getAuth(req);
 
   if (!userId || userId !== process.env.ADMIN_ID) {
     return res.status(401).json({ success: false, message: "Unauthorized" });
   }
-  
+
   const {
     query: { type, id },
   } = req;
@@ -289,7 +288,6 @@ const addGroup = (req: NextApiRequest, res: NextApiProductResponse) => {
             .status(500)
             .json({ success: false, message: dbRes.message });
         }
-
 
         return res.status(200).json({ success: true, product: dbRes.data });
       })

@@ -9,6 +9,7 @@ import processImages from "@/utils/processImages";
 
 import axios from "axios";
 import { Category } from "@/types/category";
+import randomId from "@/utils/randomId";
 
 type Props = {
   products: (Product | ProductGroup)[];
@@ -38,8 +39,8 @@ export default function useCreate({
           throw new Error(data.message);
         }
       })
-      .catch((err) => {
-        throw new Error(err.message);
+      .catch(({ response }) => {
+        throw new Error(response.data.message);
       });
   };
 

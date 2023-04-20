@@ -1,5 +1,4 @@
-import type { Category } from "@/types/category";
-
+import type { Category as DBCategory } from "@/types/category";
 
 import prismaClient from "./utils/prismaClient";
 
@@ -13,7 +12,7 @@ type Response<T> =
       message: string;
     };
 
-type CategoryResponse = Response<Category> | Response<Category[]>;
+type CategoryResponse = Response<DBCategory> | Response<DBCategory[]>;
 
 type FindProps = {
   id?: string;
@@ -36,13 +35,13 @@ export function find({ id }: FindProps): Promise<CategoryResponse> {
             });
           }
 
-          const _category = {
+          const _category: DBCategory = {
             ...category,
             image: {
               src: category.image,
               alt: category.name,
             },
-          }
+          };
 
           resolve({
             success: true,
@@ -50,38 +49,33 @@ export function find({ id }: FindProps): Promise<CategoryResponse> {
           });
         });
     });
-  }
-  else {
+  } else {
     return new Promise((resolve, reject) => {
-      prismaClient.category
-        .findMany()
-        .then((categories) => {
-          if (!categories) {
-            return reject({
-              success: false,
-              message: "No categories found",
-            });
-          }
-  
-          const _categories = categories.map((category) => {
-            return {
-              ...category,
-              image: {
-                src: category.image,
-                alt: category.name,
-              },
-            };
+      prismaClient.category.findMany().then((categories) => {
+        if (!categories) {
+          return reject({
+            success: false,
+            message: "No categories found",
           });
-  
-          resolve({
-            success: true,
-            data: _categories,
-          });
+        }
+
+        const _categories: DBCategory[] = categories.map((category) => {
+          return {
+            ...category,
+            image: {
+              src: category.image,
+              alt: category.name,
+            },
+          };
         });
+
+        resolve({
+          success: true,
+          data: _categories,
+        });
+      });
     });
   }
-
-
 }
 
 export type CreateCategoryProps = {
@@ -95,7 +89,6 @@ export function createCategory({
   description,
   imageFileName,
 }: CreateCategoryProps): Promise<CategoryResponse> {
-
   return new Promise((resolve, reject) => {
     prismaClient.category
       .create({
@@ -105,6 +98,7 @@ export function createCategory({
           description,
           image: `/images/category/${imageFileName}`,
           numProducts: 0,
+          numProductsAndGroups: 0,
         },
       })
       .then((category) => {
@@ -115,7 +109,7 @@ export function createCategory({
           });
         }
 
-        const _category = {
+        const _category: DBCategory = {
           ...category,
           image: {
             src: category.image,
@@ -144,7 +138,6 @@ export function updateCategory({
   description,
   imageFileName,
 }: UpdateCategoryProps): Promise<CategoryResponse> {
-
   return new Promise((resolve, reject) => {
     const _update = async () => {
       const oldCategory = await prismaClient.category.findUnique({
@@ -160,7 +153,7 @@ export function updateCategory({
         });
       }
 
-      const newCategory =  await prismaClient.category.update({
+      const newCategory = await prismaClient.category.update({
         where: {
           id,
         },
@@ -174,7 +167,7 @@ export function updateCategory({
         },
       });
 
-      if(!newCategory) {
+      if (!newCategory) {
         return reject({
           success: false,
           message: "Category not found",
@@ -204,34 +197,29 @@ export function updateCategory({
     };
 
     _update();
-
-
-
   });
-
 }
 
 export function deleteCategory(id: string): Promise<CategoryResponse> {
-  
   return new Promise((resolve, reject) => {
-    
     const _delete = async () => {
-      const category  = await prismaClient.category.findUnique({
+      const category = await prismaClient.category.findUnique({
         where: {
           id,
         },
       });
-  
+
       if (!category) {
         throw new Error("Category not found");
-      } 
-  
-      const numDel = await prismaClient.$executeRaw`DELETE FROM "Category" WHERE id = ${id}`;
-        
+      }
+
+      const numDel =
+        await prismaClient.$executeRaw`DELETE FROM "Category" WHERE id = ${id}`;
+
       if (numDel === 0) {
         throw new Error("Category not found");
       }
-  
+
       resolve({
         success: true,
         data: {
@@ -240,9 +228,9 @@ export function deleteCategory(id: string): Promise<CategoryResponse> {
             src: category.image,
             alt: category.name,
           },
-        }
+        },
       });
-    }
+    };
 
     _delete().catch((err) => {
       reject({
@@ -250,7 +238,5 @@ export function deleteCategory(id: string): Promise<CategoryResponse> {
         message: err.message,
       });
     });
-    
-
   });
 }

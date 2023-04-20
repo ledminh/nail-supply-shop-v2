@@ -32,8 +32,7 @@ export default function handler(
   req: NextApiRequest,
   res: NextApiCategoryResponse
 ) {
-
-  const {userId} = getAuth(req);
+  const { userId } = getAuth(req);
 
   if (!userId || userId !== process.env.ADMIN_ID) {
     return res.status(401).json({ success: false, message: "Unauthorized" });

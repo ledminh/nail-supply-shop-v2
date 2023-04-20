@@ -1,7 +1,7 @@
 // import * as CategoryModel from "./models/category";
-import * as CategoryModel from './prisma/category';
+import * as CategoryModel from "./prisma/category";
 // import * as ProductModel from "./models/product";
-import * as ProductModel from './prisma/product';
+import * as ProductModel from "./prisma/product";
 
 import * as AboutUsModel from "./models/aboutUs";
 import * as OrderModel from "./models/order";
@@ -68,16 +68,23 @@ type GetProductResponse =
       message: string;
     };
 
-export const getProduct = ({ id, name }: GetProductProps): Promise<GetProductResponse> =>
-  ProductModel.find({ id, name,  type: "product", }) as Promise<GetProductResponse>;
+export const getProduct = ({
+  id,
+  name,
+}: GetProductProps): Promise<GetProductResponse> =>
+  ProductModel.find({
+    id,
+    name,
+    type: "product",
+  }) as Promise<GetProductResponse>;
 
 /**************************
  * getGroup
  */
 
-type GetGroupProps = {  id?: string; name?: string; };
+type GetGroupProps = { id?: string; name?: string };
 
-type GetGroupResponse = 
+type GetGroupResponse =
   | {
       success: true;
       data: DBProductGroup;
@@ -164,10 +171,11 @@ export function updateGroupProduct({
  * updateQuantity
  ******************************/
 
-export function updateProductQuantity(quantityData: ProductModel.UpdateQuantityProps): Promise<ProductModel.UpdateQuantityResponse> {
+export function updateProductQuantity(
+  quantityData: ProductModel.UpdateQuantityProps
+): Promise<ProductModel.UpdateQuantityResponse> {
   return ProductModel.updateQuantity(quantityData);
 }
-
 
 /***********************************************************
  * ABOUT US
@@ -177,20 +185,28 @@ export function getAboutUsData(): Promise<AboutUsModel.GetAboutUsDataResponse> {
   return AboutUsModel.getAboutUsData();
 }
 
-export function setAboutUsFooter({ footer }: AboutUsModel.SetAboutUsFooterProps): Promise<AboutUsModel.SetAboutUsFooterResponse> {
-  return AboutUsModel.setAboutUsFooter({footer});
+export function setAboutUsFooter({
+  footer,
+}: AboutUsModel.SetAboutUsFooterProps): Promise<AboutUsModel.SetAboutUsFooterResponse> {
+  return AboutUsModel.setAboutUsFooter({ footer });
 }
 
-export function setAboutUsMissionStatement({ missionStatement }: AboutUsModel.SetAboutUsMissionStatementProps): Promise<AboutUsModel.SetAboutUsMissionStatementResponse> {
-  return AboutUsModel.setAboutUsMissionStatement({missionStatement});
+export function setAboutUsMissionStatement({
+  missionStatement,
+}: AboutUsModel.SetAboutUsMissionStatementProps): Promise<AboutUsModel.SetAboutUsMissionStatementResponse> {
+  return AboutUsModel.setAboutUsMissionStatement({ missionStatement });
 }
 
-export function setAboutUsHistoryHTML({history}: AboutUsModel.SetAboutUsHistoryHTMLProps): Promise<AboutUsModel.SetAboutUsHistoryHTMLResponse>  {
-  return AboutUsModel.setAboutUsHistoryHTML({history});
+export function setAboutUsHistoryHTML({
+  history,
+}: AboutUsModel.SetAboutUsHistoryHTMLProps): Promise<AboutUsModel.SetAboutUsHistoryHTMLResponse> {
+  return AboutUsModel.setAboutUsHistoryHTML({ history });
 }
 
-export function setAboutUsContactInfo({contactInfo}: AboutUsModel.SetAboutUsContactInfoProps): Promise<AboutUsModel.SetAboutUsContactInfoResponse> {
-  return AboutUsModel.setAboutUsContactInfo({contactInfo});
+export function setAboutUsContactInfo({
+  contactInfo,
+}: AboutUsModel.SetAboutUsContactInfoProps): Promise<AboutUsModel.SetAboutUsContactInfoResponse> {
+  return AboutUsModel.setAboutUsContactInfo({ contactInfo });
 }
 
 /***********************************************************

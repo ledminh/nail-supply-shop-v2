@@ -3,27 +3,28 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import { AboutUsData } from "@/types/others";
 
 import * as DB from "@/database";
-  
-type AboutUsResponse = {
-  success: true;
-  aboutUs: AboutUsData;
-} | {
-  success: false;
-  message: string;
-}
 
-
+type AboutUsResponse =
+  | {
+      success: true;
+      aboutUs: AboutUsData;
+    }
+  | {
+      success: false;
+      message: string;
+    };
 
 type NextAboutUsApiResponse = NextApiResponse<AboutUsResponse>;
 
-export default function handler(req: NextApiRequest, res: NextAboutUsApiResponse) {
-  if(req.method === "GET") {
+export default function handler(
+  req: NextApiRequest,
+  res: NextAboutUsApiResponse
+) {
+  if (req.method === "GET") {
     getAboutUsData(res);
-  }
-  else {
+  } else {
     res.status(400).json({ success: false, message: "Invalid request method" });
   }
-  
 }
 
 /****************************

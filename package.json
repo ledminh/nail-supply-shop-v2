@@ -7,10 +7,14 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
+
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
     "test": "jest",
     "format": "prettier --write \"src/**/*.{js,jsx,ts,tsx,json}\"",
+    "format:check": "prettier --check \"src/**/*.{js,jsx,ts,tsx,json}\"",
+    "typecheck": "tsc --noEmit",
+
     "create-basic-component": "npx generate-react-cli component --type=default",
     "create-composite-component": "npx generate-react-cli component --type=composite",
     "create-section-component": "npx generate-react-cli component --type=section",

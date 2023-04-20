@@ -47,7 +47,13 @@ export default function OrderManagementSection({}: Props) {
     });
   }, [filter]);
 
-  const onFilterChange = ({ status, month, year, sort, query }: FilterChangeOptions) => {
+  const onFilterChange = ({
+    status,
+    month,
+    year,
+    sort,
+    query,
+  }: FilterChangeOptions) => {
     const newFilter = { ...filter };
 
     if (status) {
@@ -70,9 +76,7 @@ export default function OrderManagementSection({}: Props) {
 
     if (query || query === "") {
       newFilter.query = query;
-      
     }
-
 
     setFilter(newFilter);
   };

@@ -1,6 +1,6 @@
 import { GetServerSideProps } from "next";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import PageLayout from "@/components/layouts/PageLayout";
 import { ContactInfo } from "@/types/others";
 import { Category } from "@/types/category";
@@ -23,6 +23,7 @@ import axios, { AxiosResponse } from "axios";
 import { FindProductOptions } from "@/database/models/product";
 import { ProductApiResponse } from "../api/products";
 import isProduct from "@/utils/isProduct";
+import useDidUpdateEffect from "@/hooks/useDidUpdateEffect";
 
 export interface Props {
   errorMessage?: string;
@@ -57,7 +58,7 @@ export default function CategoryPage({
     useState<(Product | ProductGroup)[]>(products);
   const [condition, setCondition] = useState<ListCondition>(initCondition);
 
-  useEffect(() => {
+  useDidUpdateEffect(() => {
     const loadOptions: FindProductOptions = {
       type: "all",
       catSlug: curCategory.slug,
@@ -77,7 +78,17 @@ export default function CategoryPage({
           throw new Error("Products not found");
         }
 
+        console.log("data.products", data.products);
+
         setProducts(data.products);
+      })
+      .catch(({ response }) => {
+        throw new Error(
+          `Error message: ${response.data.message}
+            condition: ${JSON.stringify(condition)}
+            curCategory: ${JSON.stringify(curCategory)}
+        `
+        );
       });
   }, [curCategory, condition]);
 
@@ -209,6 +220,8 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       getProducts({
         catSlug: slug,
         type: "all",
+        sort: sortItem.value,
+        sortedOrder: sortedOrderItem.value,
         limit: categoryConfig.productsPerPage,
       }),
     ]);
@@ -251,13 +264,12 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
     let products = productsRes.data;
 
-    if(!Array.isArray(products)) {
+    if (!Array.isArray(products)) {
       throw new Error("Products not found");
     }
 
     products = products.map((product) => {
-      
-      if(isProduct(product)) {
+      if (isProduct(product)) {
         return {
           id: product.id,
           name: product.name,
@@ -268,15 +280,12 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
           categoryID: product.categoryID,
           dateCreated: product.dateCreated,
           lastUpdated: product.lastUpdated,
-          sellCount: product.sellCount,          
-        }
-      }
-      else {
+          sellCount: product.sellCount,
+        };
+      } else {
         return product;
       }
     });
-
-
 
     return {
       props: {

@@ -12,14 +12,15 @@ datasource db {
 }
 
 model Category {
-  id          String    @id @default(cuid())
-  slug        String    @unique
-  name        String
-  description String
-  image       String
-  numProducts Int
-  products    Product[]
-  groups      Group[]
+  id                   String    @id @default(cuid())
+  slug                 String    @unique
+  name                 String
+  description          String
+  image                String
+  numProducts          Int       @default(0)
+  numProductsAndGroups Int       @default(0)
+  products             Product[]
+  groups               Group[]
 }
 
 model Group {

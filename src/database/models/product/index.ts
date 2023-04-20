@@ -1,11 +1,9 @@
-
 import type { DBProduct, DBProductGroup } from "@/types/product";
 
 import find, { FindProductOptions } from "./find";
 
 import { getDB } from "@/database/jsons";
 import isProduct from "@/utils/isProduct";
-
 
 /******************************
  *  FIND PRODUCT/PRODUCT GROUP
@@ -587,14 +585,18 @@ export type UpdateQuantityProps = {
   quantity: number;
 }[];
 
-export type UpdateQuantityResponse = {
-  success: true;
-} | {
-  success: false;
-  message: string;
-};
+export type UpdateQuantityResponse =
+  | {
+      success: true;
+    }
+  | {
+      success: false;
+      message: string;
+    };
 
-export function updateQuantity(quantityData: UpdateQuantityProps): Promise<UpdateQuantityResponse> {
+export function updateQuantity(
+  quantityData: UpdateQuantityProps
+): Promise<UpdateQuantityResponse> {
   return new Promise((resolve, reject) => {
     getDB().then((db) => {
       const { data } = db;
@@ -616,7 +618,6 @@ export function updateQuantity(quantityData: UpdateQuantityProps): Promise<Updat
 
         return [...acc, curr];
       }, [] as DBProduct[]);
-
 
       quantityData.forEach((data) => {
         const product = products.find((p) => p.id === data.productID);
@@ -641,17 +642,11 @@ export function updateQuantity(quantityData: UpdateQuantityProps): Promise<Updat
             });
           }
 
-
           return resolve({ success: true });
         });
     });
   });
 }
-
-
-
-
-
 
 const isDBGroupProduct = (
   group: DBProductGroup | DBProduct

@@ -224,13 +224,11 @@ export function filter({
     const { ORDERS } = db.data;
     let filteredOrders = ORDERS;
 
-
     if (query !== "") {
       filteredOrders = ORDERS.filter((order) => {
         return order.id.includes(query);
       });
     }
-
 
     if (status !== "all") {
       filteredOrders = filteredOrders.filter(

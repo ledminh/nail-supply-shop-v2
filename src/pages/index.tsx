@@ -120,32 +120,28 @@ export const getServerSideProps = async () => {
     }
 
     const newArrivalProduct = resNewArrivals.data.map((product) => {
-
-      if(isProduct(product)) {
-          
+      if (isProduct(product)) {
         return {
           ...product,
-          groupID: product.groupID || null
-        }
+          groupID: product.groupID || null,
+        };
       }
 
       return product;
     });
 
-    const customerFavoritesProducts = resCustomerFavorites.data.map((product) => {
-
-      if(isProduct(product)) {
-
-        return {
-          ...product,
-          groupID: product.groupID || null
+    const customerFavoritesProducts = resCustomerFavorites.data.map(
+      (product) => {
+        if (isProduct(product)) {
+          return {
+            ...product,
+            groupID: product.groupID || null,
+          };
         }
+
+        return product;
       }
-
-      return product;
-    });
-
-
+    );
 
     const aboutUsFooter = aboutUsRes.data!.aboutUsFooter;
     const contactInfo = aboutUsRes.data!.contactInfo;
@@ -158,7 +154,8 @@ export const getServerSideProps = async () => {
       },
       {
         title: "Customer Favorites",
-        mainProduct: customerFavoritesProducts.length > 0 && customerFavoritesProducts[0],
+        mainProduct:
+          customerFavoritesProducts.length > 0 && customerFavoritesProducts[0],
         otherProducts: customerFavoritesProducts.slice(1),
       },
     ];

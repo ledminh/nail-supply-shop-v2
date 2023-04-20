@@ -2,13 +2,10 @@ import { SortType, SortedOrderType } from "@/types/list-conditions";
 import isProduct from "@/utils/isProduct";
 import type { DBProduct, DBProductGroup } from "@/types/product";
 
-
 import prismaClient from "../utils/prismaClient";
 import toDBProduct from "../utils/toDBProduct";
 import toDBProductGroup from "../utils/toDBProductGroup";
-import { Prisma, Product, Group } from "@prisma/client";
-
-
+import { Prisma, Product } from "@prisma/client";
 
 export type FindProductResponse =
   | {
@@ -37,365 +34,384 @@ export type FindProductOptions = {
 export default function find(
   options: FindProductOptions
 ): Promise<FindProductResponse> {
-  return new Promise((resolve, reject) => {
+  const ASC = Prisma.sql`ASC`;
+  const DESC = Prisma.sql`DESC`;
+  const NAME = Prisma.sql`name`;
+  const DATE_CREATED = Prisma.sql`dateCreated`;
+  const LAST_UPDATED = Prisma.sql`lastUpdated`;
+  const PRICE = Prisma.sql`price`;
+  const SELL_COUNT = Prisma.sql`sellCount`;
+  const ID = Prisma.sql`id`;
 
-    if(options.searchTerm) {
+  return new Promise((resolve, reject) => {
+    if (options.searchTerm) {
       // define
       const findSearchTerm = async () => {
-        
         const dbProductPromise = findDBProducts({
-          OR : [
-            { name: { contains: options.searchTerm, mode: "insensitive" }},
-            { details: { contains: options.searchTerm, mode: "insensitive" }},
-            { intro: { contains: options.searchTerm, mode: "insensitive" }},
-          ]
+          OR: [{ name: { contains: options.searchTerm, mode: "insensitive" } }],
         });
 
         const dbGroupPromise = findDBGroups({
-          name: { contains: options.searchTerm, mode: "insensitive" }
+          name: { contains: options.searchTerm, mode: "insensitive" },
         });
 
-        const dbProductsInGroupsPromise = findDBProducts({
-          groupID: { not: null },
-          OR : [
-            { name: { contains: options.searchTerm, mode: "insensitive" }},
-            { details: { contains: options.searchTerm, mode: "insensitive" }},
-            { intro: { contains: options.searchTerm, mode: "insensitive" }},
-          ]
-        });
-        
-        const [dbProducts, dbGroups, dbProductsInGroups] = await Promise.all([dbProductPromise, dbGroupPromise, dbProductsInGroupsPromise]);
+        const [dbProducts, dbGroups] = await Promise.all([
+          dbProductPromise,
+          dbGroupPromise,
+        ]);
 
-        if(!dbProducts || !dbGroups || !dbProductsInGroups) {
+        if (!dbProducts || !dbGroups) {
           throw new Error("Error finding products or groups");
         }
 
-        let products = [...dbProducts, ...dbGroups, ...dbProductsInGroups];
+        let products = [...dbProducts, ...dbGroups];
 
-        products  = sortProducts(products, 'name');
-        
+        products = sortProducts(products, "name");
 
-        resolve({success: true, data: products});
-
-      }
+        resolve({ success: true, data: products });
+      };
 
       // execute
-      findSearchTerm().catch((err) => reject({success: false, message: err.message}));
-
-    
-    }
-
-    else if(options.name) {
-
-      if(options.type === "group") {
+      findSearchTerm().catch((err) =>
+        reject({ success: false, message: err.message })
+      );
+    } else if (options.name) {
+      if (options.type === "group") {
         const _find = async () => {
-          
           const dbGroups = await findDBGroups({
-            name: { contains: options.name, mode: "insensitive" }
+            name: { contains: options.name, mode: "insensitive" },
           });
 
-          
-          if(!dbGroups) {
+          if (!dbGroups) {
             throw new Error("Error finding groups by name");
           }
 
-          resolve({success: true, data: dbGroups});
-        }  
+          resolve({ success: true, data: dbGroups });
+        };
 
-        _find().catch((err) => reject({success: false, message: err.message}));
-      }
-      else if(options.type === "product") {
+        _find().catch((err) =>
+          reject({ success: false, message: err.message })
+        );
+      } else if (options.type === "product") {
         const _find = async () => {
           const dbProducts = await findDBProducts({
-            name: { contains: options.name, mode: "insensitive" }
+            name: { contains: options.name, mode: "insensitive" },
           });
 
-          if(!dbProducts) {
+          if (!dbProducts) {
             throw new Error("Error finding products by name");
           }
 
-          resolve({success: true, data: dbProducts});
-        }
+          resolve({ success: true, data: dbProducts });
+        };
 
-        _find().catch((err) => reject({success: false, message: err.message}));
-      }
-      else {
+        _find().catch((err) =>
+          reject({ success: false, message: err.message })
+        );
+      } else {
         const _find = async () => {
-
           const dbProductsPromise = findDBProducts({
-            name: { contains: options.name, mode: "insensitive" }
+            name: { contains: options.name, mode: "insensitive" },
           });
 
           const dbGroupsPromise = findDBGroups({
-            name: { contains: options.name, mode: "insensitive" }
+            name: { contains: options.name, mode: "insensitive" },
           });
 
-          const [dbProducts, dbGroups] = await Promise.all([dbProductsPromise, dbGroupsPromise]);
+          const [dbProducts, dbGroups] = await Promise.all([
+            dbProductsPromise,
+            dbGroupsPromise,
+          ]);
 
-          if(!dbProducts || !dbGroups) {
+          if (!dbProducts || !dbGroups) {
             throw new Error("Error finding products or groups by name");
           }
 
-         
           let products = [...dbProducts, ...dbGroups];
 
-          products  = sortProducts(products, 'name');
+          products = sortProducts(products, "name");
 
-          resolve({success: true, data: products});
-        }
+          resolve({ success: true, data: products });
+        };
 
-        _find().catch((err) => reject({success: false, message: err.message}));  
-        
-      } 
-      
-    }
-
-    else if(options.id) {
-      if(options.type === "group") {
-
+        _find().catch((err) =>
+          reject({ success: false, message: err.message })
+        );
+      }
+    } else if (options.id) {
+      if (options.type === "group") {
         const _find = async () => {
-
           const dbGroup = await findDBGroup({ id: options.id });
 
-          if(!dbGroup) {
+          if (!dbGroup) {
             throw new Error("Error finding group by id");
           }
 
-          resolve({success: true, data: dbGroup});
-        }
+          resolve({ success: true, data: dbGroup });
+        };
 
-        _find().catch((err) => reject({success: false, message: err.message}));
-      } 
-      else if(options.type === "product") {
-        
+        _find().catch((err) =>
+          reject({ success: false, message: err.message })
+        );
+      } else if (options.type === "product") {
         const _find = async () => {
-          
           const dbProduct = await findDBProduct({ id: options.id });
 
-          if(!dbProduct) {
+          if (!dbProduct) {
             throw new Error("Error finding product by id");
           }
-          resolve({success: true, data: dbProduct});
-        }
+          resolve({ success: true, data: dbProduct });
+        };
 
-        _find().catch((err) => reject({success: false, message: err.message}));
-        
-      }
-      else {
+        _find().catch((err) =>
+          reject({ success: false, message: err.message })
+        );
+      } else {
         const _find = async () => {
-          
           const dbProduct = await findDBProduct({ id: options.id });
 
-          if(dbProduct) {
-            resolve({success: true, data: dbProduct});
-          }
-          else {
+          if (dbProduct) {
+            resolve({ success: true, data: dbProduct });
+          } else {
             const dbGroup = await findDBGroup({ id: options.id });
 
-            if(!dbGroup) {
+            if (!dbGroup) {
               throw new Error("Error finding product or group by id");
             }
 
-            resolve({success: true, data: dbGroup});
+            resolve({ success: true, data: dbGroup });
           }
-        }
+        };
 
-        _find().catch((err) => reject({success: false, message: err.message}));
-        
+        _find().catch((err) =>
+          reject({ success: false, message: err.message })
+        );
       }
-    }
-
-    else if(options.groupID) {
+    } else if (options.groupID) {
       const _find = async () => {
-        
         const dbProducts = await findDBProducts({ groupID: options.groupID });
 
-        if(!dbProducts) {
+        if (!dbProducts) {
           throw new Error("Error finding products by group id");
         }
-        
-        resolve({success: true, data: dbProducts});
-      }
 
-      _find().catch((err) => reject({success: false, message: err.message}));
-    }
+        resolve({ success: true, data: dbProducts });
+      };
 
-    else if(options.catID) {
-
+      _find().catch((err) => reject({ success: false, message: err.message }));
+    } else if (options.catID) {
       const _findCatID = async () => {
-        
-        if(options.sort !== "price" && options.sort !== "sellCount") {
-          const sortedOrderQuery = options.sortedOrder === 'asc'? Prisma.sql`ASC` : Prisma.sql`DESC`;
+        if (options.sort !== "price" && options.sort !== "sellCount") {
+          const sortedOrderQuery =
+            options.sortedOrder === "asc" ? Prisma.sql`ASC` : Prisma.sql`DESC`;
 
-          const ids = await prismaClient.$queryRaw`
+          const sortQuery =
+            options.sort === "dateCreated" ? DATE_CREATED : LAST_UPDATED;
+
+          const ids = (await prismaClient.$queryRaw`
           select "id" from 
             ((select "id", "name", "dateCreated", "lastUpdated", "categoryID" from "Product" where "categoryID" = ${options.catID} and "groupID" is null
               union
             select "id", "name",  "dateCreated", "lastUpdated", "categoryID" from "Group" where "categoryID" = ${options.catID})
             )  as products_and_groups
-            order by "name" ${sortedOrderQuery}
+            order by ${sortQuery} ${sortedOrderQuery} NULLS LAST, ${ID} ${sortedOrderQuery} NULLS LAST
             offset ${options.offset}
             limit ${options.limit}
-          ` as {id: string}[];
+          `) as { id: string }[];
 
-          const dbProductsPromise = findDBProducts({ id: { in: ids.map((id) => id.id) } });
+          const dbProductsPromise = findDBProducts({
+            id: { in: ids.map((id) => id.id) },
+          });
 
-          const dbGroupsPromise = findDBGroups({ id: { in: ids.map((id) => id.id) } });
- 
-          const [dbProducts, dbGroups] = await Promise.all([dbProductsPromise, dbGroupsPromise]);
+          const dbGroupsPromise = findDBGroups({
+            id: { in: ids.map((id) => id.id) },
+          });
 
-          if(!dbProducts || !dbGroups) {
+          const [dbProducts, dbGroups] = await Promise.all([
+            dbProductsPromise,
+            dbGroupsPromise,
+          ]);
+
+          if (!dbProducts || !dbGroups) {
             throw new Error("Error finding products or groups by category id");
           }
-          
+
           let products = [...dbProducts, ...dbGroups];
 
-          if(options.sort)
-            products = sortProducts(products, options.sort);
+          if (options.sort) products = sortProducts(products, options.sort);
 
-          if(options.sortedOrder === "desc")
-            products = products.reverse();
+          if (options.sortedOrder === "desc") products = products.reverse();
 
-          resolve({success: true, data: products});
-        }
-        else {
-          const sortedOrderQuery = options.sortedOrder === 'asc'? Prisma.sql`ASC` : Prisma.sql`DESC`;
+          resolve({ success: true, data: products });
+        } else {
+          const sortedOrderQuery =
+            options.sortedOrder === "asc" ? Prisma.sql`ASC` : Prisma.sql`DESC`;
 
-          const prismaProducts = await prismaClient.$queryRaw`
+          const sortQuery = options.sort === "price" ? PRICE : SELL_COUNT;
+
+          const prismaProducts = (await prismaClient.$queryRaw`
             SELECT * from  "Product"
             WHERE "categoryID" = ${options.catID}
-            ORDER BY ${options.sort} ${sortedOrderQuery}
+            ORDER BY ${sortQuery} ${sortedOrderQuery} NULLS LAST, ${ID} ${sortedOrderQuery} NULLS LAST
             offset ${options.offset}
             limit ${options.limit}
-          ` as Product[];
+          `) as Product[];
 
-          let products = prismaProducts.map(toDBProduct) as (DBProduct|DBProductGroup)[];
+          let products = prismaProducts.map(toDBProduct) as (
+            | DBProduct
+            | DBProductGroup
+          )[];
 
-          if(options.sort)
-            products = sortProducts(products, options.sort);
+          if (options.sort) products = sortProducts(products, options.sort);
 
-          if(options.sortedOrder === "desc")
-            products = products.reverse();
+          if (options.sortedOrder === "desc") products = products.reverse();
 
-          resolve({success: true, data: products});
+          resolve({ success: true, data: products });
         }
-      
-      }
+      };
 
-      _findCatID().catch((err) => reject({success: false, message: err.message}));
-
-    }
-
-
-    else if(options.catSlug) {
-      
+      _findCatID().catch((err) =>
+        reject({ success: false, message: err.message })
+      );
+    } else if (options.catSlug) {
       const _findCatSlug = async () => {
+        const {
+          offset = 0,
+          limit = 1000,
+          catSlug,
+          sort = "name",
+          sortedOrder = "asc",
+        } = options;
 
-        if(options.sort !== "price" && options.sort !== "sellCount") {
-          
-          const { offset = 0, limit = 1000, catSlug, sort = 'name', sortedOrder = 'asc' } = options;
+        if (options.sort !== "price" && options.sort !== "sellCount") {
+          const sortedOrderQuery = sortedOrder === "asc" ? ASC : DESC;
 
-          const sortedOrderQuery = sortedOrder === 'asc'? Prisma.sql`ASC` : Prisma.sql`DESC`;
-        
-          const ids = await prismaClient.$queryRaw`
-            SELECT "id" FROM (
+          const sortQuery =
+            sort === "name"
+              ? NAME
+              : sort === "dateCreated"
+              ? DATE_CREATED
+              : LAST_UPDATED;
+
+          const ids = (await prismaClient.$queryRaw`
+            SELECT "id", "name" FROM (
               SELECT "id", "name", "dateCreated", "lastUpdated", "categoryID"
                 FROM "Product" 
-                WHERE "categoryID" in (SELECT "id" FROM "Category" WHERE "slug" = ${catSlug}) and "groupID" is null
-              
+                WHERE "categoryID" in (SELECT "id" FROM "Category" WHERE "slug" = ${catSlug}) and "groupID" is null 
+
               UNION
 
               SELECT "id", "name", "dateCreated", "lastUpdated", "categoryID"
                 FROM "Group" 
-                WHERE "categoryID" in (SELECT "id" FROM "Category" WHERE "slug" = ${catSlug}) 
+                WHERE "categoryID" in (SELECT "id" FROM "Category" WHERE "slug" = ${catSlug})
                 
             ) AS products_and_groups
-            ORDER BY ${sort} ${sortedOrderQuery}
+            ORDER BY ${sortQuery} ${sortedOrderQuery} NULLS LAST, ${ID} ${sortedOrderQuery} NULLS LAST
             OFFSET ${offset}
             LIMIT ${limit}
-          ` as {id: string}[];          
+          `) as { id: string; name: string }[];
 
- 
-          const dbProductsPromise = findDBProducts({ id: { in: ids.map((id) => id.id) } });
+          const dbProductsPromise = findDBProducts({
+            id: { in: ids.map((id) => id.id) },
+          });
 
-          const dbGroupsPromise = findDBGroups({ id: { in: ids.map((id) => id.id) } });
+          const dbGroupsPromise = findDBGroups({
+            id: { in: ids.map((id) => id.id) },
+          });
 
-          const [dbProducts, dbGroups] = await Promise.all([dbProductsPromise, dbGroupsPromise]);
+          const [dbProducts, dbGroups] = await Promise.all([
+            dbProductsPromise,
+            dbGroupsPromise,
+          ]);
 
-          if(!dbProducts || !dbGroups) {
-            throw new Error("Error finding products or groups by category slug");
+          if (!dbProducts || !dbGroups) {
+            throw new Error(
+              "Error finding products or groups by category slug"
+            );
           }
 
           let products = [...dbProducts, ...dbGroups];
 
-          if(options.sort)
-            products = sortProducts(products, options.sort);
+          if (options.sort) products = sortProducts(products, options.sort);
 
-          if(options.sortedOrder === "desc")
-            products = products.reverse();
+          if (options.sortedOrder === "desc") products = products.reverse();
 
-          resolve({success: true, data: products});
-          
-        }
-        else {
-          const sortedOrderQuery = options.sortedOrder === 'asc'? Prisma.sql`ASC` : Prisma.sql`DESC`;
+          resolve({ success: true, data: products });
+        } else {
+          const sortedOrderQuery =
+            sortedOrder === "asc" ? Prisma.sql`ASC` : Prisma.sql`DESC`;
 
-          const prismaProducts = await prismaClient.$queryRaw`
+          const sortQuery =
+            sort === "price" ? Prisma.sql`"price"` : Prisma.sql`"sellCount"`;
+
+          const prismaProducts = (await prismaClient.$queryRaw`
             SELECT * FROM "Product"
             WHERE "categoryID" IN (SELECT "id" FROM "Category" WHERE "slug" = ${options.catSlug})
-            ORDER BY ${options.sort} ${sortedOrderQuery}
+            ORDER BY ${sortQuery} ${sortedOrderQuery} NULLS LAST, ${ID} ${sortedOrderQuery} NULLS LAST
             OFFSET ${options.offset}
             LIMIT ${options.limit}
-          ` as Product[];
+          `) as Product[];
 
-          let products = prismaProducts.map(toDBProduct) as (DBProduct|DBProductGroup)[];
-          
-          if(options.sort)
-            products = sortProducts(products, options.sort);
+          let products = prismaProducts.map(toDBProduct) as (
+            | DBProduct
+            | DBProductGroup
+          )[];
 
-          if(options.sortedOrder === "desc")
-            products = products.reverse();
+          if (options.sort) products = sortProducts(products, options.sort);
 
-          resolve({success: true, data: products});
+          if (options.sortedOrder === "desc") products = products.reverse();
+
+          resolve({ success: true, data: products });
         }
+      };
 
-      }
-
-      _findCatSlug().catch((err) => reject({success: false, message: err.message}));
-      
-    }
-
-    else {
+      _findCatSlug().catch((err) =>
+        reject({ success: false, message: err.message })
+      );
+    } else {
       // find  products base on options.sort, options.sortedOrder, options.type, options.limit with prisma
       const _find = async () => {
-        const { offset = 0, limit = 1000, catSlug, sort = 'name', sortedOrder = 'asc' } = options;
+        const {
+          offset = 0,
+          limit = 1000,
+          catSlug,
+          sort = "name",
+          sortedOrder = "asc",
+        } = options;
 
-          const sortedOrderQuery = sortedOrder === 'asc'? Prisma.sql`ASC` : Prisma.sql`DESC`;
-        
-          const productsPrisma = await prismaClient.$queryRaw`
+        const sortedOrderQuery =
+          sortedOrder === "asc" ? Prisma.sql`ASC` : Prisma.sql`DESC`;
+        const sortQuery =
+          sort === "name"
+            ? NAME
+            : sort === "dateCreated"
+            ? DATE_CREATED
+            : sort === "lastUpdated"
+            ? LAST_UPDATED
+            : sort === "price"
+            ? PRICE
+            : sort === "sellCount"
+            ? SELL_COUNT
+            : null;
+
+        const productsPrisma = (await prismaClient.$queryRaw`
             SELECT * FROM "Product"
-            ORDER BY ${sort} ${sortedOrderQuery}
+            ORDER BY ${sortQuery} ${sortedOrderQuery} NULLS LAST, ${ID} ${sortedOrderQuery} NULLS LAST
             OFFSET ${offset}
             LIMIT ${limit}
-          ` as Product[];
+          `) as Product[];
 
-          const products = productsPrisma.map((prismaProduct) => toDBProduct(prismaProduct));          
+        const products = productsPrisma.map((prismaProduct) =>
+          toDBProduct(prismaProduct)
+        );
 
-          resolve({success: true, data: products});
-      }
+        resolve({ success: true, data: products });
+      };
 
-      _find().catch((err) => reject({success: false, message: err.message}));
+      _find().catch((err) => reject({ success: false, message: err.message }));
     }
-    
-
-
-
-
   });
-
-
 }
-
 
 /******************
  * Helpers
@@ -467,20 +483,18 @@ function sortProducts(
       return 0;
     }
   });
-
-
 }
 
-
-
 async function findDBGroup(whereCondition: Prisma.GroupWhereUniqueInput) {
-  
-  const prismaGroup = await prismaClient.group.findUnique({where: whereCondition});
+  const prismaGroup = await prismaClient.group.findUnique({
+    where: whereCondition,
+  });
 
-  if(!prismaGroup)
-    return null;
+  if (!prismaGroup) return null;
 
-  const prismaProductsInGroup = await prismaClient.product.findMany({ where: { groupID: prismaGroup.id}});
+  const prismaProductsInGroup = await prismaClient.product.findMany({
+    where: { groupID: prismaGroup.id },
+  });
 
   const dbGroup = toDBProductGroup(prismaGroup, prismaProductsInGroup);
 
@@ -488,40 +502,45 @@ async function findDBGroup(whereCondition: Prisma.GroupWhereUniqueInput) {
 }
 
 async function findDBGroups(whereCondition: Prisma.GroupWhereInput) {
-  
-  const prismaGroups = await prismaClient.group.findMany({where: whereCondition});
+  const prismaGroups = await prismaClient.group.findMany({
+    where: whereCondition,
+  });
 
-  if(!prismaGroups)
-    return null;
+  if (!prismaGroups) return null;
 
-  const prismaProductsInGroups = await prismaClient.product.findMany({ where: { groupID: { in: prismaGroups.map((group) => group.id)}}});
+  const prismaProductsInGroups = await prismaClient.product.findMany({
+    where: { groupID: { in: prismaGroups.map((group) => group.id) } },
+  });
 
-  const dbGroups = prismaGroups.map((prismaGroup) => toDBProductGroup(prismaGroup, prismaProductsInGroups));
+  const dbGroups = prismaGroups.map((prismaGroup) =>
+    toDBProductGroup(prismaGroup, prismaProductsInGroups)
+  );
 
   return dbGroups;
 }
 
 async function findDBProduct(whereCondition: Prisma.ProductWhereUniqueInput) {
-    
-    const prismaProduct = await prismaClient.product.findUnique({where: whereCondition});
-  
-    if(!prismaProduct)
-      return null;
-  
-    const dbProduct = toDBProduct(prismaProduct);
-  
-    return dbProduct;
+  const prismaProduct = await prismaClient.product.findUnique({
+    where: whereCondition,
+  });
+
+  if (!prismaProduct) return null;
+
+  const dbProduct = toDBProduct(prismaProduct);
+
+  return dbProduct;
 }
 
 async function findDBProducts(whereCondition: Prisma.ProductWhereInput) {
-      
-    const prismaProducts = await prismaClient.product.findMany({where: whereCondition});
-  
-    if(!prismaProducts)
-      return null;
-  
-    const dbProducts = prismaProducts.map((prismaProduct) => toDBProduct(prismaProduct));
-  
-    return dbProducts;
-}
+  const prismaProducts = await prismaClient.product.findMany({
+    where: whereCondition,
+  });
 
+  if (!prismaProducts) return null;
+
+  const dbProducts = prismaProducts.map((prismaProduct) =>
+    toDBProduct(prismaProduct)
+  );
+
+  return dbProducts;
+}

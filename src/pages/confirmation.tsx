@@ -22,7 +22,6 @@ import { GetServerSideProps } from "next";
 
 import { getTempOrder, updateProductQuantity } from "@/database";
 
-
 export interface Props {
   errorMessage?: string;
   contactInfo: ContactInfo;
@@ -141,7 +140,6 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     const deleteRes = await deleteTempOrder(temp_id);
     const updateQuantityRes = await updateProductQuantity(quantityData);
 
-    
     if (!updateQuantityRes.success) {
       return {
         props: {
@@ -149,8 +147,6 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
         },
       };
     }
-
-
 
     if (!saveRes.success) {
       return {
