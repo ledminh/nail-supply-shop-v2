@@ -249,6 +249,7 @@ export default function find(
 
           let products = [...dbProducts, ...dbGroups];
 
+
           if (options.sort) products = sortProducts(products, options.sort);
 
           if (options.sortedOrder === "desc") products = products.reverse();

@@ -311,6 +311,7 @@ export function updateGroup({
       data: group.products.map(product => ({
         ...product,
         groupID: group.id,
+        categoryID: group.categoryID,
         images: product.images.map(image => image.src)
       }))
     });

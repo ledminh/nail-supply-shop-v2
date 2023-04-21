@@ -123,28 +123,30 @@ export default function ProductModal({
           )}
           <div className={styles.formGroup}>
             <label htmlFor="serialNumber">Serial #</label>
-            <input
-              type="text"
-              id="serialNumber"
-              value={serialNumber}
-              onKeyDown={(e) => {
-                if (e.key === "Enter") {
-                  e.preventDefault();
-                }
-              }}
-              onChange={(e) => {
-                const value = e.target.value;
-                if (value.length > 15) return;
+            {
+              type === 'create' ?  <input
+                                      type="text"
+                                      id="serialNumber"
+                                      value={serialNumber}
+                                      onKeyDown={(e) => {
+                                        if (e.key === "Enter") {
+                                          e.preventDefault();
+                                        }
+                                      }}
+                                      onChange={(e) => {
+                                        const value = e.target.value;
+                                        if (value.length > 15) return;
 
-                if (value === "") return setSerialNumber("");
+                                        if (value === "") return setSerialNumber("");
 
-                const intVal = parseInt(value);
+                                        const intVal = parseInt(value);
 
-                if (isNaN(intVal) || intVal < 0) return;
+                                        if (isNaN(intVal) || intVal < 0) return;
 
-                setSerialNumber(value);
-              }}
-            />
+                                        setSerialNumber(value);
+                                      }}
+                                    /> : <div className={styles.value}>{serialNumber}</div>
+            }
           </div>
           <div className={styles.formGroup}>
             <label htmlFor="name">Name</label>
