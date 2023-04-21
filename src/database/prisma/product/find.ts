@@ -36,12 +36,12 @@ export default function find(
 ): Promise<FindProductResponse> {
   const ASC = Prisma.sql`ASC`;
   const DESC = Prisma.sql`DESC`;
-  const NAME = Prisma.sql`name`;
-  const DATE_CREATED = Prisma.sql`dateCreated`;
-  const LAST_UPDATED = Prisma.sql`lastUpdated`;
+  const NAME = Prisma.sql`"name"`;
+  const DATE_CREATED = Prisma.sql`"dateCreated"`;
+  const LAST_UPDATED = Prisma.sql`"lastUpdated"`;
   const PRICE = Prisma.sql`price`;
-  const SELL_COUNT = Prisma.sql`sellCount`;
-  const ID = Prisma.sql`id`;
+  const SELL_COUNT = Prisma.sql`"sellCount"`;
+  const ID = Prisma.sql`"id"`;
 
   return new Promise((resolve, reject) => {
     if (options.searchTerm) {
@@ -75,7 +75,9 @@ export default function find(
       findSearchTerm().catch((err) =>
         reject({ success: false, message: err.message })
       );
-    } else if (options.name) {
+    } 
+    
+    else if (options.name) {
       if (options.type === "group") {
         const _find = async () => {
           const dbGroups = await findDBGroups({
@@ -138,7 +140,9 @@ export default function find(
           reject({ success: false, message: err.message })
         );
       }
-    } else if (options.id) {
+    } 
+    
+    else if (options.id) {
       if (options.type === "group") {
         const _find = async () => {
           const dbGroup = await findDBGroup({ id: options.id });
@@ -187,7 +191,9 @@ export default function find(
           reject({ success: false, message: err.message })
         );
       }
-    } else if (options.groupID) {
+    } 
+    
+    else if (options.groupID) {
       const _find = async () => {
         const dbProducts = await findDBProducts({ groupID: options.groupID });
 
@@ -199,14 +205,23 @@ export default function find(
       };
 
       _find().catch((err) => reject({ success: false, message: err.message }));
-    } else if (options.catID) {
+    } 
+    
+    else if (options.catID) {
+      console.log(options);
       const _findCatID = async () => {
         if (options.sort !== "price" && options.sort !== "sellCount") {
+          
+          
           const sortedOrderQuery =
             options.sortedOrder === "asc" ? Prisma.sql`ASC` : Prisma.sql`DESC`;
 
-          const sortQuery =
-            options.sort === "dateCreated" ? DATE_CREATED : LAST_UPDATED;
+            const sortQuery =
+            options.sort === "name"
+              ? NAME
+              : options.sort === "dateCreated"
+              ? DATE_CREATED
+              : LAST_UPDATED;
 
           const ids = (await prismaClient.$queryRaw`
           select "id" from 
@@ -227,10 +242,7 @@ export default function find(
             id: { in: ids.map((id) => id.id) },
           });
 
-          const [dbProducts, dbGroups] = await Promise.all([
-            dbProductsPromise,
-            dbGroupsPromise,
-          ]);
+          const [dbProducts, dbGroups] = await Promise.all([ dbProductsPromise, dbGroupsPromise]);
 
           if (!dbProducts || !dbGroups) {
             throw new Error("Error finding products or groups by category id");
@@ -273,7 +285,9 @@ export default function find(
       _findCatID().catch((err) =>
         reject({ success: false, message: err.message })
       );
-    } else if (options.catSlug) {
+    } 
+    
+    else if (options.catSlug) {
       const _findCatSlug = async () => {
         const {
           offset = 0,
@@ -368,7 +382,9 @@ export default function find(
       _findCatSlug().catch((err) =>
         reject({ success: false, message: err.message })
       );
-    } else {
+    } 
+    
+    else {
       // find  products base on options.sort, options.sortedOrder, options.type, options.limit with prisma
       const _find = async () => {
         const {

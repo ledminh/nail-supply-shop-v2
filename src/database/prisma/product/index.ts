@@ -128,6 +128,9 @@ export function addProduct({ product }: AddProductProps): Promise<AddProductResp
         data: {
           numProducts: {
             increment: 1
+          },
+          numProductsAndGroups: {
+            increment: 1
           }
         }
       });

@@ -58,6 +58,19 @@ export default function CategoryPage({
     useState<(Product | ProductGroup)[]>(products);
   const [condition, setCondition] = useState<ListCondition>(initCondition);
 
+  const [maxProducts, setMaxProducts] = useState(0);
+
+
+  useEffect(() =>  {
+    if(condition.sort?.value === "price") {
+      setMaxProducts(curCategory.numProducts);
+    }
+    else {
+      setMaxProducts(curCategory.numProductsAndGroups);
+    }
+
+  }, [condition]);
+
   useDidUpdateEffect(() => {
     const loadOptions: FindProductOptions = {
       type: "all",
@@ -78,7 +91,6 @@ export default function CategoryPage({
           throw new Error("Products not found");
         }
 
-        console.log("data.products", data.products);
 
         setProducts(data.products);
       })
@@ -171,7 +183,7 @@ export default function CategoryPage({
             <ProductList products={_products} type="grid" />
           </div>
           <div className={styles.button}>
-            {_products.length < curCategory.numProducts && (
+            {_products.length < maxProducts && (
               <ButtonCPN
                 label="Load More"
                 type="normal"

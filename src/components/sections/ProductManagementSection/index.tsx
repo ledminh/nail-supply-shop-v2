@@ -43,6 +43,8 @@ export default function ProductManagementSection({}: Props) {
   const [reloadProducts, setReloadProducts] = useState<boolean>(false);
 
   const [products, setProducts] = useState<(Product | ProductGroup)[]>([]);
+  const [maxProducts, setMaxProducts] = useState<number>(0);
+
   const [categories, setCategories] = useState<Category[]>([]);
   const [currentCategory, setCurrentCategory] = useState<Category | null>(null);
   const [sortingCondition, setSortingCondition] = useState<ListCondition>({
@@ -55,6 +57,15 @@ export default function ProductManagementSection({}: Props) {
     useProductModal();
   const { openEditGroup, openCreateGroup, GroupModalComponent } =
     useGroupModal();
+
+  useEffect(() => {
+    if(sortingCondition.sort?.value === "price") {
+      setMaxProducts(currentCategory?.numProducts || 0);
+    }
+    else {
+      setMaxProducts(currentCategory?.numProductsAndGroups || 0);
+    }
+  }, [sortingCondition, currentCategory]);
 
   const { onDeleteProduct, onDeleteGroup } = useDelete({
     products,
@@ -88,6 +99,10 @@ export default function ProductManagementSection({}: Props) {
     loadCategories().then((categories) => {
       setCategories(categories);
       setCurrentCategory(categories[0]);
+    }).catch(({response}) => {
+      throw new Error(
+        `Error while loading categories: ${response?.data?.message}`
+      );
     });
   }, []);
 
@@ -98,8 +113,14 @@ export default function ProductManagementSection({}: Props) {
         setProducts,
         0,
         sortingCondition.sort!.value,
-        sortingCondition.sortedOrder!.value
-      );
+        sortingCondition.sortedOrder!.value,
+      ).catch(({response}) => {
+        throw new Error(
+          `Error while loading products: ${response?.data?.message}
+          sortingCondition: ${JSON.stringify(sortingCondition)}
+          `
+        )
+      });
     }
   }, [currentCategory]);
 
@@ -126,7 +147,17 @@ export default function ProductManagementSection({}: Props) {
             sortingCondition.sort!.value,
             sortingCondition.sortedOrder!.value,
             products.length
-          );
+          ).catch(({response}) => {
+            throw new Error(
+              `Error while loading products: ${response?.data?.message}
+              sortingCondition: ${JSON.stringify(sortingCondition)}
+              `
+            )
+          });
+      }).catch(({response}) => {
+        throw new Error(
+          `Error while loading categories: ${response?.data?.message}`
+        );
       });
     }
   }, [reloadProducts]);
@@ -205,8 +236,7 @@ export default function ProductManagementSection({}: Props) {
           ulClass={styles.ul}
         />
         <div className={styles.loadMore}>
-          {currentCategory &&
-            products.length < currentCategory?.numProducts && (
+          { products.length < maxProducts && (
               <ButtonCPN type="normal" label="Load More" onClick={loadMore} />
             )}
         </div>
@@ -283,8 +313,12 @@ async function loadProducts(
         return;
       }
     })
-    .catch((err) => {
-      throw err;
+    .catch(({response}) => {
+    
+      throw new Error(
+        `Error while loading products: ${response?.data?.message}
+        loadOptions: ${JSON.stringify(loadOptions)}
+        `)
     });
 }
 
