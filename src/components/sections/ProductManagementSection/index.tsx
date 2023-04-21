@@ -128,37 +128,32 @@ export default function ProductManagementSection({}: Props) {
     if (reloadProducts) {
       setReloadProducts(false);
 
-      loadCategories().then((categories: Category[]) => {
-        const oldCategory = categories.find(
-          (c) => c.id === currentCategory?.id
-        );
-        setCategories(categories);
-        if (oldCategory) {
-          setCurrentCategory(oldCategory);
-        } else {
-          setCurrentCategory(categories[0]);
-        }
-
-        if (currentCategory)
-          loadProducts(
+      const _reloadProducts = async () => {
+        if (currentCategory) {
+          await loadProducts(
             currentCategory.id,
             setProducts,
             0,
             sortingCondition.sort!.value,
             sortingCondition.sortedOrder!.value,
             products.length
-          ).catch(({response}) => {
-            throw new Error(
-              `Error while loading products: ${response?.data?.message}
-              sortingCondition: ${JSON.stringify(sortingCondition)}
-              `
-            )
-          });
-      }).catch(({response}) => {
+          );
+        }
+        
+        
+      }
+
+      _reloadProducts().catch(({response}) => {
         throw new Error(
-          `Error while loading categories: ${response?.data?.message}`
-        );
+          `Error while loading products: ${response?.data?.message}
+          sortingCondition: ${JSON.stringify(sortingCondition)}
+          `
+        )
       });
+
+
+
+      
     }
   }, [reloadProducts]);
 
@@ -280,7 +275,7 @@ const convertCategoryToOptionItem = (
 async function loadProducts(
   catID: string,
   setProducts: Dispatch<SetStateAction<(Product | ProductGroup)[]>>,
-  offset: number = 0,
+  offset:number,
   sort: SortType = "name",
   sortedOrder: SortedOrderType = "asc",
   limit: number = productManagementConfig.productsPerPage

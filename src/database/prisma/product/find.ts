@@ -208,10 +208,9 @@ export default function find(
     } 
     
     else if (options.catID) {
-      console.log(options);
+      
       const _findCatID = async () => {
         if (options.sort !== "price" && options.sort !== "sellCount") {
-          
           
           const sortedOrderQuery =
             options.sortedOrder === "asc" ? Prisma.sql`ASC` : Prisma.sql`DESC`;
