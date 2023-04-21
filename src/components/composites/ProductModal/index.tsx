@@ -127,6 +127,11 @@ export default function ProductModal({
               type="text"
               id="serialNumber"
               value={serialNumber}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  e.preventDefault();
+                }
+              }}
               onChange={(e) => {
                 const value = e.target.value;
                 if (value.length > 15) return;
@@ -147,6 +152,11 @@ export default function ProductModal({
               type="text"
               id="name"
               value={name}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  e.preventDefault();
+                }
+              }}
               onChange={(e) => setName(e.target.value)}
             />
           </div>
@@ -156,6 +166,11 @@ export default function ProductModal({
               type="text "
               id="intro"
               value={intro}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  e.preventDefault();
+                }
+              }}
               onChange={(e) => setIntro(e.target.value)}
             />
           </div>
@@ -173,6 +188,11 @@ export default function ProductModal({
               type="number"
               id="price"
               value={price + ""}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  e.preventDefault();
+                }
+              }}
               onChange={(e) => {
                 let value = e.target.value;
 
@@ -214,6 +234,7 @@ export default function ProductModal({
                 key={image instanceof File ? image.name : image.src}
                 onClick={(e) => {
                   e.preventDefault();
+                  e.stopPropagation();
                   setImages((prev) =>
                     prev ? prev.filter((img) => img !== image) : null
                   );

@@ -205,6 +205,11 @@ export default function ProductGroupModal({
                   id="name"
                   value={groupName}
                   onChange={(e) => setGroupName(e.target.value)}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter") {
+                      e.preventDefault();
+                    }
+                  }}
                 />
               </div>
             </fieldset>

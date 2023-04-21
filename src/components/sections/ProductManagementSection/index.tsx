@@ -117,8 +117,7 @@ export default function ProductManagementSection({}: Props) {
       ).catch(({response}) => {
         throw new Error(
           `Error while loading products: ${response?.data?.message}
-          sortingCondition: ${JSON.stringify(sortingCondition)}
-          `
+          sortingCondition: ${JSON.stringify(sortingCondition)}`
         )
       });
     }
