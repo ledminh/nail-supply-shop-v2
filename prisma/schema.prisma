@@ -50,13 +50,14 @@ model Product {
 }
 
 model OrderedProduct {
-  id       String @id @default(cuid())
+  id       String  @id @default(cuid())
   name     String
   price    Float
   quantity Int
   image    String
   orderID  String
-  order    Order  @relation(fields: [orderID], references: [id])
+  order    Order?  @relation(fields: [orderId], references: [id])
+  orderId  String?
 }
 
 model ShippingAddress {
@@ -68,8 +69,7 @@ model ShippingAddress {
   state    String
   zip      String
   email    String
-  orderID  String
-  order    Order   @relation(fields: [orderID], references: [id])
+  order    Order?
 }
 
 enum Status {
@@ -79,15 +79,19 @@ enum Status {
 }
 
 model Order {
-  id              String            @id @default(cuid())
-  shippingAddress ShippingAddress[]
-  orderedProducts OrderedProduct[]
-  status          Status
-  dateCreated     DateTime          @default(now())
-  lastUpdated     DateTime          @default(now())
+  id String @id @default(cuid())
 
-  shippingAddressId String
-  temporary         Boolean @default(true)
+  shippingAddressId String          @unique
+  shippingAddress   ShippingAddress @relation(fields: [shippingAddressId], references: [id])
+
+  orderProductIds String[]
+  orderedProducts OrderedProduct[]
+
+  status      Status
+  dateCreated DateTime @default(now())
+  lastUpdated DateTime @default(now())
+
+  temporary Boolean @default(true)
 }
 
 model ContactInfo {
