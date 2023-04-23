@@ -101,8 +101,8 @@ model ContactInfo {
 
 model AboutUs {
   id               String        @id @default(cuid())
-  aboutUsFooter    String
-  missionStatement String
-  historyHTML      String
+  aboutUsFooter    String        @default("")
+  missionStatement String        @default("")
+  historyHTML      String        @default("")
   contactInfo      ContactInfo[]
 }
