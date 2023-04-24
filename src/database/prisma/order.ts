@@ -23,28 +23,56 @@ type FindProps = {
 };
 
 export function find({ id }: FindProps): OrderResponse {
-  if (id) {
-    return new Promise((resolve, reject) => {
-      const _find = async () => {};
-
-      _find();
-    });
-  }
-
   return new Promise((resolve, reject) => {
-    getDB().then((db) => {
-      const { data } = db;
+    const _find = async () => {
+      if (id) {
+        const order = await prismaClient.order.findUnique({
+          where: {
+            id,
+          },
+          include: {
+            orderedProducts: true,
+            shippingAddress: true,
+          },
+        });
 
-      if (!data) {
-        return reject({
-          success: false,
-          message: "No orders found",
+        if (!order) {
+          return reject({
+            success: false,
+            message: "Order not found",
+          });
+        }
+
+        resolve({
+          success: true,
+          data: prismaOrderToDBOrder(order),
+        });
+      } else {
+        const orders = await prismaClient.order.findMany({
+          include: {
+            orderedProducts: true,
+            shippingAddress: true,
+          },
+        });
+
+        if (!orders) {
+          return reject({
+            success: false,
+            message: "No orders found",
+          });
+        }
+
+        resolve({
+          success: true,
+          data: orders.map((order) => prismaOrderToDBOrder(order)),
         });
       }
+    };
 
-      resolve({
-        success: true,
-        data: data.ORDERS,
+    _find().catch((error) => {
+      reject({
+        success: false,
+        message: error.message,
       });
     });
   });
@@ -52,135 +80,108 @@ export function find({ id }: FindProps): OrderResponse {
 
 export function deleteOrder(id: string): OrderResponse {
   return new Promise((resolve, reject) => {
-    getDB().then((db) => {
-      const { data } = db;
+    const _deleteOrder = async () => {
+      const order = await prismaClient.order.delete({
+        where: {
+          id,
+        },
+      });
 
-      if (!data) {
-        return reject({
-          success: false,
-          message: "No orders found",
-        });
-      }
+      resolve({
+        success: true,
+        data: prismaOrderToDBOrder(order),
+      });
+    };
 
-      const { ORDERS } = data;
-
-      const index = ORDERS.findIndex((order) => order.id === id);
-
-      if (index === -1) {
-        return reject({
-          success: false,
-          message: "Order not found",
-        });
-      }
-
-      ORDERS.splice(index, 1);
-
-      db.write()
-        .then(() => db.read())
-        .then(() => {
-          if (!db.data)
-            return reject({
-              success: false,
-              message: "No orders found",
-            });
-
-          resolve({
-            success: true,
-            data: db.data.ORDERS,
-          });
-        });
+    _deleteOrder().catch((error) => {
+      reject({
+        success: false,
+        message: error.message,
+      });
     });
   });
 }
 
 export function add(order: Order): OrderResponse {
   return new Promise(async (resolve, reject) => {
-    const db = await getDB();
-
-    if (!db.data) {
-      return reject({
-        success: false,
-        message: "No orders found",
+    // use prismaClient to create order
+    const _add = async () => {
+      const newOrder = await prismaClient.order.create({
+        data: {
+          ...order,
+          id: randomId(),
+          shippingAddress: {
+            create: {
+              ...order.shippingAddress,
+            },
+          },
+          orderedProducts: {
+            createMany: {
+              data: order.orderedProducts.map((product) => ({
+                name: product.name,
+                price: product.price,
+                quantity: product.quantity,
+                image: product.image.src,
+                orderID: order.id,
+              })),
+            },
+          },
+          status:
+            order.status.value === "processing"
+              ? Status.processing
+              : order.status.value === "shipped"
+              ? Status.shipped
+              : Status.delivered,
+          dateCreated: new Date(),
+          lastUpdated: new Date(),
+          temporary: false,
+        },
+        include: {
+          orderedProducts: true,
+          shippingAddress: true,
+        },
       });
-    }
 
-    const { ORDERS } = db.data;
-
-    const newOrder = {
-      ...order,
-      id: randomId(),
+      resolve({
+        success: true,
+        data: prismaOrderToDBOrder(newOrder),
+      });
     };
 
-    ORDERS.push(newOrder);
-
-    db.write()
-      .then(() => db.read())
-      .then(() => {
-        if (!db.data)
-          return reject({
-            success: false,
-            message: "No orders found",
-          });
-
-        resolve({
-          success: true,
-          data: newOrder,
-        });
+    _add().catch((error) => {
+      reject({
+        success: false,
+        message: error.message,
       });
+    });
   });
 }
 
 export function updateStatus(id: string, status: StatusValue): OrderResponse {
   return new Promise((resolve, reject) => {
-    getDB()
-      .then((db) => {
-        const { data } = db;
-
-        if (!data) {
-          return reject({
-            success: false,
-            message: "No orders found",
-          });
-        }
-
-        const { ORDERS } = data;
-
-        const index = ORDERS.findIndex((order) => order.id === id);
-
-        if (index === -1) {
-          return reject({
-            success: false,
-            message: "Order not found",
-          });
-        }
-
-        ORDERS[index].status = {
-          value: status,
-          lastUpdated: new Date().toISOString(),
-          description: orderStatus[status],
-        };
-
-        db.write()
-          .then(() => db.read())
-          .then(() => {
-            if (!db.data)
-              return reject({
-                success: false,
-                message: "No orders found",
-              });
-
-            resolve({
-              success: true,
-              data: ORDERS[index],
-            });
-          });
-      })
-      .catch((error) => {
-        reject({
-          success: false,
-          message: error.message,
-        });
+    // use prismaClient to update order status
+    const _updateStatus = async () => {
+      const order = await prismaClient.order.update({
+        where: {
+          id,
+        },
+        data: {
+          status: Status[status],
+        },
       });
+
+      resolve({
+        success: true,
+        data: prismaOrderToDBOrder(order),
+      });
+    };
+
+    _updateStatus().catch((error) => {
+      reject({
+        success: false,
+        message: error.message,
+      });
+    });
   });
 }
 
@@ -191,70 +192,73 @@ export function filter({
   sort,
   query,
 }: FilterOrder): OrderResponse {
-  return new Promise(async (resolve, reject) => {
-    const db = await getDB();
-
-    if (!db.data) {
-      return reject({
-        success: false,
-        message: "No orders found",
-      });
-    }
-
-    const { ORDERS } = db.data;
-    let filteredOrders = ORDERS;
+  return new Promise((resolve, reject) => {
+    let where = {};
 
     if (query !== "") {
-      filteredOrders = ORDERS.filter((order) => {
-        return order.id.includes(query);
-      });
+      where = {
+        ...where,
+        id: {
+          contains: query,
+        },
+      };
     }
 
     if (status !== "all") {
-      filteredOrders = filteredOrders.filter(
-        (order) => order.status.value === status
-      );
+      where = {
+        ...where,
+        status: {
+          equals: Status[status],
+        },
+      };
     }
 
     if (month !== null) {
-      filteredOrders = filteredOrders.filter((order) => {
-        const date = new Date(order.status.lastUpdated);
-        const lastUpdatedMonth = (date.getMonth() + 1).toString();
-        const lastUpdatedYear = date.getFullYear().toString();
+      const monthQuery = month.substring(0, month.indexOf("/"));
+      const yearQuery = month.substring(month.indexOf("/") + 1);
 
-        const monthQuery = month.substring(0, month.indexOf("/"));
-        const yearQuery = month.substring(month.indexOf("/") + 1);
-
-        return lastUpdatedMonth === monthQuery && lastUpdatedYear === yearQuery;
-      });
+      where = {
+        ...where,
+        lastUpdated: {
+          gte: new Date(`${monthQuery}/01/${yearQuery}`),
+          lt: new Date(`${monthQuery}/31/${yearQuery}`),
+        },
+      };
     }
 
     if (year !== null) {
-      filteredOrders = filteredOrders.filter((order) => {
-        const date = new Date(order.status.lastUpdated);
-        return date.getFullYear().toString() === year;
-      });
+      where = {
+        ...where,
+        lastUpdated: {
+          gte: new Date(`01/01/${year}`),
+          lt: new Date(`12/31/${year}`),
+        },
+      };
     }
 
-    if (sort === "oldest") {
-      filteredOrders = filteredOrders.sort((a, b) => {
-        const dateA = new Date(a.status.lastUpdated);
-        const dateB = new Date(b.status.lastUpdated);
-
-        return dateA.getTime() - dateB.getTime();
+    const _filter = async () => {
+      const orders = await prismaClient.order.findMany({
+        where,
+        include: {
+          shippingAddress: true,
+          orderedProducts: true,
+        },
+        orderBy: {
+          lastUpdated: sort === "oldest" ? "asc" : "desc",
+        },
       });
-    } else if (sort === "newest") {
-      filteredOrders = filteredOrders.sort((a, b) => {
-        const dateA = new Date(a.status.lastUpdated);
-        const dateB = new Date(b.status.lastUpdated);
 
-        return dateB.getTime() - dateA.getTime();
+      resolve({
+        success: true,
+        data: prismaOrderToDBOrder(orders),
       });
-    }
+    };
 
-    resolve({
-      success: true,
-      data: filteredOrders,
+    _filter().catch((error) => {
+      reject({
+        success: false,
+        message: error.message,
+      });
     });
   });
 }
@@ -312,29 +316,9 @@ export function saveTemp(order: Order): TempOrderResponse {
         },
       });
 
-      const _returnedOrder = {
-        ...returnedOrder,
-        shippingAddress: {
-          ...returnedOrder.shippingAddress,
-          address2: returnedOrder.shippingAddress.address2 || "",
-        },
-        orderedProducts: returnedOrder.orderedProducts.map((product) => ({
-          ...product,
-          image: {
-            src: product.image,
-            alt: product.name,
-          },
-        })),
-        status: {
-          value: returnedOrder.status,
-          lastUpdated: returnedOrder.lastUpdated.toISOString(),
-          description: orderStatus[returnedOrder.status],
-        },
-      };
-
       resolve({
         success: true,
-        data: _returnedOrder,
+        data: prismaOrderToDBOrder(returnedOrder),
       });
     };
 
@@ -367,29 +351,9 @@ export function findTemp(id: string): TempOrderResponse {
         });
       }
 
-      const _returnedOrder = {
-        ...returnedOrder,
-        shippingAddress: {
-          ...returnedOrder.shippingAddress,
-          address2: returnedOrder.shippingAddress.address2 || "",
-        },
-        orderedProducts: returnedOrder.orderedProducts.map((product) => ({
-          ...product,
-          image: {
-            src: product.image,
-            alt: product.name,
-          },
-        })),
-        status: {
-          value: returnedOrder.status,
-          lastUpdated: returnedOrder.lastUpdated.toISOString(),
-          description: orderStatus[returnedOrder.status],
-        },
-      };
-
       return resolve({
         success: true,
-        data: _returnedOrder,
+        data: prismaOrderToDBOrder(returnedOrder),
       });
     };
 
@@ -404,43 +368,61 @@ export function findTemp(id: string): TempOrderResponse {
 
 export function deleteTemp(id: string): TempOrderResponse {
   return new Promise(async (resolve, reject) => {
-    const db = await getDB();
-
-    if (!db.data) {
-      return reject({
-        success: false,
-        message: "No orders found",
+    const _deleteTemp = async () => {
+      const returnedOrder = await prismaClient.order.delete({
+        where: {
+          id,
+        },
+        include: {
+          orderedProducts: true,
+          shippingAddress: true,
+        },
       });
-    }
 
-    const { ORDER_TEMPS } = db.data;
-
-    const order = ORDER_TEMPS.find((order) => order.id === id);
-
-    if (!order) {
-      return resolve({
-        success: false,
-        message: "Order not found",
-      });
-    }
-
-    const index = ORDER_TEMPS.indexOf(order);
-
-    ORDER_TEMPS.splice(index, 1);
-
-    db.write()
-      .then(() => db.read())
-      .then(() => {
-        if (!db.data)
-          return reject({
-            success: false,
-            message: "No orders found",
-          });
-
-        resolve({
-          success: true,
-          data: order,
+      if (!returnedOrder) {
+        return reject({
+          success: false,
+          message: "Order not found",
         });
+      }
+
+      return resolve({
+        success: true,
+        data: prismaOrderToDBOrder(returnedOrder),
       });
+    };
+
+    _deleteTemp().catch((error) => {
+      reject({
+        success: false,
+        message: error.message,
+      });
+    });
   });
+}
+
+/************************
+ * Helper Functions
+ */
+
+function prismaOrderToDBOrder(order: any): Order {
+  return {
+    ...order,
+    shippingAddress: {
+      ...order.shippingAddress,
+      address2: order.shippingAddress.address2 || "",
+    },
+    orderedProducts: order.orderedProducts.map((product: any) => ({
+      ...product,
+      image: {
+        src: product.image,
+        alt: product.name,
+      },
+    })),
+    status: {
+      value: order.status,
+      lastUpdated: order.lastUpdated.toISOString(),
+      description: orderStatus[order.status as Status],
+    },
+  };
 }
