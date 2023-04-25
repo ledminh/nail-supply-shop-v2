@@ -44,6 +44,8 @@ export default function OrderManagementSection({}: Props) {
       } else {
         throw new Error(data.message);
       }
+    }).catch(({response}) => {
+      throw new Error(response.data.message);
     });
   }, [filter]);
 

@@ -85,7 +85,32 @@ export function deleteOrder(id: string): OrderResponse {
         where: {
           id,
         },
+        include: {
+          orderedProducts: true,
+          shippingAddress: true,
+        },
       });
+
+      if (!order) {
+        return reject({
+          success: false,
+          message: "Order not found",
+        });
+      }
+
+      const deleteOrderedProducts = prismaClient.orderedProduct.deleteMany({
+        where: {
+          orderID: id,
+        },
+      });
+
+      const deleteShippingAddress = prismaClient.shippingAddress.delete({
+        where: {
+          id: order.shippingAddress.id,
+        },
+      });
+
+      await Promise.all([deleteOrderedProducts, deleteShippingAddress]);
 
       resolve({
         success: true,
@@ -167,6 +192,10 @@ export function updateStatus(id: string, status: StatusValue): OrderResponse {
         },
         data: {
           status: Status[status],
+        },
+        include: {
+          orderedProducts: true,
+          shippingAddress: true,
         },
       });
 
@@ -250,7 +279,7 @@ export function filter({
 
       resolve({
         success: true,
-        data: prismaOrderToDBOrder(orders),
+        data: orders.map((order) => prismaOrderToDBOrder(order)),
       });
     };
 
@@ -385,6 +414,18 @@ export function deleteTemp(id: string): TempOrderResponse {
           message: "Order not found",
         });
       }
+
+      const deleteOrderedProducts = prismaClient.orderedProduct.deleteMany({
+        where: {
+          orderID: id,
+        },
+      });
+
+      const deleteShippingAddress = prismaClient.shippingAddress.delete({
+        where: {
+          id: returnedOrder.shippingAddress.id,
+        },
+      });
 
       return resolve({
         success: true,

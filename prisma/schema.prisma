@@ -84,7 +84,6 @@ model Order {
   shippingAddressId String          @unique
   shippingAddress   ShippingAddress @relation(fields: [shippingAddressId], references: [id])
 
-  orderProductIds String[]
   orderedProducts OrderedProduct[]
 
   status      Status
