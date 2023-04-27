@@ -50,14 +50,13 @@ model Product {
 }
 
 model OrderedProduct {
-  id       String  @id @default(cuid())
+  id       String @id @default(cuid())
   name     String
   price    Float
   quantity Int
   image    String
   orderID  String
-  order    Order?  @relation(fields: [orderId], references: [id])
-  orderId  String?
+  order    Order  @relation(fields: [orderID], references: [id])
 }
 
 model ShippingAddress {
@@ -69,7 +68,8 @@ model ShippingAddress {
   state    String
   zip      String
   email    String
-  order    Order?
+  orderID  String  @unique
+  order    Order   @relation(fields: orderID, references: id)
 }
 
 enum Status {
@@ -81,9 +81,7 @@ enum Status {
 model Order {
   id String @id @default(cuid())
 
-  shippingAddressId String          @unique
-  shippingAddress   ShippingAddress @relation(fields: [shippingAddressId], references: [id])
-
+  shippingAddress ShippingAddress[]
   orderedProducts OrderedProduct[]
 
   status      Status

@@ -121,6 +121,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       };
     }
 
+
     if (!orderRes.success) {
       return {
         props: {
@@ -129,6 +130,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       };
     }
 
+
     const quantityData = orderRes.data.orderedProducts.map((product) => {
       return {
         productID: product.id,
@@ -136,9 +138,15 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       };
     });
 
+
     const saveRes = await saveOrder(orderRes.data);
+
+
     const deleteRes = await deleteTempOrder(temp_id);
+
+
     const updateQuantityRes = await updateProductQuantity(quantityData);
+
 
     if (!updateQuantityRes.success) {
       return {
@@ -148,6 +156,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       };
     }
 
+
     if (!saveRes.success) {
       return {
         props: {
@@ -155,6 +164,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
         },
       };
     }
+
 
     if (!deleteRes.success) {
       return {
@@ -164,9 +174,11 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       };
     }
 
+
     const aboutUsFooter = aboutUsRes.data!.aboutUsFooter;
     const contactInfo = aboutUsRes.data!.contactInfo;
     const newOrder = saveRes.data!;
+
 
     return {
       props: {

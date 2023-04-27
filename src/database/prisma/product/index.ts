@@ -1,4 +1,3 @@
-
 import type { DBProduct, DBProductGroup } from "@/types/product";
 
 import find, { FindProductOptions } from "./find";
@@ -30,24 +29,30 @@ export type DeleteProductResponse =
       message: string;
     };
 
-export function deleteProduct({ id}: DeleteProductProps): Promise<DeleteProductResponse> {
+export function deleteProduct({
+  id,
+}: DeleteProductProps): Promise<DeleteProductResponse> {
   return new Promise((resolve, reject) => {
-    
     const _deleteProduct = async () => {
       const product = await prismaClient.product.delete({ where: { id } });
 
-      await prismaClient.category.update({ where : { id: product.categoryID }, data: { numProducts: { decrement: 1 }, numProductsAndGroups: {decrement: 1} } });
+      await prismaClient.category.update({
+        where: { id: product.categoryID },
+        data: {
+          numProducts: { decrement: 1 },
+          numProductsAndGroups: { decrement: 1 },
+        },
+      });
 
       resolve({
-        success: true
+        success: true,
       });
     };
 
-    _deleteProduct().catch((err) => {  reject({ success: false, message: err.message });
-
+    _deleteProduct().catch((err) => {
+      reject({ success: false, message: err.message });
     });
   });
-
 }
 
 /**********************************
@@ -66,37 +71,31 @@ export type DeleteGroupResponse =
       message: string;
     };
 
-export function deleteGroup({ id }: DeleteGroupProps): Promise<DeleteGroupResponse> {
+export function deleteGroup({
+  id,
+}: DeleteGroupProps): Promise<DeleteGroupResponse> {
   return new Promise((resolve, reject) => {
-    
     // Define async
     const _delete = async () => {
-
       const numProductsDeleted = await prismaClient.$executeRaw`DELETE FROM "Product" WHERE "groupID" = ${id}`;
-      const deletedGroup  = await prismaClient.group.delete({where: {id}});
-      
-      await prismaClient.category.update(
-        { 
-          where: { id: deletedGroup.categoryID }, 
-          
-          data: {
-            numProductsAndGroups: { decrement: 1 },
-            numProducts: { decrement: numProductsDeleted }
-          }
-        }
-      );
+      const deletedGroup = await prismaClient.group.delete({ where: { id } });
 
-      resolve({ success: true});
+      await prismaClient.category.update({
+        where: { id: deletedGroup.categoryID },
 
-    }
-    
+        data: {
+          numProductsAndGroups: { decrement: 1 },
+          numProducts: { decrement: numProductsDeleted },
+        },
+      });
+
+      resolve({ success: true });
+    };
+
     // Call async
     _delete().catch((err) => reject({ success: false, message: err.message }));
-  
   });
-
 }
-
 
 /******************************
  *  ADD PRODUCT
@@ -107,49 +106,52 @@ export type AddProductProps = {
 };
 
 export type AddProductResponse =
-  { success: true; data: DBProduct; }
-  | { success: false; message: string; };
+  | { success: true; data: DBProduct }
+  | { success: false; message: string };
 
-export function addProduct({ product }: AddProductProps): Promise<AddProductResponse> {
+export function addProduct({
+  product,
+}: AddProductProps): Promise<AddProductResponse> {
   return new Promise((resolve, reject) => {
-
     const _add = async () => {
-
       const productData = {
         ...product,
-        images: product.images.map(image => image.src)
-      }
+        images: product.images.map((image) => image.src),
+      };
 
-      const addProduct = prismaClient.product.create({data: productData});
+      const addProduct = prismaClient.product.create({ data: productData });
       const incrementCategory = prismaClient.category.update({
         where: {
-          id: product.categoryID
+          id: product.categoryID,
         },
         data: {
           numProducts: {
-            increment: 1
+            increment: 1,
           },
           numProductsAndGroups: {
-            increment: 1
-          }
-        }
+            increment: 1,
+          },
+        },
       });
 
       await prismaClient.$transaction([addProduct, incrementCategory]);
 
-      const _product = await prismaClient.product.findUnique({ where: { id: product.id}});
+      const _product = await prismaClient.product.findUnique({
+        where: { id: product.id },
+      });
 
       if (!_product) {
         return reject({ success: false, message: "Product not found" });
       }
 
-      resolve({ success: true, data: toDBProduct(_product)});
-    }
+      resolve({ success: true, data: toDBProduct(_product) });
+    };
 
-    _add().catch((err) => { reject({ success: false, message: err.message });});
+    _add().catch((err) => {
+      reject({ success: false, message: err.message });
+    });
   });
 }
-
 
 /******************************
  *  ADD GROUP
@@ -171,44 +173,55 @@ export type AddGroupResponse =
 
 export function addGroup({ group }: AddGroupProps): Promise<AddGroupResponse> {
   return new Promise((resolve, reject) => {
-    
-    const _addGroup = async () => {  
-    
+    const _addGroup = async () => {
       const createGroup = prismaClient.group.create({
         data: {
           id: group.id,
           name: group.name,
           categoryID: group.categoryID,
-        }
+        },
       });
 
-      const createProducts = group.products.map(product => prismaClient.product.create({
-        data: {
-          ...product,
-          images: product.images.map(image => image.src)
-        }
-      }));
+      const createProducts = group.products.map((product) =>
+        prismaClient.product.create({
+          data: {
+            ...product,
+            images: product.images.map((image) => image.src),
+          },
+        })
+      );
 
       const updateCategory = prismaClient.category.update({
         where: {
-          id: group.categoryID
+          id: group.categoryID,
         },
         data: {
           numProducts: {
-            increment: group.products.length
+            increment: group.products.length,
           },
           numProductsAndGroups: {
-            increment: 1
-          }
-        }
+            increment: 1,
+          },
+        },
       });
 
-      await prismaClient.$transaction([createGroup, ...createProducts, updateCategory]);
-      
-      const findGroup = prismaClient.group.findUnique({ where: { id: group.id}});
-      const findProductsInGroup = prismaClient.product.findMany({ where: { groupID: group.id }});
+      await prismaClient.$transaction([
+        createGroup,
+        ...createProducts,
+        updateCategory,
+      ]);
 
-      const [_group, _productsInGroup] = await Promise.all([findGroup, findProductsInGroup]);
+      const findGroup = prismaClient.group.findUnique({
+        where: { id: group.id },
+      });
+      const findProductsInGroup = prismaClient.product.findMany({
+        where: { groupID: group.id },
+      });
+
+      const [_group, _productsInGroup] = await Promise.all([
+        findGroup,
+        findProductsInGroup,
+      ]);
 
       if (!_group) {
         return reject({ success: false, message: "Group not found" });
@@ -218,19 +231,17 @@ export function addGroup({ group }: AddGroupProps): Promise<AddGroupResponse> {
         return reject({ success: false, message: "No products in group" });
       }
 
-      return resolve({ success: true, data: toDBProductGroup(_group, _productsInGroup)});
+      return resolve({
+        success: true,
+        data: toDBProductGroup(_group, _productsInGroup),
+      });
+    };
 
-    }
-
-    _addGroup().catch((err) => { reject({ success: false, message: err.message });});
-
+    _addGroup().catch((err) => {
+      reject({ success: false, message: err.message });
+    });
   });
 }
-
-
-
-
-
 
 /********************************
  * UPDATE PRODUCT
@@ -254,29 +265,30 @@ export function updateProduct({
   product,
 }: UpdateProductProps): Promise<UpdateProductResponse> {
   return new Promise((resolve, reject) => {
-
-    prismaClient.product.update({
-      where: {
-        id: product.id
-      },
-      data: {
-        ...product,
-        images: product.images.map(image => image.src)
-      }
-    }).then((product) => {
-      prismaClient.product.findUnique({
-        where: { id: product.id}
-      }).then((product) => {
-
-        if (!product) {
-          return reject({ success: false, message: "Product not found" });    
-        }
-        else{
-          resolve({ success: true, data: toDBProduct(product)});
-        }          
-    }).catch(err => reject({ success: false, message: err.message }));
-
-  });
+    prismaClient.product
+      .update({
+        where: {
+          id: product.id,
+        },
+        data: {
+          ...product,
+          images: product.images.map((image) => image.src),
+        },
+      })
+      .then((product) => {
+        prismaClient.product
+          .findUnique({
+            where: { id: product.id },
+          })
+          .then((product) => {
+            if (!product) {
+              return reject({ success: false, message: "Product not found" });
+            } else {
+              resolve({ success: true, data: toDBProduct(product) });
+            }
+          })
+          .catch((err) => reject({ success: false, message: err.message }));
+      });
   });
 }
 
@@ -302,70 +314,73 @@ export function updateGroup({
   group,
 }: UpdateGroupProps): Promise<UpdateGroupResponse> {
   return new Promise((resolve, reject) => {
-
     const _updateGroup = async () => {
+      const deleteProducts = prismaClient.$executeRaw`DELETE FROM "Product" WHERE "groupID" = ${group.id};`;
 
-    const deleteProducts = prismaClient.$executeRaw`DELETE FROM "Product" WHERE "groupID" = ${group.id};`;
-    
-    const createProducts = prismaClient.product.createMany({
-      data: group.products.map(product => ({
-        ...product,
-        groupID: group.id,
-        categoryID: group.categoryID,
-        images: product.images.map(image => image.src)
-      }))
-    });
+      const createProducts = prismaClient.product.createMany({
+        data: group.products.map((product) => ({
+          ...product,
+          groupID: group.id,
+          categoryID: group.categoryID,
+          images: product.images.map((image) => image.src),
+        })),
+      });
 
-    const [numProductsDeleted] = await Promise.all([deleteProducts, createProducts]);
+      const [numProductsDeleted] = await Promise.all([
+        deleteProducts,
+        createProducts,
+      ]);
 
+      await prismaClient.group.update({
+        where: { id: group.id },
+        data: {
+          ...group,
+          products: {
+            connect: group.products.map((product) => ({ id: product.id })),
+          },
+        },
+      });
 
+      await prismaClient.category.update({
+        where: { id: group.categoryID },
+        data: {
+          numProducts: {
+            increment: group.products.length - numProductsDeleted,
+          },
+        },
+      });
 
-    await prismaClient.group.update({ 
-      where: { id: group.id },
-      data: {
-        ...group,
-        products: {
-          connect: group.products.map(product => ({ id: product.id }))
-        }
+      const findGroup = prismaClient.group.findUnique({
+        where: { id: group.id },
+      });
+      const findProductsInGroup = prismaClient.product.findMany({
+        where: { groupID: group.id },
+      });
+
+      const [_group, _productsInGroup] = await Promise.all([
+        findGroup,
+        findProductsInGroup,
+      ]);
+
+      if (!_group) {
+        return reject({ success: false, message: "Group not found" });
       }
-    });
 
-    await prismaClient.category.update({
-      where: { id: group.categoryID },
-      data: {
-        numProducts: {
-          increment: group.products.length - numProductsDeleted
-        }
+      if (_productsInGroup.length === 0) {
+        return reject({ success: false, message: "No products in group" });
       }
+
+      return resolve({
+        success: true,
+        data: toDBProductGroup(_group, _productsInGroup),
+      });
+    };
+
+    _updateGroup().catch((err) => {
+      reject({ success: false, message: err.message });
     });
-
-
-    const findGroup = prismaClient.group.findUnique({ where: { id: group.id}});
-    const findProductsInGroup = prismaClient.product.findMany({ where: { groupID: group.id }});
-
-    const [_group, _productsInGroup] = await Promise.all([findGroup, findProductsInGroup]);
-
-    if (!_group) {
-      return reject({ success: false, message: "Group not found" });
-    }
-
-    if (_productsInGroup.length === 0) {
-      return reject({ success: false, message: "No products in group" });
-    }
-
-    return resolve({ success: true, data: toDBProductGroup(_group, _productsInGroup)});
-
-  }
-
-  _updateGroup().catch((err) => { reject({ success: false, message: err.message });});
-
   });
-
-
-
-          
-}   
-
+}
 
 // /********************************
 //  * UPDATE GROUP PRODUCT
@@ -390,34 +405,29 @@ export function updateGroupProduct({
   groupID,
   product,
 }: UpdateGroupProductProps): Promise<UpdateGroupProductResponse> {
-
   return new Promise((resolve, reject) => {
-
     const _updateGroupProduct = async () => {
-
-      const  _product  =  await prismaClient.product.update({ 
+      const _product = await prismaClient.product.update({
         where: { id: product.id },
         data: {
           ...product,
           groupID,
-          images: product.images.map(image => image.src)
-        }
+          images: product.images.map((image) => image.src),
+        },
       });
 
-
-      if(!_product){
+      if (!_product) {
         return reject({ success: false, message: "Product not found" });
       }
 
-      return resolve({ success: true, data: toDBProduct(_product)});
+      return resolve({ success: true, data: toDBProduct(_product) });
+    };
 
-    }
-
-    _updateGroupProduct().catch((err) => { reject({ success: false, message: err.message });});
-
+    _updateGroupProduct().catch((err) => {
+      reject({ success: false, message: err.message });
+    });
   });
 }
-
 
 // /********************************
 //  * UPDATE QUANTITY
@@ -428,62 +438,71 @@ export type UpdateQuantityProps = {
   quantity: number;
 }[];
 
-export type UpdateQuantityResponse = {
-  success: true;
-} | {
-  success: false;
-  message: string;
-};
+export type UpdateQuantityResponse =
+  | {
+      success: true;
+    }
+  | {
+      success: false;
+      message: string;
+    };
 
-export function updateQuantity(quantityData: UpdateQuantityProps): Promise<UpdateQuantityResponse> {
+export function updateQuantity(
+  quantityData: UpdateQuantityProps
+): Promise<UpdateQuantityResponse> {
   return new Promise((resolve, reject) => {
-
-    prismaClient.product.findMany({
-      where: {
-        id: {
-          in: quantityData.map(data => data.productID)
-        }
-      }
-    }).then((products) => {
-      if (!products) {
-        return reject({
-          success: false,
-          message: "Products not found",
-        });
-      }
-
-      const _products = products.filter((product) => {
-        const data = quantityData.find((data) => data.productID === product.id);
-
-        if (!data) {
-          reject({success: false, message: "Product not found"});
-          return false;
-        }
-
-        return true;
-      });
-
-
-      prismaClient.$transaction(
-        _products.map((product) => {
-          const data = quantityData.find((data) => data.productID === product.id) as UpdateQuantityProps[0];
-
-          
-          return prismaClient.product.update({
-            where: {
-              id: product.id
-            },
-            data: {
-              sellCount: product.sellCount + data.quantity
-            }
+    prismaClient.product
+      .findMany({
+        where: {
+          id: {
+            in: quantityData.map((data) => data.productID),
+          },
+        },
+      })
+      .then((products) => {
+        if (!products) {
+          return reject({
+            success: false,
+            message: "Products not found",
           });
-        })
-      ).then(() => {
-        return resolve({ success: true });
-      }).catch(err => reject({ success: false, message: err.message }));
-    }).catch(err => reject({ success: false, message: err.message }));
+        }
 
+        const _products = products.filter((product) => {
+          const data = quantityData.find(
+            (data) => data.productID === product.id
+          );
 
+          if (!data) {
+            reject({ success: false, message: "Product not found" });
+            return false;
+          }
 
+          return true;
+        });
+
+        prismaClient
+          .$transaction(
+            _products.map((product) => {
+              const data = quantityData.find(
+                (data) => data.productID === product.id
+              ) as UpdateQuantityProps[0];
+
+              return prismaClient.product.update({
+                where: {
+                  id: product.id,
+                },
+                data: {
+                  sellCount: product.sellCount + data.quantity,
+                },
+              });
+            })
+          )
+          .then(() => {
+            console.log("After updating products");
+            return resolve({ success: true });
+          })
+          .catch((err) => reject({ success: false, message: err.message }));
+      })
+      .catch((err) => reject({ success: false, message: err.message }));
   });
-};  
+}

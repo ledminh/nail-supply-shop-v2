@@ -4,7 +4,6 @@ import { getDB } from "../jsons";
 import type { FilterOrder, Order, StatusValue } from "@/types/order";
 import prismaClient from "./utils/prismaClient";
 
-import randomId from "@/utils/randomId";
 import { Status } from "@prisma/client";
 
 type OrderResponse = Promise<
@@ -81,6 +80,23 @@ export function find({ id }: FindProps): OrderResponse {
 export function deleteOrder(id: string): OrderResponse {
   return new Promise((resolve, reject) => {
     const _deleteOrder = async () => {
+      const deleteShippingAddress = prismaClient.shippingAddress.delete({
+        where: {
+          orderID: id,
+        },
+      });
+
+      const deleteOrderedProducts = prismaClient.orderedProduct.deleteMany({
+        where: {
+          orderID: id,
+        },
+      });
+
+      await prismaClient.$transaction([
+        deleteShippingAddress,
+        deleteOrderedProducts,
+      ]);
+
       const order = await prismaClient.order.delete({
         where: {
           id,
@@ -97,20 +113,6 @@ export function deleteOrder(id: string): OrderResponse {
           message: "Order not found",
         });
       }
-
-      const deleteOrderedProducts = prismaClient.orderedProduct.deleteMany({
-        where: {
-          orderID: id,
-        },
-      });
-
-      const deleteShippingAddress = prismaClient.shippingAddress.delete({
-        where: {
-          id: order.shippingAddress.id,
-        },
-      });
-
-      await Promise.all([deleteOrderedProducts, deleteShippingAddress]);
 
       resolve({
         success: true,
@@ -131,10 +133,12 @@ export function add(order: Order): OrderResponse {
   return new Promise(async (resolve, reject) => {
     // use prismaClient to create order
     const _add = async () => {
-      const newOrder = await prismaClient.order.create({
+      const returnedOrder = await prismaClient.order.create({
         data: {
-          ...order,
-          id: randomId(),
+          status: Status.processing,
+          dateCreated: new Date(),
+          lastUpdated: new Date(),
+          temporary: false,
           shippingAddress: {
             create: {
               ...order.shippingAddress,
@@ -147,29 +151,20 @@ export function add(order: Order): OrderResponse {
                 price: product.price,
                 quantity: product.quantity,
                 image: product.image.src,
-                orderID: order.id,
               })),
             },
           },
-          status:
-            order.status.value === "processing"
-              ? Status.processing
-              : order.status.value === "shipped"
-              ? Status.shipped
-              : Status.delivered,
-          dateCreated: new Date(),
-          lastUpdated: new Date(),
-          temporary: false,
         },
+
         include: {
-          orderedProducts: true,
           shippingAddress: true,
+          orderedProducts: true,
         },
       });
 
       resolve({
         success: true,
-        data: prismaOrderToDBOrder(newOrder),
+        data: prismaOrderToDBOrder(returnedOrder),
       });
     };
 
@@ -312,7 +307,11 @@ export function saveTemp(order: Order): TempOrderResponse {
     const _saveTemp = async () => {
       const returnedOrder = await prismaClient.order.create({
         data: {
-          ...order,
+          id: order.id,
+          status: Status.processing,
+          dateCreated: new Date(),
+          lastUpdated: new Date(),
+          temporary: true,
           shippingAddress: {
             create: {
               ...order.shippingAddress,
@@ -325,23 +324,14 @@ export function saveTemp(order: Order): TempOrderResponse {
                 price: product.price,
                 quantity: product.quantity,
                 image: product.image.src,
-                orderID: order.id,
               })),
             },
           },
-          status:
-            order.status.value === "processing"
-              ? Status.processing
-              : order.status.value === "shipped"
-              ? Status.shipped
-              : Status.delivered,
-          dateCreated: new Date(),
-          lastUpdated: new Date(),
-          temporary: true,
         },
+
         include: {
-          orderedProducts: true,
           shippingAddress: true,
+          orderedProducts: true,
         },
       });
 
@@ -398,6 +388,23 @@ export function findTemp(id: string): TempOrderResponse {
 export function deleteTemp(id: string): TempOrderResponse {
   return new Promise(async (resolve, reject) => {
     const _deleteTemp = async () => {
+      const deleteShippingAddress = prismaClient.shippingAddress.delete({
+        where: {
+          orderID: id,
+        },
+      });
+
+      const deleteOrderedProducts = prismaClient.orderedProduct.deleteMany({
+        where: {
+          orderID: id,
+        },
+      });
+
+      await prismaClient.$transaction([
+        deleteShippingAddress,
+        deleteOrderedProducts,
+      ]);
+
       const returnedOrder = await prismaClient.order.delete({
         where: {
           id,
@@ -414,18 +421,6 @@ export function deleteTemp(id: string): TempOrderResponse {
           message: "Order not found",
         });
       }
-
-      const deleteOrderedProducts = prismaClient.orderedProduct.deleteMany({
-        where: {
-          orderID: id,
-        },
-      });
-
-      const deleteShippingAddress = prismaClient.shippingAddress.delete({
-        where: {
-          id: returnedOrder.shippingAddress.id,
-        },
-      });
 
       return resolve({
         success: true,
@@ -448,11 +443,17 @@ export function deleteTemp(id: string): TempOrderResponse {
 
 function prismaOrderToDBOrder(order: any): Order {
   return {
-    ...order,
+    id: order.id,
     shippingAddress: {
-      ...order.shippingAddress,
-      address2: order.shippingAddress.address2 || "",
+      name: order.shippingAddress[0]?.name || "",
+      address1: order.shippingAddress[0]?.address1 || "",
+      address2: order.shippingAddress[0]?.address2 || "",
+      city: order.shippingAddress[0]?.city || "",
+      state: order.shippingAddress[0]?.state || "",
+      zip: order.shippingAddress[0]?.zip || "",
+      email: order.shippingAddress[0]?.email || "",
     },
+
     orderedProducts: order.orderedProducts.map((product: any) => ({
       ...product,
       image: {
