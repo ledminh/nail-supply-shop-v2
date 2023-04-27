@@ -56,7 +56,7 @@ export default function OrderBlock({
           {"$" +
             order.orderedProducts.reduce((acc, product) => {
               return acc + product.price * product.quantity;
-            }, 0)}
+            }, 0).toFixed(2)}
         </span>
       </div>
       <div className={styles.field + " " + styles.status}>

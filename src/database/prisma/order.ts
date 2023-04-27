@@ -1,6 +1,6 @@
 import { orderStatus } from "@/config";
-import { getDB } from "../jsons";
 
+import randomId from "@/utils/randomId";
 import type { FilterOrder, Order, StatusValue } from "@/types/order";
 import prismaClient from "./utils/prismaClient";
 
@@ -135,6 +135,7 @@ export function add(order: Order): OrderResponse {
     const _add = async () => {
       const returnedOrder = await prismaClient.order.create({
         data: {
+          id: randomId(15),
           status: Status.processing,
           dateCreated: new Date(),
           lastUpdated: new Date(),
