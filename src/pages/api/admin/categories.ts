@@ -1,7 +1,5 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import formidable from "formidable";
-import fs from "fs";
-import path from "path";
 
 import { Category } from "@/types/category";
 
@@ -14,6 +12,7 @@ import * as DB from "@/database";
 import { DBProductGroup, DBProduct } from "@/types/product";
 import isProduct from "@/utils/isProduct";
 import { getAuth } from "@clerk/nextjs/server";
+import removeFile from "@/utils/supaRemove";
 
 export type CategoryApiResponse =
   | {
@@ -152,33 +151,51 @@ function updateCategory(
   { id, name, description, imageFileName }: UpdateCategoryProps,
   res: NextApiCategoryResponse
 ) {
-  DB.updateCategory({ id, name, description, imageFileName })
-    .then((dbRes) => {
-      if (!dbRes.success) {
-        res.status(500).json({ success: false, message: dbRes.message });
-        return;
-      }
-
-      const [oldCat, newCat] = dbRes.data as Category[];
-
-      if (oldCat.image.src !== newCat.image.src) {
-        deleteImage(oldCat.image.src, "category");
-      }
-
-      res.status(200).json({ success: true, category: newCat });
-    })
-    .catch((err) => {
-      res.status(500).json({ success: false, message: err.message });
+  const _exec = async () => {
+    const dbRes = await DB.updateCategory({
+      id,
+      name,
+      description,
+      imageFileName,
     });
-}
 
-function deleteCategory(catID: string, res: NextApiCategoryResponse) {
-  DB.getProducts({ type: "all", catID }).then((dbRes) => {
     if (!dbRes.success) {
       return Promise.reject({ success: false, message: dbRes.message });
     }
 
-    const products = dbRes.data as (DBProduct | DBProductGroup)[];
+    const [oldCat, newCat] = dbRes.data as Category[];
+
+    if (oldCat.image.src !== newCat.image.src) {
+      const { success: imgSuccess } = await deleteImages(
+        [oldCat.image.src],
+        "category"
+      );
+
+      if (!imgSuccess) {
+        return Promise.reject({
+          success: false,
+          message: "Failed to delete old image",
+        });
+      }
+    }
+
+    return res.status(200).json({ success: true, category: newCat });
+  };
+
+  _exec().catch((err) => {
+    res.status(500).json({ success: false, message: err.message });
+  });
+}
+
+function deleteCategory(catID: string, res: NextApiCategoryResponse) {
+  const _exec = async () => {
+    const dbResProducts = await DB.getProducts({ type: "all", catID });
+
+    if (!dbResProducts.success) {
+      return Promise.reject({ success: false, message: dbResProducts.message });
+    }
+
+    const products = dbResProducts.data as (DBProduct | DBProductGroup)[];
     const productImageNames = products.reduce((acc, product) => {
       if (isProduct(product)) {
         acc.push(...product.images.map((image) => image.src));
@@ -194,48 +211,91 @@ function deleteCategory(catID: string, res: NextApiCategoryResponse) {
       return acc;
     }, [] as string[]);
 
-    productImageNames.forEach((imageName) => {
-      deleteImage(imageName, "product");
-    });
+    if (productImageNames.length > 0) {
+      const { success: productSuccess } = await deleteImages(
+        productImageNames,
+        "product"
+      );
 
-    DB.deleteCategory(catID)
-      .then((dbRes) => {
-        if (!dbRes.success) {
-          res.status(500).json({ success: false, message: dbRes.message });
-        } else {
-          const category = dbRes.data as Category;
+      if (!productSuccess) {
+        return Promise.reject({
+          success: false,
+          message: "Failed to delete product images",
+        });
+      }
+    }
 
-          deleteImage(category.image.src, "category");
+    const dbResCategory = await DB.deleteCategory(catID);
 
-          res.status(200).json({ success: true, category });
-        }
-      })
-      .catch((err) => {
-        res.status(500).json({ success: false, message: err.message });
+    if (!dbResCategory.success) {
+      return Promise.reject({ success: false, message: dbResCategory.message });
+    }
+
+    const category = dbResCategory.data as Category;
+
+    const { success: categorySuccess } = await deleteImages(
+      [category.image.src],
+      "category"
+    );
+
+    if (!categorySuccess) {
+      return Promise.reject({
+        success: false,
+        message: "Failed to delete category image",
       });
+    }
+
+    return res.status(200).json({ success: true, category });
+  };
+
+  _exec().catch((err) => {
+    res.status(500).json({ success: false, message: err.message });
   });
 }
 
-const deleteImage = (filename: string, type: "category" | "product") => {
-  const baseFilename = path.basename(filename);
-  const filePath = path.join(
-    process.cwd(),
-    "public",
-    "images",
-    type,
-    baseFilename
-  );
+const deleteImages = async (
+  filenames: string[],
+  type: "category" | "product"
+) => {
+  const folder = type === "category" ? "category" : "product";
 
-  fs.access(filePath, fs.constants.F_OK, (err) => {
-    if (err) {
-      console.error(`File not found: ${filePath}`);
-      return;
-    }
-
-    fs.unlink(filePath, (err) => {
-      if (err) {
-        console.error(`Error deleting file: ${filePath}`);
-      }
-    });
+  const _filenames = filenames.map((filename) => {
+    const split = filename.split("/");
+    return folder + "/" + split[split.length - 1];
   });
+
+  const { error } = await removeFile("nail-supply-store", _filenames);
+
+  if (error) {
+    throw new Error(error.message);
+  } else {
+    return Promise.resolve({
+      success: true,
+    });
+  }
 };
+
+// deleteImage locally
+// const deleteImage = (filename: string, type: "category" | "product") => {
+//   const baseFilename = path.basename(filename);
+//   const filePath = path.join(
+//     process.cwd(),
+//     "public",
+//     "images",
+//     type,
+//     baseFilename
+//   );
+
+//   fs.access(filePath, fs.constants.F_OK, (err) => {
+//     if (err) {
+//       console.error(`File not found: ${filePath}`);
+//       return;
+//     }
+
+//     fs.unlink(filePath, (err) => {
+//       if (err) {
+//         console.error(`Error deleting file: ${filePath}`);
+//       }
+//     });
+//   });
+// };
