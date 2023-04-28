@@ -16,6 +16,7 @@ import getCategoryProps from "@/utils/getCategoryProps";
 import { CategoryApiResponse } from "@/pages/api/categories";
 import { AxiosResponse } from "axios";
 
+
 export interface Props {}
 
 export default function CategoryManagementSection({}: Props) {
@@ -101,38 +102,45 @@ export default function CategoryManagementSection({}: Props) {
     description: string,
     image: File
   ) => {
-    // Upload the image first
-    const imageFormData = new FormData();
-    imageFormData.append("cat-image", image);
+    const _exec = async () => {
+      // Upload the image first
+      const imageFormData = new FormData();
+      imageFormData.append("cat-image", image);
 
-    axios
-      .post("/api/upload?type=cat-image", imageFormData, {
+
+      const {data} = await axios.post("/api/upload?type=cat-image", imageFormData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
-      })
-      .then((res) => res.data)
-      .then((imageData) => {
-        const formData = new FormData();
-
-        formData.append("name", name);
-        formData.append("description", description);
-        formData.append("imageFileName", imageData.filename);
-
-        return axios.post("/api/admin/categories?type=create", formData);
-      })
-      .then((res) => res.data)
-      .then((data) => {
-        if (!data.success) {
-          throw new Error("Failed to create new category");
-        }
-
-        setCategories([data.category, ...categories]);
-      })
-      .catch((err) => {
-        console.error(err);
       });
+
+      if(!data) {
+        throw new Error("Failed to upload image. Data is null");
+      }
+      
+      const formData = new FormData();
+
+      formData.append("name", name);
+      formData.append("description", description);
+      formData.append("imageFileName", data.filename);
+
+      const res = await axios.post("/api/admin/categories?type=create", formData);
+
+      if (!res.data.success) {
+        throw new Error("Failed to create new category");
+      }
+
+      setCategories([res.data.category, ...categories]);
+    };
+
+    _exec().catch((err) => {
+      throw new Error(err.message);
+    });
+
+
   };
+
+  
 
   const updateCategory = (
     catID: string,

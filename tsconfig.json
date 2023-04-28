@@ -34,6 +34,6 @@
     "**/*.tsx",
     "src/stories/_pageTemplate.stories.tsx_",
     "generateOrders.js"
-  ],
+, "src/pages/api/upload_local.src/pages/api/upload.tsoad.ts"  ],
   "exclude": ["node_modules"]
 }

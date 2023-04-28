@@ -96,7 +96,7 @@ export function createCategory({
           name,
           slug: name.toLowerCase().replace(/ /g, "-"),
           description,
-          image: `/images/category/${imageFileName}`,
+          image: `${imageFileName}`,
           numProducts: 0,
           numProductsAndGroups: 0,
         },
@@ -213,8 +213,7 @@ export function deleteCategory(id: string): Promise<CategoryResponse> {
         throw new Error("Category not found");
       }
 
-      const numDel =
-        await prismaClient.$executeRaw`DELETE FROM "Category" WHERE id = ${id}`;
+      const numDel = await prismaClient.$executeRaw`DELETE FROM "Category" WHERE id = ${id}`;
 
       if (numDel === 0) {
         throw new Error("Category not found");
