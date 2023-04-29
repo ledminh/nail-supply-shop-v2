@@ -68,10 +68,6 @@ export default function Confirmation({
         </section>
         <section className={styles.text}>
           <p>
-            A confirmation email has been sent to{" "}
-            <span className={styles.email}>{order.shippingAddress.email}</span>.
-          </p>
-          <p>
             You can check the status of your order{" "}
             <Link
               href={"/order/" + order.id}
