@@ -37,7 +37,8 @@
     "cscg": "npm run create-scss-generic",
     "cscl": "npm run create-scss-layout",
     "cscp": "npm run create-scss-page",
-    "chromatic": "npx chromatic --project-token=698eefe93dfe"
+    "chromatic": "npx chromatic --project-token=698eefe93dfe",
+    "postinstall": "prisma generate"
   },
   "dependencies": {
     "@chakra-ui/react": "^2.5.1",
