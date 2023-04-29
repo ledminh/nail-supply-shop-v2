@@ -1,4 +1,4 @@
-type PrismaProduct = {
+export type PrismaProduct = {
   id: string;
   name: string;
   price: number;
@@ -12,7 +12,7 @@ type PrismaProduct = {
   sellCount: number;
 };
 
-type PrismaProductGroup = {
+export type PrismaProductGroup = {
   id: string;
   name: string;
   categoryID: string;

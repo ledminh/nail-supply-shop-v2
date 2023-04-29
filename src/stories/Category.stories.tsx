@@ -29,6 +29,8 @@ const productSample = {
   price: 100,
   intro:
     "This is some intro text. I'm trying to make it longer to see if it fit on the frame",
+  details: "This is a details",
+  categoryID: "1",
   images: [
     {
       id: "img-1",
@@ -79,6 +81,8 @@ const categorySample = {
   name: "Category Name",
   description:
     "Lore ipsum dolor sit amet ronco aenean donec dolor lorem etiam kwon. Lore ipsum dolor sit amet ronco aenean donec dolor lorem etiam kwon. Lore ipsum dolor sit amet ronco aenean donec dolor lorem etiam kwon.",
+  numProducts: 10,
+  numProductsAndGroups: 20,
 };
 
 const categories: Category[] = [
@@ -131,6 +135,7 @@ const productWithGroupSamples = [
   },
   {
     name: "Product Group Name",
+    categoryID: "2",
     products: [
       {
         ...productSample,
@@ -172,9 +177,8 @@ const sortedOrderItem = categoryConfig.sortedOrderItems[0];
 
 const defaultArgs: Props = {
   contactInfo: contactInfo,
-  aboutTextFooter: aboutTextFooter,
+  aboutUsFooter: aboutTextFooter,
   categories: categories,
-  currentCategory: categories[1],
 
   products: productWithGroupSamples,
   initCondition: {
@@ -182,7 +186,7 @@ const defaultArgs: Props = {
     sortedOrder: sortedOrderItem,
   },
 
-  numProducts: 20,
+  initCategory: categories[0]
 };
 
 const Wrapper = (props: Props) => {

@@ -25,6 +25,8 @@ const productSample = {
   price: 100,
   intro:
     "This is some intro text. I'm trying to make it longer to see if it fit on the frame",
+  details: "This is a details",
+  categoryID: "1",
   images: [
     {
       id: "img-1",
@@ -88,6 +90,8 @@ const categorySample = {
   name: "Category Name",
   description:
     "lore ipsum dolor sit amet ronco aenean donec dolor lorem etiam kwon",
+  numProducts: 10,
+  numProductsAndGroups: 20
 };
 
 const categories: Category[] = [
@@ -135,7 +139,7 @@ const categories: Category[] = [
 
 const defaultArgs: Props = {
   contactInfo: contactInfo,
-  aboutTextFooter: aboutTextFooter,
+  aboutUsFooter: aboutTextFooter,
   featuredProductGroups: featuredProductGroups,
   categories: categories,
 };

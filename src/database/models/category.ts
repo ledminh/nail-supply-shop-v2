@@ -103,6 +103,7 @@ export function createCategory({
           alt: name,
         },
         numProducts: 0,
+        numProductsAndGroups: 0,
       };
 
       CATEGORIES.push(category);

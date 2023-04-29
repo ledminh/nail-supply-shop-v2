@@ -4,7 +4,18 @@ import StripeCheckoutButtonCPN from ".";
 
 import type { Props } from ".";
 
-const defaultArgs: Props = {};
+const defaultArgs: Props = {
+  orderedProducts: [],
+  shippingAddress: {
+    name: "John Doe",
+    address1: "123 Main St",
+    address2: "Apt 1",
+    city: "New York",
+    state: "NY",
+    zip: "12345",
+    email: "johnDoe@example.com"
+  }
+};
 
 export default {
   title: "Basics/StripeCheckoutButtonCPN",

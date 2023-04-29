@@ -81,6 +81,8 @@ const categorySample = {
   name: "Category Name",
   description:
     "Lore ipsum dolor sit amet ronco aenean donec dolor lorem etiam kwon. Lore ipsum dolor sit amet ronco aenean donec dolor lorem etiam kwon. Lore ipsum dolor sit amet ronco aenean donec dolor lorem etiam kwon.",
+  numProducts: 10,
+  numProductsAndGroups: 20,
 };
 
 const categories: Category[] = [
@@ -130,7 +132,7 @@ const defaultArgs: Props = {
   ...product,
   categories,
   contactInfo,
-  aboutTextFooter,
+  aboutUsFooter: aboutTextFooter,
   productID: product.id,
 };
 

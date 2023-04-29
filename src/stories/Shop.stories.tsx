@@ -24,6 +24,8 @@ const categorySample = {
     src: "https://loremflickr.com/400/400",
     alt: "Category Image",
   },
+  numProducts: 10,
+  numProductsAndGroups: 20,
   name: "Category Name",
   description:
     "lore ipsum dolor sit amet ronco aenean donec dolor lorem etiam kwon",
@@ -74,7 +76,7 @@ const categories: Category[] = [
 
 const defaultArgs: Props = {
   contactInfo: contactInfo,
-  aboutTextFooter: aboutTextFooter,
+  aboutUsFooter: aboutTextFooter,
   categories: categories,
 };
 

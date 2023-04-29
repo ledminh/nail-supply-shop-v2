@@ -6,7 +6,7 @@ import type { Product, ProductGroup } from "@/types/product";
 import ImageCPN from "@/components/basics/ImageCPN";
 
 // No detailed option for ProductGroup
-type Props =
+export type Props =
   | (ProductGroup & {
       detailed?: false;
     })
