@@ -41,7 +41,7 @@ const Wrapper = () => {
 
   const args = defaultArgs;
 
-  args.onClick = ({productID}: {productID:string}) => {
+  args.onClick = ({productID}) => {
     setOnClickText(`Clicked on ${productID}`);
   };
 

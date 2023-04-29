@@ -11,9 +11,10 @@ import {
 } from "@/types/product";
 import formidable from "formidable";
 
-import fs from "fs";
 import randomId from "@/utils/randomId";
 import { getAuth } from "@clerk/nextjs/server";
+
+import deleteImages from "@/utils/deleteImages";
 
 export type ProductApiResponse =
   | {
@@ -32,13 +33,12 @@ export default function handler(
   req: NextApiRequest,
   res: NextApiProductResponse
 ) {
-
-  const {userId} = getAuth(req);
+  const { userId } = getAuth(req);
 
   if (!userId || userId !== process.env.ADMIN_ID) {
     return res.status(401).json({ success: false, message: "Unauthorized" });
   }
-  
+
   const {
     query: { type, id },
   } = req;
@@ -99,96 +99,90 @@ export const config = {
  * Helper functions
  *********************************/
 
-function deleteImages(imagePaths: string[]) {
-  for (const imagePath of imagePaths) {
-    try {
-      if (imagePath.startsWith("/images/product/")) {
-        const imgName = imagePath.replace("/images/product/", "");
-
-        if (fs.existsSync(`public/images/product/${imgName}`)) {
-          fs.unlink(`public/images/product/${imgName}`, (err) => {
-            if (err) {
-              console.error(`Failed to delete image: ${imagePath}`, err);
-            }
-          });
-        }
-      }
-    } catch (err) {
-      console.error(`Failed to delete image: ${imagePath}`, err);
-    }
-  }
-}
-
 const deleteSingleProduct = (id: string, res: NextApiProductResponse) => {
-  DB.getProduct({ id })
-    .then((dBRes) => {
-      if (!dBRes.success) {
-        return res.status(500).json({ success: false, message: dBRes.message });
-      }
+  const _exec = async () => {
+    const dBRes = await DB.getProduct({ id });
 
-      const product = dBRes.data;
+    if (!dBRes.success) {
+      return res.status(500).json({ success: false, message: dBRes.message });
+    }
 
-      if (Array.isArray(product) || !isProduct(product)) {
-        return res
-          .status(404)
-          .json({ success: false, message: "Incorrect type" });
-      }
+    const product = dBRes.data;
 
-      deleteImages(product.images.map((image) => image.src));
+    if (Array.isArray(product) || !isProduct(product)) {
+      return res
+        .status(404)
+        .json({ success: false, message: "Incorrect type" });
+    }
 
-      DB.deleteProduct({ id })
-        .then((dbRes) => {
-          if (!dbRes.success) {
-            return res
-              .status(500)
-              .json({ success: false, message: dbRes.message });
-          }
+    const { success } = await deleteImages(
+      product.images.map((image) => image.src),
+      "product"
+    );
 
-          res.status(200).json({ success: true, message: "Product deleted" });
-        })
-        .catch((err) => {
-          res.status(500).json({ success: false, message: err.message });
-        });
-    })
-    .catch((err) => {
-      res.status(500).json({ success: false, message: err.message });
-    });
+    if (!success) {
+      return res
+        .status(500)
+        .json({ success: false, message: "Error deleting images" });
+    }
+
+    const dbResDelete = await DB.deleteProduct({ id });
+
+    if (!dbResDelete.success) {
+      return res
+        .status(500)
+        .json({ success: false, message: dbResDelete.message });
+    }
+
+    return res.status(200).json({ success: true, message: "Product deleted" });
+  };
+
+  _exec().catch((err) => {
+    res.status(500).json({ success: false, message: err.message });
+  });
 };
 
 const deleteGroup = (id: string, res: NextApiProductResponse) => {
-  DB.getGroup({ id })
-    .then((dBRes) => {
-      if (!dBRes.success) {
-        return res.status(500).json({ success: false, message: dBRes.message });
-      }
+  const _exec = async () => {
+    const dBRes = await DB.getGroup({ id });
 
-      const group = dBRes.data;
+    if (!dBRes.success) {
+      return res.status(500).json({ success: false, message: dBRes.message });
+    }
 
-      const images = group.products.reduce((acc: ProductImage[], product) => {
-        acc.push(...product.images);
+    const group = dBRes.data;
 
-        return acc;
-      }, []);
+    const images = group.products.reduce((acc: ProductImage[], product) => {
+      acc.push(...product.images);
 
-      deleteImages(images.map((image) => image.src));
+      return acc;
+    }, []);
 
-      DB.deleteGroup({ id })
-        .then((dbRes) => {
-          if (!dbRes.success) {
-            return res
-              .status(500)
-              .json({ success: false, message: dbRes.message });
-          }
+    const { success } = await deleteImages(
+      images.map((image) => image.src),
+      "product"
+    );
 
-          res.status(200).json({ success: true, message: "Product deleted" });
-        })
-        .catch((err) => {
-          res.status(500).json({ success: false, message: err.message });
-        });
-    })
-    .catch((err) => {
-      res.status(500).json({ success: false, message: err.message });
-    });
+    if (!success) {
+      return res
+        .status(500)
+        .json({ success: false, message: "Error deleting images" });
+    }
+
+    const dbResDelete = await DB.deleteGroup({ id });
+
+    if (!dbResDelete.success) {
+      return res
+        .status(500)
+        .json({ success: false, message: dbResDelete.message });
+    }
+
+    return res.status(200).json({ success: true, message: "Group deleted" });
+  };
+
+  _exec().catch((err) => {
+    res.status(500).json({ success: false, message: err.message });
+  });
 };
 
 const addProduct = (req: NextApiRequest, res: NextApiProductResponse) => {
@@ -199,8 +193,15 @@ const addProduct = (req: NextApiRequest, res: NextApiProductResponse) => {
       return res.status(500).json({ success: false, message: err.message });
     }
 
-    const { serialNumber, categoryID, name, intro, details, price, images } =
-      fields;
+    const {
+      serialNumber,
+      categoryID,
+      name,
+      intro,
+      details,
+      price,
+      images,
+    } = fields;
 
     if (
       typeof serialNumber !== "string" ||
@@ -270,6 +271,7 @@ const addGroup = (req: NextApiRequest, res: NextApiProductResponse) => {
       return {
         ...product,
         groupID,
+        categoryID: product.categoryID || group.categoryID,
       };
     });
 
@@ -289,8 +291,6 @@ const addGroup = (req: NextApiRequest, res: NextApiProductResponse) => {
             .json({ success: false, message: dbRes.message });
         }
 
-        console.log("after", dbRes.data);
-
         return res.status(200).json({ success: true, product: dbRes.data });
       })
       .catch((err) => {
@@ -302,7 +302,7 @@ const addGroup = (req: NextApiRequest, res: NextApiProductResponse) => {
 const updateProduct = (req: NextApiRequest, res: NextApiProductResponse) => {
   const form = new formidable.IncomingForm();
 
-  form.parse(req, (err, fields, files) => {
+  form.parse(req, async (err, fields, files) => {
     if (err) {
       return res.status(500).json({ success: false, message: err.message });
     }
@@ -336,124 +336,126 @@ const updateProduct = (req: NextApiRequest, res: NextApiProductResponse) => {
 
     // Product is in a group
     if (typeof groupID === "string") {
-      DB.getGroup({ id: groupID })
-        .then((dBRes) => {
-          if (!dBRes.success) {
-            return res
-              .status(500)
-              .json({ success: false, message: dBRes.message });
-          }
+      const dBRes = await DB.getGroup({ id: groupID });
 
-          const group = dBRes.data;
+      if (!dBRes.success) {
+        return res.status(500).json({ success: false, message: dBRes.message });
+      }
 
-          const oldProduct = group.products.find(
-            (product) => product.id === serialNumber
-          );
+      const group = dBRes.data;
 
-          if (!oldProduct) {
-            return res
-              .status(404)
-              .json({ success: false, message: "Product not found" });
-          }
+      const oldProduct = group.products.find(
+        (product) => product.id === serialNumber
+      );
 
-          const oldImages = oldProduct.images;
+      if (!oldProduct) {
+        return res
+          .status(404)
+          .json({ success: false, message: "Product not found" });
+      }
 
-          const imagesToDelete = oldImages.filter((oldImage) => {
-            return !newImages.find((newImage) => newImage.src === oldImage.src);
-          });
+      const oldImages = oldProduct.images;
 
-          deleteImages(imagesToDelete.map((image) => image.src));
+      const imagesToDelete = oldImages.filter((oldImage) => {
+        return !newImages.find((newImage) => newImage.src === oldImage.src);
+      });
 
-          const newProduct: DBProduct = {
-            id: serialNumber,
-            categoryID,
-            groupID,
-            name,
-            intro,
-            details,
-            price: Number(price),
-            images: newImages,
-            dateCreated: oldProduct.dateCreated,
-            lastUpdated: new Date().toISOString(),
-            sellCount: oldProduct.sellCount,
-          };
+      const resImage = await deleteImages(
+        imagesToDelete.map((image) => image.src),
+        "product"
+      );
 
-          DB.updateGroupProduct({ groupID, product: newProduct })
-            .then((dbRes) => {
-              if (!dbRes.success) {
-                return res
-                  .status(500)
-                  .json({ success: false, message: dbRes.message });
-              }
+      if (!resImage.success) {
+        return res
+          .status(500)
+          .json({ success: false, message: "Error delete product's images" });
+      }
 
-              return res
-                .status(200)
-                .json({ success: true, product: dbRes.data });
-            })
-            .catch((err) => {
-              return res
-                .status(500)
-                .json({ success: false, message: err.message });
-            });
-        })
-        .catch((err) => {
-          return res.status(500).json({ success: false, message: err.message });
-        });
+      const newProduct: DBProduct = {
+        id: serialNumber,
+        categoryID,
+        groupID,
+        name,
+        intro,
+        details,
+        price: Number(price),
+        images: newImages,
+        dateCreated: oldProduct.dateCreated,
+        lastUpdated: new Date().toISOString(),
+        sellCount: oldProduct.sellCount,
+      };
+
+      const updateGroupRes = await DB.updateGroupProduct({
+        groupID,
+        product: newProduct,
+      });
+
+      if (!updateGroupRes.success) {
+        return res
+          .status(500)
+          .json({ success: false, message: updateGroupRes.message });
+      } else {
+        return res
+          .status(200)
+          .json({ success: true, product: updateGroupRes.data });
+      }
     } else {
       // Product is not in a group
+      const dBRes = await DB.getProduct({ id: serialNumber });
 
-      DB.getProduct({ id: serialNumber }).then((dBRes) => {
-        if (!dBRes.success) {
-          return res
-            .status(500)
-            .json({ success: false, message: dBRes.message });
-        }
+      if (!dBRes.success) {
+        return res.status(500).json({ success: false, message: dBRes.message });
+      }
 
-        const product = dBRes.data;
+      const product = dBRes.data;
 
-        if (Array.isArray(product) || !isProduct(product)) {
-          return res
-            .status(404)
-            .json({ success: false, message: "Product not found" });
-        }
+      if (Array.isArray(product) || !isProduct(product)) {
+        return res
+          .status(404)
+          .json({ success: false, message: "Product not found" });
+      }
 
-        const oldImages = product.images;
+      const oldImages = product.images;
 
-        const imagesToDelete = oldImages.filter((oldImage) => {
-          return !newImages.find((newImage) => newImage.src === oldImage.src);
-        });
-
-        deleteImages(imagesToDelete.map((image) => image.src));
-
-        const newProduct: DBProduct = {
-          id: serialNumber,
-          categoryID,
-          name,
-          intro,
-          details,
-          price: Number(price),
-          images: newImages,
-          lastUpdated: new Date().toISOString(),
-          dateCreated: product.dateCreated,
-          sellCount: product.sellCount,
-        };
-
-        DB.updateProduct({ product: newProduct })
-          .then((dbRes) => {
-            if (!dbRes.success) {
-              return res
-                .status(500)
-                .json({ success: false, message: dbRes.message });
-            }
-
-            return res.status(200).json({ success: true, product: dbRes.data });
-          })
-          .catch((err) => {
-            return res
-              .status(500)
-              .json({ success: false, message: err.message });
-          });
+      const imagesToDelete = oldImages.filter((oldImage) => {
+        return !newImages.find((newImage) => newImage.src === oldImage.src);
       });
+
+      const imageRes = await deleteImages(
+        imagesToDelete.map((image) => image.src),
+        "product"
+      );
+
+      if (!imageRes.success) {
+        return res
+          .status(500)
+          .json({ success: false, message: "Error delete product's images" });
+      }
+
+      const newProduct: DBProduct = {
+        id: serialNumber,
+        categoryID,
+        name,
+        intro,
+        details,
+        price: Number(price),
+        images: newImages,
+        lastUpdated: new Date().toISOString(),
+        dateCreated: product.dateCreated,
+        sellCount: product.sellCount,
+      };
+
+      const updateProductRes = await DB.updateProduct({ product: newProduct });
+
+      if (!updateProductRes.success) {
+        return res
+          .status(500)
+          .json({ success: false, message: updateProductRes.message });
+      } else {
+        return res
+          .status(200)
+          .json({ success: true, product: updateProductRes.data });
+      }
     }
   });
 };
@@ -461,7 +463,7 @@ const updateProduct = (req: NextApiRequest, res: NextApiProductResponse) => {
 const updateGroup = (req: NextApiRequest, res: NextApiProductResponse) => {
   const form = new formidable.IncomingForm();
 
-  form.parse(req, (err, fields) => {
+  form.parse(req, async (err, fields) => {
     if (err) {
       return res.status(500).json({ success: false, message: err.message });
     }
@@ -481,67 +483,64 @@ const updateGroup = (req: NextApiRequest, res: NextApiProductResponse) => {
 
     const newProducts: DBProduct[] = JSON.parse(products);
 
-    DB.getGroup({ id })
-      .then((dBRes) => {
-        if (!dBRes.success) {
-          return res
-            .status(500)
-            .json({ success: false, message: dBRes.message });
-        }
+    const dBRes = await DB.getGroup({ id });
 
-        const group = dBRes.data;
+    if (!dBRes.success) {
+      return res.status(500).json({ success: false, message: dBRes.message });
+    }
 
-        const oldProducts = group.products;
+    const group = dBRes.data;
 
-        const imagesToDelete = oldProducts.reduce((acc, product) => {
-          const newProduct = newProducts.find(
-            (newProduct) => newProduct.id === product.id
-          );
+    const oldProducts = group.products;
 
-          if (!newProduct) {
-            return [...acc, ...product.images];
-          }
+    const imagesToDelete = oldProducts.reduce((acc, product) => {
+      const newProduct = newProducts.find(
+        (newProduct) => newProduct.id === product.id
+      );
 
-          const oldImages = product.images;
+      if (!newProduct) {
+        return [...acc, ...product.images];
+      }
 
-          const imagesToDelete = oldImages.filter((oldImage) => {
-            return !newProduct.images.find(
-              (newImage) => newImage.src === oldImage.src
-            );
-          });
+      const oldImages = product.images;
 
-          return [...acc, ...imagesToDelete];
-        }, [] as ProductImage[]);
-
-        deleteImages(imagesToDelete.map((image) => image.src));
-
-        const newGroup: DBProductGroup = {
-          id,
-          name,
-          categoryID,
-          products: newProducts,
-          lastUpdated: new Date().toISOString(),
-          dateCreated: group.dateCreated,
-        };
-
-        DB.updateGroup({ group: newGroup })
-          .then((dbRes) => {
-            if (!dbRes.success) {
-              return res
-                .status(500)
-                .json({ success: false, message: dbRes.message });
-            }
-
-            return res.status(200).json({ success: true, product: dbRes.data });
-          })
-          .catch((err) => {
-            return res
-              .status(500)
-              .json({ success: false, message: err.message });
-          });
-      })
-      .catch((err) => {
-        return res.status(500).json({ success: false, message: err.message });
+      const imagesToDelete = oldImages.filter((oldImage) => {
+        return !newProduct.images.find(
+          (newImage) => newImage.src === oldImage.src
+        );
       });
+
+      return [...acc, ...imagesToDelete];
+    }, [] as ProductImage[]);
+
+    const imageRes = await deleteImages(
+      imagesToDelete.map((image) => image.src),
+      "product"
+    );
+
+    if (!imageRes.success) {
+      return res
+        .status(500)
+        .json({ success: false, message: "Error delete product's images" });
+    }
+
+    const newGroup: DBProductGroup = {
+      id,
+      name,
+      categoryID,
+      products: newProducts,
+      lastUpdated: new Date().toISOString(),
+      dateCreated: group.dateCreated,
+    };
+
+    const updateRes = await DB.updateGroup({ group: newGroup });
+
+    if (!updateRes.success) {
+      return res
+        .status(500)
+        .json({ success: false, message: updateRes.message });
+    } else {
+      return res.status(200).json({ success: true, product: updateRes.data });
+    }
   });
 };

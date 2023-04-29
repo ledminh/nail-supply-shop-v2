@@ -1,6 +1,6 @@
 import { GetServerSideProps } from "next";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import PageLayout from "@/components/layouts/PageLayout";
 import { ContactInfo } from "@/types/others";
 import { Category } from "@/types/category";
@@ -12,7 +12,7 @@ import SortAndOrder from "@/components/composites/SortAndOrder";
 import ProductList from "@/components/composites/ProductList";
 
 import { categoryConfig } from "@/config";
-import { ProductGroup, Product } from "@/types/product";
+import { ProductGroup, Product, DBProduct } from "@/types/product";
 import { ListCondition } from "@/types/list-conditions";
 import ButtonCPN from "@/components/basics/ButtonCPN";
 import Select, { convertToOptionItem } from "@/components/generics/Select";
@@ -22,6 +22,8 @@ import { getAboutUsData, getCategories, getProducts } from "@/database";
 import axios, { AxiosResponse } from "axios";
 import { FindProductOptions } from "@/database/models/product";
 import { ProductApiResponse } from "../api/products";
+import isProduct from "@/utils/isProduct";
+import useDidUpdateEffect from "@/hooks/useDidUpdateEffect";
 
 export interface Props {
   errorMessage?: string;
@@ -56,7 +58,20 @@ export default function CategoryPage({
     useState<(Product | ProductGroup)[]>(products);
   const [condition, setCondition] = useState<ListCondition>(initCondition);
 
-  useEffect(() => {
+  const [maxProducts, setMaxProducts] = useState(0);
+
+
+  useEffect(() =>  {
+    if(condition.sort?.value === "price") {
+      setMaxProducts(curCategory.numProducts);
+    }
+    else {
+      setMaxProducts(curCategory.numProductsAndGroups);
+    }
+
+  }, [condition]);
+
+  useDidUpdateEffect(() => {
     const loadOptions: FindProductOptions = {
       type: "all",
       catSlug: curCategory.slug,
@@ -76,7 +91,16 @@ export default function CategoryPage({
           throw new Error("Products not found");
         }
 
+
         setProducts(data.products);
+      })
+      .catch(({ response }) => {
+        throw new Error(
+          `Error message: ${response.data.message}
+            condition: ${JSON.stringify(condition)}
+            curCategory: ${JSON.stringify(curCategory)}
+        `
+        );
       });
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [curCategory, condition]);
@@ -160,7 +184,7 @@ export default function CategoryPage({
             <ProductList products={_products} type="grid" />
           </div>
           <div className={styles.button}>
-            {_products.length < curCategory.numProducts && (
+            {_products.length < maxProducts && (
               <ButtonCPN
                 label="Load More"
                 type="normal"
@@ -209,6 +233,8 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       getProducts({
         catSlug: slug,
         type: "all",
+        sort: sortItem.value,
+        sortedOrder: sortedOrderItem.value,
         limit: categoryConfig.productsPerPage,
       }),
     ]);
@@ -249,7 +275,30 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       throw new Error("Category not found");
     }
 
-    const products = productsRes.data;
+    let products = productsRes.data;
+
+    if (!Array.isArray(products)) {
+      throw new Error("Products not found");
+    }
+
+    products = products.map((product) => {
+      if (isProduct(product)) {
+        return {
+          id: product.id,
+          name: product.name,
+          price: product.price,
+          images: product.images,
+          intro: product.intro,
+          details: product.details,
+          categoryID: product.categoryID,
+          dateCreated: product.dateCreated,
+          lastUpdated: product.lastUpdated,
+          sellCount: product.sellCount,
+        };
+      } else {
+        return product;
+      }
+    });
 
     return {
       props: {

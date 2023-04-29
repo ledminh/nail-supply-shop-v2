@@ -14,7 +14,7 @@ type Data = {
   ORDER_TEMPS: Order[];
   CATEGORIES: Category[];
   PRODUCTS: (DBProduct | DBProductGroup)[];
-  ABOUT_US: AboutUsData
+  ABOUT_US: AboutUsData;
 };
 
 // File path

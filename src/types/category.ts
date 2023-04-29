@@ -7,4 +7,5 @@ export interface Category {
   description: string;
   image: RemoteImage;
   numProducts: number;
+  numProductsAndGroups: number;
 }

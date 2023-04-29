@@ -24,30 +24,25 @@ export default function AboutUsManagementSection({}: Props) {
   const [contactInfo, setContactInfo] = useState<ContactInfo | null>(null);
 
   useEffect(() => {
-    axios.get("/api/about-us").then(({data}) => {
-      
-      if(!data.success)
-        throw new Error(data.message);
+    axios.get("/api/about-us").then(({ data }) => {
+      if (!data.success) throw new Error(data.message);
 
+      const { aboutUsFooter, missionStatement, historyHTML, contactInfo } =
+        data.aboutUs;
 
-      const { aboutUsFooter, missionStatement, historyHTML, contactInfo } =  data.aboutUs;
-
-      
       setAboutUsFooterContent(aboutUsFooter);
       setMissionStatementContent(missionStatement);
       setHistoryContentHTML(historyHTML);
       setContactInfo(contactInfo);
-    
     });
   }, []);
 
   const aboutUsFooterOnSave = (content: string) => {
     axios
       .post("/api/admin/about-us/?type=footer", { content })
-      .then(({data}) => {
-        if(!data.success)
-          throw new Error(data.message);
-        
+      .then(({ data }) => {
+        if (!data.success) throw new Error(data.message);
+
         setAboutUsFooterContent(data.footer);
       })
       .catch((err) => {
@@ -58,9 +53,8 @@ export default function AboutUsManagementSection({}: Props) {
   const missionStatementOnSave = (content: string) => {
     axios
       .post("/api/admin/about-us/?type=mission-statement", { content })
-      .then(({data}) => {
-        if(!data.success)
-          throw new Error(data.message);
+      .then(({ data }) => {
+        if (!data.success) throw new Error(data.message);
 
         setMissionStatementContent(data.missionStatement);
       })
@@ -72,11 +66,9 @@ export default function AboutUsManagementSection({}: Props) {
   const historyOnSave = (content: string) => {
     axios
       .post("/api/admin/about-us/?type=history", { content })
-      .then(({data}) => {
-        if(!data.success)
-          throw new Error(data.message);
+      .then(({ data }) => {
+        if (!data.success) throw new Error(data.message);
 
-        
         setHistoryContentHTML(data.historyHTML);
       })
       .catch((err) => {
@@ -95,10 +87,9 @@ export default function AboutUsManagementSection({}: Props) {
         phone,
         additionalInfos,
       })
-      .then(({data}) => {
-        if(!data.success)
-          throw new Error(data.message);
-      
+      .then(({ data }) => {
+        if (!data.success) throw new Error(data.message);
+
         setContactInfo(data.contactInfo);
       })
       .catch((err) => {

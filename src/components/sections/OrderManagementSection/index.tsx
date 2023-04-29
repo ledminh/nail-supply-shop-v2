@@ -45,11 +45,19 @@ export default function OrderManagementSection({}: Props) {
       } else {
         throw new Error(data.message);
       }
+    }).catch(({response}) => {
+      throw new Error(response.data.message);
     });
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [filter]);
 
-  const onFilterChange = ({ status, month, year, sort, query }: FilterChangeOptions) => {
+  const onFilterChange = ({
+    status,
+    month,
+    year,
+    sort,
+    query,
+  }: FilterChangeOptions) => {
     const newFilter = { ...filter };
 
     if (status) {
@@ -72,9 +80,7 @@ export default function OrderManagementSection({}: Props) {
 
     if (query || query === "") {
       newFilter.query = query;
-      
     }
-
 
     setFilter(newFilter);
   };

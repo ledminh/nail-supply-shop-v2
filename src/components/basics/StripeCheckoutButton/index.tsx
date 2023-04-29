@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FC, useState, useEffect } from "react";
 
 import { MouseEventHandler } from "react";
 
@@ -7,6 +7,7 @@ import styles from "@styles/basics/StripeCheckoutButtonCPN.module.scss";
 import getStripe from "@/utils/getStripejs";
 import { OrderedProduct } from "@/types/product";
 import { ShippingAddress } from "@/types/order";
+
 
 export interface Props {
   orderedProducts: OrderedProduct[];
@@ -21,9 +22,22 @@ const StripeCheckoutButtonCPN: StripeCheckoutButton = ({
   shippingAddress,
   disabled,
 }) => {
+
+  const [isDisabled, setIsDisabled] = useState<boolean>(disabled? disabled : true);
+
+  useEffect(() => {
+    if (disabled) {
+      setIsDisabled(true);
+    } else {
+      setIsDisabled(false);
+    }
+
+  }, [disabled]);
+
+
   const onClick: MouseEventHandler<HTMLButtonElement> = async (e) => {
     e.preventDefault();
-
+    setIsDisabled(true);
     try {
       // Create a Checkout Session.
       const { data } = await axios.post("/api/checkout_sessions", {
@@ -39,13 +53,16 @@ const StripeCheckoutButtonCPN: StripeCheckoutButton = ({
       if (res.error) {
         throw new Error(res.error?.message);
       }
+
+
+
     } catch (error) {
       console.error(error);
     }
   };
 
   return (
-    <button className={styles.wrapper} onClick={onClick} disabled={disabled}>
+    <button className={styles.wrapper} onClick={onClick} disabled={isDisabled}>
       CHECK OUT (with Stripe)
     </button>
   );
@@ -54,3 +71,5 @@ const StripeCheckoutButtonCPN: StripeCheckoutButton = ({
 export default StripeCheckoutButtonCPN;
 
 StripeCheckoutButtonCPN.displayName = "StripeCheckoutButtonCPN";
+
+

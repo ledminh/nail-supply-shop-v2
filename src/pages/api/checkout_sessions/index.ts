@@ -23,10 +23,9 @@ type NextApiCheckoutResponse = NextApiResponse<CheckoutResponse>;
 
 async function checkout(req: NextApiRequest, res: NextApiCheckoutResponse) {
   if (req.method === "POST") {
-    const { orderedProducts, shippingAddress, email } = req.body as {
+    const { orderedProducts, shippingAddress } = req.body as {
       orderedProducts: OrderedProduct[];
       shippingAddress: ShippingAddress;
-      email: string;
     };
 
     const params = createStripeParams(
@@ -75,9 +74,8 @@ function createStripeParams(
         name: product.name,
         images: [req.headers.origin + product.image.src],
       },
-      unit_amount: product.price * 100,
-      tax_behavior:
-        "exclusive" as Stripe.Checkout.SessionCreateParams.LineItem.PriceData.TaxBehavior,
+      unit_amount: Math.round(product.price) * 100,
+      tax_behavior: "exclusive" as Stripe.Checkout.SessionCreateParams.LineItem.PriceData.TaxBehavior,
     },
     quantity: product.quantity,
   }));

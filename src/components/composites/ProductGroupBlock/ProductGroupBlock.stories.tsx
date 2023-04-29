@@ -73,7 +73,7 @@ const defaultArgs: ProductGroup = {
   id: "group-1",
   name: "Product Group",
   categoryID: "1",
-  products,
+  products
 };
 
 const Wrapper = () => {
@@ -84,10 +84,10 @@ const Wrapper = () => {
     addToCart: (orderedProduct: OrderedProduct) => {
       setCart([...cart, orderedProduct]);
     },
-    setInitQuantity: () => {},
+    setInitQuantity: ()=>{}, 
     initQuantities: {}, 
     initSelectedProductID: "1",
-    setInitSelectedProductID: () => {},
+    setInitSelectedProductID: ()=>{},
   };
 
   return (

@@ -25,6 +25,7 @@ const categorySample = {
     alt: "Category Image",
   },
   numProducts: 10,
+  numProductsAndGroups: 20,
   name: "Category Name",
   description:
     "lore ipsum dolor sit amet ronco aenean donec dolor lorem etiam kwon",

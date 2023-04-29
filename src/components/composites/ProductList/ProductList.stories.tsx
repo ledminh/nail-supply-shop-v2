@@ -116,7 +116,6 @@ export const List: Story = {};
 export const Grid: Story = {
   args: {
     type: "grid",
-    products: productWithGroupSamples,
-    
+    products: productWithGroupSamples
   },
 };

@@ -68,7 +68,6 @@ export default function ProductPage({
 
   const { addToCart } = useCart();
 
-
   const catProps = getCategoryProps({
     categories,
     categoryID,
@@ -183,7 +182,6 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     const product = productRes.data as Product;
     const categories = categoriesRes.data;
 
-    
     if (!product.groupID) {
       return {
         props: {

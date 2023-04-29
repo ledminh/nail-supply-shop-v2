@@ -5,21 +5,14 @@ import type { AppProps } from "next/app";
 
 import CartContext from "@contexts/CartContext";
 import { useCartProviderValue } from "@contexts/CartContext";
-import {ClerkProvider, SignedIn, SignedOut, RedirectToSignIn} from "@clerk/nextjs";
-import { useRouter } from "next/router";
-
-const privatePages = [
-  "/admin"
-];
-
+import { ClerkProvider } from "@clerk/nextjs";
+// import { useRouter } from "next/router";
 
 export default function App({ Component, pageProps }: AppProps) {
   const cartProviderValue = useCartProviderValue();
 
-  const {pathname} = useRouter();
-
-  const isPublicPage = !privatePages.some((page) => pathname.startsWith(page));
- 
+  // const {pathname} = useRouter();
+  // console.log(pathname);
 
   return (
     <ClerkProvider {...pageProps}>

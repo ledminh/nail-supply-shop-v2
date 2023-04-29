@@ -10,10 +10,17 @@ const defaultArgs: Props = {
     name: "John Doe",
     address1: "123 Main St",
     address2: "Apt 1",
+<<<<<<< HEAD
     city: "Testville",
     state: "TX",
     zip: "12345",
     email: "john@test.com",
+=======
+    city: "New York",
+    state: "NY",
+    zip: "12345",
+    email: "johnDoe@example.com"
+>>>>>>> update
   }
 };
 

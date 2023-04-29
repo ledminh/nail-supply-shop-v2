@@ -1,0 +1,109 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+model Category {
+  id                   String    @id @default(cuid())
+  slug                 String    @unique
+  name                 String
+  description          String
+  image                String
+  numProducts          Int       @default(0)
+  numProductsAndGroups Int       @default(0)
+  products             Product[]
+  groups               Group[]
+}
+
+model Group {
+  id          String    @id @default(cuid())
+  name        String
+  categoryID  String
+  products    Product[]
+  dateCreated DateTime  @default(now())
+  lastUpdated DateTime  @default(now())
+  category    Category  @relation(fields: [categoryID], references: [id])
+}
+
+model Product {
+  id          String   @id @default(cuid())
+  name        String
+  price       Float
+  images      String[]
+  intro       String
+  details     String
+  categoryID  String
+  groupID     String?
+  dateCreated DateTime @default(now())
+  sellCount   Int      @default(0)
+  lastUpdated DateTime @default(now())
+  category    Category @relation(fields: [categoryID], references: [id])
+  group       Group?   @relation(fields: [groupID], references: [id])
+}
+
+model OrderedProduct {
+  id       String @id @default(cuid())
+  name     String
+  price    Float
+  quantity Int
+  image    String
+  orderID  String
+  order    Order  @relation(fields: [orderID], references: [id])
+}
+
+model ShippingAddress {
+  id       String  @id @default(cuid())
+  name     String
+  address1 String
+  address2 String?
+  city     String
+  state    String
+  zip      String
+  email    String
+  orderID  String  @unique
+  order    Order   @relation(fields: orderID, references: id)
+}
+
+enum Status {
+  processing
+  shipped
+  delivered
+}
+
+model Order {
+  id String @id @default(cuid())
+
+  shippingAddress ShippingAddress[]
+  orderedProducts OrderedProduct[]
+
+  status      Status
+  dateCreated DateTime @default(now())
+  lastUpdated DateTime @default(now())
+
+  temporary Boolean @default(true)
+}
+
+model ContactInfo {
+  id              String   @id @default(cuid())
+  email           String
+  phone           String
+  additionalInfos String[]
+  aboutUs         AboutUs  @relation(fields: [aboutUsId], references: [id])
+  aboutUsId       String
+}
+
+model AboutUs {
+  id               String        @id @default(cuid())
+  aboutUsFooter    String        @default("")
+  missionStatement String        @default("")
+  historyHTML      String        @default("")
+  contactInfo      ContactInfo[]
+}

@@ -1,9 +1,9 @@
-import { FC, useEffect, useState } from "react";
+import { FC, useState } from "react";
 
 import { LinkItem } from "@/types/item";
 
 import List from "components/generics/List";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 
 export interface Props<T extends JSX.IntrinsicAttributes & LinkItem> {
   items: T[];

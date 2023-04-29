@@ -51,7 +51,7 @@ export default function OrderList({
       <div className={styles.border} />
       <div className={styles.total}>
         <span className={styles.label}>Total</span>
-        <span className={styles.value}>${total}</span>
+        <span className={styles.value}>${total.toFixed(2)}</span>
       </div>
     </div>
   );

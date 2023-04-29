@@ -8,9 +8,8 @@ import ProductList from "@/components/composites/ProductList";
 
 import { ProductGroup, Product } from "@/types/product";
 
-import { getAboutUsData,  getProducts } from "@/database";
-
-
+import { getAboutUsData, getProducts } from "@/database";
+import isProduct from "@/utils/isProduct";
 
 export interface Props {
   errorMessage?: string;
@@ -25,34 +24,30 @@ export default function SearchResultPage({
   contactInfo,
   aboutUsFooter,
   products,
-  term  
+  term,
 }: Props) {
-  
   if (errorMessage) {
     throw new Error(errorMessage);
   }
-
 
   return (
     <PageLayout contactInfo={contactInfo} aboutText={aboutUsFooter}>
       <div className={styles.wrapper}>
         <section className={styles.header}>
-          <h2>SEARCH RESULT FOR <span className={styles.term}>{term}</span></h2>
+          <h2>
+            SEARCH RESULT FOR <span className={styles.term}>{term}</span>
+          </h2>
         </section>
-        {
-          products.length === 0 && (
-            <section className={styles.noResult}>
-              <h3>No result found</h3>
-            </section>
-          )
-        }
-        {
-          products.length > 0 && (
-            <section className={styles.productList}>
-              <ProductList products={products} type="grid" />
-            </section>
-          )
-        }
+        {products.length === 0 && (
+          <section className={styles.noResult}>
+            <h3>No result found</h3>
+          </section>
+        )}
+        {products.length > 0 && (
+          <section className={styles.productList}>
+            <ProductList products={products} type="grid" />
+          </section>
+        )}
       </div>
     </PageLayout>
   );
@@ -63,7 +58,7 @@ SearchResultPage.displayName = "SearchResultPage";
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const { term } = context.query;
 
-  if(typeof term !== 'string'){
+  if (typeof term !== "string") {
     return {
       props: {
         errorMessage: "Search term not found",
@@ -71,7 +66,6 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     };
   }
 
-  
   try {
     const [aboutUsRes, productsRes] = await Promise.all([
       getAboutUsData(),
@@ -89,7 +83,6 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       };
     }
 
-
     if (!productsRes.success) {
       return {
         props: {
@@ -101,15 +94,41 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     const aboutUsFooter = aboutUsRes.data!.aboutUsFooter;
     const contactInfo = aboutUsRes.data!.contactInfo;
 
+    let products = productsRes.data;
 
-    const products = productsRes.data;
+    if (!Array.isArray(products)) {
+      return {
+        props: {
+          errorMessage: "Products not found",
+        },
+      };
+    }
+
+    products = products.map((product) => {
+      if (isProduct(product)) {
+        return {
+          id: product.id,
+          name: product.name,
+          price: product.price,
+          images: product.images,
+          intro: product.intro,
+          details: product.details,
+          categoryID: product.categoryID,
+          dateCreated: product.dateCreated,
+          lastUpdated: product.lastUpdated,
+          sellCount: product.sellCount,
+        };
+      } else {
+        return product;
+      }
+    });
 
     return {
       props: {
         contactInfo,
         aboutUsFooter,
         products,
-        term
+        term,
       },
     };
   } catch (err: any) {

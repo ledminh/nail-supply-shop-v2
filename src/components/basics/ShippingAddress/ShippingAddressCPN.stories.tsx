@@ -6,13 +6,13 @@ import type { Props } from ".";
 
 const defaultArgs: Props = {
   shippingAddress: {
-    name: 'Tester',
-    address1: '123 Main St',
-    address2: 'Apt 1',
-    city: 'Testville',
-    state: 'TX',
-    zip: '12345',
-    email: 'email@test.com'
+    name: "John Doe",
+    address1: "123 Main St",
+    address2: "Apt 1",
+    city: "New York",
+    state: "NY",
+    zip: "12345",
+    email: "johndoe@example.com"
   }
 };
 

@@ -1,79 +1,87 @@
 import type { AboutUsData, ContactInfo } from "@/types/others";
 import { getDB } from "../jsons";
 
-
-
-
-export type GetAboutUsDataResponse = {
-  success: true;
-  data: AboutUsData;
-} | {
-  success: false;
-  message: string;
-}
-
+export type GetAboutUsDataResponse =
+  | {
+      success: true;
+      data: AboutUsData;
+    }
+  | {
+      success: false;
+      message: string;
+    };
 
 export function getAboutUsData(): Promise<GetAboutUsDataResponse> {
   return new Promise((resolve, reject) => {
     getDB().then((db) => {
-      const {data} = db;
+      const { data } = db;
 
+<<<<<<< HEAD
 
       if(!data) {
         return reject({
           success: false,
           message: `No data found in database db is (stringify) ${JSON.stringify(db)}`
+=======
+      if (!data) {
+        return reject({
+          success: false,
+          message: "No data found in database",
+>>>>>>> update
         });
       }
 
-      const {ABOUT_US} = data;
+      const { ABOUT_US } = data;
 
-      if(!ABOUT_US) {
+      if (!ABOUT_US) {
         reject({
           success: false,
-          message: "No about us data found in database"
+          message: "No about us data found in database",
         });
-      } 
+      }
 
       resolve({
         success: true,
-        data: ABOUT_US
+        data: ABOUT_US,
       });
-
     });
   });
 }
 
 export type SetAboutUsFooterProps = {
   footer: string;
-}
+};
 
-export type SetAboutUsFooterResponse = {
-  success: true;
-  data: string
-} | {
-  success: false;
-  message: string;
-}
+export type SetAboutUsFooterResponse =
+  | {
+      success: true;
+      data: string;
+    }
+  | {
+      success: false;
+      message: string;
+    };
 
-export function setAboutUsFooter({footer}: SetAboutUsFooterProps): Promise<SetAboutUsFooterResponse> {
+export function setAboutUsFooter({
+  footer,
+}: SetAboutUsFooterProps): Promise<SetAboutUsFooterResponse> {
   return new Promise((resolve, reject) => {
     getDB().then((db) => {
-      const {data} = db;
+      const { data } = db;
 
-      if(!data) {
+      if (!data) {
         return reject({
           success: false,
-          message: "No data found in database"
+          message: "No data found in database",
         });
       }
 
-      const {ABOUT_US} = data;
+      const { ABOUT_US } = data;
 
-      if(!ABOUT_US) {
+      if (!ABOUT_US) {
         reject({
           success: false,
-          message: "No about us data found in database"
+          message: "No about us data found in database",
         });
       }
 
@@ -82,66 +90,65 @@ export function setAboutUsFooter({footer}: SetAboutUsFooterProps): Promise<SetAb
       db.write()
         .then(() => db.read())
         .then(() => {
-
-          if(!db.data) {
+          if (!db.data) {
             return reject({
               success: false,
-              message: "No data found in database"
+              message: "No data found in database",
             });
           }
 
-          const {ABOUT_US} = db.data;
+          const { ABOUT_US } = db.data;
 
-          if(!ABOUT_US) {
+          if (!ABOUT_US) {
             reject({
               success: false,
-              message: "No about us data found in database"
+              message: "No about us data found in database",
             });
           }
 
           resolve({
             success: true,
-            data: ABOUT_US.aboutUsFooter
+            data: ABOUT_US.aboutUsFooter,
           });
         });
-
     });
-
   });
 }
 
-
-
 export type SetAboutUsMissionStatementProps = {
   missionStatement: string;
-}
+};
 
-export type SetAboutUsMissionStatementResponse = {
-  success: true;
-  data: string
-} | {
-  success: false;
-  message: string;
-}
+export type SetAboutUsMissionStatementResponse =
+  | {
+      success: true;
+      data: string;
+    }
+  | {
+      success: false;
+      message: string;
+    };
 
-export function setAboutUsMissionStatement({missionStatement}: SetAboutUsMissionStatementProps): Promise<SetAboutUsMissionStatementResponse> {
+export function setAboutUsMissionStatement({
+  missionStatement,
+}: SetAboutUsMissionStatementProps): Promise<SetAboutUsMissionStatementResponse> {
   return new Promise((resolve, reject) => {
     getDB().then((db) => {
-      const {data} = db;
+      const { data } = db;
 
-      if(!data) {
+      if (!data) {
         return reject({
           success: false,
-          message: "No data found in database"
+          message: "No data found in database",
         });
       }
 
-      const {ABOUT_US} = data;
+      const { ABOUT_US } = data;
 
-      if(!ABOUT_US) {
+      if (!ABOUT_US) {
         reject({
           success: false,
-          message: "No about us data found in database"
+          message: "No about us data found in database",
         });
       }
 
@@ -150,65 +157,65 @@ export function setAboutUsMissionStatement({missionStatement}: SetAboutUsMission
       db.write()
         .then(() => db.read())
         .then(() => {
-            
-            if(!db.data) {
-              return reject({
-                success: false,
-                message: "No data found in database"
-              });
-            }
-  
-            const {ABOUT_US} = db.data;
-  
-            if(!ABOUT_US) {
-              reject({
-                success: false,
-                message: "No about us data found in database"
-              });
-            }
-  
-            resolve({
-              success: true,
-              data: ABOUT_US.missionStatement
+          if (!db.data) {
+            return reject({
+              success: false,
+              message: "No data found in database",
             });
+          }
+
+          const { ABOUT_US } = db.data;
+
+          if (!ABOUT_US) {
+            reject({
+              success: false,
+              message: "No about us data found in database",
+            });
+          }
+
+          resolve({
+            success: true,
+            data: ABOUT_US.missionStatement,
           });
-
-
+        });
     });
   });
 }
 
 export type SetAboutUsHistoryHTMLProps = {
   history: string;
-}
+};
 
-export type SetAboutUsHistoryHTMLResponse = {
-  success: true;
-  data: string
-} | {
-  success: false;
-  message: string;
-}
+export type SetAboutUsHistoryHTMLResponse =
+  | {
+      success: true;
+      data: string;
+    }
+  | {
+      success: false;
+      message: string;
+    };
 
-
-export function setAboutUsHistoryHTML({history}: SetAboutUsHistoryHTMLProps): Promise<SetAboutUsHistoryHTMLResponse> {
+export function setAboutUsHistoryHTML({
+  history,
+}: SetAboutUsHistoryHTMLProps): Promise<SetAboutUsHistoryHTMLResponse> {
   return new Promise((resolve, reject) => {
     getDB().then((db) => {
-      const {data} = db;
+      const { data } = db;
 
-      if(!data) {
+      if (!data) {
         return reject({
           success: false,
-          message: "No data found in database"
+          message: "No data found in database",
         });
       }
 
-      const {ABOUT_US} = data;
+      const { ABOUT_US } = data;
 
-      if(!ABOUT_US) {
+      if (!ABOUT_US) {
         reject({
           success: false,
-          message: "No about us data found in database"
+          message: "No about us data found in database",
         });
       }
 
@@ -217,63 +224,65 @@ export function setAboutUsHistoryHTML({history}: SetAboutUsHistoryHTMLProps): Pr
       db.write()
         .then(() => db.read())
         .then(() => {
-              
-              if(!db.data) {
-                return reject({
-                  success: false,
-                  message: "No data found in database"
-                });
-              }
-    
-              const {ABOUT_US} = db.data;
-    
-              if(!ABOUT_US) {
-                reject({
-                  success: false,
-                  message: "No about us data found in database"
-                });
-              }
-    
-              resolve({
-                success: true,
-                data: ABOUT_US.historyHTML
-              });
+          if (!db.data) {
+            return reject({
+              success: false,
+              message: "No data found in database",
             });
+          }
+
+          const { ABOUT_US } = db.data;
+
+          if (!ABOUT_US) {
+            reject({
+              success: false,
+              message: "No about us data found in database",
+            });
+          }
+
+          resolve({
+            success: true,
+            data: ABOUT_US.historyHTML,
+          });
+        });
     });
   });
 }
 
 export type SetAboutUsContactInfoProps = {
   contactInfo: ContactInfo;
-}
+};
 
-export type SetAboutUsContactInfoResponse = {
-  success: true;
-  data: ContactInfo
-} | {
-  success: false;
-  message: string;
-}
+export type SetAboutUsContactInfoResponse =
+  | {
+      success: true;
+      data: ContactInfo;
+    }
+  | {
+      success: false;
+      message: string;
+    };
 
-
-export function setAboutUsContactInfo({contactInfo}: SetAboutUsContactInfoProps): Promise<SetAboutUsContactInfoResponse> {
+export function setAboutUsContactInfo({
+  contactInfo,
+}: SetAboutUsContactInfoProps): Promise<SetAboutUsContactInfoResponse> {
   return new Promise((resolve, reject) => {
     getDB().then((db) => {
-      const {data} = db;
+      const { data } = db;
 
-      if(!data) {
+      if (!data) {
         return reject({
           success: false,
-          message: "No data found in database"
+          message: "No data found in database",
         });
       }
 
-      const {ABOUT_US} = data;
+      const { ABOUT_US } = data;
 
-      if(!ABOUT_US) {
+      if (!ABOUT_US) {
         reject({
           success: false,
-          message: "No about us data found in database"
+          message: "No about us data found in database",
         });
       }
 
@@ -282,28 +291,27 @@ export function setAboutUsContactInfo({contactInfo}: SetAboutUsContactInfoProps)
       db.write()
         .then(() => db.read())
         .then(() => {
-                
-                if(!db.data) {
-                  return reject({
-                    success: false,
-                    message: "No data found in database"
-                  });
-                }
-      
-                const {ABOUT_US} = db.data;
-      
-                if(!ABOUT_US) {
-                  reject({
-                    success: false,
-                    message: "No about us data found in database"
-                  });
-                }
-      
-                resolve({
-                  success: true,
-                  data: ABOUT_US.contactInfo
-                });
-              });
+          if (!db.data) {
+            return reject({
+              success: false,
+              message: "No data found in database",
+            });
+          }
+
+          const { ABOUT_US } = db.data;
+
+          if (!ABOUT_US) {
+            reject({
+              success: false,
+              message: "No about us data found in database",
+            });
+          }
+
+          resolve({
+            success: true,
+            data: ABOUT_US.contactInfo,
+          });
+        });
     });
   });
 }

@@ -123,23 +123,30 @@ export default function ProductModal({
           )}
           <div className={styles.formGroup}>
             <label htmlFor="serialNumber">Serial #</label>
-            <input
-              type="text"
-              id="serialNumber"
-              value={serialNumber}
-              onChange={(e) => {
-                const value = e.target.value;
-                if (value.length > 15) return;
+            {
+              type === 'create' ?  <input
+                                      type="text"
+                                      id="serialNumber"
+                                      value={serialNumber}
+                                      onKeyDown={(e) => {
+                                        if (e.key === "Enter") {
+                                          e.preventDefault();
+                                        }
+                                      }}
+                                      onChange={(e) => {
+                                        const value = e.target.value;
+                                        if (value.length > 15) return;
 
-                if (value === "") return setSerialNumber("");
+                                        if (value === "") return setSerialNumber("");
 
-                const intVal = parseInt(value);
+                                        const intVal = parseInt(value);
 
-                if (isNaN(intVal) || intVal < 0) return;
+                                        if (isNaN(intVal) || intVal < 0) return;
 
-                setSerialNumber(value);
-              }}
-            />
+                                        setSerialNumber(value);
+                                      }}
+                                    /> : <div className={styles.value}>{serialNumber}</div>
+            }
           </div>
           <div className={styles.formGroup}>
             <label htmlFor="name">Name</label>
@@ -147,6 +154,11 @@ export default function ProductModal({
               type="text"
               id="name"
               value={name}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  e.preventDefault();
+                }
+              }}
               onChange={(e) => setName(e.target.value)}
             />
           </div>
@@ -156,6 +168,11 @@ export default function ProductModal({
               type="text "
               id="intro"
               value={intro}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  e.preventDefault();
+                }
+              }}
               onChange={(e) => setIntro(e.target.value)}
             />
           </div>
@@ -173,6 +190,11 @@ export default function ProductModal({
               type="number"
               id="price"
               value={price + ""}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  e.preventDefault();
+                }
+              }}
               onChange={(e) => {
                 let value = e.target.value;
 
@@ -214,6 +236,7 @@ export default function ProductModal({
                 key={image instanceof File ? image.name : image.src}
                 onClick={(e) => {
                   e.preventDefault();
+                  e.stopPropagation();
                   setImages((prev) =>
                     prev ? prev.filter((img) => img !== image) : null
                   );

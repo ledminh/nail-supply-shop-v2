@@ -27,6 +27,7 @@ const defaultArgs: Props = {
   },
   aboutText:
     "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod, nisl vitae ultricies lacinia, nunc nisl aliquam nisl, eget aliquam nunc nisl sit amet nisl. Sed euismod, nisl vitae ultricies lacinia, nunc nisl aliquam nisl, eget aliquam nunc nisl sit amet nisl.",
+  
   children: <SampleContent />,
 };
 

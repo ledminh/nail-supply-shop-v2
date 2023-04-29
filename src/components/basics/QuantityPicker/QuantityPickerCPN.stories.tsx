@@ -7,7 +7,7 @@ import { useState } from "react";
 import type { Props } from ".";
 
 const defaultArgs: Props = {
-  value: 1,
+  value: 0,
 };
 
 const Wrapper = (args: Props) => {

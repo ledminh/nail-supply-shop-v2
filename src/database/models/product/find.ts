@@ -53,14 +53,11 @@ export default function find(
       if (options.searchTerm) {
         const searchTerm = options.searchTerm.toLowerCase();
 
-
         const _products = PRODUCTS.reduce((acc, product) => {
           if (isProduct(product)) {
-            if(isProductMatch(product, searchTerm)){
+            if (isProductMatch(product, searchTerm)) {
               return [...acc, product];
-            }
-            else
-              return acc;
+            } else return acc;
           } else {
             let _acc = [...acc];
 
@@ -72,22 +69,16 @@ export default function find(
               _acc = [..._acc, ..._products];
             }
 
-            if(isProductGroupMatch(product, searchTerm)){
+            if (isProductGroupMatch(product, searchTerm)) {
               _acc = [..._acc, product];
             }
 
             return _acc;
-            
           }
-
-        }, [] as (DBProduct|DBProductGroup)[]);
-
-
+        }, [] as (DBProduct | DBProductGroup)[]);
 
         return resolve({ success: true, data: _products });
       }
-
-
 
       if (options.name) {
         products = filterProductsByName(products, options.name);
@@ -272,14 +263,11 @@ function sortProducts(
   });
 }
 
-
-
 /***************************
  * Helper function
  */
 
 function isProductMatch(product: DBProduct, searchTerm: string) {
-  
   const searchTermParts = searchTerm.split(" ");
 
   const productName = product.name.toLowerCase();
@@ -297,13 +285,9 @@ function isProductMatch(product: DBProduct, searchTerm: string) {
   );
 
   return isProductNameMatch || isProductDetailsMatch || isProductIntroMatch;
-
 }
 
-function isProductGroupMatch(
-  productGroup: DBProductGroup,
-  searchTerm: string
-) {
+function isProductGroupMatch(productGroup: DBProductGroup, searchTerm: string) {
   const searchTermParts = searchTerm.split(" ");
 
   const productName = productGroup.name.toLowerCase();
