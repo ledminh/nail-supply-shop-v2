@@ -1,38 +1,28 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+## Nail Supply Shop
 
-## Getting Started
+An online shop written with NextJS. My attempt to learn FullStack development.
 
-First, run the development server:
+This is the second iteration. See the first iteration here: [https://github.com/ledminh/nail-supply-shop](https://github.com/ledminh/nail-supply-shop).
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-```
+## Tech Used
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+- Framework: NextJS
+- Database: Prisma, Postsql, lowdb (for mockup)
+- Authentication: Clerk
+- SCSS, CSS module
+- Design system: Storybook
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
+## Live Demo
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
+[https://nail-supply-shop-v2.vercel.app](https://nail-supply-shop-v2.vercel.app)
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+AdminURL: [https://nail-supply-shop-v2.vercel.app/admin](https://nail-supply-shop-v2.vercel.app/admin) (username: store_admin, password: store_admin4321)
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+## Continued Development
 
-## Learn More
+ToDo list for this project:
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+- Add log in feature for customer.
+- Send email confirmation after customer checkout.
+- Improve UI
+- Add more animations
