@@ -16,18 +16,10 @@ export function getAboutUsData(): Promise<GetAboutUsDataResponse> {
     getDB().then((db) => {
       const { data } = db;
 
-<<<<<<< HEAD
-
-      if(!data) {
-        return reject({
-          success: false,
-          message: `No data found in database db is (stringify) ${JSON.stringify(db)}`
-=======
       if (!data) {
         return reject({
           success: false,
           message: "No data found in database",
->>>>>>> update
         });
       }
 
@@ -131,7 +123,9 @@ export type SetAboutUsMissionStatementResponse =
 
 export function setAboutUsMissionStatement({
   missionStatement,
-}: SetAboutUsMissionStatementProps): Promise<SetAboutUsMissionStatementResponse> {
+}: SetAboutUsMissionStatementProps): Promise<
+  SetAboutUsMissionStatementResponse
+> {
   return new Promise((resolve, reject) => {
     getDB().then((db) => {
       const { data } = db;
