@@ -22,7 +22,7 @@ const processImages = async (
     const newProductImages = filenames.map((filename) => ({
       // generate a unique id string for each image with Date.now() and Math.random()
       id: randomId(10, "image-"),
-      src: `/images/product/${filename}`,
+      src: filename,
       alt: filename,
     }));
 

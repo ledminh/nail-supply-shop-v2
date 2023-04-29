@@ -32,6 +32,7 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
       if (type === "cat-image") {
         catImageUpload(req, res);
       } else if (type === "product-images") {
+        productImagesUpload(req, res);
       }
       break;
     default:
@@ -108,6 +109,58 @@ const catImageUpload = async (req: NextApiRequest, res: NextApiResponse) => {
 
       return res.status(200).json({ success: true, filename });
     }
+  });
+};
+
+const productImagesUpload = async (
+  req: NextApiRequest,
+  res: NextApiResponse
+) => {
+  const form = formidable({ multiples: true });
+
+  form.parse(req, async (err, fields, files) => {
+    if (err) {
+      return res.status(500).json({ success: false, message: err.message });
+    }
+
+    console.log(files);
+
+    const productImageFiles = files["product-images"] as formidable.File[];
+
+    const fileContents = await Promise.all(
+      productImageFiles.map((productImageFile) =>
+        fs.promises.readFile(productImageFile.filepath)
+      )
+    );
+
+    const uploadPromises = fileContents.map((fileContent, index) => {
+      const uniqueSuffix =
+        "product-image-" + Date.now() + "-" + Math.round(Math.random() * 1e9);
+
+      const mimetype = productImageFiles[index].mimetype || "image/jpeg";
+
+      return uploadFile(
+        "nail-supply-store",
+        `product/${uniqueSuffix}.${mimetype.split("/")[1]}`,
+        fileContent,
+        {
+          contentType: mimetype,
+          cacheControl: "3600",
+        }
+      );
+    });
+
+    const uploadResults = await Promise.all(uploadPromises);
+
+    const filenames = uploadResults.map((result) => {
+      if (result.error) {
+        throw result.error;
+      }
+
+      return `${process.env.SUPABASE_IMAGE_URL}/${result.data.path}`;
+    });
+
+    return res.status(200).json({ success: true, filenames });
   });
 };
 

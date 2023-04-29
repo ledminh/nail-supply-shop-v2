@@ -12,7 +12,8 @@ import * as DB from "@/database";
 import { DBProductGroup, DBProduct } from "@/types/product";
 import isProduct from "@/utils/isProduct";
 import { getAuth } from "@clerk/nextjs/server";
-import removeFile from "@/utils/supaRemove";
+
+import deleteImages from "@/utils/deleteImages";
 
 export type CategoryApiResponse =
   | {
@@ -67,6 +68,7 @@ export default function handler(
 
           createCategory({ name, description, imageFileName }, res);
         });
+
         break;
 
       case "update":
@@ -252,28 +254,6 @@ function deleteCategory(catID: string, res: NextApiCategoryResponse) {
     res.status(500).json({ success: false, message: err.message });
   });
 }
-
-const deleteImages = async (
-  filenames: string[],
-  type: "category" | "product"
-) => {
-  const folder = type === "category" ? "category" : "product";
-
-  const _filenames = filenames.map((filename) => {
-    const split = filename.split("/");
-    return folder + "/" + split[split.length - 1];
-  });
-
-  const { error } = await removeFile("nail-supply-store", _filenames);
-
-  if (error) {
-    throw new Error(error.message);
-  } else {
-    return Promise.resolve({
-      success: true,
-    });
-  }
-};
 
 // deleteImage locally
 // const deleteImage = (filename: string, type: "category" | "product") => {

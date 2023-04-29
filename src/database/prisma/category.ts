@@ -213,6 +213,20 @@ export function deleteCategory(id: string): Promise<CategoryResponse> {
         throw new Error("Category not found");
       }
 
+      const deleteProducts = prismaClient.product.deleteMany({
+        where: {
+          categoryID: id,
+        },
+      });
+
+      const deleteGroups = prismaClient.group.deleteMany({
+        where: {
+          categoryID: id,
+        },
+      });
+
+      await prismaClient.$transaction([deleteProducts, deleteGroups]);
+
       const numDel = await prismaClient.$executeRaw`DELETE FROM "Category" WHERE id = ${id}`;
 
       if (numDel === 0) {
