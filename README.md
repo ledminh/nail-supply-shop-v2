@@ -21,7 +21,7 @@ For administrative access, use the following credentials:
 
 - **Admin URL:** [https://nail-supply-shop-v2.vercel.app/admin](https://nail-supply-shop-v2.vercel.app/admin)
 - **Username:** store_admin
-- **Password:** store_admin4321
+- **Password:** admin_54321
 
 ## Continuing Development
 
