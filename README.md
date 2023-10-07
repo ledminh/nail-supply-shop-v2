@@ -44,7 +44,7 @@ To deploy this project on your local machine, follow these steps:
    npm install
    ```
 
-3. Set up your PostgreSQL database or sign up for one (I recommend using supabase.com). Obtain the database URL and add it to the environment variables in the `.env` file located at the root of your project (same level as the `src` folder).
+3. Set up your PostgreSQL database or sign up for one (I recommend using supabase.com). Obtain the database URL and add it to the following environment variables in the `.env` file located at the root of your project (same level as the `src` folder).
    
    - DATABASE_URL: URL for Prisma to connect to your PostgreSQL database.
    - DIRECT_URL: Same as above.
