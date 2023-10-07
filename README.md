@@ -22,11 +22,15 @@ To ensure a seamless design process, I have leveraged Storybook for creating and
 
 You can experience the live demo of this second iteration by visiting [this link](https://nail-supply-shop-v2.vercel.app).
 
+To test the checkout feature, you can use the credit card number 4242 4242 4242 4242 with any CVC, as long as the expiration date is in the future.
+
 For administrative access, please use the following credentials:
 
 - **Admin URL:** [https://nail-supply-shop-v2.vercel.app/admin](https://nail-supply-shop-v2.vercel.app/admin)
 - **Username:** store_admin
 - **Password:** admin_54321
+
+
 
 ## Deployment Instructions
 
