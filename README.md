@@ -70,9 +70,9 @@ To deploy this project on your local machine, follow these steps:
 
 10. Since this project uses Next.js, the deployment steps are similar to any other Next.js app. You can run the development server with the following command:
 
-   ```sh
-   npm run dev
-   ```
+      ```sh
+      npm run dev
+      ```
 
 11. If you intend to deploy it to your own server, follow these steps:
 
@@ -96,4 +96,11 @@ Here is a list of tasks for the ongoing development of this project:
 - Set up email confirmation for customers after checkout.
 - Enhance the user interface.
 - Incorporate additional animations to improve the user experience.
+
+
+## Other Iterations:
+
+- [Nail Supply Shop v1](https://github.com/ledminh/nail-supply-shop)
+- [My Favorite Shop](https://github.com/ledminh/my-favorite-shop)
+
 
