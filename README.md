@@ -7,21 +7,20 @@ In this second iteration, based on the insights gained from the [first attempt](
 
 To ensure a seamless design process, I have leveraged Storybook for creating and managing the design system.
 
-## Tech Stack
+## Technology Stack
 
 - **Framework:** Next.js
-- **Database:** Prisma, PostgreSQL, lowdb (for mockup)
+- **Database:** Prisma (PostgreSQL), lowdb (for mockup)
 - **Authentication:** Clerk
 - **Styles:** SCSS, CSS Modules
 - **Design System:** Storybook
-
 
 ## Screenshot
 ![Second Iteration Screenshot](2nd-iteration-screenshot.jpg)
 
 ## Live Demo
 
-You can experience the live demo of this second iteration at [this link](https://nail-supply-shop-v2.vercel.app).
+You can experience the live demo of this second iteration by visiting [this link](https://nail-supply-shop-v2.vercel.app).
 
 For administrative access, please use the following credentials:
 
@@ -45,35 +44,33 @@ To deploy this project on your local machine, follow these steps:
    npm install
    ```
 
-3. Add the necessary environment variables to your project:
+3. Set up your PostgreSQL database or sign up for one (I recommend using supabase.com). Obtain the database URL and add it to the environment variables in the `.env` file located at the root of your project (same level as the `src` folder).
+   
+   - DATABASE_URL: URL for Prisma to connect to your PostgreSQL database.
+   - DIRECT_URL: Same as above.
 
-   In the `.env` file:
+4. Create a new storage in your Supabase account and add the following variables to the `.env.local` file:
 
-   ```
-   DATABASE_URL // URL for Prisma to log in to your PostgreSQL. 
-   DIRECT_URL // Same as above
-   ```
+   - SUPABASE_STORAGE_URL: You can find this value by following these steps: After logging into your Supabase dashboard, click on "Settings" in the side menu, then navigate to "API." The value is located in the "Project URL" section.
+   - SUPABASE_API_KEY: The value can be found in the "Settings" > "API" > "Project API keys" section.
 
-   In the `.env.local` file:
+5. Within your newly created storage, create a new bucket named "nail-supply-store." Inside this bucket, create two folders: "category" and "product," respectively.
 
-   ```
-   SUPABASE_STORAGE_URL // Host name of storage from Supabase website  
-   SUPABASE_API_KEY // API key of your project in Supabase 
-   SUPABASE_IMAGE_URL  // first part of the URL of image from Supabase, usually it is of this format: https://example-name.supabase.co/storage/v1/object/public/your-storage-name
-   STRIPE_SECRET_KEY  
-   NEXT_PUBLIC_STRIPE_PUBLIC_KEY
-   NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY
-   CLERK_SECRET_KEY
-   ADMIN_ID // Admin ID of the Clerk account
-   ```
+6. Add SUPABASE_IMAGE_URL to the `.env.local` file. This URL typically follows this format: `https://your-host-name.supabase.co/storage/v1/object/public/your-storage-name`.
 
-4. Since this project uses Next.js, you can run the development server with the following command:
+7. Create a new account on Stripe to obtain STRIPE_SECRET_KEY and NEXT_PUBLIC_STRIPE_PUBLIC_KEY. Ensure that you set it to "Test mode" so that you can utilize the credit card number 4242 4242 4242 4242 for testing the checkout feature.
+
+8. Create a new account on Clerk, add a new application to acquire NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY and CLERK_SECRET_KEY, then add them to your `.env.local` file.
+
+9. In the Clerk application you created, create a new user and enable login by username or email address. Copy the user ID and add it to the ADMIN_ID variable in your `.env.local` file.
+
+10. Since this project uses Next.js, the deployment steps are similar to any other Next.js app. You can run the development server with the following command:
 
    ```sh
    npm run dev
    ```
 
-5. If you wish to deploy it to your own server, follow these steps:
+11. If you intend to deploy it to your own server, follow these steps:
 
    - Build the project:
 
@@ -89,11 +86,10 @@ To deploy this project on your local machine, follow these steps:
 
 ## Continuing Development
 
-Here's a list of tasks for the ongoing development of this project:
+Here is a list of tasks for the ongoing development of this project:
 
 - Implement a customer login feature.
 - Set up email confirmation for customers after checkout.
 - Enhance the user interface.
 - Incorporate additional animations to improve the user experience.
-
 
