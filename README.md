@@ -58,7 +58,7 @@ To deploy this project on your local machine, follow these steps:
 
    ```
    SUPABASE_STORAGE_URL // Host name of storage from Supabase website  
-   SUPABASE_API_KEY // API key of your project in Supabase https://yadrhbuazirzolgxhqtl.supabase.co
+   SUPABASE_API_KEY // API key of your project in Supabase 
    SUPABASE_IMAGE_URL  // first part of the URL of image from Supabase, usually it is of this format: https://example-name.supabase.co/storage/v1/object/public/your-storage-name
    STRIPE_SECRET_KEY  
    NEXT_PUBLIC_STRIPE_PUBLIC_KEY
