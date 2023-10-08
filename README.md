@@ -20,7 +20,7 @@ To ensure a seamless design process, I have leveraged Storybook for creating and
 
 ## Live Demo
 
-You can experience the live demo of this second iteration by visiting [this link](https://nail-supply-shop-v2.vercel.app).
+You can check out the live demo of this iteration at [this link](https://nail-supply-shop-v2.vercel.app).
 
 To test the checkout feature, you can use the credit card number 4242 4242 4242 4242 with any CVC, as long as the expiration date is in the future.
 
@@ -29,7 +29,6 @@ For administrative access, please use the following credentials:
 - **Admin URL:** [https://nail-supply-shop-v2.vercel.app/admin](https://nail-supply-shop-v2.vercel.app/admin)
 - **Username:** store_admin
 - **Password:** admin_54321
-
 
 
 ## Deployment Instructions
@@ -53,7 +52,7 @@ To deploy this project on your local machine, follow these steps:
    - DATABASE_URL: URL for Prisma to connect to your PostgreSQL database.
    - DIRECT_URL: Same as above.
 
-4. Create a new storage in your Supabase account and add the following variables to the `.env.local` file:
+4. Create a new storage in your Supabase account and add the following variables to the `.env.local` file located at the root of your project:
 
    - SUPABASE_STORAGE_URL: You can find this value by following these steps: After logging into your Supabase dashboard, click on "Settings" in the side menu, then navigate to "API." The value is located in the "Project URL" section.
    - SUPABASE_API_KEY: The value can be found in the "Settings" > "API" > "Project API keys" section.
