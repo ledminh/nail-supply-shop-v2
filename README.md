@@ -10,7 +10,7 @@ To ensure a seamless design process, I have leveraged Storybook for creating and
 ## Technology Stack
 
 - **Framework:** Next.js
-- **Database:** Prisma (PostgreSQL), lowdb (for mockup)
+- **Database:** Prisma, PostgreSQL, lowdb (for mockup)
 - **Authentication:** Clerk
 - **Styles:** SCSS, CSS Modules
 - **Design System:** Storybook
