@@ -75,17 +75,17 @@ To deploy this project on your local machine, follow these steps:
 
 11. If you intend to deploy it to your own server, follow these steps:
 
-   - Build the project:
-
-     ```sh
-     npm run build
-     ```
-
-   - Start the server:
-
-     ```sh
-     npm run start
-     ```
+      - Build the project:
+   
+        ```sh
+        npm run build
+        ```
+   
+      - Start the server:
+   
+        ```sh
+        npm run start
+        ```
 
 ## Continuing Development
 
