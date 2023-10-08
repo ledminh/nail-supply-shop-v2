@@ -67,7 +67,7 @@ To deploy this project on your local machine, follow these steps:
 
 9. In the Clerk application you created, create a new user and enable login by username or email address. Copy the user ID and add it to the ADMIN_ID variable in your `.env.local` file.
 
-10. Since this project uses Next.js, the deployment steps are similar to any other Next.js app. You can run the development server with the following command:
+10. Since this project uses Next.js, the remaining deployment process is similar to any other Next.js app. You can run the development server with the following command:
 
       ```sh
       npm run dev
