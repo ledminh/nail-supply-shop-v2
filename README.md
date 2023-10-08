@@ -57,7 +57,7 @@ To deploy this project on your local machine, follow these steps:
    - SUPABASE_STORAGE_URL: You can find this value by following these steps: After logging into your Supabase dashboard, click on "Settings" in the side menu, then navigate to "API." The value is located in the "Project URL" section.
    - SUPABASE_API_KEY: The value can be found in the "Settings" > "API" > "Project API keys" section.
 
-5. Within your newly created storage, create a new bucket named "nail-supply-store." Inside this bucket, create two folders: "category" and "product," respectively.
+5. Within your newly created storage, create a new bucket named "nail-supply-store." Inside this bucket, create two folders: "category" and "product."
 
 6. Add SUPABASE_IMAGE_URL to the `.env.local` file. This URL typically follows this format: `https://your-host-name.supabase.co/storage/v1/object/public/your-storage-name`.
 
