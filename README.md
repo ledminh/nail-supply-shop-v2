@@ -87,7 +87,7 @@ To deploy this project on your local machine, follow these steps:
         npm run start
         ```
 
-## Continuing Development
+## Continued Development
 
 Here is a list of tasks for the ongoing development of this project:
 
